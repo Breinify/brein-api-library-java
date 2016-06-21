@@ -1,0 +1,22 @@
+# Libraries          #
+######################
+lib/**/*
+testLib/**/*
+
+# Targets            #
+######################
+target/**/*
+testTarget/**/*
+
+# Temporary          #
+######################
+tmp/**/*
+
+# Configurations     #
+######################
+src/config/dev-*.properties
+
+# OS generated files #
+######################
+**/.DS_Store
+**/.DS_Store?

@@ -1,0 +1,41 @@
+<project name="brein-api-library-java" default="build" basedir=".">
+    <include optional="true" file="../../brein-workspace/brein-intellij-workspace/common-libs/maven/maven-ant.xml"/>
+
+    <target name="build" depends="compile">
+        <delete>
+            <fileset dir="target" includes="brein-api-library-java-TRUNK-SNAPSHOT.jar"/>
+        </delete>
+
+        <jar jarfile="target/brein-api-library-java-TRUNK-SNAPSHOT.jar">
+            <fileset dir="./target">
+                <exclude name="**/CVS"/>
+            </fileset>
+        </jar>
+
+        <mavenDeploy file="target/brein-api-library-java-TRUNK-SNAPSHOT.jar"/>
+    </target>
+
+    <target name="compile" depends="dependencies">
+        <delete failonerror="false">
+            <fileset dir="target" includes="**/*"/>
+        </delete>
+
+        <javac srcdir="src" destdir="target" includeantruntime="false" debug="true" source="1.8" target="1.8">
+            <classpath>
+                <fileset dir="lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="dependencies">
+        <delete dir="lib" failonerror="false"/>
+        <mavenCopyDependencies dir="lib"/>
+
+        <delete dir="testLib" failonerror="false"/>
+        <mavenCopyTestDependencies dir="testLib"/>
+    </target>
+
+    <target name="distribute" depends="build"/>
+</project>

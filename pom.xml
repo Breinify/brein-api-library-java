@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.breinify</groupId>
+    <artifactId>brein-api-library-java</artifactId>
+    <version>TRUNK-SNAPSHOT</version>
+    <name>brein-api-library-java</name>
+    <description>Brein API Library Java</description>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.breinify</groupId>
+            <artifactId>brein-common</artifactId>
+            <version>TRUNK-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.breinify</groupId>
+            <artifactId>brein-test</artifactId>
+            <version>TRUNK-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.19.1</version>
+        </dependency>
+
+
+    </dependencies>
+</project>
