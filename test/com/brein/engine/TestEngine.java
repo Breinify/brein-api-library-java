@@ -8,7 +8,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.Future;
 
@@ -24,9 +23,11 @@ public class TestEngine {
      */
     @AfterClass
     public static void tearDown() {
+
         try {
+            Thread.sleep(5000);
             Unirest.shutdown();
-        } catch (IOException e) {
+        } catch (Exception e) {
             assertTrue(false);
         }
     }
