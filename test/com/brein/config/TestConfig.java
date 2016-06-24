@@ -1,11 +1,14 @@
 package com.brein.config;
 
-import com.brein.Breinify;
+import com.brein.api.BreinActivity;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ *
+ */
 public class TestConfig {
 
     /**
@@ -15,8 +18,9 @@ public class TestConfig {
     public void testEmptyConfig() {
 
         final String emptyString = "";
-        final Breinify breinify = new Breinify(emptyString);
-        assertFalse(breinify.validConfig());
+        final BreinActivity breinActivity = new BreinActivity();
+        breinActivity.setApiKey(emptyString);
+        assertFalse(breinActivity.validApiKey());
     }
 
     /**
@@ -25,19 +29,9 @@ public class TestConfig {
     @Test
     public void testNullConfig() {
 
-        final Breinify breinify = new Breinify(null);
-        assertFalse(breinify.validConfig());
-    }
-
-    /**
-     * Test of Breinify class with valid configuration api-key
-     */
-    @Test
-    public void testValidConfig() {
-
-        final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
-        final Breinify breinify = new Breinify(validApiKey);
-        assertTrue(breinify.validConfig());
+        final BreinActivity breinActivity = new BreinActivity();
+        breinActivity.setApiKey(null);
+        assertFalse(breinActivity.validApiKey());
     }
 
     /**
@@ -45,10 +39,10 @@ public class TestConfig {
      */
     @Test
     public void testNormalConfigUsage() {
-        Breinify breinify = new Breinify();
+        BreinActivity breinActivity = new BreinActivity();
         final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
-        breinify.setConfig(validApiKey);
-        assertTrue(breinify.validConfig());
+        breinActivity.setApiKey(validApiKey);
+        assertTrue(breinActivity.validApiKey());
     }
 }
 
