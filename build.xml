@@ -1,41 +1,26 @@
-<project name="brein-api-library-java" default="build" basedir=".">
-    <include optional="true" file="../../brein-workspace/brein-intellij-workspace/common-libs/maven/maven-ant.xml"/>
+<project name="brein-api-library-java" default="03-wrap-up" basedir=".">
 
-    <target name="build" depends="compile">
-        <delete>
-            <fileset dir="target" includes="brein-api-library-java-TRUNK-SNAPSHOT.jar"/>
-        </delete>
+    <!-- This is an internally used build-script. To build the project manually,
+         please resolve the needed dependencies and run the default javac compiler.
+         In addition, the library will be available through Maven Central!
+      -->
+    <include file="../../brein-workspace/brein-intellij-workspace/common-libs/ant-util/util-ant.xml"/>
 
-        <jar jarfile="target/brein-api-library-java-TRUNK-SNAPSHOT.jar">
-            <fileset dir="./target">
-                <exclude name="**/CVS"/>
-            </fileset>
-        </jar>
+    <property name="jarFile" value="brein-api-library-java-TRUNK-SNAPSHOT.jar" />
 
-        <mavenDeploy file="target/brein-api-library-java-TRUNK-SNAPSHOT.jar"/>
+    <target name="03-wrap-up" depends="02-compile-sources">
+        <build-jar jarFile="${jarFile}"/>
     </target>
 
-    <target name="compile" depends="dependencies">
-        <delete failonerror="false">
-            <fileset dir="target" includes="**/*"/>
-        </delete>
-
-        <javac srcdir="src" destdir="target" includeantruntime="false" debug="true" source="1.8" target="1.8">
-            <classpath>
-                <fileset dir="lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
-        </javac>
+    <target name="02-compile-sources" depends="01-resolve-dependencies">
+        <do-compile-java-default/>
     </target>
 
-    <target name="dependencies">
-        <delete dir="lib" failonerror="false"/>
-        <mavenCopyDependencies dir="lib"/>
-
-        <delete dir="testLib" failonerror="false"/>
-        <mavenCopyTestDependencies dir="testLib"/>
+    <target name="01-resolve-dependencies">
+        <resolve-dependencies/>
     </target>
 
-    <target name="distribute" depends="build"/>
+    <target name="04-publish-results" depends="03-wrap-up">
+        <publish-jar jarFile="${jarFile}"/>
+    </target>
 </project>
