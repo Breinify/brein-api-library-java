@@ -1,6 +1,7 @@
 package com.brein.domain;
 
 import com.brein.api.BreinActivity;
+import com.brein.util.BreinUtil;
 import com.google.gson.*;
 
 /**
@@ -74,11 +75,13 @@ public class BreinRequest {
 
             JsonObject userData = new JsonObject();
             userData.addProperty("email", breinUser.getEmail());
-            if (breinUser.getFirstName().length() > 0) {
+
+
+            if (BreinUtil.containsValue(breinUser.getFirstName())) {
                 userData.addProperty("firstName", breinUser.getFirstName());
             }
 
-            if (breinUser.getLastName().length() > 0) {
+            if (BreinUtil.containsValue(breinUser.getLastName())) {
                 userData.addProperty("lastName", breinUser.getLastName());
             }
             requestData.add("user", userData);
