@@ -3,10 +3,10 @@ package com.brein.domain;
 /**
  * A plain object specifying the user information the activity belongs to.
  */
-public class BreinifyUser {
+public class BreinUser {
 
     /**
-     *
+     * user data...
      */
     private String email;
 
@@ -22,18 +22,18 @@ public class BreinifyUser {
 
     private String sessionId;
 
-
     /**
-     *
-     * @param email
+     * create a brein user with mandatory field email.
+     * @param email of the user
      */
-    public BreinifyUser(final String email) {
+    public BreinUser(final String email) {
         setEmail(email);
     }
 
     /**
      *
-     * @return
+     * setter & getter of the properties
+     *
      */
     public String getEmail() {
         return email;

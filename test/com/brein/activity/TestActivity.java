@@ -2,7 +2,7 @@ package com.brein.activity;
 
 import com.brein.api.BreinActivity;
 import com.brein.domain.ActivityType;
-import com.brein.domain.BreinifyUser;
+import com.brein.domain.BreinUser;
 import com.brein.domain.Category;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,7 +16,7 @@ public class TestActivity {
     /**
      * User
      */
-    private final BreinifyUser breinifyUser = new BreinifyUser("Marco.Recchioni@breinify.com");
+    private final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
 
     /**
      * Category
@@ -69,13 +69,13 @@ public class TestActivity {
         /**
          * additional user information
          */
-        breinifyUser.setFirstName("Marco");
-        breinifyUser.setLastName("Recchioni");
+        breinUser.setFirstName("Marco");
+        breinUser.setLastName("Recchioni");
 
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinifyUser,
+        breinActivity.activity(breinUser,
                 ActivityType.LOGIN,
                 category, description, sign);
     }
@@ -91,12 +91,12 @@ public class TestActivity {
         /**
          * additional user information
          */
-        breinifyUser.setDateOfBirth("12/31/2008");
+        breinUser.setDateOfBirth("12/31/2008");
 
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinifyUser,
+        breinActivity.activity(breinUser,
                 ActivityType.LOOKUP,
                 category, description, sign);
 

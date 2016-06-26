@@ -2,7 +2,7 @@ package com.brein.api;
 
 import com.brein.config.BreinConfig;
 import com.brein.domain.ActivityType;
-import com.brein.domain.BreinifyUser;
+import com.brein.domain.BreinUser;
 import com.brein.domain.Category;
 import com.brein.engine.BreinEngine;
 
@@ -28,7 +28,7 @@ public class BreinActivity {
     /**
      * User
      */
-    private BreinifyUser breinifyUser;
+    private BreinUser breinUser;
 
     /**
      * ActivityType
@@ -54,12 +54,12 @@ public class BreinActivity {
      *
      * @return
      */
-    public BreinifyUser getBreinifyUser() {
-        return breinifyUser;
+    public BreinUser getBreinUser() {
+        return breinUser;
     }
 
-    public void setBreinifyUser(BreinifyUser breinifyUser) {
-        this.breinifyUser = breinifyUser;
+    public void setBreinUser(BreinUser breinUser) {
+        this.breinUser = breinUser;
     }
 
     public ActivityType getActivityType() {
@@ -123,14 +123,14 @@ public class BreinActivity {
     /**
      * Sends an activity to the Breinify server.
      *
-     * @param breinifyUser the user-information
+     * @param breinUser the user-information
      * @param activityType the type of activity
      * @param category the category (can be null or undefined)
      * @param description the description for the activity
      * @param sign true if a signature should be added (needs the secret to be configured -
      *             not recommended in open systems), otherwise false (can be null or undefined)
      */
-    public void activity(final BreinifyUser breinifyUser,
+    public void activity(final BreinUser breinUser,
                          final ActivityType activityType,
                          final Category category,
                          final String description,
@@ -139,7 +139,7 @@ public class BreinActivity {
         /**
          * set the values for further usage
          */
-        setBreinifyUser(breinifyUser);
+        setBreinUser(breinUser);
         setActivityType(activityType);
         setCategory(category);
         setDescription(description);

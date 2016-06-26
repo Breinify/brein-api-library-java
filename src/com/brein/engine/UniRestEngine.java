@@ -2,6 +2,7 @@ package com.brein.engine;
 
 import com.brein.api.BreinActivity;
 import com.brein.config.BreinConfig;
+import com.brein.domain.BreinRequest;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -10,7 +11,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
+
 
 /**
  * Unirest Implementation
@@ -25,23 +26,11 @@ public class UniRestEngine implements IRestClient {
     private static final Logger LOG = Logger.getLogger(UniRestEngine.class);
 
     /**
-     * @param breinActivity
-     */
-    public void doRequest(final BreinActivity breinActivity) {
-
-        /**
-         * invoke the asynch call
-         */
-        doRequestAsynch(breinActivity);
-
-    }
-
-    /**
      * Invokes the asynch post call
      *
-     * @param breinActivity
+     * @param breinActivity data to send
      */
-    public void doRequestAsynch(final BreinActivity breinActivity) {
+    public void doRequest(final BreinActivity breinActivity) {
 
         if (breinActivity == null) {
             if (LOG.isDebugEnabled()) {
@@ -66,24 +55,20 @@ public class UniRestEngine implements IRestClient {
         }
 
         final String url = breinActivity.getBreinConfig().getUrl();
-        final String apiKey = breinActivity.getBreinConfig().getApiKey();
-        final String username = "";
-        final String password = "";
 
         /**
          * timestamp (Java 8 Impl)
+
+         final long unixTimestamp = Instant.now().getEpochSecond();
          */
-        // final long unixTimestamp = Instant.now().getEpochSecond();
 
         final long unixTimestamp = System.currentTimeMillis() / 1000L;
+        final BreinRequest breinRequest = new BreinRequest(breinActivity, unixTimestamp);
+        final String requestBody = breinRequest.toJson();
 
         Unirest.post(url)
                 .header("accept", "application/json")
-                .basicAuth(username, password)
-                .queryString("apikey", apiKey)
-                .field("param1", "value1")
-                .field("param2", "value2")
-                .field("unixTimestamp", unixTimestamp)
+                .body(requestBody)
                 .asJsonAsync(new Callback<JsonNode>() {
 
                     public void failed(UnirestException e) {
@@ -93,10 +78,7 @@ public class UniRestEngine implements IRestClient {
                     }
 
                     public void completed(HttpResponse<JsonNode> response) {
-                        int code = response.getStatus();
-                        // Map<String, String> headers = response.getHeaders();
-                        JsonNode body = response.getBody();
-                        InputStream rawBody = response.getRawBody();
+
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("The request was completed");
                         }
