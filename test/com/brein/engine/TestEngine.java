@@ -1,10 +1,10 @@
 package com.brein.engine;
 
 import com.brein.api.BreinActivity;
-import com.brein.domain.ActivityType;
+import com.brein.domain.BreinActivityType;
 import com.brein.domain.BreinRequest;
 import com.brein.domain.BreinUser;
-import com.brein.domain.Category;
+import com.brein.domain.BreinCategory;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -25,19 +25,26 @@ import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Run some tests for the UNIREST API
  */
 public class TestEngine {
+
+    /**
+     * this is my test api key
+     */
+    final static String API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
 
     private CountDownLatch lock;
     private boolean status;
 
+    /**
+     * Preparation for the test cases
+     */
     @Before
     public void setUp() {
         lock = new CountDownLatch(1);
         status = false;
     }
-
 
     /**
      * Housekeeping...
@@ -46,6 +53,9 @@ public class TestEngine {
     public static void tearDown() {
 
         try {
+            /**
+             * TODO: replace sleep
+             */
             Thread.sleep(5000);
             Unirest.shutdown();
         } catch (Exception e) {
@@ -55,6 +65,7 @@ public class TestEngine {
 
 
     /**
+     * This is a simple post test.
      *
      * @throws JSONException
      * @throws UnirestException
@@ -79,7 +90,10 @@ public class TestEngine {
         assertNotNull(json.getArray().get(0));
     }
 
+
+
     /**
+     * This is simple get rest test.
      *
      * @throws JSONException
      * @throws UnirestException
@@ -95,7 +109,7 @@ public class TestEngine {
 
 
     /**
-     *
+     * This is a simple UNIREST test
      * @throws JSONException
      * @throws InterruptedException
      * @throws ExecutionException
@@ -124,6 +138,7 @@ public class TestEngine {
     }
 
     /**
+     * This is a simple asynch UNIREST test with callback
      *
      * @throws JSONException
      * @throws InterruptedException
@@ -171,6 +186,7 @@ public class TestEngine {
     }
 
     /**
+     * Tests the Breinify Backend with one activity call
      *
      * @throws JSONException
      * @throws InterruptedException
@@ -184,18 +200,18 @@ public class TestEngine {
         breinUser.setLastName("Recchioni");
 
         BreinActivity breinActivity = new BreinActivity();
-        breinActivity.setApiKey("5d8b-064c-f007-4f92-a8dc-d06b-56b4-fad8");
-        breinActivity.setActivityType(ActivityType.LOGIN);
+        breinActivity.setBreinUser(breinUser);
+        breinActivity.setApiKey(API_KEY);
+        breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
-        breinActivity.setCategory(new Category("Super-Category"));
+        breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
 
         final long unixTimestamp = System.currentTimeMillis() / 1000L;
         final BreinRequest breinRequest = new BreinRequest(breinActivity, unixTimestamp);
         final String requestBody = breinRequest.toJson();
 
-        Unirest.post("https://api.breinify.com")
+        Unirest.post("http://dev.breinify.com/api/activity")
                 .header("accept", "application/json")
-                .header("Authorization", "Basic YWRtaW46YWRtaW4=")
                 .body(requestBody)
                 .asJsonAsync(new Callback<JsonNode>() {
 
@@ -218,9 +234,8 @@ public class TestEngine {
         assertTrue(status);
     }
 
-
     /**
-     * Invoke a normal post call
+     * Invoke a normal post call to verify the functionality of the UNIREST API
      */
     @Test
     public void testUniRestEngine() {
@@ -238,10 +253,10 @@ public class TestEngine {
     }
 
     /**
-     *
+     * Invokes an asynch post call to verify the functionality of the UNIREST API
      */
     @Test
-    public void testUniRestEngineAsych() {
+    public void testUniRestEngineAsynch() {
 
         final Future<HttpResponse<JsonNode>> future = Unirest.post("http://httpbin.org/post")
                 .header("accept", "application/json")
@@ -271,7 +286,9 @@ public class TestEngine {
 
     }
 
-
+    /**
+     * This should run some tests for the jersey client api...
+     */
     @Test
     public void testJerseyRestEngine() {
 

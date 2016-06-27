@@ -1,9 +1,9 @@
 package com.brein.api;
 
 import com.brein.config.BreinConfig;
-import com.brein.domain.ActivityType;
+import com.brein.domain.BreinActivityType;
 import com.brein.domain.BreinUser;
-import com.brein.domain.Category;
+import com.brein.domain.BreinCategory;
 import com.brein.engine.BreinEngine;
 
 /**
@@ -33,12 +33,12 @@ public class BreinActivity {
     /**
      * ActivityType
      */
-    private ActivityType activityType;
+    private BreinActivityType breinActivityType;
 
     /**
      * Category
      */
-    private Category category;
+    private BreinCategory breinCategory;
 
     /**
      * Description
@@ -51,38 +51,42 @@ public class BreinActivity {
     private boolean sign;
 
     /**
-     *
-     * @return
+     * retrieves the breinuser
+     * @return breinuser
      */
     public BreinUser getBreinUser() {
         return breinUser;
     }
 
-    public void setBreinUser(BreinUser breinUser) {
+    /**
+     * sets the brein user
+     * @param breinUser user data
+     */
+    public void setBreinUser(final BreinUser breinUser) {
         this.breinUser = breinUser;
     }
 
-    public ActivityType getActivityType() {
-        return activityType;
+    public BreinActivityType getBreinActivityType() {
+        return breinActivityType;
     }
 
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
+    public void setBreinActivityType(final BreinActivityType breinActivityType) {
+        this.breinActivityType = breinActivityType;
     }
 
-    public Category getCategory() {
-        return category;
+    public BreinCategory getBreinCategory() {
+        return breinCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setBreinCategory(final BreinCategory breinCategory) {
+        this.breinCategory = breinCategory;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -90,13 +94,13 @@ public class BreinActivity {
         return sign;
     }
 
-    public void setSign(boolean sign) {
+    public void setSign(final boolean sign) {
         this.sign = sign;
     }
 
     /**
-     *
-     * @param apiKey
+     * set the api key
+     * @param apiKey value
      */
     public void setApiKey(final String apiKey) {
         breinConfig.setApiKey(apiKey);
@@ -113,8 +117,16 @@ public class BreinActivity {
     }
 
     /**
-     *
-     * @return
+     * sets the base url of the breinify backend
+     * @param baseUrl contains the base url
+     */
+    public void setBaseUrl(final String baseUrl) {
+        getBreinConfig().setBaseUrl(baseUrl);
+    }
+
+    /**
+     * retrieves the configuration
+     * @return brein config
      */
     public BreinConfig getBreinConfig() {
         return breinConfig;
@@ -124,15 +136,15 @@ public class BreinActivity {
      * Sends an activity to the Breinify server.
      *
      * @param breinUser the user-information
-     * @param activityType the type of activity
-     * @param category the category (can be null or undefined)
+     * @param breinActivityType the type of activity
+     * @param breinCategory the category (can be null or undefined)
      * @param description the description for the activity
      * @param sign true if a signature should be added (needs the secret to be configured -
      *             not recommended in open systems), otherwise false (can be null or undefined)
      */
     public void activity(final BreinUser breinUser,
-                         final ActivityType activityType,
-                         final Category category,
+                         final BreinActivityType breinActivityType,
+                         final BreinCategory breinCategory,
                          final String description,
                          final boolean sign) {
 
@@ -140,8 +152,8 @@ public class BreinActivity {
          * set the values for further usage
          */
         setBreinUser(breinUser);
-        setActivityType(activityType);
-        setCategory(category);
+        setBreinActivityType(breinActivityType);
+        setBreinCategory(breinCategory);
         setDescription(description);
         setSign(sign);
 
@@ -149,7 +161,5 @@ public class BreinActivity {
          * invoke the request, "this" has all necessary information
          */
         breinEngine.sendActivity(this);
-
     }
-
 }

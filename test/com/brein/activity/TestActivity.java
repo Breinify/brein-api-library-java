@@ -1,9 +1,9 @@
 package com.brein.activity;
 
 import com.brein.api.BreinActivity;
-import com.brein.domain.ActivityType;
+import com.brein.domain.BreinActivityType;
 import com.brein.domain.BreinUser;
-import com.brein.domain.Category;
+import com.brein.domain.BreinCategory;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +14,24 @@ import org.junit.Test;
 public class TestActivity {
 
     /**
-     * User
+     * Contains the BASE URL of the Breinify Backend
+     */
+    final static String BASE_URL = "http://dev.breinify.com/api";
+
+    /**
+     * This has to be a valid api key
+     */
+    final static String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+
+    /**
+     * Contains the Breinify User
      */
     private final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
 
     /**
-     * Category
+     * Contains the Category
      */
-    private final Category category = new Category("services");
+    private final BreinCategory breinCategory = new BreinCategory("services");
 
     /**
      * Sign parameter
@@ -29,9 +39,9 @@ public class TestActivity {
     private final boolean sign = true;
 
     /**
-     * Activity
+     * The Activity itself
      */
-    private BreinActivity breinActivity = new BreinActivity();
+    private final BreinActivity breinActivity = new BreinActivity();
 
     /**
      * Preparation of test case
@@ -39,8 +49,8 @@ public class TestActivity {
     @Before
     public void setUp() {
 
-        final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
-        breinActivity.setApiKey(validApiKey);
+        breinActivity.setApiKey(VALID_API_KEY);
+        breinActivity.setBaseUrl(BASE_URL);
     }
 
     /**
@@ -52,6 +62,11 @@ public class TestActivity {
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
+            /**
+             * TODO...
+             * Thread.sleep is not the best practice...
+             *
+             */
             Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -76,8 +91,8 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                ActivityType.LOGIN,
-                category, description, sign);
+                BreinActivityType.LOGIN,
+                breinCategory, description, sign);
     }
 
     /**
@@ -97,12 +112,107 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                ActivityType.LOOKUP,
-                category, description, sign);
+                BreinActivityType.LOOKUP,
+                breinCategory, description, sign);
 
     }
 
     /**
+     * TODO
+     */
+    @Test
+    public void testSearch() {
+
+        final String description = "Search-Description";
+
+        /**
+         * invoke activity call
+         */
+        breinActivity.activity(breinUser,
+                BreinActivityType.SEARCH,
+                breinCategory, description, sign);
+    }
+
+    /**
+     * TODO
+     */
+    @Test
+    public void testAddToCart() {
+
+        final String description = "AddToCart-Description";
+
+        /**
+         * invoke activity call
+         */
+        breinActivity.activity(breinUser,
+                BreinActivityType.ADD_TO_CART,
+                breinCategory, description, sign);
+    }
+
+    /**
+     * TODO
+     */
+    @Test
+    public void testRemoveFromCart() {
+
+        final String description = "RemoveFromCart-Description";
+
+        /**
+         * invoke activity call
+         */
+        breinActivity.activity(breinUser,
+                BreinActivityType.REMOVE_FROM_CART,
+                breinCategory, description, sign);
+    }
+
+    /**
+     * TODO
+     */
+    @Test
+    public void testSelectProduct() {
+
+        final String description = "Select-Product-Description";
+
+        /**
+         * invoke activity call
+         */
+        breinActivity.activity(breinUser,
+                BreinActivityType.SELECT_PRODUCT,
+                breinCategory, description, sign);
+    }
+
+    /**
+     * TODO
+     */
+    @Test
+    public void testOther() {
+
+        final String description = "Other-Description";
+
+        /**
+         * invoke activity call
+         */
+        breinActivity.activity(breinUser,
+                BreinActivityType.OTHER,
+                breinCategory, description, sign);
+    }
+
+    /**
+     * TODO
+     *
+     * SAMPLE:
+        {
+     "user": {
+     "email": "philipp@meisen.net"
+     },
+
+     "lookup": {
+     "dimensions": ["firstname", "gender", "age", "agegroup", "digitalfootprint", "images"]
+     },
+
+     "apiKey": "{{lookupApiKey}}"
+     }
+     *
      *
      */
     @Test

@@ -37,4 +37,9 @@ public class RestClientFactory {
         }
     }
 
+    /**
+     * Ensure that no object will be crated
+     */
+    private RestClientFactory() {}
+
 }

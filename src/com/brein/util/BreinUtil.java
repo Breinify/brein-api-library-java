@@ -1,7 +1,7 @@
 package com.brein.util;
 
 /**
- *
+ * Utility class
  */
 public class BreinUtil {
 

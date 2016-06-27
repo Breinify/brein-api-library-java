@@ -4,7 +4,7 @@ package com.brein.domain;
  *  The category of the platform/service/products, i.e., one of apparel,
  *  home, education, family, food, health, job, services, or other.
  */
-public class Category {
+public class BreinCategory {
 
     /**
      * for now a simple string
@@ -23,15 +23,15 @@ public class Category {
      * set's category
      * @param category value
      */
-    public void setCategory(String category) {
+    public void setCategory(final String category) {
         this.category = category;
     }
 
     /**
      * Ctor with value
-     * @param category
+     * @param category value
      */
-    public Category(final String category) {
+    public BreinCategory(final String category) {
         setCategory(category);
     }
 }

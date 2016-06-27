@@ -4,7 +4,7 @@ package com.brein.domain;
  * The type of the activity collected, i.e., one of search, login, logout, addToCart,
  * removeFromCart, checkOut, selectProduct, or other.
  */
-public enum ActivityType {
+public enum BreinActivityType {
 
     SEARCH,
     LOGIN,

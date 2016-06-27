@@ -39,7 +39,7 @@ public class BreinUser {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -47,7 +47,7 @@ public class BreinUser {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
@@ -55,7 +55,7 @@ public class BreinUser {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -63,7 +63,11 @@ public class BreinUser {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    /**
+     * TODO -> maybe other type
+     * @param dateOfBirth value
+     */
+    public void setDateOfBirth(final String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -71,7 +75,7 @@ public class BreinUser {
         return imei;
     }
 
-    public void setImei(String imei) {
+    public void setImei(final String imei) {
         this.imei = imei;
     }
 
@@ -79,7 +83,7 @@ public class BreinUser {
         return deviceId;
     }
 
-    public void setDeviceId(String deviceId) {
+    public void setDeviceId(final String deviceId) {
         this.deviceId = deviceId;
     }
 
@@ -87,7 +91,7 @@ public class BreinUser {
         return sessionId;
     }
 
-    public void setSessionId(String sessionId) {
+    public void setSessionId(final String sessionId) {
         this.sessionId = sessionId;
     }
 }

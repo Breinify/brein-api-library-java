@@ -3,6 +3,7 @@ package com.brein.engine;
 import com.brein.api.BreinActivity;
 import com.brein.config.BreinConfig;
 import com.brein.domain.BreinRequest;
+import com.brein.domain.BreinResponse;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -47,6 +48,9 @@ public class UniRestEngine implements IRestClient {
             return;
         }
 
+        /**
+         * set some timeouts
+         */
         final long connectionTimeout = breinActivity.getBreinConfig().getConnectionTimeout();
         final long socketTimeout = breinActivity.getBreinConfig().getSocketTimeout();
 
@@ -54,7 +58,11 @@ public class UniRestEngine implements IRestClient {
             Unirest.setTimeouts(connectionTimeout, socketTimeout);
         }
 
+        /**
+         * create endpoint url
+         */
         final String url = breinActivity.getBreinConfig().getUrl();
+        final String fullUrl = url + BreinConfig.ACTIVITY_ENDPOINT;
 
         /**
          * timestamp (Java 8 Impl)
@@ -66,7 +74,7 @@ public class UniRestEngine implements IRestClient {
         final BreinRequest breinRequest = new BreinRequest(breinActivity, unixTimestamp);
         final String requestBody = breinRequest.toJson();
 
-        Unirest.post(url)
+        Unirest.post(fullUrl)
                 .header("accept", "application/json")
                 .body(requestBody)
                 .asJsonAsync(new Callback<JsonNode>() {
@@ -90,21 +98,29 @@ public class UniRestEngine implements IRestClient {
                         }
 
                     }
-
                 });
-
 
     }
 
     /**
-     * used to stop the unirest threads
+     * performs a lookup and provides details
+     *
+     * @param breinActivity contains request data
+     * @return response from Breinify
+     */
+    public BreinResponse doLookup(final BreinActivity breinActivity) {
+        return null;
+    }
+
+    /**
+     * used to stop the UNIREST threads
      */
     public void stop() {
         try {
             Unirest.shutdown();
         } catch (IOException e) {
             if (LOG.isDebugEnabled()) {
-                LOG.error("Exception within Unirest shutdown has occurred. ", e);
+                LOG.error("Exception within UNIREST shutdown has occurred. ", e);
             }
         }
     }
