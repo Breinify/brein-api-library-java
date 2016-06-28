@@ -37,5 +37,18 @@
         <jarDirectory url="file://$MODULE_DIR$/testLib" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="PHP">
+        <CLASSES>
+          <root url="file:///insts/wordpress/wp-admin" />
+          <root url="file:///insts/wordpress/wp-includes" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file:///insts/wordpress/wp-admin" />
+          <root url="file:///insts/wordpress/wp-includes" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
