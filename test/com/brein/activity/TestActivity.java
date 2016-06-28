@@ -112,9 +112,8 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.LOOKUP,
+                BreinActivityType.LOGOUT,
                 breinCategory, description, sign);
-
     }
 
     /**
