@@ -12,6 +12,14 @@ public class BreinCategory {
     private String category;
 
     /**
+     * Ctor with value
+     * @param category value
+     */
+    public BreinCategory(final String category) {
+        setCategory(category);
+    }
+
+    /**
      *
      * @return category
      */
@@ -27,11 +35,5 @@ public class BreinCategory {
         this.category = category;
     }
 
-    /**
-     * Ctor with value
-     * @param category value
-     */
-    public BreinCategory(final String category) {
-        setCategory(category);
-    }
+
 }
