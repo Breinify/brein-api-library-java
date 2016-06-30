@@ -1,8 +1,8 @@
 package com.brein.engine;
 
 import com.brein.api.BreinActivity;
+import com.brein.api.BreinLookup;
 import com.brein.config.BreinConfig;
-import com.brein.domain.BreinRequest;
 import com.brein.domain.BreinResponse;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -54,9 +54,15 @@ public class UniRestEngine implements IRestClient {
         final long connectionTimeout = breinActivity.getBreinConfig().getConnectionTimeout();
         final long socketTimeout = breinActivity.getBreinConfig().getSocketTimeout();
 
+        // TODO
+        /*
+
+        MAYBE THIS WILL CAUSE THE FILE-HANDLER ISSUE
+
         if (connectionTimeout != 0 && socketTimeout != 0) {
             Unirest.setTimeouts(connectionTimeout, socketTimeout);
         }
+        */
 
         /**
          * create endpoint url
@@ -64,15 +70,8 @@ public class UniRestEngine implements IRestClient {
         final String url = breinActivity.getBreinConfig().getUrl();
         final String fullUrl = url + BreinConfig.ACTIVITY_ENDPOINT;
 
-        /**
-         * timestamp (Java 8 Impl)
 
-         final long unixTimestamp = Instant.now().getEpochSecond();
-         */
-
-        final long unixTimestamp = System.currentTimeMillis() / 1000L;
-        final BreinRequest breinRequest = new BreinRequest(breinActivity, unixTimestamp);
-        final String requestBody = breinRequest.toJson();
+        final String requestBody = breinActivity.prepareJsonRequest();
 
         Unirest.post(fullUrl)
                 .header("accept", "application/json")
@@ -104,11 +103,68 @@ public class UniRestEngine implements IRestClient {
 
     /**
      * performs a lookup and provides details
+
+
+
+     * SAMPLE:
+     {
+     "user": {
+     "email": "philipp@meisen.net"
+     },
+
+     "lookup": {
+     "dimensions": ["firstname", "gender", "age", "agegroup", "digitalfootprint", "images"]
+     },
+
+     "apiKey": "{{lookupApiKey}}"
+     }
      *
-     * @param breinActivity contains request data
+     *
+
+
+     * @param breinLookup contains request data
      * @return response from Breinify
      */
-    public BreinResponse doLookup(final BreinActivity breinActivity) {
+    public BreinResponse doLookup(final BreinLookup breinLookup) {
+
+        if (breinLookup == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("within doRequestAsynch - breinLookup is null");
+            }
+            return null;
+        }
+
+        final BreinConfig breinConfig = breinLookup.getBreinConfig();
+        if (breinConfig == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("within doRequestAsynch - breinConfig is null");
+            }
+            return null;
+        }
+
+        /**
+         * create endpoint url
+         */
+        final String url = breinLookup.getBreinConfig().getUrl();
+        final String fullUrl = url + BreinConfig.LOOKUP_ENDPOINT;
+        final String requestBody = breinLookup.prepareJsonRequest();
+
+        try {
+            final HttpResponse<JsonNode> jsonResponse = Unirest.post(fullUrl)
+                    .header("accept", "application/json")
+                    .body(requestBody)
+                    .asJson();
+
+            final JsonNode json = jsonResponse.getBody();
+            return new BreinResponse(json.toString());
+
+        } catch (UnirestException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("within doLookup - exception has occurred. " + e );
+            }
+        }
+
+
         return null;
     }
 

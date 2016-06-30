@@ -15,7 +15,7 @@ public class BreinConfig {
     public static final String LOOKUP_ENDPOINT      = "/lookup";
     public static final long   CONNECTION_TIMEOUT   = 1000;
     public static final long   SOCKET_TIMEOUT       = 6000;
-    public static boolean      VALIDATE             = true;
+    public static boolean      VALIDATE             = true;  // not used yet!
 
     /**
      * BASE URL
@@ -27,10 +27,15 @@ public class BreinConfig {
      */
     private String apiKey;
 
+    /**
+     * Default REST client
+     */
     private int restClientType = RestClientFactory.UNIREST_ENGINE;
 
     /**
+     *
      * @param apiKey contains the Breinify api-key
+     * @param baseUrl contains the base url
      */
     public BreinConfig(final String apiKey, final String baseUrl) {
 
@@ -39,7 +44,7 @@ public class BreinConfig {
     }
 
     /**
-     * Empty Ctor
+     * Empty Ctor - necessary because..
      */
     public BreinConfig() {}
 
@@ -53,7 +58,7 @@ public class BreinConfig {
 
     /**
      * set the base url of the breinify backend
-     * @param baseUrl
+     * @param baseUrl contains the url
      */
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -80,6 +85,7 @@ public class BreinConfig {
      * @param apiKey the apikey
      */
     public void setApiKey(final String apiKey) {
+
         if (apiKey == null) {
             return;
         }
@@ -87,7 +93,6 @@ public class BreinConfig {
         if (apiKey.length() > 0) {
             this.apiKey = apiKey;
         }
-
     }
 
     /**

@@ -33,12 +33,11 @@ public class RestClientFactory {
              */
             default:
                 return new UniRestEngine();
-
         }
     }
 
     /**
-     * Ensure that no object will be crated
+     * Ensure that no object will be created
      */
     private RestClientFactory() {}
 

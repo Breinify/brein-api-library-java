@@ -2,9 +2,8 @@ package com.brein.engine;
 
 import com.brein.api.BreinActivity;
 import com.brein.domain.BreinActivityType;
-import com.brein.domain.BreinRequest;
-import com.brein.domain.BreinUser;
 import com.brein.domain.BreinCategory;
+import com.brein.domain.BreinUser;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -23,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.*;
+
+
 
 /**
  * Run some tests for the UNIREST API
@@ -206,9 +207,7 @@ public class TestEngine {
         breinActivity.setDescription("Super-Description");
         breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
 
-        final long unixTimestamp = System.currentTimeMillis() / 1000L;
-        final BreinRequest breinRequest = new BreinRequest(breinActivity, unixTimestamp);
-        final String requestBody = breinRequest.toJson();
+        final String requestBody = breinActivity.prepareJsonRequest();
 
         Unirest.post("http://dev.breinify.com/api/activity")
                 .header("accept", "application/json")

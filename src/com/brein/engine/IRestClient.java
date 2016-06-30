@@ -1,6 +1,7 @@
 package com.brein.engine;
 
 import com.brein.api.BreinActivity;
+import com.brein.api.BreinLookup;
 import com.brein.domain.BreinResponse;
 
 /**
@@ -18,10 +19,10 @@ public interface IRestClient {
     /**
      * performs a lookup and provides details
      *
-     * @param breinActivity contains request data
+     * @param breinLookup contains request data
      * @return response from Breinify
      */
-    BreinResponse doLookup(final BreinActivity breinActivity);
+    BreinResponse doLookup(final BreinLookup breinLookup);
 
     /**
      * stops possible functionality (e.g. threads)

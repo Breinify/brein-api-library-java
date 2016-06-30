@@ -29,9 +29,7 @@ public class TestDomain {
         breinActivity.setDescription("Super-Description");
         breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
 
-        final long unixTimestamp = System.currentTimeMillis() / 1000L;
-        final BreinRequest breinRequest = new BreinRequest(breinActivity, unixTimestamp);
-        final String jsonOutput = breinRequest.toJson();
+        final String jsonOutput = breinActivity.prepareJsonRequest();
         // System.out.println(jsonOutput);
         assertTrue(jsonOutput.length() > 0);
 
@@ -53,9 +51,7 @@ public class TestDomain {
         breinActivity.setDescription("Super-Description");
         breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
 
-        final long unixTimestamp = System.currentTimeMillis() / 1000L;
-        final BreinRequest breinRequest = new BreinRequest(breinActivity, unixTimestamp);
-        final String jsonOutput = breinRequest.toJson();
+        final String jsonOutput = breinActivity.prepareJsonRequest();
         // System.out.println(jsonOutput);
         assertTrue(jsonOutput.length() > 0);
     }

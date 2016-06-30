@@ -1,6 +1,7 @@
 package com.brein.engine;
 
 import com.brein.api.BreinActivity;
+import com.brein.api.BreinLookup;
 import com.brein.domain.BreinResponse;
 
 /**
@@ -19,10 +20,10 @@ public class JerseyRestEngine implements IRestClient {
     /**
      * performs a lookup and provides details
      *
-     * @param breinActivity contains request data
+     * @param breinLookup contains request data
      * @return response from Breinify
      */
-    public BreinResponse doLookup(final BreinActivity breinActivity) {
+    public BreinResponse doLookup(final BreinLookup breinLookup) {
         return null;
     }
 

@@ -1,9 +1,7 @@
 package com.brein.activity;
 
 import com.brein.api.BreinActivity;
-import com.brein.domain.BreinActivityType;
-import com.brein.domain.BreinUser;
-import com.brein.domain.BreinCategory;
+import com.brein.domain.*;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,6 +91,36 @@ public class TestActivity {
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGIN,
                 breinCategory, description, sign);
+    }
+
+    /**
+     * Invoke a test call with 200 logins
+     */
+    @Test
+    public void testWith200Logins() {
+
+        final int maxLogin = 200;
+
+        for (int index = 0; index < maxLogin; index++) {
+            System.out.println("INDEX IS: " + index);
+            testLogin();
+        }
+
+    }
+
+    /**
+     * Invoke a test call with 2000 logins
+     */
+    @Test
+    public void testWith2000Logins() {
+
+        final int maxLogin = 2000;
+
+        for (int index = 0; index < maxLogin; index++) {
+            System.out.println("INDEX IS: " + index);
+            testLogin();
+        }
+
     }
 
     /**
@@ -196,27 +224,6 @@ public class TestActivity {
                 breinCategory, description, sign);
     }
 
-    /**
-     * TODO
-     *
-     * SAMPLE:
-        {
-     "user": {
-     "email": "philipp@meisen.net"
-     },
 
-     "lookup": {
-     "dimensions": ["firstname", "gender", "age", "agegroup", "digitalfootprint", "images"]
-     },
-
-     "apiKey": "{{lookupApiKey}}"
-     }
-     *
-     *
-     */
-    @Test
-    public void testLookup() {
-
-    }
 
 }
