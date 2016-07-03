@@ -2,6 +2,7 @@ package com.brein.domain;
 
 
 import com.brein.api.BreinActivity;
+import com.brein.config.BreinConfig;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -17,6 +18,9 @@ public class TestDomain {
      */
     @Test
     public void testBreinRequest() {
+        BreinConfig breinConfig = new BreinConfig();
+        final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
+        breinConfig.setApiKey(validApiKey);
 
         BreinUser breinUser = new BreinUser("m.recchioni@me.com");
         breinUser.setFirstName("Marco");
@@ -24,7 +28,6 @@ public class TestDomain {
 
         BreinActivity breinActivity = new BreinActivity();
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setApiKey("5d8b-064c-f007-4f92-a8dc-d06b-56b4-fad8");
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
         breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
@@ -41,15 +44,20 @@ public class TestDomain {
      */
     @Test
     public void testBreinRequsestWithLessData() {
+        BreinConfig breinConfig = new BreinConfig();
+        final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
+        breinConfig.setApiKey(validApiKey);
+
         BreinUser breinUser = new BreinUser("m.recchioni@me.com");
         breinUser.setLastName("");
 
         BreinActivity breinActivity = new BreinActivity();
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setApiKey("5d8b-064c-f007-4f92-a8dc-d06b-56b4-fad8");
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
         breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
+
+
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
         // System.out.println(jsonOutput);

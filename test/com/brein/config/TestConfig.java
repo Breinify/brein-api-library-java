@@ -18,8 +18,11 @@ public class TestConfig {
     public void testEmptyConfig() {
 
         final String emptyString = "";
+        BreinConfig breinConfig = new BreinConfig();
+        breinConfig.setApiKey(emptyString);
+
         final BreinActivity breinActivity = new BreinActivity();
-        breinActivity.setApiKey(emptyString);
+        breinActivity.setConfig(breinConfig);
         assertFalse(breinActivity.validApiKey());
     }
 
@@ -29,8 +32,10 @@ public class TestConfig {
     @Test
     public void testNullConfig() {
 
+        BreinConfig breinConfig = new BreinConfig();
+        breinConfig.setApiKey(null);
         final BreinActivity breinActivity = new BreinActivity();
-        breinActivity.setApiKey(null);
+        breinActivity.setConfig(breinConfig);
         assertFalse(breinActivity.validApiKey());
     }
 
@@ -39,9 +44,13 @@ public class TestConfig {
      */
     @Test
     public void testNormalConfigUsage() {
-        BreinActivity breinActivity = new BreinActivity();
+
+        BreinConfig breinConfig = new BreinConfig();
         final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
-        breinActivity.setApiKey(validApiKey);
+        breinConfig.setApiKey(validApiKey);
+
+        final BreinActivity breinActivity = new BreinActivity();
+        breinActivity.setConfig(breinConfig);
         assertTrue(breinActivity.validApiKey());
     }
 }
