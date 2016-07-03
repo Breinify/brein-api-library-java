@@ -9,6 +9,7 @@ import com.brein.domain.BreinResponse;
  */
 public class JerseyRestEngine implements IRestClient {
 
+
     /**
      * invokes the post request
      *
@@ -31,6 +32,12 @@ public class JerseyRestEngine implements IRestClient {
      * stops possible functionality (e.g. threads)
      */
     public void stop() {
-
     }
+
+    /**
+     * configuration of the rest client
+     */
+    public void configure() {
+    }
+
 }

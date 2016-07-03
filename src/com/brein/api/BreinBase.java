@@ -11,11 +11,6 @@ import com.brein.engine.BreinEngine;
 public class BreinBase {
 
     /**
-     * Engine
-     */
-    private final BreinEngine breinEngine = new BreinEngine();
-
-    /**
      * contains the User that will be used for the request
      */
     private BreinUser breinUser;
@@ -23,7 +18,7 @@ public class BreinBase {
     /**
      * Configuration
      */
-    private final BreinConfig breinConfig = new BreinConfig();
+    private BreinConfig breinConfig;
 
     /**
      * sets the api key
@@ -52,7 +47,7 @@ public class BreinBase {
      * @param baseUrl contains the base url
      */
     public void setBaseUrl(final String baseUrl) {
-        getBreinConfig().setBaseUrl(baseUrl);
+        getConfig().setBaseUrl(baseUrl);
     }
 
     /**
@@ -60,8 +55,16 @@ public class BreinBase {
      *
      * @return brein config
      */
-    public BreinConfig getBreinConfig() {
+    public BreinConfig getConfig() {
         return breinConfig;
+    }
+
+    /**
+     * sets the brein config
+     * @param breinConfig object
+     */
+    public void setConfig(final BreinConfig breinConfig) {
+        this.breinConfig = breinConfig;
     }
 
     /**
@@ -87,6 +90,6 @@ public class BreinBase {
      * @return brein engine
      */
     public BreinEngine getBreinEngine() {
-        return breinEngine;
+        return getConfig().getBreinEngine();
     }
 }

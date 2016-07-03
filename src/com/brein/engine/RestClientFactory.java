@@ -10,18 +10,12 @@ package com.brein.engine;
 public class RestClientFactory {
 
     /**
-     * the possible engines...
-     */
-    public static final int UNIREST_ENGINE = 0;
-    public static final int JERSEY_ENGINE  = 1;
-
-    /**
      * Creates the requested Rest Engine.
      *
      * @param engine type of engine
      * @return created Rest-Engine
      */
-    public static IRestClient getRestEngine(int engine) {
+    public static IRestClient getRestEngine(final BreinEngineType engine) {
         switch (engine) {
             case UNIREST_ENGINE:
                 return new UniRestEngine();
@@ -29,7 +23,8 @@ public class RestClientFactory {
             case JERSEY_ENGINE:
                 return new JerseyRestEngine();
             /**
-             * I know that this is the same as UNIREST_ENGINE
+             * I know that this is the same as UNIREST_ENGINE it
+             * is the default value
              */
             default:
                 return new UniRestEngine();

@@ -13,13 +13,19 @@ public class BreinEngine {
     /**
      * creation of rest engine. I know that this implementation only allows UNIREST and nothing
      * else. Configuration of parameter needs to be done.
-     * TODO
      */
-    private final IRestClient restClient =
-            RestClientFactory.getRestEngine(RestClientFactory.UNIREST_ENGINE);
+    private IRestClient restClient;
+
+    /**
+     * @param engineType
+     */
+    public BreinEngine(final BreinEngineType engineType) {
+        restClient = RestClientFactory.getRestEngine(engineType);
+    }
 
     /**
      * sends an activity to the breinify server
+     *
      * @param activity data
      */
     public void sendActivity(final BreinActivity activity) {
@@ -34,7 +40,7 @@ public class BreinEngine {
      * configured restClient.
      *
      * @param breinLookup contains the appropriate data for the lookup
-     *                 request
+     *                    request
      * @return if succeeded a BreinResponse object or null
      */
     public BreinResponse performLookUp(final BreinLookup breinLookup) {

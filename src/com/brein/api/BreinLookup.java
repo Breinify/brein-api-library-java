@@ -37,7 +37,7 @@ public class BreinLookup extends BreinBase {
      * will be performed with the requested dimensions (BreinDimension)
      *
      * @param breinUser      contains the breinify user
-     * @param breinDimension containst the dimensions to look after
+     * @param breinDimension contains the dimensions to look after
      *
      * @return response from request or null if no data can be retrieved
      */
@@ -94,8 +94,8 @@ public class BreinLookup extends BreinBase {
         /**
          * API key
          */
-        if (BreinUtil.containsValue(getBreinConfig())) {
-            requestData.addProperty("apiKey", getBreinConfig().getApiKey());
+        if (BreinUtil.containsValue(getConfig())) {
+            requestData.addProperty("apiKey", getConfig().getApiKey());
         }
 
         Gson gson = new GsonBuilder()

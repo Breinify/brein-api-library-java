@@ -1,6 +1,7 @@
 package com.brein;
 
 import com.brein.activity.TestActivity;
+import com.brein.api.TestApi;
 import com.brein.config.TestConfig;
 import com.brein.domain.TestDomain;
 import com.brein.engine.TestEngine;
@@ -13,6 +14,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+        TestApi.class,
         TestLookup.class,
         TestActivity.class,
         TestConfig.class,

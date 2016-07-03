@@ -13,25 +13,17 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.breinify</groupId>
-            <artifactId>brein-common</artifactId>
-            <version>TRUNK-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.breinify</groupId>
-            <artifactId>brein-test</artifactId>
-            <version>TRUNK-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
 
 
         <!-- UNIREST -->
@@ -59,6 +51,12 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20140107</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
         </dependency>
 
 

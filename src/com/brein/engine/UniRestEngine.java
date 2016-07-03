@@ -27,6 +27,13 @@ public class UniRestEngine implements IRestClient {
     private static final Logger LOG = Logger.getLogger(UniRestEngine.class);
 
     /**
+     * configures the rest engine
+     */
+    public void configure() {
+
+    }
+
+    /**
      * Invokes the asynch post call
      *
      * @param breinActivity data to send
@@ -40,7 +47,7 @@ public class UniRestEngine implements IRestClient {
             return;
         }
 
-        final BreinConfig breinConfig = breinActivity.getBreinConfig();
+        final BreinConfig breinConfig = breinActivity.getConfig();
         if (breinConfig == null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("within doRequestAsynch - breinConfig is null");
@@ -51,8 +58,8 @@ public class UniRestEngine implements IRestClient {
         /**
          * set some timeouts
          */
-        final long connectionTimeout = breinActivity.getBreinConfig().getConnectionTimeout();
-        final long socketTimeout = breinActivity.getBreinConfig().getSocketTimeout();
+        final long connectionTimeout = breinActivity.getConfig().getConnectionTimeout();
+        final long socketTimeout = breinActivity.getConfig().getSocketTimeout();
 
         // TODO
         /*
@@ -67,8 +74,8 @@ public class UniRestEngine implements IRestClient {
         /**
          * create endpoint url
          */
-        final String url = breinActivity.getBreinConfig().getUrl();
-        final String fullUrl = url + BreinConfig.ACTIVITY_ENDPOINT;
+        final String url = breinActivity.getConfig().getUrl();
+        final String fullUrl = url + breinActivity.getConfig().getActivityEndpoint();
 
 
         final String requestBody = breinActivity.prepareJsonRequest();
@@ -134,7 +141,7 @@ public class UniRestEngine implements IRestClient {
             return null;
         }
 
-        final BreinConfig breinConfig = breinLookup.getBreinConfig();
+        final BreinConfig breinConfig = breinLookup.getConfig();
         if (breinConfig == null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("within doRequestAsynch - breinConfig is null");
@@ -145,8 +152,8 @@ public class UniRestEngine implements IRestClient {
         /**
          * create endpoint url
          */
-        final String url = breinLookup.getBreinConfig().getUrl();
-        final String fullUrl = url + BreinConfig.LOOKUP_ENDPOINT;
+        final String url = breinLookup.getConfig().getUrl();
+        final String fullUrl = url + breinLookup.getConfig().getLookupEndpoint();
         final String requestBody = breinLookup.prepareJsonRequest();
 
         try {

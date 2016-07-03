@@ -1,17 +1,17 @@
-package com.brein.activity;
+package com.brein.api;
 
-import com.brein.api.BreinActivity;
 import com.brein.config.BreinConfig;
 import com.brein.domain.*;
 import com.brein.engine.BreinEngineType;
+import com.brein.util.BreinUtil;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This test cases shows how to use the activity
+ * Test of Breinify Java API (static option)
  */
-public class TestActivity {
+public class TestApi {
 
     /**
      * Contains the BASE URL of the Breinify Backend
@@ -34,26 +34,14 @@ public class TestActivity {
     private final BreinCategory breinCategory = new BreinCategory("services");
 
     /**
-     * Sign parameter
-     */
-    private final boolean sign = true;
-
-    /**
-     * The Activity itself
-     */
-    private final BreinActivity breinActivity = new BreinActivity();
-
-    /**
      * Preparation of test case
      */
     @Before
     public void setUp() {
-
         final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
                 BASE_URL,
                 BreinEngineType.UNIREST_ENGINE);
-
-        breinActivity.setConfig(breinConfig);
+        Breinify.setConfig(breinConfig);
     }
 
     /**
@@ -83,6 +71,7 @@ public class TestActivity {
     public void testLogin() {
 
         final String description = "Login-Description";
+        final boolean sign = false;
 
         /**
          * additional user information
@@ -93,9 +82,11 @@ public class TestActivity {
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinUser,
+        Breinify.activity(breinUser,
                 BreinActivityType.LOGIN,
-                breinCategory, description, sign);
+                breinCategory,
+                description,
+                sign);
     }
 
     /**
@@ -105,21 +96,6 @@ public class TestActivity {
     public void testWith200Logins() {
 
         final int maxLogin = 200;
-
-        for (int index = 0; index < maxLogin; index++) {
-            System.out.println("INDEX IS: " + index);
-            testLogin();
-        }
-
-    }
-
-    /**
-     * Invoke a test call with 2000 logins
-     */
-    @Test
-    public void testWith2000Logins() {
-
-        final int maxLogin = 2000;
 
         for (int index = 0; index < maxLogin; index++) {
             System.out.println("INDEX IS: " + index);
@@ -144,13 +120,15 @@ public class TestActivity {
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinUser,
+        Breinify.activity(breinUser,
                 BreinActivityType.LOGOUT,
-                breinCategory, description, sign);
+                breinCategory,
+                description,
+                false);
     }
 
     /**
-     * test case how to invoke search activity
+     * TODO
      */
     @Test
     public void testSearch() {
@@ -160,13 +138,15 @@ public class TestActivity {
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinUser,
+        Breinify.activity(breinUser,
                 BreinActivityType.SEARCH,
-                breinCategory, description, sign);
+                breinCategory,
+                description,
+                false);
     }
 
     /**
-     * test case how to invoke add-to-cart activity
+     * TODO
      */
     @Test
     public void testAddToCart() {
@@ -176,13 +156,15 @@ public class TestActivity {
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinUser,
+        Breinify.activity(breinUser,
                 BreinActivityType.ADD_TO_CART,
-                breinCategory, description, sign);
+                breinCategory,
+                description,
+                false);
     }
 
     /**
-     * test case how to invoke remove-from-cart activity
+     * TODO
      */
     @Test
     public void testRemoveFromCart() {
@@ -192,13 +174,15 @@ public class TestActivity {
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinUser,
+        Breinify.activity(breinUser,
                 BreinActivityType.REMOVE_FROM_CART,
-                breinCategory, description, sign);
+                breinCategory,
+                description,
+                false);
     }
 
     /**
-     * test case how to invoke select product
+     * TODO
      */
     @Test
     public void testSelectProduct() {
@@ -208,13 +192,15 @@ public class TestActivity {
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinUser,
+        Breinify.activity(breinUser,
                 BreinActivityType.SELECT_PRODUCT,
-                breinCategory, description, sign);
+                breinCategory,
+                description,
+                false);
     }
 
     /**
-     * test case how to invoke other
+     * TODO
      */
     @Test
     public void testOther() {
@@ -224,9 +210,38 @@ public class TestActivity {
         /**
          * invoke activity call
          */
-        breinActivity.activity(breinUser,
+        Breinify.activity(breinUser,
                 BreinActivityType.OTHER,
-                breinCategory, description, sign);
+                breinCategory,
+                description,
+                false);
+    }
+
+
+    /**
+     * Tests the lookup functionality
+     */
+    @Test
+    public void testLookup() {
+
+        final String[] dimensions = {"firstname",
+                "gender",
+                "age",
+                "agegroup",
+                "digitalfootpring",
+                "images"};
+
+        final BreinDimension breinDimension = new BreinDimension(dimensions);
+        final boolean sign = false;
+
+        /**
+         * invoke lookup
+         */
+        final BreinResponse response = Breinify.lookup(breinUser, breinDimension, sign);
+        if (BreinUtil.containsValue(response.getResponse())) {
+            System.out.println("Response is: " + response.getResponse());
+        }
+        assert (response.getResponse() != null);
     }
 
 }

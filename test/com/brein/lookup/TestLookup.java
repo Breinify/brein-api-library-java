@@ -1,9 +1,11 @@
 package com.brein.lookup;
 
 import com.brein.api.BreinLookup;
+import com.brein.config.BreinConfig;
 import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResponse;
 import com.brein.domain.BreinUser;
+import com.brein.engine.BreinEngineType;
 import com.brein.util.BreinUtil;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,8 +44,12 @@ public class TestLookup {
     @Before
     public void setUp() {
 
-        breinLookup.setApiKey(VALID_API_KEY);
-        breinLookup.setBaseUrl(BASE_URL);
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE);
+
+        breinLookup.setConfig(breinConfig);
+
     }
 
     /**

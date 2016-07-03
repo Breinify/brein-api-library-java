@@ -18,17 +18,17 @@ import com.google.gson.JsonObject;
 public class BreinActivity extends BreinBase {
 
     /**
-     * ActivityType
+     * ActivityType of the activity
      */
     private BreinActivityType breinActivityType;
 
     /**
-     * Category
+     * Category of the activity
      */
     private BreinCategory breinCategory;
 
     /**
-     * Description
+     * Description of the activity
      */
     private String description;
 
@@ -195,8 +195,8 @@ public class BreinActivity extends BreinBase {
         /**
          * further data...
          */
-        if (BreinUtil.containsValue(getBreinConfig())) {
-            requestData.addProperty("apiKey", getBreinConfig().getApiKey());
+        if (BreinUtil.containsValue(getConfig())) {
+            requestData.addProperty("apiKey", getConfig().getApiKey());
         }
 
         requestData.addProperty("unixTimestamp", unixTimestamp);

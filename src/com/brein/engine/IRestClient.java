@@ -10,6 +10,11 @@ import com.brein.domain.BreinResponse;
 public interface IRestClient {
 
     /**
+     * configures the rest engine
+     */
+    void configure();
+
+    /**
      * invokes the post request
      *
      * @param breinActivity data
