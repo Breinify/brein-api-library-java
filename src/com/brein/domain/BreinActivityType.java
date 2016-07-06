@@ -13,6 +13,7 @@ public enum BreinActivityType {
     REMOVE_FROM_CART,
     SELECT_PRODUCT,
     LOOKUP,
+    TWEET,
     OTHER
 }
 
