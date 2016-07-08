@@ -4,7 +4,11 @@ import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
-import com.google.gson.*;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Provides the lookup functionality
@@ -35,11 +39,12 @@ public class BreinLookup extends BreinBase {
     }
 
     /**
-     * Lookup implementation. For a given user (BreinUser) a lookup
-     * will be performed with the requested dimensions (BreinDimension)
+     * Lookup implementation. For a given user (BreinUser) a lookup will be performed with the requested dimensions
+     * (BreinDimension)
      *
      * @param breinUser      contains the breinify user
      * @param breinDimension contains the dimensions to look after
+     *
      * @return response from request or null if no data can be retrieved
      */
     public BreinResult lookUp(final BreinUser breinUser,
@@ -72,7 +77,7 @@ public class BreinLookup extends BreinBase {
             requestData.add("user", userData);
         }
 
-        /**
+        /*
          * Dimensions
          */
         if (BreinUtil.containsValue(getBreinDimension())) {
@@ -85,7 +90,7 @@ public class BreinLookup extends BreinBase {
             requestData.add("lookup", lookupData);
         }
 
-        /**
+        /*
          * API key
          */
         if (BreinUtil.containsValue(getConfig().getApiKey())) {
@@ -103,6 +108,7 @@ public class BreinLookup extends BreinBase {
 
     /**
      * retrieves the configured lookup endpoint (e.g. \lookup)
+     *
      * @return endpoint
      */
     @Override

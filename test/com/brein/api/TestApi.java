@@ -52,6 +52,7 @@ public class TestApi {
      */
     @AfterClass
     public static void tearDown() {
+
         /**
          * we have to wait some time in order to allow the asynch rest processing
          */

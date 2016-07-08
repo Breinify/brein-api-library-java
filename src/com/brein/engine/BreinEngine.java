@@ -15,7 +15,7 @@ public class BreinEngine {
      * creation of rest engine. I know that this implementation only allows UNIREST and nothing
      * else. Configuration of parameter needs to be done.
      */
-    private IRestEngine restEngine;
+    private final IRestEngine restEngine;
 
     /**
      * Creates the engine

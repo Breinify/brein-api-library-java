@@ -2,7 +2,7 @@
 
     <!-- This is an internally used build-script. To build the project manually,
          please resolve the needed dependencies and run the default javac compiler.
-         In addition, the library will be available through Maven Central!
+         In addition, the library is available through Maven Central!
       -->
     <include file="../../brein-workspace/brein-intellij-workspace/common-libs/ant-util/util-ant.xml"/>
 

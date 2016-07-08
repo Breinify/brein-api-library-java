@@ -12,10 +12,8 @@ import com.google.gson.JsonObject;
 import java.time.Instant;
 
 /**
- * Sends an activity to the engine utilizing the API.
- * The call is done asynchronously as a POST request.
- * It is important that a valid API-key is configured
- * prior to using this function.
+ * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is important
+ * that a valid API-key is configured prior to using this function.
  */
 public class BreinActivity extends BreinBase {
 
@@ -35,8 +33,7 @@ public class BreinActivity extends BreinBase {
     private String description;
 
     /**
-     * Sign
-     * TODO: not really used yet
+     * Sign TODO: not really used yet
      */
     private boolean sign;
 
@@ -127,10 +124,10 @@ public class BreinActivity extends BreinBase {
      *
      * @param breinUser         the user-information
      * @param breinActivityType the type of activity
-     * @param breinCategoryType     the category (can be null or undefined)
+     * @param breinCategoryType the category (can be null or undefined)
      * @param description       the description for the activity
-     * @param sign              true if a signature should be added (needs the secret to be configured -
-     *                          not recommended in open systems), otherwise false (can be null or undefined)
+     * @param sign              true if a signature should be added (needs the secret to be configured - not recommended
+     *                          in open systems), otherwise false (can be null or undefined)
      */
     public void activity(final BreinUser breinUser,
                          final BreinActivityType breinActivityType,
@@ -138,7 +135,7 @@ public class BreinActivity extends BreinBase {
                          final String description,
                          final boolean sign) {
 
-        /**
+        /*
          * set the values for further usage
          */
         setBreinUser(breinUser);
@@ -147,7 +144,7 @@ public class BreinActivity extends BreinBase {
         setDescription(description);
         setSign(sign);
 
-        /**
+        /*
          * invoke the request, "this" has all necessary information
          */
         if (null == getBreinEngine()) {
@@ -168,7 +165,7 @@ public class BreinActivity extends BreinBase {
 
         final JsonObject requestData = new JsonObject();
 
-        /**
+        /*
          * user data
          */
         final BreinUser breinUser = getBreinUser();
@@ -187,7 +184,7 @@ public class BreinActivity extends BreinBase {
             requestData.add("user", userData);
         }
 
-        /**
+        /*
          * activity data
          */
         final JsonObject activityData = new JsonObject();
@@ -202,7 +199,7 @@ public class BreinActivity extends BreinBase {
         }
         requestData.add("activity", activityData);
 
-        /**
+        /*
          * further data...
          */
         if (BreinUtil.containsValue(getConfig())) {

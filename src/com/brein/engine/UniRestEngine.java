@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
-
 /**
  * Unirest Implementation
  * <p>
@@ -59,13 +58,13 @@ public class UniRestEngine implements IRestEngine {
     @Override
     public void doRequest(final BreinActivity breinActivity) throws BreinException {
 
-        /**
+        /*
          * validation of activity and config
          */
         validateActivity(breinActivity);
         validateConfig(breinActivity);
 
-        /**
+        /*
          * invoke the request
          */
         Unirest.post(getFullyQualifiedUrl(breinActivity))
@@ -103,13 +102,15 @@ public class UniRestEngine implements IRestEngine {
      * performs a lookup  and provides details
      *
      * @param breinLookup contains request data
+     *
      * @return response from Breinify
+     *
      * @throws BreinException
      */
     @Override
     public BreinResult doLookup(final BreinLookup breinLookup) throws BreinException {
 
-        /**
+        /*
          * validation of lookup and config
          */
         validateLookup(breinLookup);
@@ -125,7 +126,7 @@ public class UniRestEngine implements IRestEngine {
 
         } catch (UnirestException e) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("within doLookup - exception has occurred. " + e );
+                LOG.debug("within doLookup - exception has occurred. " + e);
             }
             throw new BreinException(BreinException.LOOKUP_EXCEPTION);
         }
@@ -133,7 +134,9 @@ public class UniRestEngine implements IRestEngine {
 
     /**
      * retrieves the request body depending of the object
+     *
      * @param breinBase object to use
+     *
      * @return request as json string
      */
     public String getRequestBody(final BreinBase breinBase) {
@@ -150,7 +153,9 @@ public class UniRestEngine implements IRestEngine {
 
     /**
      * retrieves the fully qualified url (base + endpoint)
+     *
      * @param breinBase activity or lookup object
+     *
      * @return full url
      */
     public String getFullyQualifiedUrl(final BreinBase breinBase) {
@@ -171,6 +176,7 @@ public class UniRestEngine implements IRestEngine {
 
     /**
      * validates the configuration object
+     *
      * @param breinBase activity or lookup object
      */
     public void validateConfig(final BreinBase breinBase) {
@@ -186,6 +192,7 @@ public class UniRestEngine implements IRestEngine {
 
     /**
      * validates the activity object
+     *
      * @param breinActivity object to validate
      */
     public void validateActivity(final BreinActivity breinActivity) {
@@ -199,6 +206,7 @@ public class UniRestEngine implements IRestEngine {
 
     /**
      * validates the lookup object
+     *
      * @param breinLookup object to validate
      */
     public void validateLookup(final BreinLookup breinLookup) {
