@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify API Java Library" width="250">
+  <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/logo.png" alt="Breinify API Java Library" width="250">
 </p>
 
 <p align="center">
@@ -71,16 +71,16 @@ This is actually all. The call will be invoked asynchronous.
 
 ##### Placing look-up triggers
 
-Look-ups are used, e.g., to change the appearance of the site, increase the quality of service by enhancing recommendations or pre-filtering search results. In the following simple example, the site's message is adapted when the page is loaded.
+Look-ups are used to retrieve dedicated information for a given user. 
 
 ```java
 // define an array of subjects of interest
 final String[] dimensions = {"firstname",
-               "gender",
-               "age",
-               "agegroup",
-               "digitalfootpring",
-               "images"};
+                "gender",
+                "age",
+                "agegroup",
+                "digitalfootpring",
+                "images"};
 
 // wrap this into the BreinDimension
 final BreinDimension breinDimension = 
@@ -89,7 +89,6 @@ final BreinDimension breinDimension =
 // invoke the lookup                
 final BreinResult response = 
              Breinify.lookup(breinUser, breinDimension, sign);
-             
              
 // get the results
  final Object dataFirstname = result.get("firstname");
