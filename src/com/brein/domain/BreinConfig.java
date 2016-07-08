@@ -33,7 +33,7 @@ public class BreinConfig {
     /**
      * default validation
      */
-    public static boolean DEFAULT_VALIDATE = true;  // not used yet!
+    public static boolean DEFAULT_VALIDATE = true;
 
     /**
      * default breinify base url
@@ -126,7 +126,7 @@ public class BreinConfig {
      * builder method - based on th configuration an universal executer
      * will be created.
      *
-     * @return new created executer 
+     * @return new created executer
      */
     public BreinifyExecutor build() {
 

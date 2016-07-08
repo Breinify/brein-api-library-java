@@ -21,41 +21,6 @@ public class BreinBase {
     private BreinConfig breinConfig;
 
     /**
-     * sets the api key
-     *
-     * @param apiKey value
-     */
-    /*
-    public void setApiKey(final String apiKey) {
-        breinConfig.setApiKey(apiKey);
-    }
-    */
-
-    /**
-     * checks if the api key is valid
-     *
-     * @return true if config is correct
-     */
-    /*
-    public boolean validApiKey() {
-
-        return BreinUtil.containsValue(breinConfig.getApiKey());
-    }
-    */
-
-    /**
-     * sets the base url of the breinify backend
-     *
-     * @param baseUrl contains the base url
-     */
-    /*
-    public void setBaseUrl(final String baseUrl) {
-        getConfig().setBaseUrl(baseUrl);
-    }
-
-    */
-
-    /**
      * retrieves the configuration
      *
      * @return brein config

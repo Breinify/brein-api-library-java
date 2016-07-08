@@ -49,8 +49,10 @@ public class BreinLookup extends BreinBase {
         setBreinUser(breinUser);
         setBreinDimension(breinDimension);
 
-
         // TODO: 04.07.16  sign consideration
+        if (null == getBreinEngine()) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
 
         return getBreinEngine().performLookUp(this);
     }

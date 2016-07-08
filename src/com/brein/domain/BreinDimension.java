@@ -1,7 +1,7 @@
 package com.brein.domain;
 
 /**
- * Contains the Dimension to ask for
+ * Contains the Dimension to ask  for
  */
 public class BreinDimension {
 

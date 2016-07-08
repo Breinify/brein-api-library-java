@@ -9,7 +9,6 @@ public enum BreinCategoryType {
     /**
      * the only possible category types
      */
-
     APPAREL("apparel"),
     HOME("home"),
     EDUCATION("education"),

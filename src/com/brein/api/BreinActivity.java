@@ -150,6 +150,9 @@ public class BreinActivity extends BreinBase {
         /**
          * invoke the request, "this" has all necessary information
          */
+        if (null == getBreinEngine()) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
         getBreinEngine().sendActivity(this);
     }
 

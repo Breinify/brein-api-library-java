@@ -43,7 +43,7 @@ public class BreinEngine {
      *
      * @param breinLookup contains the appropriate data for the lookup
      *                    request
-     * @return if succeeded a BreinResponse object or null
+     * @return if succeeded a BreinResponse object or  null
      */
     public BreinResult performLookUp(final BreinLookup breinLookup) {
 

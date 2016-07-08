@@ -1,7 +1,7 @@
 package com.brein.domain;
 
 /**
- * A plain object specifying the user information the activity belongs to.
+ * A plain object specifying the user information the activity belongs to
  */
 public class BreinUser {
 

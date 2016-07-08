@@ -1,7 +1,7 @@
 package com.brein.engine;
 
 /**
- * Specifies the possible Engine Types
+ * Specifies the possible Engine  Types
  */
 public enum BreinEngineType {
 

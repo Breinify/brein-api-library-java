@@ -84,7 +84,7 @@ public class BreinifyExecutor {
         breinActivity.setSign(sign);
 
         /**
-         * invoke the request, "this" has all necessary information
+         * invoke the request "this" has all necessary information
          */
         breinActivity.getBreinEngine().sendActivity(breinActivity);
     }

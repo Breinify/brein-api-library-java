@@ -48,7 +48,7 @@ public class Breinify {
     }
 
     /**
-     * returns the version
+     * returns the  version
      *
      * @return version
      */

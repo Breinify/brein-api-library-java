@@ -3,9 +3,7 @@ package com.brein.domain;
 import java.util.Map;
 
 /**
- *
- *
- *
+ * contains the json data
  */
 public class BreinResultContainer {
 

@@ -8,7 +8,6 @@ import java.util.Map;
 /**
  * Contains the result of an Brein Request when invoking a
  * lookup
- *
  */
 public class BreinResult {
 

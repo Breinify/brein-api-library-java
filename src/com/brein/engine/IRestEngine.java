@@ -7,7 +7,7 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 
 /**
- * Interface for all possible rest engines
+ * Interface for all possible rest  engines
  */
 public interface IRestEngine {
 

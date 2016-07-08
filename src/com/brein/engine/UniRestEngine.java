@@ -100,7 +100,7 @@ public class UniRestEngine implements IRestEngine {
     }
 
     /**
-     * performs a lookup and provides details
+     * performs a lookup  and provides details
      *
      * @param breinLookup contains request data
      * @return response from Breinify

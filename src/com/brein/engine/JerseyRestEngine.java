@@ -38,7 +38,7 @@ public class JerseyRestEngine implements IRestEngine {
     }
 
     /**
-     * configuration of the rest client
+     * configuration of the rest  client
      */
     @Override
     public void configure(final BreinConfig breinConfig) {

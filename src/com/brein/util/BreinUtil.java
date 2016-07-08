@@ -6,7 +6,7 @@ package com.brein.util;
 public class BreinUtil {
 
     /**
-     * Verifies if the object contains a value.
+     * Verifies if the object contains a value
      * Return false in case of:
      *    - null
      *    - empty strings

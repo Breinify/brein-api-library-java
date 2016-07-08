@@ -22,7 +22,6 @@ public class BreinException extends RuntimeException {
      * Exception methods...
      *
      */
-
     public BreinException(final Throwable e) {
         super(e);
     }
