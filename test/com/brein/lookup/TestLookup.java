@@ -1,12 +1,11 @@
 package com.brein.lookup;
 
 import com.brein.api.BreinLookup;
-import com.brein.config.BreinConfig;
+import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinDimension;
-import com.brein.domain.BreinResponse;
+import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.engine.BreinEngineType;
-import com.brein.util.BreinUtil;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,10 +86,15 @@ public class TestLookup {
         /**
          * invoke lookup
          */
-        final BreinResponse breinResponse = breinLookup.lookUp(breinUser, breinDimension);
-        if (BreinUtil.containsValue(breinResponse.getResponse())) {
-            System.out.println("Response is: " + breinResponse.getResponse());
+        final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
+
+        // // TODO: 06.07.16
+
+        /*
+        if (BreinUtil.containsValue(breinResult.getResponse())) {
+            System.out.println("Response is: " + breinResult.getResponse());
         }
-        assert(breinResponse.getResponse() != null);
+        assert(breinResult.getResponse() != null);
+        */
     }
 }

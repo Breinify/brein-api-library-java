@@ -5,7 +5,7 @@ import com.brein.domain.*;
 /**
  * Static Implementation of Breinify activity & lookup calls
  */
-public class Breinify {
+public class BreinifyExecutor {
 
     /**
      * contains the current version of the usage library
@@ -15,24 +15,24 @@ public class Breinify {
     /**
      * contains the configuration
      */
-    private static BreinConfig config;
+    private BreinConfig config;
 
     /**
      * contains the activity object
      */
-    private static final BreinActivity breinActivity = new BreinActivity();
+    private final BreinActivity breinActivity = new BreinActivity();
 
     /**
      * contains the lookup object
      */
-    private static final BreinLookup breinLookup = new BreinLookup();
+    private final BreinLookup breinLookup = new BreinLookup();
 
     /**
      * sets the configuration
      *
      * @param breinConfig config object
      */
-    public static void setConfig(final BreinConfig breinConfig) {
+    public void setConfig(final BreinConfig breinConfig) {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
@@ -43,7 +43,7 @@ public class Breinify {
      *
      * @return config
      */
-    public static BreinConfig getConfig() {
+    public BreinConfig getConfig() {
         return config;
     }
 
@@ -71,7 +71,7 @@ public class Breinify {
      * @param description  a string with further information about the activity performed
      * @param sign         a boolean value specifying if the call should be signed
      */
-    public static void activity(final BreinUser user,
+    public void activity(final BreinUser user,
                                 final BreinActivityType activityType,
                                 final BreinCategoryType category,
                                 final String description,
@@ -86,9 +86,6 @@ public class Breinify {
         /**
          * invoke the request, "this" has all necessary information
          */
-        if (null == breinActivity.getBreinEngine()) {
-            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
-        }
         breinActivity.getBreinEngine().sendActivity(breinActivity);
     }
 
@@ -104,7 +101,7 @@ public class Breinify {
      *
      * @return response from request wrapped in an object called BreinResponse
      */
-    public static BreinResult lookup(final BreinUser user,
+    public BreinResult lookup(final BreinUser user,
                                      final BreinDimension dimension,
                                      final boolean sign) {
 
@@ -114,9 +111,6 @@ public class Breinify {
         /**
          * invoke the lookup request
          */
-        if (null == breinLookup.getBreinEngine()) {
-            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
-        }
         return breinLookup.getBreinEngine().performLookUp(breinLookup);
     }
 }

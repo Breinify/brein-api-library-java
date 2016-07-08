@@ -2,7 +2,7 @@ package com.brein.engine;
 
 import com.brein.api.BreinActivity;
 import com.brein.domain.BreinActivityType;
-import com.brein.domain.BreinCategory;
+import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinUser;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -202,10 +202,9 @@ public class TestEngine {
 
         BreinActivity breinActivity = new BreinActivity();
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setApiKey(API_KEY);
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
-        breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
+        breinActivity.setBreinCategoryType(BreinCategoryType.EDUCATION);
 
         final String requestBody = breinActivity.prepareJsonRequest();
 

@@ -1,7 +1,7 @@
 package com.brein.activity;
 
 import com.brein.api.BreinActivity;
-import com.brein.config.BreinConfig;
+import com.brein.domain.BreinConfig;
 import com.brein.domain.*;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
@@ -31,7 +31,7 @@ public class TestActivity {
     /**
      * Contains the Category
      */
-    private final BreinCategory breinCategory = new BreinCategory("services");
+    private final BreinCategoryType breinCategoryType = BreinCategoryType.SERVICES;
 
     /**
      * Sign parameter
@@ -95,7 +95,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGIN,
-                breinCategory, description, sign);
+                breinCategoryType, description, sign);
     }
 
     /**
@@ -146,7 +146,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGOUT,
-                breinCategory, description, sign);
+                breinCategoryType, description, sign);
     }
 
     /**
@@ -162,7 +162,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.SEARCH,
-                breinCategory, description, sign);
+                breinCategoryType, description, sign);
     }
 
     /**
@@ -178,7 +178,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.ADD_TO_CART,
-                breinCategory, description, sign);
+                breinCategoryType, description, sign);
     }
 
     /**
@@ -194,7 +194,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.REMOVE_FROM_CART,
-                breinCategory, description, sign);
+                breinCategoryType, description, sign);
     }
 
     /**
@@ -210,7 +210,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.SELECT_PRODUCT,
-                breinCategory, description, sign);
+                breinCategoryType, description, sign);
     }
 
     /**
@@ -226,7 +226,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.OTHER,
-                breinCategory, description, sign);
+                breinCategoryType, description, sign);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.brein.api;
 
-import com.brein.config.BreinConfig;
+import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
 import com.brein.engine.BreinEngine;
 
@@ -25,30 +25,35 @@ public class BreinBase {
      *
      * @param apiKey value
      */
+    /*
     public void setApiKey(final String apiKey) {
         breinConfig.setApiKey(apiKey);
     }
+    */
 
     /**
      * checks if the api key is valid
      *
      * @return true if config is correct
      */
+    /*
     public boolean validApiKey() {
 
-        final String apiKey = breinConfig.getApiKey();
-
-        return apiKey != null && apiKey.length() != 0;
+        return BreinUtil.containsValue(breinConfig.getApiKey());
     }
+    */
 
     /**
      * sets the base url of the breinify backend
      *
      * @param baseUrl contains the base url
      */
+    /*
     public void setBaseUrl(final String baseUrl) {
         getConfig().setBaseUrl(baseUrl);
     }
+
+    */
 
     /**
      * retrieves the configuration
@@ -90,6 +95,24 @@ public class BreinBase {
      * @return brein engine
      */
     public BreinEngine getBreinEngine() {
-        return getConfig().getBreinEngine();
+
+        return null == breinConfig ? null : getConfig().getBreinEngine();
+    }
+
+    /**
+     * prepares the json request string
+     * @return empty string == default
+     */
+    public String prepareJsonRequest() {
+        return "";
+    }
+
+    /**
+     * retrieves the endpoint. this depends of the kind of BreinBase type.
+     *
+     * @return endpoint
+     */
+    public String getEndPoint() {
+        return "";
     }
 }

@@ -1,9 +1,12 @@
 package com.brein.config;
 
 import com.brein.api.BreinActivity;
+import com.brein.domain.BreinConfig;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
+import java.util.Objects;
+
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -23,7 +26,8 @@ public class TestConfig {
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
-        assertFalse(breinActivity.validApiKey());
+        assertNull(breinActivity.getConfig().getApiKey());
+
     }
 
     /**
@@ -36,7 +40,7 @@ public class TestConfig {
         breinConfig.setApiKey(null);
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
-        assertFalse(breinActivity.validApiKey());
+        assertNull(breinActivity.getConfig().getApiKey());
     }
 
     /**
@@ -51,7 +55,7 @@ public class TestConfig {
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
-        assertTrue(breinActivity.validApiKey());
+        assertTrue(!Objects.equals(breinActivity.getConfig().getApiKey(), ""));
     }
 }
 

@@ -2,11 +2,12 @@ package com.brein.engine;
 
 import com.brein.api.BreinActivity;
 import com.brein.api.BreinLookup;
-import com.brein.domain.BreinResponse;
+import com.brein.domain.BreinConfig;
+import com.brein.domain.BreinResult;
 
 /**
  * Creates the Rest Engine (currently only unirest) and provides the methods to
- * invoke activity and lookUp calls
+ * invoke activity and lookup calls
  */
 public class BreinEngine {
 
@@ -14,13 +15,14 @@ public class BreinEngine {
      * creation of rest engine. I know that this implementation only allows UNIREST and nothing
      * else. Configuration of parameter needs to be done.
      */
-    private IRestClient restClient;
+    private IRestEngine restEngine;
 
     /**
-     * @param engineType
+     * Creates the engine
+     * @param engineType (e.g. UNIREST...)
      */
     public BreinEngine(final BreinEngineType engineType) {
-        restClient = RestClientFactory.getRestEngine(engineType);
+        restEngine = IRestEngine.getRestEngine(engineType);
     }
 
     /**
@@ -31,24 +33,40 @@ public class BreinEngine {
     public void sendActivity(final BreinActivity activity) {
 
         if (activity != null) {
-            restClient.doRequest(activity);
+            restEngine.doRequest(activity);
         }
     }
 
     /**
      * performs a lookup. This will be delegated to the
-     * configured restClient.
+     * configured restEngine.
      *
      * @param breinLookup contains the appropriate data for the lookup
      *                    request
      * @return if succeeded a BreinResponse object or null
      */
-    public BreinResponse performLookUp(final BreinLookup breinLookup) {
+    public BreinResult performLookUp(final BreinLookup breinLookup) {
 
         if (breinLookup != null) {
-            return restClient.doLookup(breinLookup);
+            return restEngine.doLookup(breinLookup);
         }
 
         return null;
+    }
+
+    /**
+     * returns the brein engine
+     * @return engine itself
+     */
+    public IRestEngine getRestEngine() {
+        return restEngine;
+    }
+
+    /**
+     * configuration of engine
+     * @param breinConfig configuration object
+     */
+    public void configure(final BreinConfig breinConfig) {
+        restEngine.configure(breinConfig);
     }
 }

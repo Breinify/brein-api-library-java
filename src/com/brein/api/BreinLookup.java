@@ -1,7 +1,7 @@
 package com.brein.api;
 
 import com.brein.domain.BreinDimension;
-import com.brein.domain.BreinResponse;
+import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
 import com.google.gson.*;
@@ -18,6 +18,7 @@ public class BreinLookup extends BreinBase {
 
     /**
      * retrieves the brein dimension object
+     *
      * @return object
      */
     public BreinDimension getBreinDimension() {
@@ -26,6 +27,7 @@ public class BreinLookup extends BreinBase {
 
     /**
      * sets the breindimension object - will be used for lookup
+     *
      * @param breinDimension object to set
      */
     public void setBreinDimension(BreinDimension breinDimension) {
@@ -38,14 +40,17 @@ public class BreinLookup extends BreinBase {
      *
      * @param breinUser      contains the breinify user
      * @param breinDimension contains the dimensions to look after
-     *
      * @return response from request or null if no data can be retrieved
      */
-    public BreinResponse lookUp(final BreinUser breinUser,
-                                final BreinDimension breinDimension) {
+    public BreinResult lookUp(final BreinUser breinUser,
+                              final BreinDimension breinDimension,
+                              final boolean sign) {
 
         setBreinUser(breinUser);
         setBreinDimension(breinDimension);
+
+
+        // TODO: 04.07.16  sign consideration
 
         return getBreinEngine().performLookUp(this);
     }
@@ -57,44 +62,31 @@ public class BreinLookup extends BreinBase {
      */
     public String prepareJsonRequest() {
 
-        JsonObject requestData = new JsonObject();
-
-        /**
-         * user data
-         * "user": {
-               "email": "m.recchioni@me.com"
-           },
-         */
+        final JsonObject requestData = new JsonObject();
         final BreinUser breinUser = getBreinUser();
         if (breinUser != null) {
             JsonObject userData = new JsonObject();
             userData.addProperty("email", breinUser.getEmail());
-
             requestData.add("user", userData);
         }
 
         /**
          * Dimensions
-         * "lookup": {
-                "dimensions": ["firstname", "gender", "age", "agegroup", "digitalfootprint", "images"]
-         },
          */
         if (BreinUtil.containsValue(getBreinDimension())) {
-            JsonObject lookupData = new JsonObject();
-
-            JsonArray dimensions = new JsonArray();
+            final JsonObject lookupData = new JsonObject();
+            final JsonArray dimensions = new JsonArray();
             for (String field : getBreinDimension().getDimensionFields()) {
                 dimensions.add(field);
             }
             lookupData.add("dimensions", dimensions);
-
             requestData.add("lookup", lookupData);
         }
 
         /**
          * API key
          */
-        if (BreinUtil.containsValue(getConfig())) {
+        if (BreinUtil.containsValue(getConfig().getApiKey())) {
             requestData.addProperty("apiKey", getConfig().getApiKey());
         }
 
@@ -105,6 +97,15 @@ public class BreinLookup extends BreinBase {
                 .create();
 
         return gson.toJson(requestData);
+    }
+
+    /**
+     * retrieves the configured lookup endpoint (e.g. \lookup)
+     * @return endpoint
+     */
+    @Override
+    public String getEndPoint() {
+        return getConfig().getLookupEndpoint();
     }
 
 }

@@ -2,7 +2,6 @@ package com.brein.domain;
 
 
 import com.brein.api.BreinActivity;
-import com.brein.config.BreinConfig;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -30,7 +29,7 @@ public class TestDomain {
         breinActivity.setBreinUser(breinUser);
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
-        breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
+        breinActivity.setBreinCategoryType(BreinCategoryType.HOME);
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
         // System.out.println(jsonOutput);
@@ -55,7 +54,7 @@ public class TestDomain {
         breinActivity.setBreinUser(breinUser);
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
-        breinActivity.setBreinCategory(new BreinCategory("Super-Category"));
+        breinActivity.setBreinCategoryType(BreinCategoryType.FOOD);
 
 
 

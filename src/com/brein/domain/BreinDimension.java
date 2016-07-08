@@ -2,7 +2,6 @@ package com.brein.domain;
 
 /**
  * Contains the Dimension to ask for
- *
  */
 public class BreinDimension {
 
@@ -16,12 +15,13 @@ public class BreinDimension {
      *
      * @param dimensionFields array of dimensions
      */
-    public BreinDimension(final String[] dimensionFields) {
+    public BreinDimension(final String... dimensionFields) {
         this.dimensionFields = dimensionFields;
     }
 
     /**
-     * retrieve dimesion array
+     * retrieve dimension array
+     *
      * @return dimension array
      */
     public String[] getDimensionFields() {
@@ -30,9 +30,10 @@ public class BreinDimension {
 
     /**
      * sets dimension array
+     *
      * @param dimensionFields data of dimensions
      */
-    public void setDimensionFields(final String[] dimensionFields) {
+    public void setDimensionFields(final String... dimensionFields) {
         this.dimensionFields = dimensionFields;
     }
 

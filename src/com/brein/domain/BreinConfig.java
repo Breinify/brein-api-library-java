@@ -1,7 +1,9 @@
-package com.brein.config;
+package com.brein.domain;
 
+import com.brein.api.BreinifyExecutor;
 import com.brein.engine.BreinEngine;
 import com.brein.engine.BreinEngineType;
+import com.brein.util.BreinUtil;
 
 /**
  * Contains Breinify Endpoint configuration
@@ -9,13 +11,33 @@ import com.brein.engine.BreinEngineType;
 public class BreinConfig {
 
     /**
-     * Configuration constants
+     * default endpoint of activity
      */
     public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
+
+    /**
+     * default endpoint of lookup
+     */
     public static final String DEFAULT_LOOKUP_ENDPOINT = "/lookup";
+
+    /**
+     * default connection timeout
+     */
     public static final long DEFAULT_CONNECTION_TIMEOUT = 1000;
+
+    /**
+     * default socket timeout
+     */
     public static final long DEFAULT_SOCKET_TIMEOUT = 6000;
+
+    /**
+     * default validation
+     */
     public static boolean DEFAULT_VALIDATE = true;  // not used yet!
+
+    /**
+     * default breinify base url
+     */
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
 
     /**
@@ -31,7 +53,7 @@ public class BreinConfig {
     /**
      * Default REST client
      */
-    private BreinEngineType restClientType = BreinEngineType.UNIREST_ENGINE;
+    private BreinEngineType restEngineType = BreinEngineType.UNIREST_ENGINE;
 
     /**
      * contains the activity endpoint (default = ACTIVITY_ENDPOINT)
@@ -67,6 +89,7 @@ public class BreinConfig {
 
         setApiKey(apiKey);
         setBaseUrl(baseUrl);
+        setRestEngineType(BreinEngineType.DEFAULT_ENGINE);
     }
 
     /**
@@ -82,21 +105,37 @@ public class BreinConfig {
 
         setApiKey(apiKey);
         setBaseUrl(baseUrl);
-        setRestClientType(breinEngineType);
-        initClient();
-    }
-
-    /**
-     * initializes the rest client
-     */
-    private void initClient() {
-        breinEngine = new BreinEngine(getRestClientType());
+        setRestEngineType(breinEngineType);
+        initEngine();
     }
 
     /**
      * Empty Ctor - necessary
      */
     public BreinConfig() {
+    }
+
+    /**
+     * initializes the rest client
+     */
+    public void initEngine() {
+        breinEngine = new BreinEngine(getRestEngineType());
+    }
+
+    /**
+     * builder method - based on th configuration an universal executer
+     * will be created.
+     *
+     * @return new created executer 
+     */
+    public BreinifyExecutor build() {
+
+        BreinifyExecutor breinifyExecutor = new BreinifyExecutor();
+        breinifyExecutor.setConfig(this);
+
+        initEngine();
+
+        return breinifyExecutor;
     }
 
     /**
@@ -112,9 +151,12 @@ public class BreinConfig {
      * set the base url of the breinify backend
      *
      * @param baseUrl contains the url
+     * @return the config object itself
      */
-    public void setBaseUrl(String baseUrl) {
+    public BreinConfig setBaseUrl(final String baseUrl) {
         this.baseUrl = baseUrl;
+
+        return this;
     }
 
     /**
@@ -122,21 +164,25 @@ public class BreinConfig {
      *
      * @return configured rest type client
      */
-    public BreinEngineType getRestClientType() {
-        return restClientType;
+    public BreinEngineType getRestEngineType() {
+        return restEngineType;
     }
 
     /**
      * set rest type client
      *
-     * @param restClientType of the rest impl
+     * @param restEngineType of the rest impl
+     * @return the config object itself
      */
-    public void setRestClientType(final BreinEngineType restClientType) {
-        this.restClientType = restClientType;
+    public BreinConfig setRestEngineType(final BreinEngineType restEngineType) {
+        this.restEngineType = restEngineType;
+
+        return this;
     }
 
     /**
      * returns the configured brein engine for the rest calls
+     *
      * @return brein engine
      */
     public BreinEngine getBreinEngine() {
@@ -147,16 +193,15 @@ public class BreinConfig {
      * sets the apikey
      *
      * @param apiKey the apikey
+     * @return the config object itself
      */
-    public void setApiKey(final String apiKey) {
+    public BreinConfig setApiKey(final String apiKey) {
 
-        if (apiKey == null) {
-            return;
-        }
-
-        if (apiKey.length() > 0) {
+        if (BreinUtil.containsValue(apiKey)) {
             this.apiKey = apiKey;
         }
+
+        return this;
     }
 
     /**
@@ -196,6 +241,22 @@ public class BreinConfig {
     }
 
     /**
+     * set the socket timeout
+     * @param socketTimeout value
+     */
+    public void setSocketTimeout(final long socketTimeout) {
+        this.socketTimeout = socketTimeout;
+    }
+
+    /**
+     * set the connection timeout
+     * @param connectionTimeout value
+     */
+    public void setConnectionTimeout(final long connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    /**
      * retrieves the activity endpoint
      *
      * @return endpoint
@@ -208,9 +269,12 @@ public class BreinConfig {
      * sets the activity endpoint
      *
      * @param activityEndpoint endpoint
+     * @return the config object itself
      */
-    public void setActivityEndpoint(String activityEndpoint) {
+    public BreinConfig setActivityEndpoint(final String activityEndpoint) {
         this.activityEndpoint = activityEndpoint;
+
+        return this;
     }
 
     /**
@@ -226,8 +290,12 @@ public class BreinConfig {
      * sets the lookup endpoint
      *
      * @param lookupEndpoint endpoint
+     * @return the config object itself
      */
-    public void setLookupEndpoint(String lookupEndpoint) {
+    public BreinConfig setLookupEndpoint(final String lookupEndpoint) {
         this.lookupEndpoint = lookupEndpoint;
+
+        return this;
     }
+
 }

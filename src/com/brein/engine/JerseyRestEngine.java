@@ -2,19 +2,20 @@ package com.brein.engine;
 
 import com.brein.api.BreinActivity;
 import com.brein.api.BreinLookup;
-import com.brein.domain.BreinResponse;
+import com.brein.domain.BreinConfig;
+import com.brein.domain.BreinResult;
 
 /**
- * could be the jersey client implementation
+ * could be the jersey rest engine implementation
  */
-public class JerseyRestEngine implements IRestClient {
-
+public class JerseyRestEngine implements IRestEngine {
 
     /**
      * invokes the post request
      *
      * @param breinActivity data
      */
+    @Override
     public void doRequest(final BreinActivity breinActivity) {
     }
 
@@ -24,20 +25,23 @@ public class JerseyRestEngine implements IRestClient {
      * @param breinLookup contains request data
      * @return response from Breinify
      */
-    public BreinResponse doLookup(final BreinLookup breinLookup) {
+    @Override
+    public BreinResult doLookup(final BreinLookup breinLookup) {
         return null;
     }
 
     /**
      * stops possible functionality (e.g. threads)
      */
-    public void stop() {
+    @Override
+    public void terminate() {
     }
 
     /**
      * configuration of the rest client
      */
-    public void configure() {
+    @Override
+    public void configure(final BreinConfig breinConfig) {
     }
 
 }

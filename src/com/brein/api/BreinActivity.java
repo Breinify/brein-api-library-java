@@ -1,13 +1,15 @@
 package com.brein.api;
 
 import com.brein.domain.BreinActivityType;
-import com.brein.domain.BreinCategory;
+import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+
+import java.time.Instant;
 
 /**
  * Sends an activity to the engine utilizing the API.
@@ -25,7 +27,7 @@ public class BreinActivity extends BreinBase {
     /**
      * Category of the activity
      */
-    private BreinCategory breinCategory;
+    private BreinCategoryType breinCategoryType;
 
     /**
      * Description of the activity
@@ -61,17 +63,17 @@ public class BreinActivity extends BreinBase {
      *
      * @return category object
      */
-    public BreinCategory getBreinCategory() {
-        return breinCategory;
+    public BreinCategoryType getBreinCategoryType() {
+        return breinCategoryType;
     }
 
     /**
      * sets brein category
      *
-     * @param breinCategory object
+     * @param breinCategoryType object
      */
-    public void setBreinCategory(final BreinCategory breinCategory) {
-        this.breinCategory = breinCategory;
+    public void setBreinCategoryType(final BreinCategoryType breinCategoryType) {
+        this.breinCategoryType = breinCategoryType;
     }
 
     /**
@@ -111,18 +113,28 @@ public class BreinActivity extends BreinBase {
     }
 
     /**
+     * retrieves the configured activity endpoint (e.g. \activitiy)
+     *
+     * @return endpoint
+     */
+    @Override
+    public String getEndPoint() {
+        return getConfig().getActivityEndpoint();
+    }
+
+    /**
      * Sends an activity to the Breinify server.
      *
      * @param breinUser         the user-information
      * @param breinActivityType the type of activity
-     * @param breinCategory     the category (can be null or undefined)
+     * @param breinCategoryType     the category (can be null or undefined)
      * @param description       the description for the activity
      * @param sign              true if a signature should be added (needs the secret to be configured -
      *                          not recommended in open systems), otherwise false (can be null or undefined)
      */
     public void activity(final BreinUser breinUser,
                          final BreinActivityType breinActivityType,
-                         final BreinCategory breinCategory,
+                         final BreinCategoryType breinCategoryType,
                          final String description,
                          final boolean sign) {
 
@@ -131,7 +143,7 @@ public class BreinActivity extends BreinBase {
          */
         setBreinUser(breinUser);
         setBreinActivityType(breinActivityType);
-        setBreinCategory(breinCategory);
+        setBreinCategoryType(breinCategoryType);
         setDescription(description);
         setSign(sign);
 
@@ -143,19 +155,15 @@ public class BreinActivity extends BreinBase {
 
     /**
      * creates the json request based on the necessary data
+     *
      * @return json string
      */
+    @Override
     public String prepareJsonRequest() {
 
-        /**
-         * timestamp (Java 8 Impl)
+        final long unixTimestamp = Instant.now().getEpochSecond();
 
-         final long unixTimestamp = Instant.now().getEpochSecond();
-         */
-
-        final long unixTimestamp = System.currentTimeMillis() / 1000L;
-
-        JsonObject requestData = new JsonObject();
+        final JsonObject requestData = new JsonObject();
 
         /**
          * user data
@@ -163,9 +171,8 @@ public class BreinActivity extends BreinBase {
         final BreinUser breinUser = getBreinUser();
         if (breinUser != null) {
 
-            JsonObject userData = new JsonObject();
+            final JsonObject userData = new JsonObject();
             userData.addProperty("email", breinUser.getEmail());
-
 
             if (BreinUtil.containsValue(breinUser.getFirstName())) {
                 userData.addProperty("firstName", breinUser.getFirstName());
@@ -180,15 +187,15 @@ public class BreinActivity extends BreinBase {
         /**
          * activity data
          */
-        JsonObject activityData = new JsonObject();
+        final JsonObject activityData = new JsonObject();
         if (BreinUtil.containsValue(getBreinActivityType())) {
-            activityData.addProperty("type", getBreinActivityType().toString());
+            activityData.addProperty("type", getBreinActivityType().getName());
         }
         if (BreinUtil.containsValue(getDescription())) {
             activityData.addProperty("description", getDescription());
         }
-        if (BreinUtil.containsValue(getBreinCategory())) {
-            activityData.addProperty("category", getBreinCategory().getCategory());
+        if (BreinUtil.containsValue(getBreinCategoryType())) {
+            activityData.addProperty("category", getBreinCategoryType().getName());
         }
         requestData.add("activity", activityData);
 
@@ -196,7 +203,9 @@ public class BreinActivity extends BreinBase {
          * further data...
          */
         if (BreinUtil.containsValue(getConfig())) {
-            requestData.addProperty("apiKey", getConfig().getApiKey());
+            if (BreinUtil.containsValue(getConfig().getApiKey())) {
+                requestData.addProperty("apiKey", getConfig().getApiKey());
+            }
         }
 
         requestData.addProperty("unixTimestamp", unixTimestamp);

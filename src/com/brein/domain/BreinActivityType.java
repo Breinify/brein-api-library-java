@@ -6,13 +6,24 @@ package com.brein.domain;
  */
 public enum BreinActivityType {
 
-    SEARCH,
-    LOGIN,
-    LOGOUT,
-    ADD_TO_CART,
-    REMOVE_FROM_CART,
-    SELECT_PRODUCT,
-    LOOKUP,
-    OTHER
+    SEARCH("search"),
+    LOGIN("login"),
+    LOGOUT("logout"),
+    ADD_TO_CART("addToCart"),
+    REMOVE_FROM_CART("removeFromCart"),
+    SELECT_PRODUCT("selectProduct"),
+    CHECKOUT("checkOut"),
+    LOOKUP("lookup"),
+    OTHER("other");
+
+    private final String name;
+
+    BreinActivityType(final String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
 

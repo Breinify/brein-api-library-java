@@ -6,20 +6,38 @@ package com.brein.domain;
 public class BreinUser {
 
     /**
-     * user data...
+     * user email
      */
     private String email;
 
+    /**
+     * user first name
+     */
     private String firstName;
 
+    /**
+     * user last name
+     */
     private String lastName;
 
+    /**
+     * user date of birth
+     */
     private String dateOfBirth;
 
+    /**
+     * user imei number
+     */
     private String imei;
 
+    /**
+     * user deviceId
+     */
     private String deviceId;
 
+    /**
+     * user sessionId
+     */
     private String sessionId;
 
     /**
@@ -63,10 +81,6 @@ public class BreinUser {
         return dateOfBirth;
     }
 
-    /**
-     * TODO -> maybe other type
-     * @param dateOfBirth value
-     */
     public void setDateOfBirth(final String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }

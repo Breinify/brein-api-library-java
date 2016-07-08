@@ -1,7 +1,5 @@
 package com.brein;
 
-import com.brein.config.TestConfig;
-import com.brein.domain.TestDomain;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -10,8 +8,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        TestConfig.class,
-        TestDomain.class
+        TestSuite.class,
+        TestIntegrationSuite.class
 })
-public class TestSuite {
+public class TestAllSuite {
 }
