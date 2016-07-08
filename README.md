@@ -83,13 +83,13 @@ final String[] dimensions = {
          "digitalfootpring",
          "images"};
 
-// wrap this into the BreinDimension
+// wrap this into BreinDimension
 final BreinDimension breinDimension = 
         new BreinDimension(dimensions);
 
 // invoke the lookup                
 final BreinResult response = 
-        Breinify.lookup(breinUser, breinDimension, sign);
+        Breinify.lookup(breinUser, breinDimension, false);
              
 // get the results
 final Object dataFirstname = result.get("firstname");
