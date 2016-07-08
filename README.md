@@ -75,23 +75,24 @@ Look-ups are used to retrieve dedicated information for a given user.
 
 ```java
 // define an array of subjects of interest
-final String[] dimensions = {"firstname",
-                "gender",
-                "age",
-                "agegroup",
-                "digitalfootpring",
-                "images"};
+final String[] dimensions = {
+         "firstname",
+         "gender",
+         "age",
+         "agegroup",
+         "digitalfootpring",
+         "images"};
 
 // wrap this into the BreinDimension
 final BreinDimension breinDimension = 
-             new BreinDimension(dimensions);
+        new BreinDimension(dimensions);
 
 // invoke the lookup                
 final BreinResult response = 
-             Breinify.lookup(breinUser, breinDimension, sign);
+        Breinify.lookup(breinUser, breinDimension, sign);
              
 // get the results
- final Object dataFirstname = result.get("firstname");
+final Object dataFirstname = result.get("firstname");
         final Object dataGender = result.get("gender");
         final Object dataAge = result.get("age");
         final Object dataAgeGroup = result.get("agegroup");
