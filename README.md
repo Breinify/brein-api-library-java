@@ -76,11 +76,11 @@ Look-ups are used, e.g., to change the appearance of the site, increase the qual
 ```java
 // define an array of subjects of interest
 final String[] dimensions = {"firstname",
-                "gender",
-                "age",
-                "agegroup",
-                "digitalfootpring",
-                "images"};
+               "gender",
+               "age",
+               "agegroup",
+               "digitalfootpring",
+               "images"};
 
 // wrap this into the BreinDimension
 final BreinDimension breinDimension = 
