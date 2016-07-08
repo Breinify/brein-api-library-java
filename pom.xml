@@ -59,7 +59,6 @@
             <version>2.7</version>
         </dependency>
 
-
         <!-- Jersey -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
