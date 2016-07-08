@@ -59,7 +59,6 @@ public class TestExecutor {
             /**
              * TODO...
              * Thread.sleep is not the best practice...
-             *
              */
             Thread.sleep(4000);
         } catch (InterruptedException e) {

@@ -88,13 +88,5 @@ public class TestLookup {
          */
         final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
 
-        // // TODO: 06.07.16
-
-        /*
-        if (BreinUtil.containsValue(breinResult.getResponse())) {
-            System.out.println("Response is: " + breinResult.getResponse());
-        }
-        assert(breinResult.getResponse() != null);
-        */
     }
 }

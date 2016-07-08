@@ -440,14 +440,6 @@ public class TestApi {
          */
         final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
 
-        // TODO
-
-        /*
-        if (BreinUtil.containsValue(response.getResponse())) {
-            System.out.println("Response is: " + response.getResponse());
-        }
-        assert (response.getResponse() != null);
-        */
     }
 
 }

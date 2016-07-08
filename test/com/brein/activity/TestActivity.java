@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This test cases shows how to use the activity
+ * This test cases shows how to use the  activity
  */
 public class TestActivity {
 

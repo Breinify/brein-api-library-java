@@ -44,7 +44,7 @@ public class TestConfig {
     }
 
     /**
-     * This should be the normal configuration methods
+     * This should be the normal configuration  methods
      */
     @Test
     public void testNormalConfigUsage() {

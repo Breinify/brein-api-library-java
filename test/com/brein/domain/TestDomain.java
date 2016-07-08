@@ -32,7 +32,6 @@ public class TestDomain {
         breinActivity.setBreinCategoryType(BreinCategoryType.HOME);
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
-        // System.out.println(jsonOutput);
         assertTrue(jsonOutput.length() > 0);
 
     }
@@ -56,10 +55,7 @@ public class TestDomain {
         breinActivity.setDescription("Super-Description");
         breinActivity.setBreinCategoryType(BreinCategoryType.FOOD);
 
-
-
         final String jsonOutput = breinActivity.prepareJsonRequest();
-        // System.out.println(jsonOutput);
         assertTrue(jsonOutput.length() > 0);
     }
 
