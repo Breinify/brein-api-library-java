@@ -86,6 +86,9 @@ public class BreinifyExecutor {
         /**
          * invoke the request "this" has all necessary information
          */
+        if (null == breinActivity.getBreinEngine()) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
         breinActivity.getBreinEngine().sendActivity(breinActivity);
     }
 
@@ -111,6 +114,9 @@ public class BreinifyExecutor {
         /**
          * invoke the lookup request
          */
+        if (null == breinLookup.getBreinEngine()) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
         return breinLookup.getBreinEngine().performLookUp(breinLookup);
     }
 }
