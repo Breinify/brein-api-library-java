@@ -88,5 +88,12 @@ public class TestLookup {
          */
         final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
 
+        final Object dataFirstname = breinResult.get("firstname");
+        final Object dataGender = breinResult.get("gender");
+        final Object dataAge = breinResult.get("age");
+        final Object dataAgeGroup = breinResult.get("agegroup");
+        final Object dataDigitalFootprinting = breinResult.get("digitalfootpring");
+        final Object dataImages = breinResult.get("digitalfootpring");
+
     }
 }

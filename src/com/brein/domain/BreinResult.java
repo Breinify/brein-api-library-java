@@ -1,7 +1,6 @@
 package com.brein.domain;
 
 import com.google.gson.Gson;
-import com.mashape.unirest.http.JsonNode;
 
 import java.util.Map;
 
@@ -18,12 +17,10 @@ public class BreinResult {
 
      /**
      * creates a brein response object
-     * @param jsonNode as json node
+     * @param jsonResponse as json string
      */
     @SuppressWarnings("unchecked")
-    public BreinResult(final JsonNode jsonNode) {
-
-        final String jsonResponse = jsonNode.toString();
+    public BreinResult(final String jsonResponse) {
 
         final Map<String,Object> result = new Gson().fromJson(jsonResponse, Map.class);
         resultContainer = new BreinResultContainer(result);

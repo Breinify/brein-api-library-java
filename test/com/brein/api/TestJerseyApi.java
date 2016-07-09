@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * Test of Breinify Java API (static option)
  */
-public class TestApi {
+public class TestJerseyApi {
 
     /**
      * Contains the BASE URL of the Breinify Backend
@@ -37,7 +37,7 @@ public class TestApi {
      */
     final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
             BASE_URL,
-            BreinEngineType.UNIREST_ENGINE);
+            BreinEngineType.JERSEY_ENGINE);
 
     /**
      * Init part
@@ -426,7 +426,7 @@ public class TestApi {
                 "age",
                 "agegroup",
                 "digitalfootpring",
-                ""};
+                "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
         final boolean sign = false;
@@ -447,6 +447,7 @@ public class TestApi {
         final Object dataAgeGroup = response.get("agegroup");
         final Object dataDigitalFootprinting = response.get("digitalfootpring");
         final Object dataImages = response.get("digitalfootpring");
+
     }
 
 }
