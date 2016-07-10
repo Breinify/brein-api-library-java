@@ -7,6 +7,6 @@ public enum BreinEngineType {
 
     UNIREST_ENGINE,
     JERSEY_ENGINE,
-    DEFAULT_ENGINE
+    NO_ENGINE
 
 }

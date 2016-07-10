@@ -6,12 +6,19 @@ import com.brein.domain.*;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
 
 /**
  * This test cases shows how to use the  activity
  */
 public class TestActivity {
+
+    final static Logger LOGGER = LoggerFactory.getLogger(TestActivity.class);
 
     /**
      * Contains the BASE URL of the Breinify Backend
@@ -44,6 +51,18 @@ public class TestActivity {
     private final BreinActivity breinActivity = new BreinActivity();
 
     /**
+     * Init part
+     */
+    @BeforeClass
+    public static void init() {
+
+        // set logging on
+        final Properties props = System.getProperties();
+        props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
+
+    }
+
+    /**
      * Preparation of test case
      */
     @Before
@@ -61,16 +80,19 @@ public class TestActivity {
      */
     @AfterClass
     public static void tearDown() {
-        /**
+        /*
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /**
+            /*
              * TODO...
              * Thread.sleep is not the best practice...
              *
              */
             Thread.sleep(4000);
+
+
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -84,13 +106,13 @@ public class TestActivity {
 
         final String description = "Login-Description";
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         breinActivity.activity(breinUser,
@@ -107,7 +129,6 @@ public class TestActivity {
         final int maxLogin = 200;
 
         for (int index = 0; index < maxLogin; index++) {
-            System.out.println("INDEX IS: " + index);
             testLogin();
         }
 
@@ -122,7 +143,6 @@ public class TestActivity {
         final int maxLogin = 2000;
 
         for (int index = 0; index < maxLogin; index++) {
-            System.out.println("INDEX IS: " + index);
             testLogin();
         }
 
@@ -136,12 +156,12 @@ public class TestActivity {
 
         final String description = "Logout-Description";
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setDateOfBirth("12/31/2008");
 
-        /**
+        /*
          * invoke activity call
          */
         breinActivity.activity(breinUser,
@@ -157,7 +177,7 @@ public class TestActivity {
 
         final String description = "Search-Description";
 
-        /**
+        /*
          * invoke activity call
          */
         breinActivity.activity(breinUser,
@@ -173,7 +193,7 @@ public class TestActivity {
 
         final String description = "AddToCart-Description";
 
-        /**
+        /*
          * invoke activity call
          */
         breinActivity.activity(breinUser,
@@ -189,7 +209,7 @@ public class TestActivity {
 
         final String description = "RemoveFromCart-Description";
 
-        /**
+        /*
          * invoke activity call
          */
         breinActivity.activity(breinUser,
@@ -205,7 +225,7 @@ public class TestActivity {
 
         final String description = "Select-Product-Description";
 
-        /**
+        /*
          * invoke activity call
          */
         breinActivity.activity(breinUser,
@@ -221,7 +241,7 @@ public class TestActivity {
 
         final String description = "Other-Description";
 
-        /**
+        /*
          * invoke activity call
          */
         breinActivity.activity(breinUser,

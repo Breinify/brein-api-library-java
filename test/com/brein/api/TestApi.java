@@ -7,6 +7,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Properties;
+
 /**
  * Test of Breinify Java API (static option)
  */
@@ -25,7 +27,7 @@ public class TestApi {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("philipp@meisen.net");
+    private final BreinUser breinUser = new BreinUser("user.anywhere@email.com");   // new BreinUser("philipp@meisen.net");
 
     /**
      * Contains the Category
@@ -45,6 +47,10 @@ public class TestApi {
     @BeforeClass
     public static void setUp() {
 
+        // set logging on
+        final Properties props = System.getProperties();
+        props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
+
     }
 
     /**
@@ -61,7 +67,7 @@ public class TestApi {
              * TODO...
              * Thread.sleep is not the best practice...
              */
-            Thread.sleep(4000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -73,18 +79,18 @@ public class TestApi {
     @Test
     public void testLogin() {
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * additional optional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -109,13 +115,13 @@ public class TestApi {
 
         Breinify.setConfig(config);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -172,21 +178,21 @@ public class TestApi {
         try {
             config = new BreinConfig(VALID_API_KEY,
                     BASE_URL,
-                    BreinEngineType.DEFAULT_ENGINE);
+                    BreinEngineType.NO_ENGINE);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         Breinify.setConfig(config);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -205,7 +211,7 @@ public class TestApi {
 
         final String description = "Login-Description";
 
-        /**
+        /*
          * set configuration
          */
         BreinConfig config = new BreinConfig(VALID_API_KEY,
@@ -215,13 +221,13 @@ public class TestApi {
 
         Breinify.setConfig(config);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -229,8 +235,6 @@ public class TestApi {
                 breinCategoryType,
                 description,
                 false);
-
-
     }
 
     /**
@@ -240,9 +244,7 @@ public class TestApi {
     public void testWith200Logins() {
 
         final int maxLogin = 200;
-
         for (int index = 0; index < maxLogin; index++) {
-            System.out.println("INDEX IS: " + index);
             testLogin();
         }
 
@@ -256,17 +258,17 @@ public class TestApi {
 
         final String description = "Logout-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setDateOfBirth("12/31/2008");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -277,19 +279,19 @@ public class TestApi {
     }
 
     /**
-     * TODO
+     * test case how to invoke search activity
      */
     @Test
     public void testSearch() {
 
         final String description = "Search-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -300,19 +302,19 @@ public class TestApi {
     }
 
     /**
-     * TODO
+     * test case how to invoke addToCart activity
      */
     @Test
     public void testAddToCart() {
 
         final String description = "AddToCart-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -323,19 +325,19 @@ public class TestApi {
     }
 
     /**
-     * TODO
+     * test case how to invoke removeFromCart activity
      */
     @Test
     public void testRemoveFromCart() {
 
         final String description = "RemoveFromCart-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -346,19 +348,19 @@ public class TestApi {
     }
 
     /**
-     * TODO
+     * test case how to invoke selectProduct activity
      */
     @Test
     public void testSelectProduct() {
 
         final String description = "Select-Product-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -369,19 +371,19 @@ public class TestApi {
     }
 
     /**
-     * TODO
+     * test case how to invoke other activity
      */
     @Test
     public void testOther() {
 
         final String description = "Other-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -399,17 +401,17 @@ public class TestApi {
 
         final BreinEngine breinEngine = breinConfig.getBreinEngine();
 
-        /**
+        /*
          * set connection timeout to 30000 ms
          */
         breinConfig.setConnectionTimeout(30000);
 
-        /**
+        /*
          * set socket timeoiut to 25000 ms
          */
         breinConfig.setSocketTimeout(25000);
 
-        /**
+        /*
          * configure the engine
          */
         breinEngine.configure(breinConfig);
@@ -426,17 +428,17 @@ public class TestApi {
                 "age",
                 "agegroup",
                 "digitalfootpring",
-                ""};
+                "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
         final boolean sign = false;
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke lookup
          */
         final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);

@@ -25,7 +25,7 @@ public class JerseyRestEngine implements IRestEngine {
     @Override
     public void doRequest(final BreinActivity breinActivity) {
 
-        /**
+        /*
          * validation of activity and config
          */
         validateActivity(breinActivity);
@@ -53,7 +53,7 @@ public class JerseyRestEngine implements IRestEngine {
     @Override
     public BreinResult doLookup(final BreinLookup breinLookup) {
 
-        /**
+        /*
          * validation of lookup and config
          */
         validateLookup(breinLookup);

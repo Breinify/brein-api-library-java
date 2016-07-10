@@ -33,7 +33,6 @@ public class TestDomain {
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
         assertTrue(jsonOutput.length() > 0);
-
     }
 
     /**

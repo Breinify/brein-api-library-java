@@ -27,7 +27,6 @@ public class TestConfig {
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
         assertNull(breinActivity.getConfig().getApiKey());
-
     }
 
     /**

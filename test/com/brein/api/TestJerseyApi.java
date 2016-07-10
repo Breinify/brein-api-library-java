@@ -4,8 +4,11 @@ import com.brein.domain.*;
 import com.brein.engine.BreinEngine;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.Properties;
 
 /**
  * Test of Breinify Java API (static option)
@@ -43,7 +46,19 @@ public class TestJerseyApi {
      * Init part
      */
     @BeforeClass
-    public static void setUp() {
+    public static void init() {
+
+        // set logging on
+        final Properties props = System.getProperties();
+        props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
+
+    }
+
+    /**
+     * setup
+     */
+    @Before
+    public void setUp() {
 
     }
 
@@ -172,7 +187,7 @@ public class TestJerseyApi {
         try {
             config = new BreinConfig(VALID_API_KEY,
                     BASE_URL,
-                    BreinEngineType.DEFAULT_ENGINE);
+                    BreinEngineType.NO_ENGINE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -242,10 +257,8 @@ public class TestJerseyApi {
         final int maxLogin = 200;
 
         for (int index = 0; index < maxLogin; index++) {
-            System.out.println("INDEX IS: " + index);
             testLogin();
         }
-
     }
 
     /**
@@ -256,17 +269,17 @@ public class TestJerseyApi {
 
         final String description = "Logout-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setDateOfBirth("12/31/2008");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -307,12 +320,12 @@ public class TestJerseyApi {
 
         final String description = "AddToCart-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -330,12 +343,12 @@ public class TestJerseyApi {
 
         final String description = "RemoveFromCart-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -353,12 +366,12 @@ public class TestJerseyApi {
 
         final String description = "Select-Product-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -376,12 +389,12 @@ public class TestJerseyApi {
 
         final String description = "Other-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -399,17 +412,17 @@ public class TestJerseyApi {
 
         final BreinEngine breinEngine = breinConfig.getBreinEngine();
 
-        /**
+        /*
          * set connection timeout to 30000 ms
          */
         breinConfig.setConnectionTimeout(30000);
 
-        /**
-         * set socket timeoiut to 25000 ms
+        /*
+         * set socket timeout to 25000 ms
          */
         breinConfig.setSocketTimeout(25000);
 
-        /**
+        /*
          * configure the engine
          */
         breinEngine.configure(breinConfig);
@@ -429,24 +442,23 @@ public class TestJerseyApi {
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
-        final boolean sign = false;
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke lookup
          */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        final BreinResult response = Breinify.lookup(breinUser, breinDimension, false);
 
         final Object dataFirstname = response.get("firstname");
         final Object dataGender = response.get("gender");
         final Object dataAge = response.get("age");
         final Object dataAgeGroup = response.get("agegroup");
         final Object dataDigitalFootprinting = response.get("digitalfootpring");
-        final Object dataImages = response.get("digitalfootpring");
+        final Object dataImages = response.get("images");
 
     }
 

@@ -100,4 +100,11 @@ public class BreinifyExecutor {
                               final boolean sign) {
         return Breinify.lookup(breinLookup, user, dimension, sign);
     }
+
+    /**
+     * Shutdown Breinify services
+     */
+    public void shutdown() {
+        this.config.shutdownEngine();
+    }
 }

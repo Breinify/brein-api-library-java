@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 /**
  * Provides the lookup functionality
  */
-public class BreinLookup extends BreinBase {
+public class BreinLookup extends BreinBase implements ISecretStrategy {
 
     /**
      * used for lookup request
@@ -67,6 +67,7 @@ public class BreinLookup extends BreinBase {
      *
      * @return well formed json request
      */
+    @Override
     public String prepareJsonRequest() {
 
         final JsonObject requestData = new JsonObject();
@@ -116,4 +117,8 @@ public class BreinLookup extends BreinBase {
         return getConfig().getLookupEndpoint();
     }
 
+    @Override
+    public String createSignature() {
+        return null;
+    }
 }

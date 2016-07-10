@@ -10,7 +10,8 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -22,17 +23,17 @@ import java.io.IOException;
 public class UniRestEngine implements IRestEngine {
 
     /**
+     * Logger instance
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(UniRestEngine.class);
+
+    /**
      * some constants
      */
     public static final String MSG_URL_IS_NULL = "url is null";
     public static final String MSG_REQUEST_HAS_FAILED = "the request has failed";
     public static final String MSG_REQUEST_HAS_BEEN_CANCELLED = "the request has been cancelled";
     public static final String MSG_REQUEST_WAS_SUCCESSFUL = "the request was successful";
-
-    /**
-     * Logger instance
-     */
-    private static final Logger LOG = Logger.getLogger(UniRestEngine.class);
 
     /**
      * configures the rest engine
@@ -108,7 +109,7 @@ public class UniRestEngine implements IRestEngine {
     @Override
     public BreinResult doLookup(final BreinLookup breinLookup) throws BreinException {
 
-        /**
+        /*
          * validation of lookup and config
          */
         validateLookup(breinLookup);

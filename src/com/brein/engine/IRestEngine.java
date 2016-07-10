@@ -7,7 +7,9 @@ import com.brein.api.BreinLookup;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.util.BreinUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Interface for all possible rest  engines
@@ -17,7 +19,7 @@ public interface IRestEngine {
     /**
      * Logger instance
      */
-    Logger LOG = Logger.getLogger(IRestEngine.class);
+    Logger LOG = LoggerFactory.getLogger(IRestEngine.class);
 
     String HEADER_ACCESS = "accept";
     String HEADER_APP_JSON = "application/json";
