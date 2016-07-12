@@ -31,7 +31,6 @@ public class BreinEngine {
      * @param activity data
      */
     public void sendActivity(final BreinActivity activity) {
-
         if (activity != null) {
             restEngine.doRequest(activity);
         }
@@ -46,7 +45,6 @@ public class BreinEngine {
      * @return if succeeded a BreinResponse object or  null
      */
     public BreinResult performLookUp(final BreinLookup breinLookup) {
-
         if (breinLookup != null) {
             return restEngine.doLookup(breinLookup);
         }

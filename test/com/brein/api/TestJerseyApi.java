@@ -4,6 +4,7 @@ import com.brein.domain.*;
 import com.brein.engine.BreinEngine;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ import java.util.Properties;
 /**
  * Test of Breinify Java API (static option)
  */
-public class TestApi {
+public class TestJerseyApi {
 
     /**
      * Contains the BASE URL of the Breinify Backend
@@ -27,7 +28,7 @@ public class TestApi {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("user.anywhere@email.com");   // new BreinUser("philipp@meisen.net");
+    private final BreinUser breinUser = new BreinUser("philipp@meisen.net");
 
     /**
      * Contains the Category
@@ -39,17 +40,25 @@ public class TestApi {
      */
     final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
             BASE_URL,
-            BreinEngineType.UNIREST_ENGINE);
+            BreinEngineType.JERSEY_ENGINE);
 
     /**
      * Init part
      */
     @BeforeClass
-    public static void setUp() {
+    public static void init() {
 
         // set logging on
         final Properties props = System.getProperties();
         props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
+
+    }
+
+    /**
+     * setup
+     */
+    @Before
+    public void setUp() {
 
     }
 
@@ -67,7 +76,7 @@ public class TestApi {
              * TODO...
              * Thread.sleep is not the best practice...
              */
-            Thread.sleep(10000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -79,18 +88,18 @@ public class TestApi {
     @Test
     public void testLogin() {
 
-        /*
+        /**
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /*
+        /**
          * additional optional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /*
+        /**
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -115,13 +124,13 @@ public class TestApi {
 
         Breinify.setConfig(config);
 
-        /*
+        /**
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /*
+        /**
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -185,14 +194,14 @@ public class TestApi {
 
         Breinify.setConfig(config);
 
-        /*
+        /**
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
 
-        /*
+        /**
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -211,7 +220,7 @@ public class TestApi {
 
         final String description = "Login-Description";
 
-        /*
+        /**
          * set configuration
          */
         BreinConfig config = new BreinConfig(VALID_API_KEY,
@@ -221,13 +230,13 @@ public class TestApi {
 
         Breinify.setConfig(config);
 
-        /*
+        /**
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /*
+        /**
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -235,6 +244,8 @@ public class TestApi {
                 breinCategoryType,
                 description,
                 false);
+
+
     }
 
     /**
@@ -244,10 +255,10 @@ public class TestApi {
     public void testWith200Logins() {
 
         final int maxLogin = 200;
+
         for (int index = 0; index < maxLogin; index++) {
             testLogin();
         }
-
     }
 
     /**
@@ -279,19 +290,19 @@ public class TestApi {
     }
 
     /**
-     * test case how to invoke search activity
+     * TODO
      */
     @Test
     public void testSearch() {
 
         final String description = "Search-Description";
 
-        /*
+        /**
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /*
+        /**
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -302,7 +313,7 @@ public class TestApi {
     }
 
     /**
-     * test case how to invoke addToCart activity
+     * TODO
      */
     @Test
     public void testAddToCart() {
@@ -325,7 +336,7 @@ public class TestApi {
     }
 
     /**
-     * test case how to invoke removeFromCart activity
+     * TODO
      */
     @Test
     public void testRemoveFromCart() {
@@ -348,7 +359,7 @@ public class TestApi {
     }
 
     /**
-     * test case how to invoke selectProduct activity
+     * TODO
      */
     @Test
     public void testSelectProduct() {
@@ -371,7 +382,7 @@ public class TestApi {
     }
 
     /**
-     * test case how to invoke other activity
+     * TODO
      */
     @Test
     public void testOther() {
@@ -407,7 +418,7 @@ public class TestApi {
         breinConfig.setConnectionTimeout(30000);
 
         /*
-         * set socket timeoiut to 25000 ms
+         * set socket timeout to 25000 ms
          */
         breinConfig.setSocketTimeout(25000);
 
@@ -431,7 +442,6 @@ public class TestApi {
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
-        final boolean sign = false;
 
         /*
          * set configuration
@@ -441,14 +451,15 @@ public class TestApi {
         /*
          * invoke lookup
          */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        final BreinResult response = Breinify.lookup(breinUser, breinDimension, false);
 
         final Object dataFirstname = response.get("firstname");
         final Object dataGender = response.get("gender");
         final Object dataAge = response.get("age");
         final Object dataAgeGroup = response.get("agegroup");
         final Object dataDigitalFootprinting = response.get("digitalfootpring");
-        final Object dataImages = response.get("digitalfootpring");
+        final Object dataImages = response.get("images");
+
     }
 
 }

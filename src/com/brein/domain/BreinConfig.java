@@ -81,6 +81,11 @@ public class BreinConfig {
     private long socketTimeout = DEFAULT_SOCKET_TIMEOUT;
 
     /**
+     *
+     */
+    private String secret;
+
+    /**
      * @param apiKey  contains the Breinify api-key
      * @param baseUrl contains the base url
      */
@@ -89,7 +94,7 @@ public class BreinConfig {
 
         setApiKey(apiKey);
         setBaseUrl(baseUrl);
-        setRestEngineType(BreinEngineType.DEFAULT_ENGINE);
+        setRestEngineType(BreinEngineType.NO_ENGINE);
     }
 
     /**
@@ -155,7 +160,6 @@ public class BreinConfig {
      */
     public BreinConfig setBaseUrl(final String baseUrl) {
         this.baseUrl = baseUrl;
-
         return this;
     }
 
@@ -176,7 +180,6 @@ public class BreinConfig {
      */
     public BreinConfig setRestEngineType(final BreinEngineType restEngineType) {
         this.restEngineType = restEngineType;
-
         return this;
     }
 
@@ -200,7 +203,6 @@ public class BreinConfig {
         if (BreinUtil.containsValue(apiKey)) {
             this.apiKey = apiKey;
         }
-
         return this;
     }
 
@@ -242,6 +244,7 @@ public class BreinConfig {
 
     /**
      * set the socket timeout
+     *
      * @param socketTimeout value
      */
     public void setSocketTimeout(final long socketTimeout) {
@@ -250,6 +253,7 @@ public class BreinConfig {
 
     /**
      * set the connection timeout
+     *
      * @param connectionTimeout value
      */
     public void setConnectionTimeout(final long connectionTimeout) {
@@ -273,7 +277,6 @@ public class BreinConfig {
      */
     public BreinConfig setActivityEndpoint(final String activityEndpoint) {
         this.activityEndpoint = activityEndpoint;
-
         return this;
     }
 
@@ -294,8 +297,45 @@ public class BreinConfig {
      */
     public BreinConfig setLookupEndpoint(final String lookupEndpoint) {
         this.lookupEndpoint = lookupEndpoint;
-
         return this;
     }
 
+    /**
+     * returns the configured secret
+     *
+     * @return raw secret
+     */
+    public String getSecret() {
+        return secret;
+    }
+
+    /**
+     * set the secret
+     *
+     * @param secret raw secret
+     */
+    public BreinConfig setSecret(final String secret) {
+        this.secret = secret;
+        return this;
+    }
+
+    /**
+     * invokes the termination of the rest engine.
+     * Depending of the configured engine additional threads might
+     * have been allocated and this will close those threads.
+     */
+    public void shutdownEngine() {
+
+        // check valid objects
+        if (this.breinEngine == null) {
+            return;
+        }
+
+        if (this.breinEngine.getRestEngine() == null) {
+            return;
+        }
+
+        // invoke termination of the engine
+        this.breinEngine.getRestEngine().terminate();
+    }
 }

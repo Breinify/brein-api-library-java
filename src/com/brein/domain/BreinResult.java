@@ -1,7 +1,6 @@
 package com.brein.domain;
 
 import com.google.gson.Gson;
-import com.mashape.unirest.http.JsonNode;
 
 import java.util.Map;
 
@@ -12,26 +11,37 @@ import java.util.Map;
 public class BreinResult {
 
     /**
-     * contains the collected data
+     * contains the collected data as map
      */
-    private final BreinResultContainer resultContainer;
+    private final Map<String, Object> map;
 
      /**
-     * creates a brein response object
-     * @param jsonNode as json node
+     * creates a brein result object
+     * @param jsonResponse as json string
      */
     @SuppressWarnings("unchecked")
-    public BreinResult(final JsonNode jsonNode) {
-
-        final String jsonResponse = jsonNode.toString();
-
-        final Map<String,Object> result = new Gson().fromJson(jsonResponse, Map.class);
-        resultContainer = new BreinResultContainer(result);
+    public BreinResult(final String jsonResponse) {
+        map = new Gson().fromJson(jsonResponse, Map.class);
     }
 
+    /**
+     * retrieves the object according to the requested key
+     * @param key to look for
+     * @param <T> Object
+     * @return Object retrieved
+     */
     @SuppressWarnings("unchecked")
     public <T> T get(final String key) {
-        return (T) resultContainer.get(key);
+        return (T) map.get(key);
+    }
+
+    /**
+     * checks if key exists in map
+     * @param key to check
+     * @return true or false
+     */
+    public boolean has(final String key) {
+        return get(key) != null;
     }
 
 }

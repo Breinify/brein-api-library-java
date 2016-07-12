@@ -1,9 +1,28 @@
 package com.brein.util;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 /**
  * Utility class
  */
 public class BreinUtil {
+
+    private static final Mac mac;
+
+    static {
+
+        try {
+            mac = Mac.getInstance("HmacSHA256");
+        } catch (NoSuchAlgorithmException var1) {
+            throw new IllegalStateException("Unable to find needed algorithm!", var1);
+        }
+    }
 
     /**
      * Verifies if the object contains a value
@@ -28,4 +47,19 @@ public class BreinUtil {
 
         return true;
     }
+
+    /**
+     *
+     * @param message
+     * @param secret
+     * @return
+     */
+    public static String generateSignature(String message, String secret) {
+        // TODO: 10.07.16
+        return "";
+
+    }
+
+
+
 }

@@ -3,7 +3,10 @@ package com.brein.api;
 import com.brein.domain.*;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.Properties;
 
 /**
  * Test of Breinify Java API (static option)
@@ -48,19 +51,31 @@ public class TestExecutor {
             BreinEngineType.UNIREST_ENGINE);
 
     /**
+     * Init part
+     */
+    @BeforeClass
+    public static void init() {
+
+        // set logging on
+        final Properties props = System.getProperties();
+        props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
+
+    }
+
+    /**
      * Housekeeping...
      */
     @AfterClass
     public static void tearDown() {
-        /**
+        /*
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /**
+            /*
              * TODO...
              * Thread.sleep is not the best practice...
              */
-            Thread.sleep(4000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -74,7 +89,7 @@ public class TestExecutor {
 
         final String description = "Login-Description";
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
@@ -86,7 +101,7 @@ public class TestExecutor {
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
                 .build();
 
-        /**
+        /*
          * invoke activity call
          */
         breinifyExecutor.activity(breinUser,
@@ -118,12 +133,12 @@ public class TestExecutor {
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
                 .build();
 
-        /**
+        /*
          * use Philipp, so can get some data
          */
         final BreinUser user = new BreinUser("philipp@meisen.net");
 
-        /**
+        /*
          * invoke lookup
          */
         final BreinResult result = breinifyExecutor.lookup(user,
@@ -137,7 +152,7 @@ public class TestExecutor {
         final Object dataImages = result.get(IMAGES);
 
 
-        /**
+        /*
 
         if (BreinUtil.containsValue(result.getResponse())) {
             System.out.println("Response is: " + result.getResponse());

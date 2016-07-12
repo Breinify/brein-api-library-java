@@ -5,7 +5,7 @@ package com.brein.api;
  */
 public class BreinException extends RuntimeException {
 
-    /**
+    /*
      * Error Messages
      */
     public static final String URL_IS_NULL = "URL in request contains null";
@@ -18,7 +18,7 @@ public class BreinException extends RuntimeException {
     public static final String LOOKUP_EXCEPTION = "lookup exception has occurred";
     public static final String ENGINE_NOT_INITIALIZED = "rest engine not initialized";
 
-    /**
+    /*
      * Exception methods...
      *
      */

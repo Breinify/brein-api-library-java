@@ -60,7 +60,6 @@ public class BreinBase {
      * @return brein engine
      */
     public BreinEngine getBreinEngine() {
-
         return null == breinConfig ? null : getConfig().getBreinEngine();
     }
 

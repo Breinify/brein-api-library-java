@@ -137,4 +137,12 @@ public class Breinify {
         }
         return breinLookup.getBreinEngine().performLookUp(breinLookup);
     }
+
+    /**
+     * Shutdown Breinify services
+     */
+    public static void shutdown() {
+       getConfig().shutdownEngine();
+    }
+
 }

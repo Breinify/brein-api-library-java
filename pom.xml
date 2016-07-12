@@ -6,45 +6,76 @@
     <groupId>com.breinify</groupId>
     <artifactId>brein-api-library-java</artifactId>
     <version>TRUNK-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <name>brein-api-library-java</name>
     <description>Brein API Library Java</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <slf4jVersion>1.7.21</slf4jVersion>
+        <unirestVersion>1.4.9</unirestVersion>
+        <gsonVersion>2.7</gsonVersion>
+        <jerseyClientVersion>1.19.1</jerseyClientVersion>
+        <junitVersion>4.12</junitVersion>
+    </properties>
+
     <dependencies>
 
-        <!-- Logger -->
+        <!-- Logger Facade -->
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4jVersion}</version>
         </dependency>
+
+
+        <!-- can be activated to see some logging
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4jVersion}</version>
+        </dependency>
+         -->
 
         <!-- UNIREST -->
         <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
-            <version>1.4.9</version>
+            <version>${unirestVersion}</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- JSON Support -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.7</version>
+            <version>${gsonVersion}</version>
         </dependency>
 
         <!-- Jersey -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.19.1</version>
+            <version>${jerseyClientVersion}</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junitVersion}</version>
             <scope>test</scope>
         </dependency>
 

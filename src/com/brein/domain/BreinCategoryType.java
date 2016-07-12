@@ -6,7 +6,7 @@ package com.brein.domain;
  */
 public enum BreinCategoryType {
 
-    /**
+    /*
      * the only possible category types
      */
     APPAREL("apparel"),

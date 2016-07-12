@@ -15,7 +15,7 @@ import java.time.Instant;
  * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is important
  * that a valid API-key is configured prior to using this function.
  */
-public class BreinActivity extends BreinBase {
+public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * ActivityType of the activity
@@ -33,9 +33,14 @@ public class BreinActivity extends BreinBase {
     private String description;
 
     /**
-     * Sign TODO: not really used yet
+     * if set to yes then a secret has to bo sent
      */
     private boolean sign;
+
+    /**
+     * contains the timestamp when the request will be generated
+     */
+    private long unixTimestamp;
 
     /**
      * returns activity type
@@ -119,6 +124,18 @@ public class BreinActivity extends BreinBase {
         return getConfig().getActivityEndpoint();
     }
 
+    public long getUnixTimestamp() {
+        return unixTimestamp;
+    }
+
+    /**
+     * retrieves the timestamp
+     * @param unixTimestamp
+     */
+    public void setUnixTimestamp(final long unixTimestamp) {
+        this.unixTimestamp = unixTimestamp;
+    }
+
     /**
      * Sends an activity to the Breinify server.
      *
@@ -161,7 +178,7 @@ public class BreinActivity extends BreinBase {
     @Override
     public String prepareJsonRequest() {
 
-        final long unixTimestamp = Instant.now().getEpochSecond();
+        unixTimestamp = Instant.now().getEpochSecond();
 
         final JsonObject requestData = new JsonObject();
 
@@ -218,6 +235,23 @@ public class BreinActivity extends BreinBase {
                 .create();
 
         return gson.toJson(requestData);
+    }
+
+    /**
+     * TODO
+     * 
+     * @return
+     */
+    @Override
+    public String createSignature() {
+
+        final String message = String.format("%s%d%d",
+                getBreinActivityType() == null ? "" : getBreinActivityType().getName(),
+                getUnixTimestamp(), 1);
+                // activities.size());
+
+        return BreinUtil.generateSignature(message, getConfig().getSecret());
+
     }
 }
 
