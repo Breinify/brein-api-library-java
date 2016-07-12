@@ -1,11 +1,10 @@
 package com.brein.domain;
 
 /**
- * The type of the activity collected, i.e., one of search, login, logout, addToCart,
- * removeFromCart, checkOut, selectProduct, or other.
+ * The type of the activity collected, i.e., one of search, login, logout, addToCart, removeFromCart, checkOut,
+ * selectProduct, or other.
  */
 public enum BreinActivityType {
-
     SEARCH("search"),
     LOGIN("login"),
     LOGOUT("logout"),
@@ -13,7 +12,6 @@ public enum BreinActivityType {
     REMOVE_FROM_CART("removeFromCart"),
     SELECT_PRODUCT("selectProduct"),
     CHECKOUT("checkOut"),
-    LOOKUP("lookup"),
     OTHER("other");
 
     private final String name;
