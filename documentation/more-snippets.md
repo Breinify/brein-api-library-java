@@ -38,6 +38,7 @@ breinifyExecutor.activity(breinUser,
                 
 // prepare the lookup part
 
+
 // define an array of subjects of interest
 final String[] dimensions = {"firstname",
        "gender",
