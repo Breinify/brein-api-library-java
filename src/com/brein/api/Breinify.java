@@ -128,6 +128,7 @@ public class Breinify {
                                      final boolean sign) {
         breinLookup.setBreinUser(user);
         breinLookup.setBreinDimension(dimension);
+        breinLookup.setSign(sign);
 
         /*
          * invoke the lookup request
@@ -142,7 +143,9 @@ public class Breinify {
      * Shutdown Breinify services
      */
     public static void shutdown() {
-       getConfig().shutdownEngine();
+        if (getConfig() != null) {
+            getConfig().shutdownEngine();
+        }
     }
 
 }

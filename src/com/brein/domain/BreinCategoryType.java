@@ -19,12 +19,23 @@ public enum BreinCategoryType {
     SERVICES("services"),
     OTHER("other");
 
+    /**
+     * the corresponding name of the enum
+     */
     private final String name;
 
+    /**
+     * Indicates the category of the activity
+     * @param name of the type
+     */
     BreinCategoryType(final String name) {
         this.name = name;
     }
 
+    /**
+     * return the corresponding name
+     * @return of the enum
+     */
     public String getName() {
         return name;
     }

@@ -1,14 +1,24 @@
 package com.brein.domain;
 
+import com.brein.api.BreinInvalidConfigurationException;
 import com.brein.api.BreinifyExecutor;
 import com.brein.engine.BreinEngine;
 import com.brein.engine.BreinEngineType;
+import com.brein.engine.IRestEngine;
 import com.brein.util.BreinUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Contains Breinify Endpoint configuration
  */
 public class BreinConfig {
+
+    /**
+     * Logger instance
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
 
     /**
      * default endpoint of activity
@@ -81,7 +91,7 @@ public class BreinConfig {
     private long socketTimeout = DEFAULT_SOCKET_TIMEOUT;
 
     /**
-     *
+     * contains the secret
      */
     private String secret;
 
@@ -153,14 +163,34 @@ public class BreinConfig {
     }
 
     /**
-     * set the base url of the breinify backend
+     * set the base url of the breinify backend and will check
+     * if the URL is valid.
      *
      * @param baseUrl contains the url
      * @return the config object itself
      */
     public BreinConfig setBaseUrl(final String baseUrl) {
         this.baseUrl = baseUrl;
+        checkBaseUrl(baseUrl);
         return this;
+    }
+
+    /**
+     * checks if the url is valid. If not a BreinInvalidConfigurationException will
+     * be thrown.
+     *
+     * @param baseUrl url to check
+     */
+    public void checkBaseUrl(final String baseUrl) throws BreinInvalidConfigurationException {
+
+        if (!isUrlValid(baseUrl)) {
+            final String msg = "BreinConfig issue. Value for BaseUrl is not valid. Value is: "
+                    + baseUrl;
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(msg);
+            }
+            throw new BreinInvalidConfigurationException(msg);
+        }
     }
 
     /**
@@ -337,5 +367,15 @@ public class BreinConfig {
 
         // invoke termination of the engine
         this.breinEngine.getRestEngine().terminate();
+    }
+
+    /**
+     * Validates if the URL is correct.
+     *
+     * @param url to check
+     * @return true if ok otherwise false
+     */
+    public boolean isUrlValid(final String url) {
+        return IRestEngine.isUrlValid(url);
     }
 }

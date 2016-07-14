@@ -4,11 +4,7 @@ import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 
 /**
  * Provides the lookup functionality
@@ -44,17 +40,18 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      *
      * @param breinUser      contains the breinify user
      * @param breinDimension contains the dimensions to look after
+     * @param sign           if set to true a secret will be sent as well
      *
      * @return response from request or null if no data can be retrieved
      */
-    public BreinResult lookUp(final BreinUser breinUser,
+  public BreinResult lookUp(final BreinUser breinUser,
                               final BreinDimension breinDimension,
                               final boolean sign) {
 
         setBreinUser(breinUser);
         setBreinDimension(breinDimension);
+        setSign(sign);
 
-        // TODO: 04.07.16  sign consideration
         if (null == getBreinEngine()) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
@@ -69,6 +66,9 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      */
     @Override
     public String prepareJsonRequest() {
+
+        // call base class
+        super.prepareJsonRequest();
 
         final JsonObject requestData = new JsonObject();
         final BreinUser breinUser = getBreinUser();
@@ -98,7 +98,15 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
             requestData.addProperty("apiKey", getConfig().getApiKey());
         }
 
-        Gson gson = new GsonBuilder()
+        // Unix time stamp
+        requestData.addProperty("unixTimestamp", getUnixTimestamp());
+
+        // set secret
+        if (isSign()) {
+            requestData.addProperty("signatureType", createSignature());
+        }
+
+        final Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .serializeNulls()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
@@ -117,8 +125,21 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         return getConfig().getLookupEndpoint();
     }
 
+    /**
+     * Creates the signature for lookup
+     * @return signature
+     */
     @Override
     public String createSignature() {
-        return null;
+
+        final String[] dimensions = getBreinDimension().getDimensionFields();
+
+        // we need the first one
+        final String message = String.format("%s%d%d",
+                dimensions == null ? 0 : dimensions[0],
+                getUnixTimestamp(),
+                dimensions == null ? 0 : dimensions.length);
+
+        return BreinUtil.generateSignature(message, getConfig().getSecret());
     }
 }

@@ -43,7 +43,7 @@ public class TestActivity {
     /**
      * Sign parameter
      */
-    private final boolean sign = true;
+    private final boolean sign = false;
 
     /**
      * The Activity itself
@@ -159,7 +159,7 @@ public class TestActivity {
         /*
          * additional user information
          */
-        breinUser.setDateOfBirth("12/31/2008");
+        breinUser.setDateOfBirth(12, 31, 2008);
 
         /*
          * invoke activity call

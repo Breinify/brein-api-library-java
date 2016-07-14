@@ -9,8 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import java.time.Instant;
-
 /**
  * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is important
  * that a valid API-key is configured prior to using this function.
@@ -31,16 +29,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      * Description of the activity
      */
     private String description;
-
-    /**
-     * if set to yes then a secret has to bo sent
-     */
-    private boolean sign;
-
-    /**
-     * contains the timestamp when the request will be generated
-     */
-    private long unixTimestamp;
 
     /**
      * returns activity type
@@ -96,25 +84,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         this.description = description;
     }
 
-    /**
-     * retrieves the sign flag
-     *
-     * @return flag (true / false)
-     */
-    public boolean isSign() {
-        return sign;
-    }
-
-    /**
-     * sets the sign flag
-     *
-     * @param sign value to set
-     */
-    public void setSign(final boolean sign) {
-        this.sign = sign;
-    }
-
-    /**
+   /**
      * retrieves the configured activity endpoint (e.g. \activitiy)
      *
      * @return endpoint
@@ -122,18 +92,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     @Override
     public String getEndPoint() {
         return getConfig().getActivityEndpoint();
-    }
-
-    public long getUnixTimestamp() {
-        return unixTimestamp;
-    }
-
-    /**
-     * retrieves the timestamp
-     * @param unixTimestamp
-     */
-    public void setUnixTimestamp(final long unixTimestamp) {
-        this.unixTimestamp = unixTimestamp;
     }
 
     /**
@@ -178,7 +136,8 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     @Override
     public String prepareJsonRequest() {
 
-        unixTimestamp = Instant.now().getEpochSecond();
+        // call base class
+        super.prepareJsonRequest();
 
         final JsonObject requestData = new JsonObject();
 
@@ -225,10 +184,14 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
             }
         }
 
-        requestData.addProperty("unixTimestamp", unixTimestamp);
-        // requestData.addProperty("signatureType", breinActivity.getSignatureType));
+        requestData.addProperty("unixTimestamp", getUnixTimestamp());
 
-        Gson gson = new GsonBuilder()
+        // if sign is active
+        if (isSign()) {
+            requestData.addProperty("signatureType", createSignature());
+        }
+
+        final Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .serializeNulls()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
@@ -238,9 +201,9 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * TODO
-     * 
-     * @return
+     * Generates the signature for the request
+     *
+     * @return full signature
      */
     @Override
     public String createSignature() {
@@ -248,10 +211,9 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         final String message = String.format("%s%d%d",
                 getBreinActivityType() == null ? "" : getBreinActivityType().getName(),
                 getUnixTimestamp(), 1);
-                // activities.size());
+        // activities.size());
 
         return BreinUtil.generateSignature(message, getConfig().getSecret());
-
     }
 }
 

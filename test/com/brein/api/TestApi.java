@@ -27,7 +27,7 @@ public class TestApi {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("user.anywhere@email.com");   // new BreinUser("philipp@meisen.net");
+    private final BreinUser breinUser = new BreinUser("philipp@meisen.net");
 
     /**
      * Contains the Category
@@ -59,15 +59,15 @@ public class TestApi {
     @AfterClass
     public static void tearDown() {
 
-        /**
+        /*
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /**
-             * TODO...
+            /*
              * Thread.sleep is not the best practice...
              */
-            Thread.sleep(10000);
+            Thread.sleep(1000);
+            Breinify.shutdown();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -134,32 +134,14 @@ public class TestApi {
     /**
      * Testcase with null value as base url
      */
-    @Test(expected = BreinException.class)
-    public void testLoginWithNullBaseUrl() {
-
-        final String description = "Login-Description";
-        final boolean sign = false;
+    @Test(expected = BreinInvalidConfigurationException.class)
+    public void testWithNullBaseUrl() {
 
         final BreinConfig config = new BreinConfig(VALID_API_KEY,
                 null,
                 BreinEngineType.UNIREST_ENGINE);
 
         Breinify.setConfig(config);
-
-        /**
-         * additional user information
-         */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
-
-        /**
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                breinCategoryType,
-                description,
-                sign);
 
     }
 
@@ -266,7 +248,7 @@ public class TestApi {
         /*
          * additional user information
          */
-        breinUser.setDateOfBirth("12/31/2008");
+        breinUser.setDateOfBirth(12, 31, 2008);
 
         /*
          * invoke activity call
@@ -418,6 +400,34 @@ public class TestApi {
     }
 
     /**
+     * Test activity call with bad url
+     */
+    @Test(expected = BreinInvalidConfigurationException.class)
+    public void testLoginWithBadUrl() {
+
+        /*
+         * Just to ensure that the right config has been set
+         */
+        final String badUrl = "www.beeeeeiiiniiify.com";
+
+        final BreinConfig breinConfigWithBadUrl = new BreinConfig(VALID_API_KEY,
+                badUrl,
+                BreinEngineType.UNIREST_ENGINE);
+
+        Breinify.setConfig(breinConfigWithBadUrl);
+
+        /*
+         * invoke activity call, will cause an exception
+         */
+        Breinify.activity(breinUser,
+                BreinActivityType.LOGIN,
+                BreinCategoryType.HOME,
+                "Login-Description",
+                false);
+
+    }
+
+    /**
      * Tests the lookup functionality
      */
     @Test
@@ -449,6 +459,150 @@ public class TestApi {
         final Object dataAgeGroup = response.get("agegroup");
         final Object dataDigitalFootprinting = response.get("digitalfootpring");
         final Object dataImages = response.get("digitalfootpring");
+    }
+
+    /**
+     * Test a login activity with sign and correct secret
+     */
+    @Test
+    public void testLoginWithSign() {
+
+        final String secret = "p3rqlab6m7/172pdgiq6ng==";
+        final boolean sign = true;
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE);
+
+        // set secret
+        breinConfig.setSecret(secret);
+
+        // set config
+        Breinify.setConfig(breinConfig);
+
+        // invoke activity call
+        Breinify.activity(breinUser,
+                BreinActivityType.LOGIN,
+                BreinCategoryType.HOME,
+                "Login-Description",
+                sign);
+
+    }
+
+
+    /**
+     * Test a login activity with sign but wrong secret
+     */
+    @Test
+    public void testLoginWithSignButWrongSecret() {
+
+        final String wrongSecret = "ThisIsAWrongSecret";
+        final boolean sign = true;
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE);
+
+        // set secret
+        breinConfig.setSecret(wrongSecret);
+
+        // set config
+        Breinify.setConfig(breinConfig);
+
+        // invoke activity call
+        Breinify.activity(breinUser,
+                BreinActivityType.LOGIN,
+                BreinCategoryType.HOME,
+                "Login-Description",
+                sign);
+
+    }
+
+
+    /**
+     * Test a lookup with sign and correct secret
+     */
+    @Test
+    public void testLookupWithSign() {
+
+        final String secret = "p3rqlab6m7/172pdgiq6ng==";
+        final String[] dimensions = {"firstname",
+                "gender",
+                "age",
+                "agegroup",
+                "digitalfootpring",
+                "images"};
+
+        final BreinDimension breinDimension = new BreinDimension(dimensions);
+        final boolean sign = true;
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE);
+
+        // set secret
+        breinConfig.setSecret(secret);
+
+        /*
+         * set configuration
+         */
+        Breinify.setConfig(breinConfig);
+
+        /*
+         * invoke lookup
+         */
+        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+
+        final Object dataFirstname = response.get("firstname");
+        final Object dataGender = response.get("gender");
+        final Object dataAge = response.get("age");
+        final Object dataAgeGroup = response.get("agegroup");
+        final Object dataDigitalFootprinting = response.get("digitalfootpring");
+        final Object dataImages = response.get("digitalfootpring");
+
+    }
+
+    /**
+     * Test a lookup with sign and correct secret
+     */
+    @Test
+    public void testLookupWithSignButWrongSecret() {
+
+        final String thisIsAWrongSecret = "ThisIsAWrongSecret";
+        final String[] dimensions = {"firstname",
+                "gender",
+                "age",
+                "agegroup",
+                "digitalfootpring",
+                "images"};
+
+        final BreinDimension breinDimension = new BreinDimension(dimensions);
+        final boolean sign = true;
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE);
+
+        // set secret
+        breinConfig.setSecret(thisIsAWrongSecret);
+
+        /*
+         * set configuration
+         */
+        Breinify.setConfig(breinConfig);
+
+        /*
+         * invoke lookup
+         */
+        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+
+        final Object dataFirstname = response.get("firstname");
+        final Object dataGender = response.get("gender");
+        final Object dataAge = response.get("age");
+        final Object dataAgeGroup = response.get("agegroup");
+        final Object dataDigitalFootprinting = response.get("digitalfootpring");
+        final Object dataImages = response.get("digitalfootpring");
+
     }
 
 }

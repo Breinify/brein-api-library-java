@@ -5,5 +5,11 @@ package com.brein.api;
  */
 public interface ISecretStrategy {
 
+    /**
+     * Creates the appropriate signature that is part of the request to
+     * the Breinify server.
+     *
+     * @return creates signature
+     */
     String createSignature();
 }

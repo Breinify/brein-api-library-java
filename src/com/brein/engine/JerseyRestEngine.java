@@ -25,11 +25,8 @@ public class JerseyRestEngine implements IRestEngine {
     @Override
     public void doRequest(final BreinActivity breinActivity) {
 
-        /*
-         * validation of activity and config
-         */
-        validateActivity(breinActivity);
-        validateConfig(breinActivity);
+        // validate the input objects
+        validate(breinActivity);
 
         final WebResource webResource = client.resource(getFullyQualifiedUrl(breinActivity));
 
@@ -53,11 +50,8 @@ public class JerseyRestEngine implements IRestEngine {
     @Override
     public BreinResult doLookup(final BreinLookup breinLookup) {
 
-        /*
-         * validation of lookup and config
-         */
-        validateLookup(breinLookup);
-        validateConfig(breinLookup);
+        // validate the input objects
+        validate(breinLookup);
 
         final WebResource webResource = client.resource(getFullyQualifiedUrl(breinLookup));
 

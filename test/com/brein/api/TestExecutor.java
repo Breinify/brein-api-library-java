@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.util.Properties;
 
+import static org.junit.Assert.assertNotEquals;
+
 /**
  * Test of Breinify Java API (static option)
  */
@@ -41,12 +43,12 @@ public class TestExecutor {
     /**
      * Contains the Category
      */
-    private final BreinCategoryType breinCategoryType = BreinCategoryType.OTHER;
+    private final BreinCategoryType breinCategoryType = BreinCategoryType.FOOD;
 
     /**
      * Correct configuration
      */
-    final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+    private final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
             BASE_URL,
             BreinEngineType.UNIREST_ENGINE);
 
@@ -95,7 +97,7 @@ public class TestExecutor {
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        BreinifyExecutor breinifyExecutor = new BreinConfig()
+        final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
                 .setBaseUrl(BASE_URL)
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
@@ -117,7 +119,7 @@ public class TestExecutor {
     @Test
     public void testLookup() {
 
-       final String[] dimensions = {FIRSTNAME,
+        final String[] dimensions = {FIRSTNAME,
                 GENDER,
                 AGE,
                 AGEGROUP,
@@ -127,7 +129,7 @@ public class TestExecutor {
         final BreinDimension breinDimension = new BreinDimension(dimensions);
         final boolean sign = false;
 
-        BreinifyExecutor breinifyExecutor = new BreinConfig()
+        final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
                 .setBaseUrl(BASE_URL)
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
@@ -151,14 +153,32 @@ public class TestExecutor {
         final Object dataDigitalFootprinting = result.get(DIGITALFOOTPRING);
         final Object dataImages = result.get(IMAGES);
 
+        assertNotEquals(null, dataFirstname);
+    }
+
+    /**
+     * Test activity call with bad url
+     */
+    @Test(expected = BreinInvalidConfigurationException.class)
+    public void testLoginWithBadUrl() {
 
         /*
-
-        if (BreinUtil.containsValue(result.getResponse())) {
-            System.out.println("Response is: " + result.getResponse());
-        }
-        assert (result.getResponse() != null);
+         * Just to ensure that the right config has been set
          */
+        final String badUrl = "www.beeeeeiiiniiify.com";
+
+        final BreinifyExecutor breinifyExecutor = new BreinConfig()
+                .setApiKey(VALID_API_KEY)
+                .setBaseUrl(badUrl)
+                .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
+                .build();
+
+        breinifyExecutor.activity(breinUser,
+                BreinActivityType.LOGIN,
+                breinCategoryType,
+                "description",
+                false);
+
     }
 
 }

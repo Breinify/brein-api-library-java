@@ -14,12 +14,23 @@ public enum BreinActivityType {
     CHECKOUT("checkOut"),
     OTHER("other");
 
+    /**
+     * the corresponding name of the enum
+     */
     private final String name;
 
+    /**
+     * Indicates the kind of the activity
+     * @param name of the type
+     */
     BreinActivityType(final String name) {
         this.name = name;
     }
 
+    /**
+     * return the corresponding name
+     * @return of the enum
+     */
     public String getName() {
         return name;
     }

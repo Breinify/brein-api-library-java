@@ -4,6 +4,8 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
 import com.brein.engine.BreinEngine;
 
+import java.time.Instant;
+
 /**
  * Base Class for activity and lookup operations.
  *
@@ -19,6 +21,16 @@ public class BreinBase {
      * Configuration
      */
     private BreinConfig breinConfig;
+
+    /**
+     * contains the timestamp when the request will be generated
+     */
+    private long unixTimestamp;
+
+    /**
+     * if set to yes then a secret has to bo sent
+     */
+    private boolean sign;
 
     /**
      * retrieves the configuration
@@ -65,9 +77,12 @@ public class BreinBase {
 
     /**
      * prepares the json request string
-     * @return empty string == default
+     * @return empty
      */
     public String prepareJsonRequest() {
+
+        setUnixTimestamp(Instant.now().getEpochSecond());
+
         return "";
     }
 
@@ -78,5 +93,40 @@ public class BreinBase {
      */
     public String getEndPoint() {
         return "";
+    }
+
+    /**
+     *
+     * @return
+     */
+    public long getUnixTimestamp() {
+        return unixTimestamp;
+    }
+
+    /**
+     * retrieves the timestamp
+     *
+     * @param unixTimestamp
+     */
+    public void setUnixTimestamp(final long unixTimestamp) {
+        this.unixTimestamp = unixTimestamp;
+    }
+
+    /**
+     * retrieves the sign flag
+     *
+     * @return flag (true / false)
+     */
+    public boolean isSign() {
+        return sign;
+    }
+
+    /**
+     * sets the sign flag
+     *
+     * @param sign value to set
+     */
+    public void setSign(final boolean sign) {
+        this.sign = sign;
     }
 }

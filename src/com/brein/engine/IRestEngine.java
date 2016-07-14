@@ -10,6 +10,10 @@ import com.brein.util.BreinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 
 /**
  * Interface for all possible rest  engines
@@ -26,6 +30,7 @@ public interface IRestEngine {
 
     /**
      * configures the rest engine
+     *
      * @param breinConfig configuration object
      */
     void configure(final BreinConfig breinConfig);
@@ -47,9 +52,57 @@ public interface IRestEngine {
 
     /**
      * terminates the rest engine
-     *
      */
     void terminate();
+
+    /**
+     * Validates if the URL is correct.
+     *
+     * @param url to check
+     * @return true if ok otherwise false
+     */
+    static boolean isUrlValid(final String url) {
+
+        try {
+            final URL u = new URL(url);
+            HttpURLConnection huc = (HttpURLConnection) u.openConnection();
+            huc.setRequestMethod("POST");
+            huc.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
+
+            huc.connect();
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("response for URL (" + url + ") is: " + huc.getResponseCode());
+            }
+
+            return true;
+
+        } catch (final IOException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("isUrlValid throws exception: ", e);
+            }
+
+            // this must be an error case!
+            return false;
+        }
+    }
+
+    /**
+     * checks if the url is valid -> if not an exception will be thrown
+     * @param fullyQualifiedUrl url with endpoint
+     */
+    default void validateUrl(final String fullyQualifiedUrl) throws BreinException {
+
+        final boolean validUrl = isUrlValid(fullyQualifiedUrl);
+        if (!validUrl) {
+            final String msg = "URL: " + fullyQualifiedUrl + " is not valid!";
+            if(LOG.isDebugEnabled()) {
+                LOG.debug(msg);
+            }
+            throw new BreinException(msg);
+        }
+    }
 
     /**
      * Creates the requested Rest Engine.
@@ -73,28 +126,14 @@ public interface IRestEngine {
     /**
      * validates the activity object
      *
-     * @param breinActivity object to validate
+     * @param breinBase object to validate
      */
-    default void validateActivity(final BreinActivity breinActivity) {
-        if (null == breinActivity) {
+    default void validateBreinBase(final BreinBase breinBase) {
+        if (null == breinBase) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("breinActivity is null");
+                LOG.debug("Object is null");
             }
-            throw new BreinException(BreinException.ACTIVITY_VALIDATION_FAILED);
-        }
-    }
-
-    /**
-     * validates the lookup object
-     *
-     * @param breinLookup object to validate
-     */
-    default void validateLookup(final BreinLookup breinLookup) {
-        if (null == breinLookup) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("breinLookup is null");
-            }
-            throw new BreinException(BreinException.LOOKUP_VALIDATION_FAILED);
+            throw new BreinException(BreinException.BREIN_BASE_VALIDATION_FAILED);
         }
     }
 
@@ -118,7 +157,6 @@ public interface IRestEngine {
      * retrieves the fully qualified url (base + endpoint)
      *
      * @param breinBase activity or lookup object
-     *
      * @return full url
      */
     default String getFullyQualifiedUrl(final BreinBase breinBase) {
@@ -141,7 +179,6 @@ public interface IRestEngine {
      * retrieves the request body depending of the object
      *
      * @param breinBase object to use
-     *
      * @return request as json string
      */
     default String getRequestBody(final BreinBase breinBase) {
@@ -156,5 +193,19 @@ public interface IRestEngine {
         return requestBody;
     }
 
+    /**
+     * Invokes validation of BreinBase object, configuration and url.
+     *
+     * @param breinBase activity or lookup object
+     */
+    default void validate(final BreinBase breinBase) {
+
+        // validation of activity and config
+        validateBreinBase(breinBase);
+        validateConfig(breinBase);
+
+        // validate URL, might throw an exception...
+        // validateUrl(getFullyQualifiedUrl(breinBase));
+    }
 
 }

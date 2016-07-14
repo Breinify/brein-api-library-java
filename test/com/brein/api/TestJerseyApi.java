@@ -51,11 +51,10 @@ public class TestJerseyApi {
         // set logging on
         final Properties props = System.getProperties();
         props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
-
     }
 
     /**
-     * setup
+     * setup for each test
      */
     @Before
     public void setUp() {
@@ -68,15 +67,16 @@ public class TestJerseyApi {
     @AfterClass
     public static void tearDown() {
 
-        /**
+        /*
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /**
+            /*
              * TODO...
              * Thread.sleep is not the best practice...
              */
             Thread.sleep(4000);
+            Breinify.shutdown();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -88,18 +88,18 @@ public class TestJerseyApi {
     @Test
     public void testLogin() {
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * additional optional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -124,13 +124,13 @@ public class TestJerseyApi {
 
         Breinify.setConfig(config);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -143,7 +143,7 @@ public class TestJerseyApi {
     /**
      * Testcase with null value as base url
      */
-    @Test(expected = BreinException.class)
+    @Test(expected = BreinInvalidConfigurationException.class)
     public void testLoginWithNullBaseUrl() {
 
         final String description = "Login-Description";
@@ -155,13 +155,13 @@ public class TestJerseyApi {
 
         Breinify.setConfig(config);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -177,7 +177,7 @@ public class TestJerseyApi {
      * exception.
      */
     @Test(expected = BreinException.class)
-    public void testLoginWithDefaultRestEngine() {
+    public void testLoginWithNoRestEngine() {
 
         final String description = "Login-Description";
         final boolean sign = false;
@@ -194,14 +194,14 @@ public class TestJerseyApi {
 
         Breinify.setConfig(config);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -220,7 +220,7 @@ public class TestJerseyApi {
 
         final String description = "Login-Description";
 
-        /**
+        /*
          * set configuration
          */
         BreinConfig config = new BreinConfig(VALID_API_KEY,
@@ -230,13 +230,13 @@ public class TestJerseyApi {
 
         Breinify.setConfig(config);
 
-        /**
+        /*
          * additional user information
          */
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,
@@ -277,7 +277,7 @@ public class TestJerseyApi {
         /*
          * additional user information
          */
-        breinUser.setDateOfBirth("12/31/2008");
+        breinUser.setDateOfBirth(12, 31, 2008);
 
         /*
          * invoke activity call
@@ -297,12 +297,12 @@ public class TestJerseyApi {
 
         final String description = "Search-Description";
 
-        /**
+        /*
          * set configuration
          */
         Breinify.setConfig(breinConfig);
 
-        /**
+        /*
          * invoke activity call
          */
         Breinify.activity(breinUser,

@@ -14,18 +14,17 @@ Breinify's DigitalDNA API puts dynamic behavior-based, people-driven data right 
 
 Thanks to **Breinify's DigitalDNA** you are now able to adapt your online presence to your visitors needs and **provide a unique experience**. Let's walk step-by-step through a simple example.
 
-#### Step 1: Download the sources
+### Quick start
 
-Download the Java sources from [here](https://github.com/Breinify/brein-api-library-java). 
+#### Step 1: Download the Library
+
+Download the Library from Maven Repository <<more details to come>>
 
 
-#### Step 2: Build the library
+#### Step 2: Integrate the library
 
-The Java source code is based on Java 8. Use maven to build the library. Choose target package. 
+Integrate the Library into your Java project. 
 
-````
-mvn package
-````
 
 #### Step 3: Configure the library
 
@@ -115,3 +114,9 @@ Breinify.shutdown();
 ``` 
 
 Please note that after having invoked this call no further Breinify.activity or Breinify.lookup calls are possible. So it should only be part of your termination sequence of your program. Without this statement your program might not terminate.
+
+### Further links
+To understand all the capabilities of Breinify's DigitalDNA API, you should have a look at:
+
+* a [more code snippet](documentation/more-snippets.md), or
+* [Breinify's Website](https://www.breinify.com).

@@ -57,13 +57,10 @@ public class UniRestEngine implements IRestEngine {
     @Override
     public void doRequest(final BreinActivity breinActivity) throws BreinException {
 
-        /**
-         * validation of activity and config
-         */
-        validateActivity(breinActivity);
-        validateConfig(breinActivity);
+        // validate the input objects
+        validate(breinActivity);
 
-        /**
+        /*
          * invoke the request
          */
         Unirest.post(getFullyQualifiedUrl(breinActivity))
@@ -101,19 +98,14 @@ public class UniRestEngine implements IRestEngine {
      * performs a lookup  and provides details
      *
      * @param breinLookup contains request data
-     *
      * @return response from Breinify
-     *
      * @throws BreinException
      */
     @Override
     public BreinResult doLookup(final BreinLookup breinLookup) throws BreinException {
 
-        /*
-         * validation of lookup and config
-         */
-        validateLookup(breinLookup);
-        validateConfig(breinLookup);
+        // validate the input objects
+        validate(breinLookup);
 
         try {
             final HttpResponse<JsonNode> jsonResponse = Unirest.post(getFullyQualifiedUrl(breinLookup))
@@ -131,7 +123,7 @@ public class UniRestEngine implements IRestEngine {
         }
     }
 
-   /**
+    /**
      * used to stop the UNIREST threads
      */
     @Override

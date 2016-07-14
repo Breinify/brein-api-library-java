@@ -54,7 +54,7 @@ public class TestEngine {
     public static void tearDown() {
 
         try {
-            /**
+            /*
              * TODO: replace sleep
              */
             Thread.sleep(10000);
@@ -91,8 +91,6 @@ public class TestEngine {
         assertNotNull(json.getArray().get(0));
     }
 
-
-
     /**
      * This is simple get rest test.
      *
@@ -107,7 +105,6 @@ public class TestEngine {
         response = Unirest.get("http://httpbin.org/get").queryString("name", "mark2").asJson();
         assertEquals(response.getBody().getObject().getJSONObject("args").getString("name"), "mark2");
     }
-
 
     /**
      * This is a simple UNIREST test
