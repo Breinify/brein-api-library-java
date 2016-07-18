@@ -10,6 +10,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,17 +24,16 @@ import java.io.IOException;
 public class UniRestEngine implements IRestEngine {
 
     /**
+     * some constants
+     */
+    public static final String MSG_URL_IS_NULL = "The url is null.";
+    public static final String MSG_REQUEST_HAS_FAILED = "The request has failed.";
+    public static final String MSG_REQUEST_HAS_BEEN_CANCELLED = "The request has been cancelled.";
+    public static final String MSG_REQUEST_WAS_SUCCESSFUL = "The request was successful.";
+    /**
      * Logger instance
      */
     private static final Logger LOG = LoggerFactory.getLogger(UniRestEngine.class);
-
-    /**
-     * some constants
-     */
-    public static final String MSG_URL_IS_NULL = "url is null";
-    public static final String MSG_REQUEST_HAS_FAILED = "the request has failed";
-    public static final String MSG_REQUEST_HAS_BEEN_CANCELLED = "the request has been cancelled";
-    public static final String MSG_REQUEST_WAS_SUCCESSFUL = "the request was successful";
 
     /**
      * configures the rest engine
@@ -69,19 +69,19 @@ public class UniRestEngine implements IRestEngine {
                 .asJsonAsync(new Callback<JsonNode>() {
 
                     @Override
-                    public void failed(final UnirestException e) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug(MSG_REQUEST_HAS_FAILED);
-                        }
-                        throw new BreinException(BreinException.REQUEST_FAILED);
-                    }
-
-                    @Override
                     public void completed(final HttpResponse<JsonNode> response) {
 
                         if (LOG.isDebugEnabled()) {
                             LOG.debug(MSG_REQUEST_WAS_SUCCESSFUL);
                         }
+                    }
+
+                    @Override
+                    public void failed(final UnirestException e) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(MSG_REQUEST_HAS_FAILED);
+                        }
+                        throw new BreinException(BreinException.REQUEST_FAILED);
                     }
 
                     @Override
@@ -108,6 +108,14 @@ public class UniRestEngine implements IRestEngine {
         validate(breinLookup);
 
         try {
+
+            final RequestBodyEntity resp = Unirest.post(getFullyQualifiedUrl
+                    (breinLookup))
+                    .header(HEADER_ACCESS, HEADER_APP_JSON)
+                    .body(getRequestBody(breinLookup));
+
+            System.out.println(resp.getBody());
+
             final HttpResponse<JsonNode> jsonResponse = Unirest.post(getFullyQualifiedUrl(breinLookup))
                     .header(HEADER_ACCESS, HEADER_APP_JSON)
                     .body(getRequestBody(breinLookup))
@@ -119,7 +127,7 @@ public class UniRestEngine implements IRestEngine {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("within doLookup - exception has occurred. " + e);
             }
-            throw new BreinException(BreinException.LOOKUP_EXCEPTION);
+            throw new BreinException(BreinException.LOOKUP_EXCEPTION, e);
         }
     }
 

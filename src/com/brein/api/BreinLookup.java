@@ -4,7 +4,11 @@ import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
-import com.google.gson.*;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Provides the lookup functionality
@@ -17,7 +21,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
     private BreinDimension breinDimension;
 
     /**
-     * retrieves the brein dimension object
+     * retrieves the Brein dimension object
      *
      * @return object
      */

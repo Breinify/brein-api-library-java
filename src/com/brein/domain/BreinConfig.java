@@ -6,7 +6,6 @@ import com.brein.engine.BreinEngine;
 import com.brein.engine.BreinEngineType;
 import com.brein.engine.IRestEngine;
 import com.brein.util.BreinUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,40 +15,33 @@ import org.slf4j.LoggerFactory;
 public class BreinConfig {
 
     /**
-     * Logger instance
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
-
-    /**
      * default endpoint of activity
      */
     public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
-
     /**
      * default endpoint of lookup
      */
     public static final String DEFAULT_LOOKUP_ENDPOINT = "/lookup";
-
     /**
      * default connection timeout
      */
     public static final long DEFAULT_CONNECTION_TIMEOUT = 1000;
-
     /**
      * default socket timeout
      */
     public static final long DEFAULT_SOCKET_TIMEOUT = 6000;
-
-    /**
-     * default validation
-     */
-    public static boolean DEFAULT_VALIDATE = true;
-
     /**
      * default breinify base url
      */
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
-
+    /**
+     * Logger instance
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
+    /**
+     * default validation
+     */
+    public static boolean DEFAULT_VALIDATE = true;
     /**
      * BASE URL
      */
@@ -223,6 +215,15 @@ public class BreinConfig {
     }
 
     /**
+     * retrieves the apikey
+     *
+     * @return apikey
+     */
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    /**
      * sets the apikey
      *
      * @param apiKey the apikey
@@ -237,15 +238,6 @@ public class BreinConfig {
     }
 
     /**
-     * retrieves the apikey
-     *
-     * @return apikey
-     */
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    /**
      * retrieves the url for the post requests
      *
      * @return base url
@@ -255,12 +247,21 @@ public class BreinConfig {
     }
 
     /**
-     * retrieves the configures timeout values
+     * retrieves the configured timeout values
      *
      * @return connection time out
      */
     public long getConnectionTimeout() {
         return connectionTimeout;
+    }
+
+    /**
+     * set the connection timeout
+     *
+     * @param connectionTimeout value
+     */
+    public void setConnectionTimeout(final long connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
     }
 
     /**
@@ -279,15 +280,6 @@ public class BreinConfig {
      */
     public void setSocketTimeout(final long socketTimeout) {
         this.socketTimeout = socketTimeout;
-    }
-
-    /**
-     * set the connection timeout
-     *
-     * @param connectionTimeout value
-     */
-    public void setConnectionTimeout(final long connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
     }
 
     /**

@@ -111,6 +111,17 @@ public class BreinUser {
     }
 
     /**
+     * Sets the date of birth
+     * @param dateOfBirth a string containing the date of birth.
+     *                    This content and format will not be checked
+     * @return this -> allows chaining
+     */
+    public BreinUser setDateOfBirth(final String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    /**
      * Set's the date of birth
      * There is no check if the month - day combination is valid, only
      * the range for day, month and year will be checked
@@ -133,17 +144,6 @@ public class BreinUser {
                 }
             }
         }
-        return this;
-    }
-
-    /**
-     * Sets the date of birth
-     * @param dateOfBirth a string containing the date of birth.
-     *                    This content and format will not be checked
-     * @return this -> allows chaining
-     */
-    public BreinUser setDateOfBirth(final String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
         return this;
     }
 
@@ -202,7 +202,7 @@ public class BreinUser {
     }
 
     /**
-     * provides a nices output of the user details
+     * provides a nicer output of the user details
      * @return output
      */
     @Override

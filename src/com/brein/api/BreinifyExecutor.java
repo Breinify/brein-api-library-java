@@ -13,24 +13,30 @@ import com.brein.domain.BreinUser;
 public class BreinifyExecutor {
 
     /**
-     * contains the current version of the usage library
+     * contains the current version of the library
      */
     private static final String VERSION = "1.0.0-snapshot";
-
+    /**
+     * contains the activity object
+     */
+    private final BreinActivity breinActivity = new BreinActivity();
+    /**
+     * contains the lookup object
+     */
+    private final BreinLookup breinLookup = new BreinLookup();
     /**
      * contains the configuration
      */
     private BreinConfig config;
 
     /**
-     * contains the activity object
+     * gets the config
+     *
+     * @return config
      */
-    private final BreinActivity breinActivity = new BreinActivity();
-
-    /**
-     * contains the lookup object
-     */
-    private final BreinLookup breinLookup = new BreinLookup();
+    public BreinConfig getConfig() {
+        return config;
+    }
 
     /**
      * sets the configuration
@@ -41,15 +47,6 @@ public class BreinifyExecutor {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
-    }
-
-    /**
-     * gets the config
-     *
-     * @return config
-     */
-    public BreinConfig getConfig() {
-        return config;
     }
 
     /**

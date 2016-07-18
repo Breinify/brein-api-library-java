@@ -67,13 +67,13 @@ The engine is informed of an activity by executing *Breinify.activity(...)*.
 final BreinUser breinUser =
           new BreinUser("user.anywhere@email.com");
 
-// invoke an activity call "LOGIN"
+// invoke an activity noting that the user has logged in
 Breinify.activity(breinUser, BreinActivityType.LOGIN,
          BreinCategoryType.HOME, "Login-Description", false);
 
 ```
 
-This is actually all. The call will be invoked asynchronous.
+That's it! The call will be run asynchronously in the background.
 
 
 ##### Placing look-up triggers
@@ -92,7 +92,7 @@ final String[] dimensions = {"firstname",
 // wrap this array into BreinDimension
 final BreinDimension breinDimension = new BreinDimension(dimensions);
 
-// invoke lookup
+// invoke the lookup
 final BreinResult result = Breinify.lookup(breinUser, breinDimension, false);
 
 // retrieve the values of interest
@@ -106,7 +106,7 @@ final Object dataImages = result.get("images");
 ```
 #### Step 5: Teardown of the Library Services
 
-Depending of the rest engine (e.g. UNIREST) some threads needs to be stopped. This will be done bei invoking the following statement:
+Depending of the rest engine (e.g. UNIREST) some threads needs to be stopped. This will be done by invoking the following statement:
 
 ```
 // terminates the engine and possible open threads
@@ -116,7 +116,7 @@ Breinify.shutdown();
 Please note that after having invoked this call no further Breinify.activity or Breinify.lookup calls are possible. So it should only be part of your termination sequence of your program. Without this statement your program might not terminate.
 
 ### Further links
-To understand all the capabilities of Breinify's DigitalDNA API, you should have a look at:
+To understand all the capabilities of Breinify's DigitalDNA API, take a look at:
 
-* a [more code snippet](documentation/more-snippets.md), or
+* [Additional code snippets](documentation/more-snippets.md), or
 * [Breinify's Website](https://www.breinify.com).
