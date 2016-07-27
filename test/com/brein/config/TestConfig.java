@@ -16,8 +16,7 @@ import static org.junit.Assert.*;
  * Test of configuration
  */
 public class TestConfig {
-
-    private final static String testApiKey = "TEST-API-KEY";
+    private static final String testApiKey = "TEST-API-KEY";
 
     /**
      * Init part
