@@ -86,7 +86,7 @@ final String[] dimensions = {"firstname",
        "gender",
        "age",
        "agegroup",
-       "digitalfootpring",
+       "digitalfootprint",
        "images"};
 
 // wrap this array into BreinDimension
@@ -100,7 +100,7 @@ final Object dataFirstname = result.get("firstname");
 final Object dataGender = result.get("gender");
 final Object dataAge = result.get("age");
 final Object dataAgeGroup = result.get("agegroup");
-final Object dataDigitalFootprinting = result.get("digitalfootpring");
+final Object dataDigitalFootprinting = result.get("digitalfootprint");
 final Object dataImages = result.get("images");
 
 ```
