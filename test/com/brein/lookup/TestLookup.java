@@ -48,7 +48,6 @@ public class TestLookup {
                 BreinEngineType.UNIREST_ENGINE);
 
         breinLookup.setConfig(breinConfig);
-
     }
 
     /**
@@ -79,7 +78,7 @@ public class TestLookup {
     public void testLookup() {
 
         final String[] dimensions = {"firstname", "gender",
-                "age", "agegroup", "digitalfootpring", "images"};
+                "age", "agegroup", "digitalfootprint", "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
 
@@ -92,8 +91,7 @@ public class TestLookup {
         final Object dataGender = breinResult.get("gender");
         final Object dataAge = breinResult.get("age");
         final Object dataAgeGroup = breinResult.get("agegroup");
-        final Object dataDigitalFootprinting = breinResult.get("digitalfootpring");
-        final Object dataImages = breinResult.get("digitalfootpring");
-
+        final Object dataDigitalFootprinting = breinResult.get("digitalfootprint");
+        final Object dataImages = breinResult.get("digitalfootprint");
     }
 }

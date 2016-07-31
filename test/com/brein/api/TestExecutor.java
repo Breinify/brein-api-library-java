@@ -19,11 +19,11 @@ public class TestExecutor {
      * some constants for lookup
      */
     final static String FIRSTNAME = "firstname";
-    final static String GENDER = "GENDER";
-    final static String AGE = "AGE";
-    final static String AGEGROUP = "AGEGROUP";
-    final static String DIGITALFOOTPRING = "digitalfootpring";
-    final static String IMAGES = "IMAGES";
+    final static String GENDER = "gender";
+    final static String AGE = "age";
+    final static String AGEGROUP = "agegroup";
+    final static String DIGITALFOOTPRINT = "digitalfootprint";
+    final static String IMAGES = "images";
 
     /**
      * Contains the BASE URL of the Breinify Backend
@@ -39,18 +39,6 @@ public class TestExecutor {
      * Contains the Breinify User
      */
     private final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
-
-    /**
-     * Contains the Category
-     */
-    private final BreinCategoryType breinCategoryType = BreinCategoryType.FOOD;
-
-    /**
-     * Correct configuration
-     */
-    private final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-            BASE_URL,
-            BreinEngineType.UNIREST_ENGINE);
 
     /**
      * Init part
@@ -108,7 +96,7 @@ public class TestExecutor {
          */
         breinifyExecutor.activity(breinUser,
                 BreinActivityType.LOGIN,
-                breinCategoryType,
+                BreinCategoryType.FOOD,
                 description,
                 false);
     }
@@ -123,7 +111,7 @@ public class TestExecutor {
                 GENDER,
                 AGE,
                 AGEGROUP,
-                DIGITALFOOTPRING,
+                DIGITALFOOTPRINT,
                 IMAGES};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
@@ -150,7 +138,7 @@ public class TestExecutor {
         final Object dataGender = result.get(GENDER);
         final Object dataAge = result.get(AGE);
         final Object dataAgeGroup = result.get(AGEGROUP);
-        final Object dataDigitalFootprinting = result.get(DIGITALFOOTPRING);
+        final Object dataDigitalFootprinting = result.get(DIGITALFOOTPRINT);
         final Object dataImages = result.get(IMAGES);
 
         assertNotEquals(null, dataFirstname);
@@ -175,7 +163,7 @@ public class TestExecutor {
 
         breinifyExecutor.activity(breinUser,
                 BreinActivityType.LOGIN,
-                breinCategoryType,
+                BreinCategoryType.FOOD,
                 "description",
                 false);
 

@@ -438,7 +438,7 @@ public class TestJerseyApi {
                 "gender",
                 "age",
                 "agegroup",
-                "digitalfootpring",
+                "digitalfootprint",
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
@@ -457,7 +457,7 @@ public class TestJerseyApi {
         final Object dataGender = response.get("gender");
         final Object dataAge = response.get("age");
         final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootpring");
+        final Object dataDigitalFootprinting = response.get("digitalfootprint");
         final Object dataImages = response.get("images");
 
     }

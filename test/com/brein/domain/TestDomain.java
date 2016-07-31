@@ -33,21 +33,23 @@ public class TestDomain {
      */
     @Test
     public void testBreinRequest() {
-        BreinConfig breinConfig = new BreinConfig();
+        final BreinConfig breinConfig = new BreinConfig();
         final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
         breinConfig.setApiKey(validApiKey);
 
-        BreinUser breinUser = new BreinUser("m.recchioni@me.com");
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        final BreinUser breinUser = new BreinUser("toni.maroni@mail.com");
+        breinUser.setFirstName("Toni");
+        breinUser.setLastName("Maroni");
 
-        BreinActivity breinActivity = new BreinActivity();
+        final BreinActivity breinActivity = new BreinActivity();
+        breinActivity.setConfig(breinConfig);
         breinActivity.setBreinUser(breinUser);
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
         breinActivity.setBreinCategoryType(BreinCategoryType.HOME);
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
+        System.out.println(jsonOutput);
         assertTrue(jsonOutput.length() > 0);
     }
 
@@ -56,15 +58,16 @@ public class TestDomain {
      * of the request but with less data
      */
     @Test
-    public void testBreinRequsestWithLessData() {
-        BreinConfig breinConfig = new BreinConfig();
+    public void testBreinRequestWithLessData() {
+        final BreinConfig breinConfig = new BreinConfig();
         final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
         breinConfig.setApiKey(validApiKey);
 
-        BreinUser breinUser = new BreinUser("m.recchioni@me.com");
+        final BreinUser breinUser = new BreinUser("m.recchioni@me.com");
         breinUser.setLastName("");
 
-        BreinActivity breinActivity = new BreinActivity();
+        final BreinActivity breinActivity = new BreinActivity();
+        breinActivity.setConfig(breinConfig);
         breinActivity.setBreinUser(breinUser);
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
@@ -113,17 +116,16 @@ public class TestDomain {
     @Test
     public void testBreinUserMethods() {
 
-        BreinUser breinUser = new BreinUser("user.anywhere@email.com");
-
-        breinUser.setFirstName("User")
+        final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
+                .setFirstName("User")
                 .setLastName("Anyhere")
                 .setImei("356938035643809")
                 .setDateOfBirth(6, 20, 1985)
                 .setDeviceId("AAAAAAAAA-BBBB-CCCC-1111-222222220000")
                 .setSessionId("SID:ANON:w3.org:j6oAOxCWZh/CD723LGeXlf-01:034");
 
+        assertFalse(breinUser.toString().isEmpty());
         System.out.println(breinUser.toString());
-
     }
 
     /**
@@ -132,9 +134,8 @@ public class TestDomain {
     @Test
     public void testBreinUserWithNoMethods() {
 
-        BreinUser breinUser = new BreinUser("user.anywhere@email.com");
-
+        final BreinUser breinUser = new BreinUser("user.anywhere@email.com");
+        assertFalse(breinUser.toString().isEmpty());
         System.out.println(breinUser.toString());
-
     }
 }

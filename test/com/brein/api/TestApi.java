@@ -437,7 +437,7 @@ public class TestApi {
                 "gender",
                 "age",
                 "agegroup",
-                "digitalfootpring",
+                "digitalfootprint",
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
@@ -457,8 +457,8 @@ public class TestApi {
         final Object dataGender = response.get("gender");
         final Object dataAge = response.get("age");
         final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootpring");
-        final Object dataImages = response.get("digitalfootpring");
+        final Object dataDigitalFootprinting = response.get("digitalfootprint");
+        final Object dataImages = response.get("images");
     }
 
     /**
@@ -489,7 +489,6 @@ public class TestApi {
 
     }
 
-
     /**
      * Test a login activity with sign but wrong secret
      */
@@ -515,9 +514,7 @@ public class TestApi {
                 BreinCategoryType.HOME,
                 "Login-Description",
                 sign);
-
     }
-
 
     /**
      * Test a lookup with sign and correct secret
@@ -530,7 +527,7 @@ public class TestApi {
                 "gender",
                 "age",
                 "agegroup",
-                "digitalfootpring",
+                "digitalfootprint",
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
@@ -557,9 +554,8 @@ public class TestApi {
         final Object dataGender = response.get("gender");
         final Object dataAge = response.get("age");
         final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootpring");
-        final Object dataImages = response.get("digitalfootpring");
-
+        final Object dataDigitalFootprinting = response.get("digitalfootprint");
+        final Object dataImages = response.get("images");
     }
 
     /**
@@ -573,7 +569,7 @@ public class TestApi {
                 "gender",
                 "age",
                 "agegroup",
-                "digitalfootpring",
+                "digitalfootprint",
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
@@ -600,9 +596,8 @@ public class TestApi {
         final Object dataGender = response.get("gender");
         final Object dataAge = response.get("age");
         final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootpring");
-        final Object dataImages = response.get("digitalfootpring");
-
+        final Object dataDigitalFootprinting = response.get("digitalfootprint");
+        final Object dataImages = response.get("images");
     }
 
 }
