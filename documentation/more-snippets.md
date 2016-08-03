@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify API JavaScript Library" width="250">
+  <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify API Java Library" width="250">
 </p>
 
 <p align="center">
@@ -8,7 +8,7 @@ Breinify's DigitalDNA API puts dynamic behavior-based, people-driven data right 
 
 ### Additional Code Snippet
 
-The following code snippets provides addtional information how to use the *breinify-api-java* library.
+The following code snippets provides additional information how to use the *breinify-api-java* library.
 
 #### BreinExecutor
 Instead of using Breinify class methods you could also use the BreinExecutor class in order to invoke activity or lookup calls.
