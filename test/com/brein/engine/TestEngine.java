@@ -33,7 +33,7 @@ public class TestEngine {
     /**
      * this is my test api key
      */
-    final static String API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
 
     private CountDownLatch lock;
     private boolean status;

@@ -18,17 +18,17 @@ import java.util.Properties;
  */
 public class TestActivity {
 
-    final static Logger LOGGER = LoggerFactory.getLogger(TestActivity.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestActivity.class);
 
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    final static String BASE_URL = "http://dev.breinify.com/api";
+    private static final String BASE_URL = "http://dev.breinify.com/api";
 
     /**
      * This has to be a valid api key
      */
-    final static String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
 
     /**
      * Contains the Breinify User

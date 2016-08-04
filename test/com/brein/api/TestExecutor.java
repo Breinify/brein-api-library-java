@@ -1,6 +1,11 @@
 package com.brein.api;
 
-import com.brein.domain.*;
+import com.brein.domain.BreinActivityType;
+import com.brein.domain.BreinCategoryType;
+import com.brein.domain.BreinConfig;
+import com.brein.domain.BreinDimension;
+import com.brein.domain.BreinResult;
+import com.brein.domain.BreinUser;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -18,22 +23,22 @@ public class TestExecutor {
     /**
      * some constants for lookup
      */
-    final static String FIRSTNAME = "firstname";
-    final static String GENDER = "gender";
-    final static String AGE = "age";
-    final static String AGEGROUP = "agegroup";
-    final static String DIGITALFOOTPRINT = "digitalfootprint";
-    final static String IMAGES = "images";
+    private static final String FIRSTNAME = "firstname";
+    private static final String GENDER = "gender";
+    private static final String AGE = "age";
+    private static final String AGEGROUP = "agegroup";
+    private static final String DIGITALFOOTPRINT = "digitalfootprint";
+    private static final String IMAGES = "images";
 
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    final static String BASE_URL = "http://dev.breinify.com/api";
+    private static final String BASE_URL = "http://dev.breinify.com/api";
 
     /**
      * This has to be a valid api key
      */
-    final static String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
 
     /**
      * Contains the Breinify User
@@ -107,12 +112,14 @@ public class TestExecutor {
     @Test
     public void testLookup() {
 
-        final String[] dimensions = {FIRSTNAME,
+        final String[] dimensions = {
+                FIRSTNAME,
                 GENDER,
                 AGE,
                 AGEGROUP,
                 DIGITALFOOTPRINT,
-                IMAGES};
+                IMAGES
+        };
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
         final boolean sign = false;
