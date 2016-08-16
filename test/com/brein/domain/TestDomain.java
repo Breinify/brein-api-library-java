@@ -49,7 +49,6 @@ public class TestDomain {
         breinActivity.setBreinCategoryType(BreinCategoryType.HOME);
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
-        System.out.println(jsonOutput);
         assertTrue(jsonOutput.length() > 0);
     }
 
@@ -125,7 +124,6 @@ public class TestDomain {
                 .setSessionId("SID:ANON:w3.org:j6oAOxCWZh/CD723LGeXlf-01:034");
 
         assertFalse(breinUser.toString().isEmpty());
-        System.out.println(breinUser.toString());
     }
 
     /**
@@ -136,6 +134,5 @@ public class TestDomain {
 
         final BreinUser breinUser = new BreinUser("user.anywhere@email.com");
         assertFalse(breinUser.toString().isEmpty());
-        System.out.println(breinUser.toString());
     }
 }

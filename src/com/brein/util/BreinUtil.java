@@ -35,8 +35,8 @@ public class BreinUtil {
     /**
      * Verifies if the object contains a value
      * Return false in case of:
-     *    - null
-     *    - empty strings
+     * - null
+     * - empty strings
      *
      * @param object to check
      *
@@ -49,7 +49,7 @@ public class BreinUtil {
         }
 
         if (object.getClass() == String.class) {
-            final String strObj = (String)object;
+            final String strObj = (String) object;
             return strObj.length() > 0;
         }
 
@@ -71,6 +71,7 @@ public class BreinUtil {
      * Helper methods generates a random string by len
      *
      * @param len of the requested string
+     *
      * @return random string
      */
     public static String randomString(final int len) {
@@ -85,6 +86,7 @@ public class BreinUtil {
      * Creates a secret by given len
      *
      * @param length of the secret
+     *
      * @return created secret
      */
     public static String generateSecret(final int length) {
@@ -97,11 +99,12 @@ public class BreinUtil {
     }
 
     /**
-     * generates the signature
+     * Generates the signature
      *
-     * @param message
-     * @param secret
-     * @return
+     * @param message the message to generate the signature for
+     * @param secret  the secret retrieved from the api
+     *
+     * @return the generated signature
      */
     public static String generateSignature(final String message, final String secret) {
 
