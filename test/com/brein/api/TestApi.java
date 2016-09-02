@@ -30,7 +30,7 @@ public class TestApi {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("philipp@meisen.net");
+    private final BreinUser breinUser = new BreinUser("User.Name@email.com");
 
     /**
      * Contains the Category
@@ -87,8 +87,8 @@ public class TestApi {
         /*
          * additional optional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
         /*
          * invoke activity call
@@ -118,8 +118,8 @@ public class TestApi {
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User")
+                .setLastName("Name");
 
         /*
          * invoke activity call
@@ -170,8 +170,8 @@ public class TestApi {
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
 
         /*
@@ -199,15 +199,15 @@ public class TestApi {
         final BreinConfig config = new BreinConfig(VALID_API_KEY,
                 BASE_URL,
                 BreinEngineType.UNIREST_ENGINE);
-        config.setActivityEndpoint("\\wrongEndPoint");
+        config.setActivityEndpoint("/wrongEndPoint");
 
         Breinify.setConfig(config);
 
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
         /*
          * invoke activity call
@@ -388,12 +388,12 @@ public class TestApi {
         Breinify.setConfig(breinConfig);
 
         // user data
-        final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
-        breinUser.setDateOfBirth(11, 20, 1999);
-        breinUser.setDeviceId("DD-EEEEE");
-        breinUser.setImei("55544455333");
+        final BreinUser breinUser = new BreinUser("User.Name@email.com")
+                .setFirstName("Marco")
+                .setLastName("Recchioni")
+                .setDateOfBirth(11, 20, 1999)
+                .setDeviceId("DD-EEEEE")
+                .setImei("55544455333");
 
         final Map<String, String> tagMap = new HashMap<>();
         tagMap.put("t1", "0.0");
@@ -412,10 +412,10 @@ public class TestApi {
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
         breinActivity.setTagsMap(tagMap);
-        breinActivity.setIpAddress("10.168.118.208");
+        breinActivity.setIpAddress("11.222.333.444");
         breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
-        breinActivity.setReferrer("https://teespring.com/track");
+        breinActivity.setAdditionalUrl("https://sample.com.au/home");
+        breinActivity.setReferrer("https://sample.com.au/track");
         breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         Breinify.activity(breinActivity);
@@ -435,9 +435,9 @@ public class TestApi {
         Breinify.setConfig(breinConfig);
 
         // user data
-        final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        final BreinUser breinUser = new BreinUser("User.Name@email.com");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
         breinUser.setDateOfBirth(11, 20, 1999);
         breinUser.setDeviceId("DD-EEEEE");
         breinUser.setImei("55544455333");
@@ -448,10 +448,10 @@ public class TestApi {
         breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
-        breinActivity.setIpAddress("10.168.118.208");
+        breinActivity.setIpAddress("11.222.333.444");
         breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
-        breinActivity.setReferrer("https://teespring.com/track");
+        breinActivity.setAdditionalUrl("https://sample.com.au/home");
+        breinActivity.setReferrer("https://sample.com.au/track");
         breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         // user not set -> exception expected

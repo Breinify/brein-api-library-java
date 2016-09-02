@@ -28,7 +28,7 @@ public class TestJerseyApi {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("philipp@meisen.net");
+    private final BreinUser breinUser = new BreinUser("user.name@email.com");
 
     /**
      * Contains the Category
@@ -96,8 +96,8 @@ public class TestJerseyApi {
         /*
          * additional optional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("Usr");
+        breinUser.setLastName("Name");
 
         /*
          * invoke activity call
@@ -127,8 +127,8 @@ public class TestJerseyApi {
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
         /*
          * invoke activity call
@@ -158,8 +158,8 @@ public class TestJerseyApi {
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User")
+                .setLastName("Name");
 
         /*
          * invoke activity call
@@ -197,9 +197,8 @@ public class TestJerseyApi {
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
-
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
         /*
          * invoke activity call
@@ -226,15 +225,15 @@ public class TestJerseyApi {
         final BreinConfig config = new BreinConfig(VALID_API_KEY,
                 BASE_URL,
                 BreinEngineType.UNIREST_ENGINE);
-        config.setActivityEndpoint("\\wrongEndPoint");
+        config.setActivityEndpoint("/wrongEndPoint");
 
         Breinify.setConfig(config);
 
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
         /*
          * invoke activity call
@@ -290,7 +289,7 @@ public class TestJerseyApi {
     }
 
     /**
-     * TODO
+     * test case with search call
      */
     @Test
     public void testSearch() {
@@ -313,7 +312,7 @@ public class TestJerseyApi {
     }
 
     /**
-     * TODO
+     * test case with addToCart call
      */
     @Test
     public void testAddToCart() {
@@ -336,7 +335,7 @@ public class TestJerseyApi {
     }
 
     /**
-     * TODO
+     * test case with removeFromCart call
      */
     @Test
     public void testRemoveFromCart() {
@@ -359,7 +358,7 @@ public class TestJerseyApi {
     }
 
     /**
-     * TODO
+     * test case with selectProduct call
      */
     @Test
     public void testSelectProduct() {
@@ -382,7 +381,7 @@ public class TestJerseyApi {
     }
 
     /**
-     * TODO
+     * test case with other call
      */
     @Test
     public void testOther() {

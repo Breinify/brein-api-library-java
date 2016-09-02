@@ -190,9 +190,9 @@ public class TestEngine {
     @Test
     public void testBreinAsyncCallback() throws JSONException, InterruptedException, ExecutionException {
 
-        final BreinUser breinUser = new BreinUser("m.recchioni@me.com");
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        final BreinUser breinUser = new BreinUser("user.name@me.com");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setBreinUser(breinUser);
@@ -276,14 +276,5 @@ public class TestEngine {
 
                 });
     }
-
-    /**
-     * This should run some tests for the jersey client api...
-     */
-    @Test
-    public void testJerseyRestEngine() {
-
-    }
-
 
 }

@@ -39,7 +39,7 @@ public class TestExecutor {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
+    private final BreinUser breinUser = new BreinUser("User.Name@email.com");
 
     /**
      * Init part
@@ -77,8 +77,8 @@ public class TestExecutor {
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
         breinUser.setDateOfBirth(11, 20, 1999);
         breinUser.setDeviceId("DD-EEEEE");
         breinUser.setImei("55544455333");
@@ -97,11 +97,10 @@ public class TestExecutor {
         breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
-
-        breinActivity.setIpAddress("10.168.118.208");
+        breinActivity.setIpAddress("11.222.333.444");
         breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
-        breinActivity.setReferrer("https://teespring.com/track");
+        breinActivity.setAdditionalUrl("https://sample.com.au/home");
+        breinActivity.setReferrer("https://sample.com.au/track");
         breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         /*
@@ -119,8 +118,8 @@ public class TestExecutor {
         /*
          * additional user information
          */
-        breinUser.setFirstName("Marco");
-        breinUser.setLastName("Recchioni");
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
 
         final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
@@ -166,7 +165,7 @@ public class TestExecutor {
         /*
          * use Philipp, so can get some data
          */
-        final BreinUser user = new BreinUser("philipp@meisen.net");
+        final BreinUser user = new BreinUser("user.name@email.com");
 
         /*
          * invoke lookup

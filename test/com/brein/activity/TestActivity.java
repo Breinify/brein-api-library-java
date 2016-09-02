@@ -35,7 +35,7 @@ public class TestActivity {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
+    private final BreinUser breinUser = new BreinUser("User.Name@email.com");
 
     /**
      * Contains the Category

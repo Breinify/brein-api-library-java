@@ -30,7 +30,7 @@ public class TestLookup {
     /**
      * Contains the Breinify User
      */
-    private final BreinUser breinUser = new BreinUser("philipp@meisen.net");
+    private final BreinUser breinUser = new BreinUser("user.name@email.com");
 
     /**
      * The Lookup itself
