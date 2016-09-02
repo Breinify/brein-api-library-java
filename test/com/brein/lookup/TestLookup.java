@@ -59,13 +59,8 @@ public class TestLookup {
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /**
-             * TODO...
-             * Thread.sleep is not the best practice...
-             *
-             */
             Thread.sleep(4000);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             fail();
         }
     }

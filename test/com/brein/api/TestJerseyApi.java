@@ -77,7 +77,7 @@ public class TestJerseyApi {
              */
             Thread.sleep(4000);
             Breinify.shutdown();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -188,7 +188,7 @@ public class TestJerseyApi {
             config = new BreinConfig(VALID_API_KEY,
                     BASE_URL,
                     BreinEngineType.NO_ENGINE);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
 
@@ -223,7 +223,7 @@ public class TestJerseyApi {
         /*
          * set configuration
          */
-        BreinConfig config = new BreinConfig(VALID_API_KEY,
+        final BreinConfig config = new BreinConfig(VALID_API_KEY,
                 BASE_URL,
                 BreinEngineType.UNIREST_ENGINE);
         config.setActivityEndpoint("\\wrongEndPoint");

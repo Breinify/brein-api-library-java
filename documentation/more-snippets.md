@@ -1,4 +1,4 @@
-<p align="center">
+I<p align="center">
   <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify API Java Library" width="250">
 </p>
 
@@ -37,7 +37,6 @@ breinifyExecutor.activity(breinUser,
                 false);
                 
 // prepare the lookup part
-
 
 // define an array of subjects of interest
 final String[] dimensions = {"firstname",
@@ -142,5 +141,56 @@ final BreinConfig breinConfig = new BreinConfig(apiKey,
 // set the configuration for later usage
 Breinify.setConfig(breinConfig);
 
+```
+
+#### Activity Request with comprehensive data
+
+The following sample provides an overview how to configure all fields for an activity request:
+
+```
+public void testPageVisit() {
+
+final String BASE_URL = " https://api.breinify.com";
+final String VALID_API_KEY = "XXXX-DDDD-E3C5-4BDB-93C4-4729-7B54-E5B1";
+
+// set configuration
+final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+          BASE_URL,
+          BreinEngineType.UNIREST_ENGINE);
+Breinify.setConfig(breinConfig);
+
+// user data
+final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
+breinUser.setFirstName("Marco");
+breinUser.setLastName("Recchioni");
+breinUser.setDateOfBirth(11, 20, 1999);
+breinUser.setDeviceId("DD-EEEEE");
+breinUser.setImei("55544455333");
+
+final Map<String, String> tagMap = new HashMap<>();
+tagMap.put("t1", "0.0");
+tagMap.put("t2", "0.0");
+tagMap.put("t3", "0.0");
+tagMap.put("t4", "0.0");
+tagMap.put("nr", "1.0");
+tagMap.put("sortid", "1.0");
+
+final BreinActivity breinActivity = Breinify.getBreinActivity();
+
+breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
+breinActivity.setBreinUser(breinUser);
+breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+breinActivity.setDescription("your description");
+breinActivity.setSign(false);
+breinActivity.setTagsMap(tagMap);
+breinActivity.setIpAddress("10.168.118.208");
+breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
+breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
+breinActivity.setReferrer("https://teespring.com/track");
+breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+
+Breinify.activity(breinActivity);
+}
 ```
 

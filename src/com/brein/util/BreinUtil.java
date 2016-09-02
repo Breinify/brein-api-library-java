@@ -27,8 +27,8 @@ public class BreinUtil {
 
         try {
             mac = Mac.getInstance("HmacSHA256");
-        } catch (NoSuchAlgorithmException var1) {
-            throw new IllegalStateException("Unable to find needed algorithm!", var1);
+        } catch (final NoSuchAlgorithmException e) {
+            throw new IllegalStateException("Unable to find needed algorithm!", e);
         }
     }
 
@@ -117,10 +117,10 @@ public class BreinUtil {
         }
 
         try {
-            byte[] e = secret.getBytes(StandardCharsets.UTF_8.name());
-            SecretKeySpec secretKey = new SecretKeySpec(e, "HmacSHA256");
+            final byte[] e = secret.getBytes(StandardCharsets.UTF_8.name());
+            final SecretKeySpec secretKey = new SecretKeySpec(e, "HmacSHA256");
             mac.init(secretKey);
-            byte[] hmacData = mac.doFinal(message.getBytes(StandardCharsets.UTF_8.name()));
+            final byte[] hmacData = mac.doFinal(message.getBytes(StandardCharsets.UTF_8.name()));
             return Base64.getEncoder().encodeToString(hmacData);
         } catch (InvalidKeyException | UnsupportedEncodingException var5) {
             throw new IllegalStateException("Unable to create signature!", var5);

@@ -25,7 +25,7 @@ public class BreinBase {
     /**
      * contains the timestamp when the request will be generated
      */
-    private long unixTimestamp;
+    private long unixTimestamp = 0;
 
     /**
      * if set to yes then a secret has to bo sent
@@ -45,8 +45,9 @@ public class BreinBase {
      * sets the brein config
      * @param breinConfig object
      */
-    public void setConfig(final BreinConfig breinConfig) {
+    public BreinBase setConfig(final BreinConfig breinConfig) {
         this.breinConfig = breinConfig;
+        return this;
     }
 
     /**
@@ -63,8 +64,9 @@ public class BreinBase {
      *~
      * @param breinUser user data
      */
-    public void setBreinUser(final BreinUser breinUser) {
+    public BreinBase setBreinUser(final BreinUser breinUser) {
         this.breinUser = breinUser;
+        return this;
     }
 
     /**
@@ -73,17 +75,6 @@ public class BreinBase {
      */
     public BreinEngine getBreinEngine() {
         return null == breinConfig ? null : getConfig().getBreinEngine();
-    }
-
-    /**
-     * prepares the json request string
-     * @return empty
-     */
-    public String prepareJsonRequest() {
-
-        setUnixTimestamp(Instant.now().getEpochSecond());
-
-        return "";
     }
 
     /**
@@ -108,8 +99,9 @@ public class BreinBase {
      *
      * @param unixTimestamp
      */
-    public void setUnixTimestamp(final long unixTimestamp) {
+    public BreinBase setUnixTimestamp(final long unixTimestamp) {
         this.unixTimestamp = unixTimestamp;
+        return this;
     }
 
     /**
@@ -126,7 +118,20 @@ public class BreinBase {
      *
      * @param sign value to set
      */
-    public void setSign(final boolean sign) {
+    public BreinBase setSign(final boolean sign) {
         this.sign = sign;
+        return this;
     }
+    /**
+     * prepares the json request string
+     * @return empty
+     */
+    public String prepareJsonRequest() {
+
+        if (this.getUnixTimestamp() == 0) {
+            setUnixTimestamp(Instant.now().getEpochSecond());
+        }
+        return "";
+    }
+
 }

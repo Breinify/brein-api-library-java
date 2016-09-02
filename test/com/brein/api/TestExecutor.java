@@ -1,16 +1,12 @@
 package com.brein.api;
 
-import com.brein.domain.BreinActivityType;
-import com.brein.domain.BreinCategoryType;
-import com.brein.domain.BreinConfig;
-import com.brein.domain.BreinDimension;
-import com.brein.domain.BreinResult;
-import com.brein.domain.BreinUser;
+import com.brein.domain.*;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.time.Instant;
 import java.util.Properties;
 
 import static org.junit.Assert.assertNotEquals;
@@ -66,12 +62,8 @@ public class TestExecutor {
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /*
-             * TODO...
-             * Thread.sleep is not the best practice...
-             */
             Thread.sleep(10000);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -80,9 +72,49 @@ public class TestExecutor {
      * testcase how to use the activity api
      */
     @Test
-    public void testLogin() {
+    public void testPageVisit() {
 
-        final String description = "Login-Description";
+        /*
+         * additional user information
+         */
+        breinUser.setFirstName("Marco");
+        breinUser.setLastName("Recchioni");
+        breinUser.setDateOfBirth(11, 20, 1999);
+        breinUser.setDeviceId("DD-EEEEE");
+        breinUser.setImei("55544455333");
+
+        final BreinifyExecutor breinifyExecutor = new BreinConfig()
+                .setApiKey(VALID_API_KEY)
+                .setBaseUrl(BASE_URL)
+                .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
+                .build();
+
+        final BreinActivity breinActivity = breinifyExecutor.getBreinActivity();
+
+        breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
+        breinActivity.setBreinUser(breinUser);
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+        breinActivity.setDescription("your description");
+        breinActivity.setSign(false);
+
+        breinActivity.setIpAddress("10.168.118.208");
+        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
+        breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
+        breinActivity.setReferrer("https://teespring.com/track");
+        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+
+        /*
+         * invoke activity call
+         */
+        breinifyExecutor.activity();
+    }
+
+    /**
+     * testcase how to use the activity api
+     */
+    @Test
+    public void testLogin() {
 
         /*
          * additional user information
@@ -96,6 +128,7 @@ public class TestExecutor {
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
                 .build();
 
+        final String description = "your description";
         /*
          * invoke activity call
          */

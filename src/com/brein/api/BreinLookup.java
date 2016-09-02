@@ -34,8 +34,9 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      *
      * @param breinDimension object to set
      */
-    public void setBreinDimension(BreinDimension breinDimension) {
+    public BreinLookup setBreinDimension(final BreinDimension breinDimension) {
         this.breinDimension = breinDimension;
+        return this;
     }
 
     /**
@@ -77,7 +78,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         final JsonObject requestData = new JsonObject();
         final BreinUser breinUser = getBreinUser();
         if (breinUser != null) {
-            JsonObject userData = new JsonObject();
+            final JsonObject userData = new JsonObject();
             userData.addProperty("email", breinUser.getEmail());
             requestData.add("user", userData);
         }
@@ -88,7 +89,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         if (BreinUtil.containsValue(getBreinDimension())) {
             final JsonObject lookupData = new JsonObject();
             final JsonArray dimensions = new JsonArray();
-            for (String field : getBreinDimension().getDimensionFields()) {
+            for (final String field : getBreinDimension().getDimensionFields()) {
                 dimensions.add(field);
             }
             lookupData.add("dimensions", dimensions);

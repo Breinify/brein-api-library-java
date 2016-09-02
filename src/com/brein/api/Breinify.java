@@ -15,7 +15,7 @@ public class Breinify {
     /**
      * contains the current version of the usage library
      */
-    private static final String VERSION = "1.0.0-snapshot";
+    private static final String VERSION = "1.1.0";
 
     /**
      * contains the configuration
@@ -62,6 +62,22 @@ public class Breinify {
     }
 
     /**
+     *
+     * @return
+     */
+    public static BreinActivity getBreinActivity() {
+        return breinActivity;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static BreinLookup getBreinLookup() {
+        return breinLookup;
+    }
+
+    /**
      * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      * <p>
@@ -84,6 +100,22 @@ public class Breinify {
         activity(breinActivity, user, activityType, category, description, sign);
     }
 
+    /**
+     * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * This request is asynchronous.
+     *
+     * @param breinActivity an activity object
+     * @param user          a plain object specifying the user information the activity belongs to
+     * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                      be used
+     * @param category      the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                      food, health, job, services, or other
+     * @param description   a string with further information about the activity performed
+     * @param sign          a boolean value specifying if the call should be signed
+     */
     public static void activity(final BreinActivity breinActivity,
                                 final BreinUser user,
                                 final BreinActivityType activityType,
@@ -102,6 +134,35 @@ public class Breinify {
         if (null == breinActivity.getBreinEngine()) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
+        breinActivity.getBreinEngine().sendActivity(breinActivity);
+    }
+
+    /**
+     * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * This request is asynchronous.
+     *
+     * @param breinActivity an activity object
+     */
+    public static void activity(final BreinActivity breinActivity) {
+
+        if (breinActivity.getBreinUser() == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        if (breinActivity.getBreinActivityType() == null) {
+            throw new BreinException(BreinException.ACTIVITY_TYPE_NOT_SET);
+        }
+
+        if (breinActivity.getBreinCategoryType() == null) {
+            throw new BreinException(BreinException.CATEGORY_TYPE_NOT_SET);
+        }
+
+        if (null == breinActivity.getBreinEngine()) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
+
         breinActivity.getBreinEngine().sendActivity(breinActivity);
     }
 

@@ -65,7 +65,7 @@ public interface IRestEngine {
 
         try {
             final URL u = new URL(url);
-            HttpURLConnection huc = (HttpURLConnection) u.openConnection();
+            final HttpURLConnection huc = (HttpURLConnection) u.openConnection();
             huc.setRequestMethod("POST");
             huc.setRequestProperty("User-Agent",
                     "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
@@ -204,8 +204,6 @@ public interface IRestEngine {
         validateBreinBase(breinBase);
         validateConfig(breinBase);
 
-        // validate URL, might throw an exception...
-        // validateUrl(getFullyQualifiedUrl(breinBase));
     }
 
 }

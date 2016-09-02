@@ -10,7 +10,6 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,7 +88,6 @@ public class UniRestEngine implements IRestEngine {
                         if (LOG.isDebugEnabled()) {
                             LOG.debug(MSG_REQUEST_HAS_BEEN_CANCELLED);
                         }
-
                     }
                 });
     }
@@ -108,12 +106,6 @@ public class UniRestEngine implements IRestEngine {
         validate(breinLookup);
 
         try {
-
-            final RequestBodyEntity resp = Unirest.post(getFullyQualifiedUrl
-                    (breinLookup))
-                    .header(HEADER_ACCESS, HEADER_APP_JSON)
-                    .body(getRequestBody(breinLookup));
-
             final HttpResponse<JsonNode> jsonResponse = Unirest.post(getFullyQualifiedUrl(breinLookup))
                     .header(HEADER_ACCESS, HEADER_APP_JSON)
                     .body(getRequestBody(breinLookup))
@@ -121,7 +113,7 @@ public class UniRestEngine implements IRestEngine {
 
             return new BreinResult(jsonResponse.getBody().toString());
 
-        } catch (UnirestException e) {
+        } catch (final UnirestException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("within doLookup - exception has occurred. " + e);
             }
@@ -136,7 +128,7 @@ public class UniRestEngine implements IRestEngine {
     public void terminate() {
         try {
             Unirest.shutdown();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.error("Exception within UNIREST shutdown has occurred. ", e);
             }

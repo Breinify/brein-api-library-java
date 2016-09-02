@@ -1,8 +1,10 @@
 package com.brein.activity;
 
 import com.brein.api.BreinActivity;
+import com.brein.domain.BreinActivityType;
+import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinConfig;
-import com.brein.domain.*;
+import com.brein.domain.BreinUser;
 import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -84,16 +86,10 @@ public class TestActivity {
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /*
-             * TODO...
-             * Thread.sleep is not the best practice...
-             *
-             */
+
             Thread.sleep(4000);
 
-
-
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -248,5 +244,7 @@ public class TestActivity {
                 BreinActivityType.OTHER,
                 breinCategoryType, description, sign);
     }
+
+
 
 }

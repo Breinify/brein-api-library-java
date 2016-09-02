@@ -18,30 +18,37 @@ public class BreinConfig {
      * default endpoint of activity
      */
     public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
+
     /**
      * default endpoint of lookup
      */
     public static final String DEFAULT_LOOKUP_ENDPOINT = "/lookup";
+
     /**
      * default connection timeout
      */
     public static final long DEFAULT_CONNECTION_TIMEOUT = 1000;
+
     /**
      * default socket timeout
      */
     public static final long DEFAULT_SOCKET_TIMEOUT = 6000;
+
     /**
      * default breinify base url
      */
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
+
     /**
      * Logger instance
      */
     private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
+
     /**
      * default validation
      */
     public static boolean DEFAULT_VALIDATE = true;
+
     /**
      * BASE URL
      */
@@ -83,12 +90,12 @@ public class BreinConfig {
     private long socketTimeout = DEFAULT_SOCKET_TIMEOUT;
 
     /**
-     * contains the secret
+     * contains the secret that will be used for the signature
      */
     private String secret;
 
     /**
-     * @param apiKey  contains the Breinify api-key
+     * @param apiKey  contains the Breinify api key
      * @param baseUrl contains the base url
      */
     public BreinConfig(final String apiKey,
@@ -137,7 +144,7 @@ public class BreinConfig {
      */
     public BreinifyExecutor build() {
 
-        BreinifyExecutor breinifyExecutor = new BreinifyExecutor();
+        final BreinifyExecutor breinifyExecutor = new BreinifyExecutor();
         breinifyExecutor.setConfig(this);
 
         initEngine();
@@ -260,8 +267,9 @@ public class BreinConfig {
      *
      * @param connectionTimeout value
      */
-    public void setConnectionTimeout(final long connectionTimeout) {
+    public BreinConfig setConnectionTimeout(final long connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
+        return this;
     }
 
     /**
@@ -278,8 +286,9 @@ public class BreinConfig {
      *
      * @param socketTimeout value
      */
-    public void setSocketTimeout(final long socketTimeout) {
+    public BreinConfig setSocketTimeout(final long socketTimeout) {
         this.socketTimeout = socketTimeout;
+        return this;
     }
 
     /**
@@ -370,4 +379,6 @@ public class BreinConfig {
     public boolean isUrlValid(final String url) {
         return IRestEngine.isUrlValid(url);
     }
+
+
 }

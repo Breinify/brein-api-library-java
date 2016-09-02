@@ -85,28 +85,23 @@ public class TestDomain {
         final BreinUser breinUser = new BreinUser("test.me@email.com");
 
         // set right values
-        breinUser.setDateOfBirth("");          // empty value
         breinUser.setDateOfBirth(1, 22, 1966); // this is correct date
         assertFalse(breinUser.getDateOfBirth().isEmpty());
 
         // set wrong day
-        breinUser.setDateOfBirth("");          // empty value
+        breinUser.resetDateOfBirth();
         breinUser.setDateOfBirth(1, 77, 1966); // this is wrong date
         assertTrue(breinUser.getDateOfBirth().isEmpty());
 
         // set wrong month
-        breinUser.setDateOfBirth("");           // empty value
+        breinUser.resetDateOfBirth();
         breinUser.setDateOfBirth(13, 22, 1966); // this is correct date
         assertTrue(breinUser.getDateOfBirth().isEmpty());
 
         // set wrong year
-        breinUser.setDateOfBirth("");  // empty value
+        breinUser.resetDateOfBirth();
         breinUser.setDateOfBirth(1, 22, 1700);
         assertTrue(breinUser.getDateOfBirth().isEmpty());
-
-        // this can not be detected
-        breinUser.setDateOfBirth("SuperDate");
-        assertFalse(breinUser.getDateOfBirth().isEmpty());
     }
 
     /**
@@ -120,8 +115,7 @@ public class TestDomain {
                 .setLastName("Anyhere")
                 .setImei("356938035643809")
                 .setDateOfBirth(6, 20, 1985)
-                .setDeviceId("AAAAAAAAA-BBBB-CCCC-1111-222222220000")
-                .setSessionId("SID:ANON:w3.org:j6oAOxCWZh/CD723LGeXlf-01:034");
+                .setDeviceId("AAAAAAAAA-BBBB-CCCC-1111-222222220000");
 
         assertFalse(breinUser.toString().isEmpty());
     }

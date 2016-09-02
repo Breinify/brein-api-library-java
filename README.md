@@ -118,5 +118,6 @@ Please note that after having invoked this call no further Breinify.activity or 
 ### Further links
 To understand all the capabilities of Breinify's DigitalDNA API, take a look at:
 
-* [Additional code snippets](documentation/more-snippets.md), or
+* [Additional code snippets](documentation/more-snippets.md),
+* [Change Log](documentation/changelog.md), or
 * [Breinify's Website](https://www.breinify.com).

@@ -54,12 +54,9 @@ public class TestEngine {
     public static void tearDown() {
 
         try {
-            /*
-             * TODO: replace sleep
-             */
             Thread.sleep(10000);
             Unirest.shutdown();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             assertTrue(false);
         }
     }
@@ -120,14 +117,14 @@ public class TestEngine {
                 .field("param2", "bye").asJsonAsync();
 
         assertNotNull(future);
-        HttpResponse<JsonNode> jsonResponse = future.get();
+        final HttpResponse<JsonNode> jsonResponse = future.get();
 
         assertTrue(jsonResponse.getHeaders().size() > 0);
         assertTrue(jsonResponse.getBody().toString().length() > 0);
         assertFalse(jsonResponse.getRawBody() == null);
         assertEquals(200, jsonResponse.getStatus());
 
-        JsonNode json = jsonResponse.getBody();
+        final JsonNode json = jsonResponse.getBody();
         assertFalse(json.isArray());
         assertNotNull(json.getObject());
         assertNotNull(json.getArray());
@@ -150,11 +147,11 @@ public class TestEngine {
                 .field("param2", "bye")
                 .asJsonAsync(new Callback<JsonNode>() {
 
-            public void failed(UnirestException e) {
+            public void failed(final UnirestException e) {
                 fail();
             }
 
-            public void completed(HttpResponse<JsonNode> jsonResponse) {
+            public void completed(final HttpResponse<JsonNode> jsonResponse) {
                 assertTrue(jsonResponse.getHeaders().size() > 0);
                 assertTrue(jsonResponse.getBody().toString().length() > 0);
                 assertFalse(jsonResponse.getRawBody() == null);
@@ -193,11 +190,11 @@ public class TestEngine {
     @Test
     public void testBreinAsyncCallback() throws JSONException, InterruptedException, ExecutionException {
 
-        BreinUser breinUser = new BreinUser("m.recchioni@me.com");
+        final BreinUser breinUser = new BreinUser("m.recchioni@me.com");
         breinUser.setFirstName("Marco");
         breinUser.setLastName("Recchioni");
 
-        BreinActivity breinActivity = new BreinActivity();
+        final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setBreinUser(breinUser);
         breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
@@ -210,11 +207,11 @@ public class TestEngine {
                 .body(requestBody)
                 .asJsonAsync(new Callback<JsonNode>() {
 
-                    public void failed(UnirestException e) {
+                    public void failed(final UnirestException e) {
                         fail();
                     }
 
-                    public void completed(HttpResponse<JsonNode> jsonResponse) {
+                    public void completed(final HttpResponse<JsonNode> jsonResponse) {
 
                         status = true;
                         lock.countDown();
@@ -236,12 +233,12 @@ public class TestEngine {
     public void testUniRestEngine() {
 
         try {
-            HttpResponse<JsonNode> postResponse = Unirest.post("http://httpbin.org/post")
+            final HttpResponse<JsonNode> postResponse = Unirest.post("http://httpbin.org/post")
                     .header("accept", "application/json")
                     .header("Content-Type", "application/json")
                     .field("parameter", "value")
                     .asJson();
-        } catch (UnirestException e) {
+        } catch (final UnirestException e) {
             assertTrue(false);
         }
 
@@ -259,15 +256,15 @@ public class TestEngine {
                 .field("parameter", "value")
                 .asJsonAsync(new Callback<JsonNode>() {
 
-                    public void failed(UnirestException e) {
+                    public void failed(final UnirestException e) {
                         System.out.println("failed");
                     }
 
-                    public void completed(HttpResponse<JsonNode> response) {
+                    public void completed(final HttpResponse<JsonNode> response) {
                         int code = response.getStatus();
                         // Map<String, String> headers = response.getHeaders();
-                        JsonNode body = response.getBody();
-                        InputStream rawBody = response.getRawBody();
+                        final JsonNode body = response.getBody();
+                        final InputStream rawBody = response.getRawBody();
                         System.out.println("completed");
 
                     }

@@ -7,6 +7,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -63,12 +66,9 @@ public class TestApi {
          * we have to wait some time in order to allow the asynch rest processing
          */
         try {
-            /*
-             * Thread.sleep is not the best practice...
-             */
             Thread.sleep(1000);
             Breinify.shutdown();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -161,7 +161,7 @@ public class TestApi {
             config = new BreinConfig(VALID_API_KEY,
                     BASE_URL,
                     BreinEngineType.NO_ENGINE);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
 
@@ -196,7 +196,7 @@ public class TestApi {
         /*
          * set configuration
          */
-        BreinConfig config = new BreinConfig(VALID_API_KEY,
+        final BreinConfig config = new BreinConfig(VALID_API_KEY,
                 BASE_URL,
                 BreinEngineType.UNIREST_ENGINE);
         config.setActivityEndpoint("\\wrongEndPoint");
@@ -376,6 +376,89 @@ public class TestApi {
     }
 
     /**
+     * test case containing additional information
+     */
+    @Test
+    public void testPageVisit() {
+
+        // set configuration
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE);
+        Breinify.setConfig(breinConfig);
+
+        // user data
+        final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
+        breinUser.setFirstName("Marco");
+        breinUser.setLastName("Recchioni");
+        breinUser.setDateOfBirth(11, 20, 1999);
+        breinUser.setDeviceId("DD-EEEEE");
+        breinUser.setImei("55544455333");
+
+        final Map<String, String> tagMap = new HashMap<>();
+        tagMap.put("t1", "0.0");
+        tagMap.put("t2", "0.0");
+        tagMap.put("t3", "0.0");
+        tagMap.put("t4", "0.0");
+        tagMap.put("nr", "1.0");
+        tagMap.put("sortid", "1.0");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+
+        breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
+        breinActivity.setBreinUser(breinUser);
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+        breinActivity.setDescription("your description");
+        breinActivity.setSign(false);
+        breinActivity.setTagsMap(tagMap);
+        breinActivity.setIpAddress("10.168.118.208");
+        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
+        breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
+        breinActivity.setReferrer("https://teespring.com/track");
+        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+
+        Breinify.activity(breinActivity);
+    }
+
+
+    /**
+     * test case containing additional information
+     */
+    @Test(expected = BreinException.class)
+    public void testPageVisitWithException() {
+
+        // set configuration
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE);
+        Breinify.setConfig(breinConfig);
+
+        // user data
+        final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
+        breinUser.setFirstName("Marco");
+        breinUser.setLastName("Recchioni");
+        breinUser.setDateOfBirth(11, 20, 1999);
+        breinUser.setDeviceId("DD-EEEEE");
+        breinUser.setImei("55544455333");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+        breinActivity.setDescription("your description");
+        breinActivity.setSign(false);
+        breinActivity.setIpAddress("10.168.118.208");
+        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
+        breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
+        breinActivity.setReferrer("https://teespring.com/track");
+        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+
+        // user not set -> exception expected
+        Breinify.activity(breinActivity);
+    }
+
+    /**
      * simply demonstrate the configuration of the engine
      */
     @Test
@@ -424,7 +507,6 @@ public class TestApi {
                 BreinCategoryType.HOME,
                 "Login-Description",
                 false);
-
     }
 
     /**

@@ -33,8 +33,9 @@ public class BreinDimension {
      *
      * @param dimensionFields data of dimensions
      */
-    public void setDimensionFields(final String... dimensionFields) {
+    public BreinDimension setDimensionFields(final String... dimensionFields) {
         this.dimensionFields = dimensionFields;
+        return this;
     }
 
 }

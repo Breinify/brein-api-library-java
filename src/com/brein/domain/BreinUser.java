@@ -36,11 +36,6 @@ public class BreinUser {
     private String deviceId;
 
     /**
-     * user sessionId
-     */
-    private String sessionId;
-
-    /**
      * create a brein user with mandatory field email.
      *
      * @param email of the user
@@ -111,17 +106,6 @@ public class BreinUser {
     }
 
     /**
-     * Sets the date of birth
-     * @param dateOfBirth a string containing the date of birth.
-     *                    This content and format will not be checked
-     * @return this -> allows chaining
-     */
-    public BreinUser setDateOfBirth(final String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-        return this;
-    }
-
-    /**
      * Set's the date of birth
      * There is no check if the month - day combination is valid, only
      * the range for day, month and year will be checked
@@ -145,6 +129,13 @@ public class BreinUser {
             }
         }
         return this;
+    }
+
+    /**
+     * resets the dateOfBirth to an empty value
+     */
+    public void resetDateOfBirth() {
+        this.dateOfBirth = "";
     }
 
     /**
@@ -184,24 +175,6 @@ public class BreinUser {
     }
 
     /**
-     * retrieves the session id
-     * @return id of the session
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    /**
-     * sets the sessionid
-     * @param sessionId id of the session
-     * @return this -> allows chaining
-     */
-    public BreinUser setSessionId(final String sessionId) {
-        this.sessionId = sessionId;
-        return this;
-    }
-
-    /**
      * provides a nicer output of the user details
      * @return output
      */
@@ -223,10 +196,7 @@ public class BreinUser {
                 + (this.imei == null ? "n/a" : this.imei)
                 + " deviceId: "
                 + (this.deviceId == null ? "n/a" : this.deviceId)
-                + "\n"
-                + " sessionId: "
-                + (this.sessionId == null ? "n/a" : this.sessionId);
-
+                + "\n";
     }
 }
 

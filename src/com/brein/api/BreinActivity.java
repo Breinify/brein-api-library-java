@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import java.util.Map;
+
 /**
  * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is important
  * that a valid API-key is configured prior to using this function.
@@ -31,6 +33,36 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     private String description;
 
     /**
+     * contains the ipAddress
+     */
+    private String ipAddress;
+
+    /**
+     * user sessionId
+     */
+    private String sessionId;
+
+    /**
+     * contains the userAgent in additional part
+     */
+    private String userAgent;
+
+    /**
+     * contains the referrer in additional part
+     */
+    private String referrer;
+
+    /**
+     * contains the url in additional part
+     */
+    private String additionalUrl;
+
+    /**
+     * contains the tags
+     */
+    private Map<String, String> tagsMap;
+
+    /**
      * returns activity type
      *
      * @return activity type
@@ -44,8 +76,9 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *
      * @param breinActivityType to set
      */
-    public void setBreinActivityType(final BreinActivityType breinActivityType) {
+    public BreinActivity setBreinActivityType(final BreinActivityType breinActivityType) {
         this.breinActivityType = breinActivityType;
+        return this;
     }
 
     /**
@@ -62,8 +95,9 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *
      * @param breinCategoryType object
      */
-    public void setBreinCategoryType(final BreinCategoryType breinCategoryType) {
+    public BreinActivity setBreinCategoryType(final BreinCategoryType breinCategoryType) {
         this.breinCategoryType = breinCategoryType;
+        return this;
     }
 
     /**
@@ -80,8 +114,9 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *
      * @param description string to set as description
      */
-    public void setDescription(final String description) {
+    public BreinActivity setDescription(final String description) {
         this.description = description;
+        return this;
     }
 
    /**
@@ -92,6 +127,111 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     @Override
     public String getEndPoint() {
         return getConfig().getActivityEndpoint();
+    }
+
+    /**
+     * IpAddress
+     * @return configured ipaddress
+     */
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    /**
+     * Set the ipAddress
+     * @param ipAddress value of the ipaddress
+     */
+    public BreinActivity setIpAddress(final String ipAddress) {
+        this.ipAddress = ipAddress;
+        return this;
+    }
+
+    /**
+     * retrieves the session id
+     * @return id of the session
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * sets the sessionid
+     * @param sessionId id of the session
+     * @return this -> allows chaining
+     */
+    public BreinActivity setSessionId(final String sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
+    /**
+     * retrieves the addtional userAgent value
+     * @return value
+     */
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    /**
+     * sets the additional user agent value
+     * @param userAgent value
+     */
+    public BreinActivity setUserAgent(final String userAgent) {
+        this.userAgent = userAgent;
+        return this;
+    }
+
+    /**
+     * retrieves the additional referrer value
+     * @return value
+     */
+    public String getReferrer() {
+        return referrer;
+    }
+
+    /**
+     * sets the additional referrer value
+     * @param referrer value
+     */
+    public BreinActivity setReferrer(final String referrer) {
+        this.referrer = referrer;
+        return this;
+    }
+
+    /**
+     * retrieves the additional url
+     * @return value
+     */
+    public String getAdditionalUrl() {
+        return additionalUrl;
+    }
+
+    /**
+     * sets the additional url
+     * @param additionalUrl value
+     * @return self
+     */
+    public BreinActivity setAdditionalUrl(final String additionalUrl) {
+        this.additionalUrl = additionalUrl;
+        return this;
+    }
+
+    /**
+     * retrieves the tagMap
+     * @return value
+     */
+    public Map<String, String> getTagsMap() {
+        return tagsMap;
+    }
+
+    /**
+     * sets the tagsMap
+     * @param tagsMap created map (e.g. HashMap)
+     * @return self
+     */
+    public BreinActivity setTagsMap(final Map<String, String> tagsMap) {
+        this.tagsMap = tagsMap;
+        return this;
     }
 
     /**
@@ -157,6 +297,41 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
             if (BreinUtil.containsValue(breinUser.getLastName())) {
                 userData.addProperty("lastName", breinUser.getLastName());
             }
+
+            if (BreinUtil.containsValue(breinUser.getDateOfBirth())) {
+                userData.addProperty("dateOfBirth", breinUser.getDateOfBirth());
+            }
+
+            if (BreinUtil.containsValue(breinUser.getDeviceId())) {
+                userData.addProperty("deviceId", breinUser.getDeviceId());
+            }
+
+            if (BreinUtil.containsValue(breinUser.getImei())) {
+                userData.addProperty("imei", breinUser.getImei());
+            }
+
+            if (BreinUtil.containsValue(getSessionId())) {
+                userData.addProperty("sessionId", getSessionId());
+            }
+
+            // additional part
+            final JsonObject additional = new JsonObject();
+            if (BreinUtil.containsValue(getUserAgent())) {
+                additional.addProperty("userAgent", getUserAgent());
+            }
+
+            if (BreinUtil.containsValue(getReferrer())) {
+                additional.addProperty("referrer", getReferrer());
+            }
+
+            if (BreinUtil.containsValue(getAdditionalUrl())) {
+                additional.addProperty("url", getAdditionalUrl());
+            }
+
+            if (additional.size() > 0) {
+                userData.add("additional", additional);
+            }
+
             requestData.add("user", userData);
         }
 
@@ -185,6 +360,17 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         }
 
         requestData.addProperty("unixTimestamp", getUnixTimestamp());
+
+        if (BreinUtil.containsValue(getIpAddress())) {
+            requestData.addProperty("ipAddress", getIpAddress());
+        }
+
+        // tags
+        final Map<String, String> tagsMap = getTagsMap();
+        if (tagsMap != null && tagsMap.size() > 0) {
+            final JsonObject tagsData = new JsonObject();
+            tagsMap.forEach((key, value) -> tagsData.addProperty(key, value));
+        }
 
         // if sign is active
         if (isSign()) {

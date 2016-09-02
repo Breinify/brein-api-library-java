@@ -12,6 +12,7 @@ public enum BreinActivityType {
     REMOVE_FROM_CART("removeFromCart"),
     SELECT_PRODUCT("selectProduct"),
     CHECKOUT("checkOut"),
+    PAGEVISIT("pageVisit"),
     OTHER("other");
 
     /**
