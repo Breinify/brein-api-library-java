@@ -66,7 +66,7 @@ final Object dataImages = result.get("images");
 BreinUser provides some methods to add further data. This example shows all possible option. 
 
 
-````
+```java
 // create a user with mandatory email
 BreinUser breinUser = new BreinUser("user.anywhere@email.com");
 
@@ -80,7 +80,7 @@ breinUser.setFirstName("User")
 
 // some output
 System.out.println(breinUser.toString());
-````
+```
 
 #### Exception
 
@@ -134,7 +134,7 @@ Breinify.setConfig(breinConfig);
 
 The following sample provides an overview how to configure all fields for an activity request:
 
-```
+```java
 public void testPageVisit() {
 
 final String BASE_URL = " https://api.breinify.com";
