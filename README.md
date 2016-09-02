@@ -37,7 +37,7 @@ In order to use the library you need a valid API-key, which you can get for free
 final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
 // this is the URL of the Breinify service
-final String serviceEndpoint = "http://dev.breinify.com/api";
+final String serviceEndpoint = "https://api.breinify.com";
 
 // this is one rest engine that can be used internally
 final BreinEngineType engineType = BreinEngineType.UNIREST_ENGINE;
@@ -64,9 +64,10 @@ The engine is informed of an activity by executing *Breinify.activity(...)*.
 
 ```Java
 // create a user you are interested in with his email (mandatory field)
-final BreinUser breinUser =
-          new BreinUser("user.anywhere@email.com");
-
+final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
+                .setFirstName("User")
+                .setLastName("Anyhere");
+                
 // invoke an activity noting that the user has logged in
 Breinify.activity(breinUser, BreinActivityType.LOGIN,
          BreinCategoryType.HOME, "Login-Description", false);

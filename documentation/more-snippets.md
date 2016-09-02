@@ -25,7 +25,7 @@ final BreinUser breinUser = new BreinUser("user.anywhere@email.com");
 // configure and build the Breinify Executor
 final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(apiKey)
-                .setBaseUrl("http://dev.breinify.com/api")
+                .setBaseUrl("https://api.breinify.com")
                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
                 .build();
 
@@ -81,19 +81,6 @@ breinUser.setFirstName("User")
 // some output
 System.out.println(breinUser.toString());
 ````
-The method **setDateOfBirth** is provided twice. You could either use one of these:
-
-````
-1. setDateOfBirth(final int month, final int day, final int year) 
-
-or 
-
-2. setDateOfBirth(final String dateOfBirth)
-
-
-````
-**Note:** only the first option ensures correct storage of the date of birth value. The second one might be ignored from the Breinify backend.
-
 
 #### Exception
 
@@ -119,7 +106,7 @@ final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
 // create the configuration object with UNIREST engine 
 final BreinConfig breinConfig = new BreinConfig(apiKey,
-      "http://dev.breinify.com/api",
+      "https://api.breinify.com",
       BreinEngineType.UNIREST_ENGINE);
 
 // set the configuration for later usage
@@ -135,7 +122,7 @@ final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
 // create the configuration object with Jersey engine 
 final BreinConfig breinConfig = new BreinConfig(apiKey,
-      "http://dev.breinify.com/api",
+      "https://api.breinify.com",
       BreinEngineType.JERSEY_ENGINE);
 
 // set the configuration for later usage
@@ -151,7 +138,7 @@ The following sample provides an overview how to configure all fields for an act
 public void testPageVisit() {
 
 final String BASE_URL = " https://api.breinify.com";
-final String VALID_API_KEY = "XXXX-DDDD-E3C5-4BDB-93C4-4729-7B54-E5B1";
+final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
 // set configuration
 final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
@@ -160,12 +147,12 @@ final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
 Breinify.setConfig(breinConfig);
 
 // user data
-final BreinUser breinUser = new BreinUser("Marco.Recchioni@breinify.com");
-breinUser.setFirstName("Marco");
-breinUser.setLastName("Recchioni");
-breinUser.setDateOfBirth(11, 20, 1999);
-breinUser.setDeviceId("DD-EEEEE");
-breinUser.setImei("55544455333");
+final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
+         .setFirstName("User")
+         .setLastName("Anyhere")
+         .setImei("356938035643809")
+         .setDateOfBirth(6, 20, 1985)
+         .setDeviceId("AAAAAAAAA-BBBB-CCCC-1111-222222220000");
 
 final Map<String, String> tagMap = new HashMap<>();
 tagMap.put("t1", "0.0");
@@ -175,6 +162,7 @@ tagMap.put("t4", "0.0");
 tagMap.put("nr", "1.0");
 tagMap.put("sortid", "1.0");
 
+// class Breinify provides an instance of BreinActivity
 final BreinActivity breinActivity = Breinify.getBreinActivity();
 
 breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
@@ -184,10 +172,10 @@ breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
 breinActivity.setDescription("your description");
 breinActivity.setSign(false);
 breinActivity.setTagsMap(tagMap);
-breinActivity.setIpAddress("10.168.118.208");
+breinActivity.setIpAddress("11.222.333.444");
 breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-breinActivity.setAdditionalUrl("https://teespring.com/track/recover");
-breinActivity.setReferrer("https://teespring.com/track");
+breinActivity.setAdditionalUrl("https://sample.com.au/home");
+breinActivity.setReferrer("https://sample.com.au");
 breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
 Breinify.activity(breinActivity);
