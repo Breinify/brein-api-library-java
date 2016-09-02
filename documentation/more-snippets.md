@@ -6,6 +6,7 @@
 Breinify's DigitalDNA API puts dynamic behavior-based, people-driven data right at your fingertips.
 </p>
 
+
 ### Additional Code Snippet
 
 The following code snippets provides additional information how to use the *breinify-api-java* library.
