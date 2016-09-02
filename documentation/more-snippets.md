@@ -1,4 +1,4 @@
-I<p align="center">
+<p align="center">
   <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify API Java Library" width="250">
 </p>
 
