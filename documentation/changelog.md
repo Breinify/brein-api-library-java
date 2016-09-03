@@ -37,7 +37,7 @@ breinActivity.setBreinUser(breinUser);
 breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);     breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
 ...
 // invoke the activity request
-Breinify.activity(breinActivity);
+Breinify.activity();
 ```
 
 ###BreinifyExecutor.java
