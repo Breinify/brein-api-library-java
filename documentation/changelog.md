@@ -119,6 +119,9 @@ public BreinBase setUnixTimestamp(final long unixTimestamp)
 ```
 can now be set with a value before a activity or lookup request is triggered. This is an optional configuration. If this property is not set then the current timestamp will be computed and used within the request.
 
+##Modifications
+* Method **activity** in class Breinify.java does not support the parameter BreinActivity anymore. From now on the member within the class will be used.
+
 ##Fixes
 
 * BreinLookup.java contained the lookup request twice
