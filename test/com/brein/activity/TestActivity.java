@@ -70,6 +70,10 @@ public class TestActivity {
     @Before
     public void setUp() {
 
+        // set logging on
+        final Properties props = System.getProperties();
+        props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
+
         final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
                 BASE_URL,
                 BreinEngineType.UNIREST_ENGINE);

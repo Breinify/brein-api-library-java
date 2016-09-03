@@ -166,6 +166,7 @@ tagMap.put("sortid", "1.0");
 // class Breinify provides an instance of BreinActivity
 final BreinActivity breinActivity = Breinify.getBreinActivity();
 
+// set the appropriate values
 breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
 breinActivity.setBreinUser(breinUser);
 breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
@@ -179,7 +180,8 @@ breinActivity.setAdditionalUrl("https://sample.com.au/home");
 breinActivity.setReferrer("https://sample.com.au");
 breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
-Breinify.activity(breinActivity);
+// invoke the call
+Breinify.activity();
 }
 ```
 

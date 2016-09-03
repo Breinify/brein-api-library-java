@@ -70,19 +70,21 @@ public interface IRestEngine {
             huc.setRequestProperty("User-Agent",
                     "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
 
+            int responseCode = huc.getResponseCode();
+
             huc.connect();
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("response for URL (" + url + ") is: " + huc.getResponseCode());
-            }
+            //if (LOG.isDebugEnabled()) {
+            //    LOG.debug("response for URL (" + url + ") is: " + huc.getResponseCode());
+            //}
 
             return true;
 
         } catch (final IOException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("isUrlValid throws exception: ", e);
-            }
 
+            }
             // this must be an error case!
             return false;
         }
