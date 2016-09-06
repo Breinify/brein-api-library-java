@@ -19,8 +19,8 @@ final BreinActivity breinActivity = Breinify.getBreinActivity();
 
 breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
 breinActivity.setBreinUser(breinUser);
-breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
-breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+breinActivity.setBreinCategoryType("apparel");
+breinActivity.setBreinActivityType("pagevisit");
 breinActivity.setDescription("your description");
 breinActivity.setSign(false);
 breinActivity.setTagsMap(tagMap);
