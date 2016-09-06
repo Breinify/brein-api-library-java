@@ -1,10 +1,4 @@
 ```java
-// set configuration
-final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-        BASE_URL,
-        BreinEngineType.UNIREST_ENGINE);
-Breinify.setConfig(breinConfig);
-
 // user data
 final BreinUser breinUser = new BreinUser("User.Name@email.com")
         .setFirstName("Marco")
