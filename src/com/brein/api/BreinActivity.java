@@ -60,7 +60,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     /**
      * contains the tags
      */
-    private Map<String, String> tagsMap;
+    private Map<String, Object> tagsMap;
 
     /**
      * returns activity type
@@ -119,8 +119,8 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         return this;
     }
 
-   /**
-     * retrieves the configured activity endpoint (e.g. \activitiy)
+    /**
+     * retrieves the configured activity endpoint (e.g. \activity)
      *
      * @return endpoint
      */
@@ -131,6 +131,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * IpAddress
+     *
      * @return configured ipaddress
      */
     public String getIpAddress() {
@@ -139,6 +140,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * Set the ipAddress
+     *
      * @param ipAddress value of the ipaddress
      */
     public BreinActivity setIpAddress(final String ipAddress) {
@@ -148,6 +150,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * retrieves the session id
+     *
      * @return id of the session
      */
     public String getSessionId() {
@@ -156,6 +159,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * sets the sessionid
+     *
      * @param sessionId id of the session
      * @return this -> allows chaining
      */
@@ -165,7 +169,8 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * retrieves the addtional userAgent value
+     * retrieves the additional userAgent value
+     *
      * @return value
      */
     public String getUserAgent() {
@@ -174,6 +179,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * sets the additional user agent value
+     *
      * @param userAgent value
      */
     public BreinActivity setUserAgent(final String userAgent) {
@@ -183,6 +189,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * retrieves the additional referrer value
+     *
      * @return value
      */
     public String getReferrer() {
@@ -191,6 +198,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * sets the additional referrer value
+     *
      * @param referrer value
      */
     public BreinActivity setReferrer(final String referrer) {
@@ -200,6 +208,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * retrieves the additional url
+     *
      * @return value
      */
     public String getAdditionalUrl() {
@@ -208,6 +217,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * sets the additional url
+     *
      * @param additionalUrl value
      * @return self
      */
@@ -218,20 +228,49 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
     /**
      * retrieves the tagMap
+     *
      * @return value
      */
-    public Map<String, String> getTagsMap() {
+    public Map<String, Object> getTagsMap() {
         return tagsMap;
     }
 
     /**
      * sets the tagsMap
+     *
      * @param tagsMap created map (e.g. HashMap)
      * @return self
      */
-    public BreinActivity setTagsMap(final Map<String, String> tagsMap) {
+    public BreinActivity setTagsMap(final Map<String, Object> tagsMap) {
         this.tagsMap = tagsMap;
         return this;
+    }
+
+    /**
+     * initializes the values of this instance
+     */
+    public void init() {
+        breinActivityType.setName("");
+        breinCategoryType.setName("");
+        description = "";
+        ipAddress = "";
+        sessionId = "";
+        userAgent = "";
+        referrer = "";
+        additionalUrl = "";
+        tagsMap = null;
+    }
+
+    /**
+     * resets all values of this class and base class to initial values.
+     * This will lead to empty strings or null objects
+     */
+    public void resetAllValues() {
+        // reset init values
+        init();
+
+        // reset base values (User & Config)
+        super.init();
     }
 
     /**
@@ -250,9 +289,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
                          final String description,
                          final boolean sign) {
 
-        /*
-         * set the values for further usage
-         */
+        // set the values for further usage
         setBreinUser(breinUser);
         setBreinActivityType(breinActivityType);
         setBreinCategoryType(breinCategoryType);
@@ -281,9 +318,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
         final JsonObject requestData = new JsonObject();
 
-        /*
-         * user data
-         */
+        // user data
         final BreinUser breinUser = getBreinUser();
         if (breinUser != null) {
 
@@ -348,6 +383,26 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         if (BreinUtil.containsValue(getBreinCategoryType())) {
             activityData.addProperty("category", getBreinCategoryType().getName());
         }
+
+        // tags
+        final Map<String, Object> tagsMap = getTagsMap();
+        if (tagsMap != null && tagsMap.size() > 0) {
+            final JsonObject tagsData = new JsonObject();
+
+            tagsMap.entrySet().forEach(entry -> {
+                if (entry.getValue().getClass() == String.class) {
+                    tagsData.addProperty(entry.getKey(), (String) entry.getValue());
+                } else if (entry.getValue().getClass() == Double.class ||
+                        entry.getValue().getClass() == Integer.class) {
+                    tagsData.addProperty(entry.getKey(), (Number) entry.getValue());
+                } else if (entry.getValue().getClass() == Boolean.class) {
+                    tagsData.addProperty(entry.getKey(), (Boolean) entry.getValue());
+                }
+            });
+
+            activityData.add("tags", tagsData);
+        }
+
         requestData.add("activity", activityData);
 
         /*
@@ -363,13 +418,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
 
         if (BreinUtil.containsValue(getIpAddress())) {
             requestData.addProperty("ipAddress", getIpAddress());
-        }
-
-        // tags
-        final Map<String, String> tagsMap = getTagsMap();
-        if (tagsMap != null && tagsMap.size() > 0) {
-            final JsonObject tagsData = new JsonObject();
-            tagsMap.forEach((key, value) -> tagsData.addProperty(key, value));
         }
 
         // if sign is active

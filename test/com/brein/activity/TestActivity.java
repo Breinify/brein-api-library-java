@@ -13,7 +13,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This test cases shows how to use the  activity
@@ -25,12 +29,14 @@ public class TestActivity {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    private static final String BASE_URL = "http://dev.breinify.com/api";
+    // private static final String BASE_URL = "http://dev.breinify.com/api";
+
+    private static final String BASE_URL = "https://api.breinify.com";
 
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
 
     /**
      * Contains the Breinify User
@@ -249,6 +255,52 @@ public class TestActivity {
                 breinCategoryType, description, sign);
     }
 
+    /**
+     * Testcase that proves that all attributes of class BreinActivity
+     * are set to empty values
+     */
+    @Test
+    public void testResetAllValues() {
 
+        final BreinActivity breinActivity = new BreinActivity();
+        breinActivity.setAdditionalUrl("www.test.com.au");
+        breinActivity.setBreinActivityType(BreinActivityType.ADD_TO_CART);
+        breinActivity.setBreinCategoryType(BreinCategoryType.EDUCATION);
+        breinActivity.setDescription("Description");
+        breinActivity.setIpAddress("10.11.222.333");
+        breinActivity.setReferrer("Referrer");
+        breinActivity.setSessionId("777ABBG");
+        breinActivity.setUserAgent("userAgentValue");
+        final Map<String, Object> tagMap = new HashMap<>();
+        tagMap.put("t1", "0.0");
+        breinActivity.setTagsMap(tagMap);
+        breinActivity.setBreinUser(new BreinUser("user.name@email.com"));
+        breinActivity.setConfig(new BreinConfig("KEY",
+                BreinConfig.DEFAULT_BASE_URL,
+                BreinEngineType.UNIREST_ENGINE));
+
+        // first check init
+        breinActivity.init();
+        assertTrue("addtionalUrl is not empty", breinActivity.getAdditionalUrl().equals(""));
+        assertTrue("breinActivityType is not empty", breinActivity.getBreinActivityType().getName().equals(""));
+        assertTrue("breinCategoryType is not empty", breinActivity.getBreinCategoryType().getName().equals(""));
+        assertTrue("description is not empty", breinActivity.getDescription().equals(""));
+        assertTrue("ipAddress is not empty", breinActivity.getIpAddress().equals(""));
+        assertTrue("referrer is not empty", breinActivity.getReferrer().equals(""));
+        assertTrue("sessionId is not empty", breinActivity.getSessionId().equals(""));
+        assertTrue("userAgent is not empty", breinActivity.getUserAgent().equals(""));
+        assertTrue("tags lib is not null", breinActivity.getTagsMap() == null);
+
+        // breinUser and breinConfig should be valid
+        assertTrue("breinUser is null!", breinActivity.getBreinUser() != null);
+        assertTrue("breinConfig is null!", breinActivity.getConfig() != null);
+
+        // now invoke resetAllValues, this will delete breinUser and breinConfig as well
+        breinActivity.resetAllValues();
+
+        // breinUser and breinConfig should now be null
+        assertTrue("breinUser is not null!", breinActivity.getBreinUser() == null);
+        assertTrue("breinConfig is not null!", breinActivity.getConfig() == null);
+    }
 
 }

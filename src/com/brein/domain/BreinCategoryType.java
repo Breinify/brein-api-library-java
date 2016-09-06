@@ -7,7 +7,7 @@ package com.brein.domain;
 public enum BreinCategoryType {
 
     /*
-     * the only possible category types
+     * this pre-defined category types can be used
      */
     APPAREL("apparel"),
     HOME("home"),
@@ -22,7 +22,7 @@ public enum BreinCategoryType {
     /**
      * the corresponding name of the enum
      */
-    private final String name;
+    private String name;
 
     /**
      * Indicates the category of the activity
@@ -39,4 +39,14 @@ public enum BreinCategoryType {
     public String getName() {
         return name;
     }
+
+    /**
+     * sets the name to any value for BreinCategoryType.
+     *
+     * @param name contains the string to set to
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
+
 }

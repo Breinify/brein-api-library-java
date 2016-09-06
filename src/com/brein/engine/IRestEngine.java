@@ -70,7 +70,7 @@ public interface IRestEngine {
             huc.setRequestProperty("User-Agent",
                     "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
 
-            int responseCode = huc.getResponseCode();
+            // int responseCode = huc.getResponseCode();
 
             huc.connect();
 
@@ -205,7 +205,6 @@ public interface IRestEngine {
         // validation of activity and config
         validateBreinBase(breinBase);
         validateConfig(breinBase);
-
     }
 
 }

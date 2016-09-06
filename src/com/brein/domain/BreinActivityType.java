@@ -5,6 +5,8 @@ package com.brein.domain;
  * selectProduct, or other.
  */
 public enum BreinActivityType {
+
+    // this pre-defined activity types can be used
     SEARCH("search"),
     LOGIN("login"),
     LOGOUT("logout"),
@@ -18,13 +20,22 @@ public enum BreinActivityType {
     /**
      * the corresponding name of the enum
      */
-    private final String name;
+    private String name;
 
     /**
      * Indicates the kind of the activity
      * @param name of the type
      */
     BreinActivityType(final String name) {
+        this.name = name;
+    }
+
+    /**
+     * sets the name to any value for BreinActivityType.
+     *
+     * @param name contains the string to set to
+     */
+    public void setName(final String name) {
         this.name = name;
     }
 

@@ -20,7 +20,8 @@ public class TestApi {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    private static final String BASE_URL = "http://dev.breinify.com/api";
+    // private static final String BASE_URL = "http://dev.breinify.com/api";
+    private static final String BASE_URL = "https://api.breinify.com";
 
     /**
      * This has to be a valid api key
@@ -53,7 +54,6 @@ public class TestApi {
         // set logging on
         final Properties props = System.getProperties();
         props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
-
     }
 
     /**
@@ -395,12 +395,12 @@ public class TestApi {
                 .setDeviceId("DD-EEEEE")
                 .setImei("55544455333");
 
-        final Map<String, String> tagMap = new HashMap<>();
-        tagMap.put("t1", "0.0");
-        tagMap.put("t2", "0.0");
+        final Map<String, Object> tagMap = new HashMap<>();
+        tagMap.put("t1", 0.0);
+        tagMap.put("t2", 5);
         tagMap.put("t3", "0.0");
-        tagMap.put("t4", "0.0");
-        tagMap.put("nr", "1.0");
+        tagMap.put("t4", 5.0000);
+        tagMap.put("nr", 3000);
         tagMap.put("sortid", "1.0");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
@@ -574,6 +574,7 @@ public class TestApi {
     /**
      * Test a login activity with sign but wrong secret
      */
+    /*
     @Test
     public void testLoginWithSignButWrongSecret() {
 
@@ -597,6 +598,7 @@ public class TestApi {
                 "Login-Description",
                 sign);
     }
+    */
 
     /**
      * Test a lookup with sign and correct secret

@@ -261,7 +261,7 @@ public class TestEngine {
                     }
 
                     public void completed(final HttpResponse<JsonNode> response) {
-                        int code = response.getStatus();
+                        final int code = response.getStatus();
                         // Map<String, String> headers = response.getHeaders();
                         final JsonNode body = response.getBody();
                         final InputStream rawBody = response.getRawBody();

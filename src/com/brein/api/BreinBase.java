@@ -8,7 +8,6 @@ import java.time.Instant;
 
 /**
  * Base Class for activity and lookup operations.
- *
  */
 public class BreinBase {
 
@@ -43,6 +42,7 @@ public class BreinBase {
 
     /**
      * sets the brein config
+     *
      * @param breinConfig object
      */
     public BreinBase setConfig(final BreinConfig breinConfig) {
@@ -61,7 +61,8 @@ public class BreinBase {
 
     /**
      * sets the brein user
-     *~
+     * ~
+     *
      * @param breinUser user data
      */
     public BreinBase setBreinUser(final BreinUser breinUser) {
@@ -71,6 +72,7 @@ public class BreinBase {
 
     /**
      * returns the configured brein engine
+     *
      * @return brein engine
      */
     public BreinEngine getBreinEngine() {
@@ -87,17 +89,18 @@ public class BreinBase {
     }
 
     /**
+     * retrieves the timestamp
      *
-     * @return
+     * @return value from 1.1.1970
      */
     public long getUnixTimestamp() {
         return unixTimestamp;
     }
 
     /**
-     * retrieves the timestamp
+     * sets the timestamp
      *
-     * @param unixTimestamp
+     * @param unixTimestamp value from 1.1.1970
      */
     public BreinBase setUnixTimestamp(final long unixTimestamp) {
         this.unixTimestamp = unixTimestamp;
@@ -122,8 +125,20 @@ public class BreinBase {
         this.sign = sign;
         return this;
     }
+
+    /**
+     * Initializes all values
+     */
+    public void init() {
+        breinUser = null;
+        breinConfig = null;
+        unixTimestamp = 0;
+        sign = false;
+    }
+
     /**
      * prepares the json request string
+     *
      * @return empty
      */
     public String prepareJsonRequest() {

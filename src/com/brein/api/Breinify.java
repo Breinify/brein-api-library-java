@@ -57,14 +57,14 @@ public class Breinify {
     }
 
     /**
-     * @return
+     * @return breinActivity instance
      */
     public static BreinActivity getBreinActivity() {
         return breinActivity;
     }
 
     /**
-     * @return
+     * @return breinLookup instance
      */
     public static BreinLookup getBreinLookup() {
         return breinLookup;

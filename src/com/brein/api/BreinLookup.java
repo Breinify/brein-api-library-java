@@ -36,6 +36,25 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
     }
 
     /**
+     * initializes the values of this instance
+     */
+    public void init() {
+        breinDimension = null;
+    }
+
+    /**
+     * resets all values of this class and base class to initial values.
+     * This will lead to empty strings or null objects
+     */
+    public void resetAllValues() {
+        // reset init values
+        init();
+
+        // reset base values (User & Config)
+        super.init();
+    }
+
+    /**
      * Lookup implementation. For a given user (BreinUser) a lookup will be performed with the requested dimensions
      * (BreinDimension)
      *
@@ -45,7 +64,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      *
      * @return response from request or null if no data can be retrieved
      */
-  public BreinResult lookUp(final BreinUser breinUser,
+    public BreinResult lookUp(final BreinUser breinUser,
                               final BreinDimension breinDimension,
                               final boolean sign) {
 

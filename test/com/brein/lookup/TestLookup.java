@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test cases for lookup functionality
@@ -20,7 +21,9 @@ public class TestLookup {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    private static final String BASE_URL = "http://dev.breinify.com/api";
+    // private static final String BASE_URL = "http://dev.breinify.com/api";
+
+    private static final String BASE_URL = "https://api.breinify.com";
 
     /**
      * This has to be a valid api key
@@ -89,4 +92,39 @@ public class TestLookup {
         final Object dataDigitalFootprinting = breinResult.get("digitalfootprint");
         final Object dataImages = breinResult.get("digitalfootprint");
     }
+
+    /**
+     * Testcase that proves that all attributes of class BreinLookup
+     * are set to empty values
+     */
+    @Test
+    public void testResetAllValues() {
+
+        final String[] dimensions = {"firstname", "gender",
+                "age", "agegroup", "digitalfootprint", "images"};
+        final BreinDimension breinDimension = new BreinDimension(dimensions);
+        final BreinLookup breinLookup = new BreinLookup();
+
+        breinLookup.setBreinDimension(breinDimension);
+        breinLookup.setBreinUser(new BreinUser("user.name@email.com"));
+        breinLookup.setConfig(new BreinConfig("KEY",
+                BreinConfig.DEFAULT_BASE_URL,
+                BreinEngineType.UNIREST_ENGINE));
+
+        // first check init
+        breinLookup.init();
+        assertTrue("breinDimention is not null", breinLookup.getBreinDimension() == null);
+
+        // breinUser and breinConfig should be valid
+        assertTrue("breinUser is null!", breinLookup.getBreinUser() != null);
+        assertTrue("breinConfig is null!", breinLookup.getConfig() != null);
+
+        // now invoke resetAllValues, this will delete breinUser and breinConfig as well
+        breinLookup.resetAllValues();
+
+        // breinUser and breinConfig should now be null
+        assertTrue("breinUser is not null!", breinLookup.getBreinUser() == null);
+        assertTrue("breinConfig is not null!", breinLookup.getConfig() == null);
+    }
+
 }
