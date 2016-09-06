@@ -46,7 +46,7 @@ public class TestActivity {
     /**
      * Contains the Category
      */
-    private final BreinCategoryType breinCategoryType = BreinCategoryType.SERVICES;
+    private final BreinCategoryType breinCategoryType = new BreinCategoryType(BreinCategoryType.SERVICES);
 
     /**
      * Sign parameter
@@ -122,7 +122,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.LOGIN,
+                new BreinActivityType(BreinActivityType.LOGIN),
                 breinCategoryType, description, sign);
     }
 
@@ -171,7 +171,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.LOGOUT,
+                new BreinActivityType(BreinActivityType.LOGOUT),
                 breinCategoryType, description, sign);
     }
 
@@ -187,7 +187,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.SEARCH,
+                new BreinActivityType(BreinActivityType.SEARCH),
                 breinCategoryType, description, sign);
     }
 
@@ -203,7 +203,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.ADD_TO_CART,
+                new BreinActivityType(BreinActivityType.ADD_TO_CART),
                 breinCategoryType, description, sign);
     }
 
@@ -219,7 +219,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.REMOVE_FROM_CART,
+                new BreinActivityType(BreinActivityType.REMOVE_FROM_CART),
                 breinCategoryType, description, sign);
     }
 
@@ -235,7 +235,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.SELECT_PRODUCT,
+                new BreinActivityType(BreinActivityType.SELECT_PRODUCT),
                 breinCategoryType, description, sign);
     }
 
@@ -251,7 +251,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                BreinActivityType.OTHER,
+                new BreinActivityType(BreinActivityType.OTHER),
                 breinCategoryType, description, sign);
     }
 
@@ -264,8 +264,8 @@ public class TestActivity {
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setAdditionalUrl("www.test.com.au");
-        breinActivity.setBreinActivityType(BreinActivityType.ADD_TO_CART);
-        breinActivity.setBreinCategoryType(BreinCategoryType.EDUCATION);
+        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.ADD_TO_CART));
+        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.EDUCATION));
         breinActivity.setDescription("Description");
         breinActivity.setIpAddress("10.11.222.333");
         breinActivity.setReferrer("Referrer");

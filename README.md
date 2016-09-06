@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/logo.png"" alt="Breinify API Java Library" width="250">
+  <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/logo.png" alt="Breinify API Java Library" width="250">
 </p>
 
 <p align="center">
@@ -67,10 +67,21 @@ The engine is informed of an activity by executing *Breinify.activity(...)*.
 final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
                 .setFirstName("User")
                 .setLastName("Anyhere");
+               
+// configure a predefined BreinActivityType 
+final BreinActivityType breinActivityType = 
+       new BreinActivityType(BreinActivityType.LOGIN);      
+
+// configure a predefined BreinCategory       
+final BreinCategoryType breinCategoryType = 
+       new BreinCategoryType(BreinCategoryType.HOME);           
                 
 // invoke an activity noting that the user has logged in
-Breinify.activity(breinUser, BreinActivityType.LOGIN,
-         BreinCategoryType.HOME, "Login-Description", false);
+Breinify.activity(breinUser, 
+         breinActivityType,
+         breinCategoryType, 
+         "Login-Description", 
+         false);
 
 ```
 

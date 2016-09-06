@@ -44,9 +44,9 @@ public class TestDomain {
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
+        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.LOGIN));
         breinActivity.setDescription("Super-Description");
-        breinActivity.setBreinCategoryType(BreinCategoryType.HOME);
+        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.HOME));
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
         assertTrue(jsonOutput.length() > 0);
@@ -68,9 +68,9 @@ public class TestDomain {
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
+        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.LOGIN));
         breinActivity.setDescription("Super-Description");
-        breinActivity.setBreinCategoryType(BreinCategoryType.FOOD);
+        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.FOOD));
 
         final String jsonOutput = breinActivity.prepareJsonRequest();
         assertTrue(jsonOutput.length() > 0);
@@ -129,4 +129,46 @@ public class TestDomain {
         final BreinUser breinUser = new BreinUser("user.anywhere@email.com");
         assertFalse(breinUser.toString().isEmpty());
     }
+
+    /**
+     * Test of breinActivityType options
+     */
+    @Test
+    public void testBreinActivityTypeSetToPredefinedString() {
+
+        final BreinActivityType breinActivityType = new BreinActivityType(BreinActivityType.CHECKOUT);
+        assertTrue(breinActivityType.getName().equals(BreinActivityType.CHECKOUT));
+    }
+
+    /**
+     * Test of breinActivityType options
+     */
+    @Test
+    public void testBreinActivityTypeSetToAnyString() {
+
+        final BreinActivityType breinActivityType = new BreinActivityType("whatYouWant");
+        assertTrue(breinActivityType.getName().equals("whatYouWant"));
+    }
+
+    /**
+     * Test of breinCategory options to predefined string
+     */
+    @Test
+    public void testBreinCategoryTypeSetToPredefinedString() {
+
+        final BreinCategoryType breinCategoryType = new BreinCategoryType(BreinCategoryType.APPAREL);
+        assertTrue(breinCategoryType.getName().equals(BreinCategoryType.APPAREL));
+    }
+
+    /**
+     *  Test of breinCategory options to flexible string
+     */
+    @Test
+    public void testBreinCategoryTypeSetToFlexibleString() {
+
+        final BreinCategoryType breinCategoryType = new BreinCategoryType("flexibleString");
+        assertTrue(breinCategoryType.getName().equals("flexibleString"));
+    }
+
+
 }

@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify API Java Library" width="250">
-</p>
+ <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/logo.png" alt="Breinify API Java Library" width="250"></p>
 
 <p align="center">
 Breinify's DigitalDNA API puts dynamic behavior-based, people-driven data right at your fingertips.
@@ -32,8 +31,10 @@ final BreinifyExecutor breinifyExecutor = new BreinConfig()
 
 // invoke an activity call
 breinifyExecutor.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.FOOD,
+                BreinActivityType breinAcitityType = new 
+                     BreinActivityType(BreinActivityType.LOGIN),
+                BreinCategoryType breinCatType = new
+                     BreinCategory(BreinCategoryType.FOOD),
                 "This is a description",
                 false);
                 

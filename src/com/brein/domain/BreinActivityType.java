@@ -4,18 +4,18 @@ package com.brein.domain;
  * The type of the activity collected, i.e., one of search, login, logout, addToCart, removeFromCart, checkOut,
  * selectProduct, or other.
  */
-public enum BreinActivityType {
+public class BreinActivityType {
 
     // this pre-defined activity types can be used
-    SEARCH("search"),
-    LOGIN("login"),
-    LOGOUT("logout"),
-    ADD_TO_CART("addToCart"),
-    REMOVE_FROM_CART("removeFromCart"),
-    SELECT_PRODUCT("selectProduct"),
-    CHECKOUT("checkOut"),
-    PAGEVISIT("pageVisit"),
-    OTHER("other");
+    public static final String SEARCH = "search";
+    public static final String LOGIN = "login";
+    public static final String LOGOUT = "logout";
+    public static final String ADD_TO_CART = "addToCart";
+    public static final String REMOVE_FROM_CART = "removeFromCart";
+    public static final String SELECT_PRODUCT = "selectProduct";
+    public static final String CHECKOUT = "checkOut";
+    public static final String PAGEVISIT = "pageVisit";
+    public static final String OTHER = "other";
 
     /**
      * the corresponding name of the enum
@@ -26,7 +26,7 @@ public enum BreinActivityType {
      * Indicates the kind of the activity
      * @param name of the type
      */
-    BreinActivityType(final String name) {
+    public BreinActivityType(final String name) {
         this.name = name;
     }
 

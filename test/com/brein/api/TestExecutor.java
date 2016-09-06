@@ -93,8 +93,8 @@ public class TestExecutor {
 
         breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
-        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.APPAREL));
+        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.PAGEVISIT));
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
         breinActivity.setIpAddress("11.222.333.444");
@@ -132,8 +132,8 @@ public class TestExecutor {
          * invoke activity call
          */
         breinifyExecutor.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.FOOD,
+                new BreinActivityType(BreinActivityType.LOGIN),
+                new BreinCategoryType(BreinCategoryType.FOOD),
                 description,
                 false);
     }
@@ -201,8 +201,8 @@ public class TestExecutor {
                 .build();
 
         breinifyExecutor.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.FOOD,
+                new BreinActivityType(BreinActivityType.LOGIN),
+                new BreinCategoryType(BreinCategoryType.FOOD),
                 "description",
                 false);
 

@@ -196,9 +196,9 @@ public class TestEngine {
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
+        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.LOGIN));
         breinActivity.setDescription("Super-Description");
-        breinActivity.setBreinCategoryType(BreinCategoryType.EDUCATION);
+        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.EDUCATION));
 
         final String requestBody = breinActivity.prepareJsonRequest();
 

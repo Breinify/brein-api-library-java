@@ -4,31 +4,31 @@ package com.brein.domain;
  * The categoryType of the platform/service/products, i.e., one of apparel,
  * home, education, family, food, health, job, services, or other.
  */
-public enum BreinCategoryType {
+public class BreinCategoryType {
 
     /*
      * this pre-defined category types can be used
      */
-    APPAREL("apparel"),
-    HOME("home"),
-    EDUCATION("education"),
-    FAMILY("family"),
-    FOOD("food"),
-    HEALTH("health"),
-    JOB("job"),
-    SERVICES("services"),
-    OTHER("other");
+    public static final String APPAREL = "apparel";
+    public static final String HOME = "home";
+    public static final String EDUCATION = "education";
+    public static final String FAMILY = "family";
+    public static final String FOOD = "food";
+    public static final String HEALTH = "health";
+    public static final String JOB = "job";
+    public static final String SERVICES = "services";
+    public static final String OTHER = "other";
 
     /**
      * the corresponding name of the enum
      */
-    private String name;
+    protected String name;
 
     /**
      * Indicates the category of the activity
      * @param name of the type
      */
-    BreinCategoryType(final String name) {
+    public BreinCategoryType(final String name) {
         this.name = name;
     }
 

@@ -33,7 +33,12 @@ public class TestJerseyApi {
     /**
      * Contains the Category
      */
-    private final BreinCategoryType breinCategoryType = BreinCategoryType.HOME;
+    private final BreinCategoryType breinCategoryType = new BreinCategoryType(BreinCategoryType.HOME);
+
+    /**
+     * Contains the BreinActivityType
+     */
+    private final BreinActivityType breinActivityType = new BreinActivityType(BreinActivityType.LOGIN);
 
     /**
      * Correct configuration
@@ -103,8 +108,8 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.HOME,
+                breinActivityType,
+                breinCategoryType,
                 "Login-Description",
                 false);
     }
@@ -134,7 +139,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
+                breinActivityType,
                 breinCategoryType,
                 description,
                 sign);
@@ -165,7 +170,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
+                breinActivityType,
                 breinCategoryType,
                 description,
                 sign);
@@ -204,7 +209,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
+                breinActivityType,
                 breinCategoryType,
                 description,
                 sign);
@@ -239,7 +244,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
+                breinActivityType,
                 breinCategoryType,
                 description,
                 false);
@@ -282,7 +287,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.LOGOUT,
+                new BreinActivityType(BreinActivityType.LOGOUT),
                 breinCategoryType,
                 description,
                 false);
@@ -305,7 +310,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.SEARCH,
+                new BreinActivityType(BreinActivityType.SEARCH),
                 breinCategoryType,
                 description,
                 false);
@@ -328,7 +333,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.ADD_TO_CART,
+                new BreinActivityType(BreinActivityType.ADD_TO_CART),
                 breinCategoryType,
                 description,
                 false);
@@ -351,7 +356,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.REMOVE_FROM_CART,
+                new BreinActivityType(BreinActivityType.REMOVE_FROM_CART),
                 breinCategoryType,
                 description,
                 false);
@@ -374,7 +379,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.SELECT_PRODUCT,
+                new BreinActivityType(BreinActivityType.SELECT_PRODUCT),
                 breinCategoryType,
                 description,
                 false);
@@ -397,7 +402,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                BreinActivityType.OTHER,
+                new BreinActivityType(BreinActivityType.OTHER),
                 breinCategoryType,
                 description,
                 false);
