@@ -26,7 +26,7 @@ public class TestApi {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
     /**
      * Contains the Breinify User
@@ -36,12 +36,12 @@ public class TestApi {
     /**
      * Contains the Category
      */
-    private final BreinCategoryType breinCategoryType = new BreinCategoryType(BreinCategoryType.HOME);
+    private final String breinCategoryType = BreinCategoryType.HOME;
 
     /**
      * Contains the BreinActivityType
      */
-    private final BreinActivityType breinActivityType = new BreinActivityType(BreinActivityType.LOGIN);
+    private final String breinActivityType = BreinActivityType.LOGIN;
 
     /**
      * Correct configuration
@@ -282,7 +282,7 @@ public class TestApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.SEARCH),
+                BreinActivityType.SEARCH,
                 breinCategoryType,
                 description,
                 false);
@@ -305,7 +305,7 @@ public class TestApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.ADD_TO_CART),
+                BreinActivityType.ADD_TO_CART,
                 breinCategoryType,
                 description,
                 false);
@@ -328,7 +328,7 @@ public class TestApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.REMOVE_FROM_CART),
+                BreinActivityType.REMOVE_FROM_CART,
                 breinCategoryType,
                 description,
                 false);
@@ -351,7 +351,7 @@ public class TestApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.SELECT_PRODUCT),
+                BreinActivityType.SELECT_PRODUCT,
                 breinCategoryType,
                 description,
                 false);
@@ -374,7 +374,7 @@ public class TestApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.OTHER),
+                BreinActivityType.OTHER,
                 breinCategoryType,
                 description,
                 false);
@@ -397,7 +397,7 @@ public class TestApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.OTHER),
+                BreinActivityType.OTHER,
                 breinCategoryType,
                 description,
                 false);
@@ -435,8 +435,8 @@ public class TestApi {
 
         breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.APPAREL));
-        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.PAGEVISIT));
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
         breinActivity.setTagsMap(tagMap);
@@ -472,8 +472,8 @@ public class TestApi {
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
 
-        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.APPAREL));
-        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.PAGEVISIT));
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
         breinActivity.setIpAddress("11.222.333.444");
@@ -531,8 +531,8 @@ public class TestApi {
          * invoke activity call, will cause an exception
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGIN),
-                new BreinCategoryType(BreinCategoryType.HOME),
+                BreinActivityType.LOGIN,
+                BreinCategoryType.HOME,
                 "Login-Description",
                 false);
     }
@@ -592,8 +592,8 @@ public class TestApi {
 
         // invoke activity call
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGIN),
-                new BreinCategoryType(BreinCategoryType.HOME),
+                BreinActivityType.LOGIN,
+                BreinCategoryType.HOME,
                 "Login-Description",
                 sign);
 
@@ -620,8 +620,8 @@ public class TestApi {
 
         // invoke activity call
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGIN),
-                new BreinCategoryType(BreinCategoryType.HOME),
+                BreinActivityType.LOGIN,
+                BreinCategoryType.HOME,
                 "Login-Description",
                 sign);
     }

@@ -86,8 +86,8 @@ public class Breinify {
      * @param sign          a boolean value specifying if the call should be signed
      */
     public static void activity(final BreinUser user,
-                                final BreinActivityType activityType,
-                                final BreinCategoryType category,
+                                final String activityType,
+                                final String category,
                                 final String description,
                                 final boolean sign) {
         breinActivity.setBreinUser(user);

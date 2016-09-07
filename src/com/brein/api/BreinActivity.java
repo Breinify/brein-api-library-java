@@ -20,12 +20,12 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     /**
      * ActivityType of the activity
      */
-    private BreinActivityType breinActivityType;
+    private String breinActivityType;
 
     /**
      * Category of the activity
      */
-    private BreinCategoryType breinCategoryType;
+    private String breinCategoryType;
 
     /**
      * Description of the activity
@@ -67,7 +67,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *
      * @return activity type
      */
-    public BreinActivityType getBreinActivityType() {
+    public String getBreinActivityType() {
         return breinActivityType;
     }
 
@@ -76,7 +76,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *
      * @param breinActivityType to set
      */
-    public BreinActivity setBreinActivityType(final BreinActivityType breinActivityType) {
+    public BreinActivity setBreinActivityType(final String breinActivityType) {
         this.breinActivityType = breinActivityType;
         return this;
     }
@@ -86,7 +86,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *
      * @return category object
      */
-    public BreinCategoryType getBreinCategoryType() {
+    public String getBreinCategoryType() {
         return breinCategoryType;
     }
 
@@ -95,7 +95,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *
      * @param breinCategoryType object
      */
-    public BreinActivity setBreinCategoryType(final BreinCategoryType breinCategoryType) {
+    public BreinActivity setBreinCategoryType(final String breinCategoryType) {
         this.breinCategoryType = breinCategoryType;
         return this;
     }
@@ -250,8 +250,8 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      * initializes the values of this instance
      */
     public void init() {
-        breinActivityType.setName("");
-        breinCategoryType.setName("");
+        breinActivityType = "";
+        breinCategoryType = "";
         description = "";
         ipAddress = "";
         sessionId = "";
@@ -284,8 +284,8 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      *                          in open systems), otherwise false (can be null or undefined)
      */
     public void activity(final BreinUser breinUser,
-                         final BreinActivityType breinActivityType,
-                         final BreinCategoryType breinCategoryType,
+                         final String breinActivityType,
+                         final String breinCategoryType,
                          final String description,
                          final boolean sign) {
 
@@ -375,13 +375,13 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
          */
         final JsonObject activityData = new JsonObject();
         if (BreinUtil.containsValue(getBreinActivityType())) {
-            activityData.addProperty("type", getBreinActivityType().getName());
+            activityData.addProperty("type", getBreinActivityType());
         }
         if (BreinUtil.containsValue(getDescription())) {
             activityData.addProperty("description", getDescription());
         }
         if (BreinUtil.containsValue(getBreinCategoryType())) {
-            activityData.addProperty("category", getBreinCategoryType().getName());
+            activityData.addProperty("category", getBreinCategoryType());
         }
 
         // tags
@@ -443,7 +443,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     public String createSignature() {
 
         final String message = String.format("%s%d%d",
-                getBreinActivityType() == null ? "" : getBreinActivityType().getName(),
+                getBreinActivityType() == null ? "" : getBreinActivityType(),
                 getUnixTimestamp(), 1);
         // activities.size());
 

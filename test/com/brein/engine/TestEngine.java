@@ -30,11 +30,6 @@ import static org.junit.Assert.*;
  */
 public class TestEngine {
 
-    /**
-     * this is my test api key
-     */
-    private static final String API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
-
     private CountDownLatch lock;
     private boolean status;
 
@@ -196,9 +191,9 @@ public class TestEngine {
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.LOGIN));
+        breinActivity.setBreinActivityType(BreinActivityType.LOGIN);
         breinActivity.setDescription("Super-Description");
-        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.EDUCATION));
+        breinActivity.setBreinCategoryType(BreinCategoryType.EDUCATION);
 
         final String requestBody = breinActivity.prepareJsonRequest();
 

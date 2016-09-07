@@ -87,8 +87,8 @@ public class BreinifyExecutor {
      * @param sign         a boolean value specifying if the call should be signed
      */
     public void activity(final BreinUser user,
-                         final BreinActivityType activityType,
-                         final BreinCategoryType category,
+                         final String activityType,
+                         final String category,
                          final String description,
                          final boolean sign) {
         Breinify.activity(user, activityType, category, description, sign);

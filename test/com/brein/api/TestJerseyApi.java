@@ -33,12 +33,12 @@ public class TestJerseyApi {
     /**
      * Contains the Category
      */
-    private final BreinCategoryType breinCategoryType = new BreinCategoryType(BreinCategoryType.HOME);
+    private final String breinCategoryType = BreinCategoryType.HOME;
 
     /**
      * Contains the BreinActivityType
      */
-    private final BreinActivityType breinActivityType = new BreinActivityType(BreinActivityType.LOGIN);
+    private final String breinActivityType = BreinActivityType.LOGIN;
 
     /**
      * Correct configuration
@@ -287,7 +287,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGOUT),
+                BreinActivityType.LOGOUT,
                 breinCategoryType,
                 description,
                 false);
@@ -310,7 +310,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.SEARCH),
+                BreinActivityType.SEARCH,
                 breinCategoryType,
                 description,
                 false);
@@ -333,7 +333,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.ADD_TO_CART),
+                BreinActivityType.ADD_TO_CART,
                 breinCategoryType,
                 description,
                 false);
@@ -356,7 +356,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.REMOVE_FROM_CART),
+                BreinActivityType.REMOVE_FROM_CART,
                 breinCategoryType,
                 description,
                 false);
@@ -379,7 +379,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.SELECT_PRODUCT),
+                BreinActivityType.SELECT_PRODUCT,
                 breinCategoryType,
                 description,
                 false);
@@ -402,7 +402,7 @@ public class TestJerseyApi {
          * invoke activity call
          */
         Breinify.activity(breinUser,
-                new BreinActivityType(BreinActivityType.OTHER),
+                BreinActivityType.OTHER,
                 breinCategoryType,
                 description,
                 false);

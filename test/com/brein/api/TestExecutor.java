@@ -34,7 +34,7 @@ public class TestExecutor {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
     /**
      * Contains the Breinify User
@@ -93,8 +93,8 @@ public class TestExecutor {
 
         breinActivity.setUnixTimestamp(Instant.now().getEpochSecond());
         breinActivity.setBreinUser(breinUser);
-        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.APPAREL));
-        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.PAGEVISIT));
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
         breinActivity.setIpAddress("11.222.333.444");
@@ -132,8 +132,8 @@ public class TestExecutor {
          * invoke activity call
          */
         breinifyExecutor.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGIN),
-                new BreinCategoryType(BreinCategoryType.FOOD),
+                BreinActivityType.LOGIN,
+                BreinCategoryType.FOOD,
                 description,
                 false);
     }
@@ -201,8 +201,8 @@ public class TestExecutor {
                 .build();
 
         breinifyExecutor.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGIN),
-                new BreinCategoryType(BreinCategoryType.FOOD),
+                BreinActivityType.LOGIN,
+                BreinCategoryType.FOOD,
                 "description",
                 false);
 

@@ -17,34 +17,5 @@ public class BreinActivityType {
     public static final String PAGEVISIT = "pageVisit";
     public static final String OTHER = "other";
 
-    /**
-     * the corresponding name of the enum
-     */
-    private String name;
-
-    /**
-     * Indicates the kind of the activity
-     * @param name of the type
-     */
-    public BreinActivityType(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * sets the name to any value for BreinActivityType.
-     *
-     * @param name contains the string to set to
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * return the corresponding name
-     * @return of the enum
-     */
-    public String getName() {
-        return name;
-    }
 }
 

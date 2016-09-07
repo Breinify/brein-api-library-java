@@ -36,7 +36,7 @@ public class TestActivity {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
+    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
     /**
      * Contains the Breinify User
@@ -46,7 +46,7 @@ public class TestActivity {
     /**
      * Contains the Category
      */
-    private final BreinCategoryType breinCategoryType = new BreinCategoryType(BreinCategoryType.SERVICES);
+    private final String breinCategoryType = BreinCategoryType.SERVICES;
 
     /**
      * Sign parameter
@@ -122,7 +122,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGIN),
+                BreinActivityType.LOGIN,
                 breinCategoryType, description, sign);
     }
 
@@ -171,7 +171,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                new BreinActivityType(BreinActivityType.LOGOUT),
+                BreinActivityType.LOGOUT,
                 breinCategoryType, description, sign);
     }
 
@@ -187,7 +187,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                new BreinActivityType(BreinActivityType.SEARCH),
+                BreinActivityType.SEARCH,
                 breinCategoryType, description, sign);
     }
 
@@ -203,7 +203,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                new BreinActivityType(BreinActivityType.ADD_TO_CART),
+                BreinActivityType.ADD_TO_CART,
                 breinCategoryType, description, sign);
     }
 
@@ -219,7 +219,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                new BreinActivityType(BreinActivityType.REMOVE_FROM_CART),
+                BreinActivityType.REMOVE_FROM_CART,
                 breinCategoryType, description, sign);
     }
 
@@ -235,7 +235,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                new BreinActivityType(BreinActivityType.SELECT_PRODUCT),
+                BreinActivityType.SELECT_PRODUCT,
                 breinCategoryType, description, sign);
     }
 
@@ -251,7 +251,7 @@ public class TestActivity {
          * invoke activity call
          */
         breinActivity.activity(breinUser,
-                new BreinActivityType(BreinActivityType.OTHER),
+                BreinActivityType.OTHER,
                 breinCategoryType, description, sign);
     }
 
@@ -264,8 +264,8 @@ public class TestActivity {
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setAdditionalUrl("www.test.com.au");
-        breinActivity.setBreinActivityType(new BreinActivityType(BreinActivityType.ADD_TO_CART));
-        breinActivity.setBreinCategoryType(new BreinCategoryType(BreinCategoryType.EDUCATION));
+        breinActivity.setBreinActivityType(BreinActivityType.ADD_TO_CART);
+        breinActivity.setBreinCategoryType(BreinCategoryType.EDUCATION);
         breinActivity.setDescription("Description");
         breinActivity.setIpAddress("10.11.222.333");
         breinActivity.setReferrer("Referrer");
@@ -282,8 +282,8 @@ public class TestActivity {
         // first check init
         breinActivity.init();
         assertTrue("addtionalUrl is not empty", breinActivity.getAdditionalUrl().equals(""));
-        assertTrue("breinActivityType is not empty", breinActivity.getBreinActivityType().getName().equals(""));
-        assertTrue("breinCategoryType is not empty", breinActivity.getBreinCategoryType().getName().equals(""));
+        assertTrue("breinActivityType is not empty", breinActivity.getBreinActivityType().equals(""));
+        assertTrue("breinCategoryType is not empty", breinActivity.getBreinCategoryType().equals(""));
         assertTrue("description is not empty", breinActivity.getDescription().equals(""));
         assertTrue("ipAddress is not empty", breinActivity.getIpAddress().equals(""));
         assertTrue("referrer is not empty", breinActivity.getReferrer().equals(""));
