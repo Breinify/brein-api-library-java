@@ -31,10 +31,8 @@ final BreinifyExecutor breinifyExecutor = new BreinConfig()
 
 // invoke an activity call
 breinifyExecutor.activity(breinUser,
-                BreinActivityType breinAcitityType = new 
-                     BreinActivityType(BreinActivityType.LOGIN),
-                BreinCategoryType breinCatType = new
-                     BreinCategory(BreinCategoryType.FOOD),
+                BreinActivityType.LOGIN,
+                BreinCategoryType.FOOD,
                 "This is a description",
                 false);
                 
@@ -137,7 +135,7 @@ Breinify.setConfig(breinConfig);
 The following sample provides an overview how to configure all fields for an activity request:
 
 ```java
-public void testPageVisit() {
+public void pageVisit() {
 
 final String BASE_URL = " https://api.breinify.com";
 final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
@@ -159,7 +157,7 @@ final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
 final Map<String, String> tagMap = new HashMap<>();
 tagMap.put("t1", "0.0");
 tagMap.put("t2", "0.0");
-tagMap.put("t3", "0.0");
+tagMap.put("t3",  2.0);
 tagMap.put("t4", "0.0");
 tagMap.put("nr", "1.0");
 tagMap.put("sortid", "1.0");
