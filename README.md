@@ -65,21 +65,13 @@ The engine is informed of an activity by executing *Breinify.activity(...)*.
 ```Java
 // create a user you are interested in with his email (mandatory field)
 final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
-                .setFirstName("User")
-                .setLastName("Anyhere");
+         .setFirstName("User")
+         .setLastName("Anyhere");
                
-// configure a predefined BreinActivityType 
-final BreinActivityType breinActivityType = 
-       new BreinActivityType(BreinActivityType.LOGIN);      
-
-// configure a predefined BreinCategory       
-final BreinCategoryType breinCategoryType = 
-       new BreinCategoryType(BreinCategoryType.HOME);           
-                
 // invoke an activity noting that the user has logged in
 Breinify.activity(breinUser, 
-         breinActivityType,
-         breinCategoryType, 
+         BreinActivityType.LOGIN,
+         BreinActivityType.LOGIN, 
          "Login-Description", 
          false);
 
