@@ -71,7 +71,7 @@ final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
 // invoke an activity noting that the user has logged in
 Breinify.activity(breinUser, 
          BreinActivityType.LOGIN,
-         BreinActivityType.LOGIN, 
+         BreinCategoryType.HOME, 
          "Login-Description", 
          false);
 
