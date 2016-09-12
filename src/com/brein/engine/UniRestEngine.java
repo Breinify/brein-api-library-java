@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 /**
  * Unirest Implementation
@@ -62,6 +63,7 @@ public class UniRestEngine implements IRestEngine {
         /*
          * invoke the request
          */
+
         Unirest.post(getFullyQualifiedUrl(breinActivity))
                 .header(HEADER_ACCESS, HEADER_APP_JSON)
                 .body(getRequestBody(breinActivity))
@@ -80,7 +82,9 @@ public class UniRestEngine implements IRestEngine {
                         if (LOG.isDebugEnabled()) {
                             LOG.debug(MSG_REQUEST_HAS_FAILED);
                         }
-                        throw new BreinException(BreinException.REQUEST_FAILED);
+
+                        // replace with callback
+                        // throw new BreinException(BreinException.REQUEST_FAILED);
                     }
 
                     @Override
