@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.breinify</groupId>
+    <artifactId>brein-api-library-java</artifactId>
+    <version>1.2.0</version>
+
+    <name>brein-api-library-java</name>
+    <description>Brein API Library Java</description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <slf4jVersion>1.7.21</slf4jVersion>
+        <unirestVersion>1.4.9</unirestVersion>
+        <gsonVersion>2.7</gsonVersion>
+        <jerseyClientVersion>1.19.1</jerseyClientVersion>
+        <junitVersion>4.12</junitVersion>
+    </properties>
+
+    <dependencies>
+
+        <!-- Logger Facade   -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4jVersion}</version>
+        </dependency>
+
+        <!-- can be activated to see some logging
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4jVersion}</version>
+        </dependency>
+         -->
+
+        <!-- UNIREST -->
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>${unirestVersion}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- JSON Support -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gsonVersion}</version>
+        </dependency>
+
+        <!-- Jersey -->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jerseyClientVersion}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junitVersion}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+</project>
