@@ -5,7 +5,7 @@
 
     <groupId>com.breinify</groupId>
     <artifactId>brein-api-library-java</artifactId>
-    <version>TRUNK-SNAPSHOT</version>
+    <version>1.2.0</version>
     <build>
         <plugins>
             <plugin>
@@ -32,13 +32,12 @@
 
     <dependencies>
 
-        <!-- Logger Facade -->
+        <!-- Logger Facade   -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4jVersion}</version>
         </dependency>
-
 
         <!-- can be activated to see some logging
         <dependency>
