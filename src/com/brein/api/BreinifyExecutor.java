@@ -10,7 +10,7 @@ public class BreinifyExecutor {
     /**
      * contains the current version of the library
      */
-    private static final String VERSION = "1.1.0";
+    private static final String VERSION = "1.2.0";
     /**
      * contains the activity object
      */
@@ -91,7 +91,21 @@ public class BreinifyExecutor {
                          final String category,
                          final String description,
                          final boolean sign) {
+
+        // set the appropriate configuration
+        applyConfiguration();
+
         Breinify.activity(user, activityType, category, description, sign);
+    }
+
+    /**
+     * This is necessary because the configuration from
+     * class BreinifyExecutor needs to be transferred to
+     * class Breinify in order to invoke the activity and
+     * lookup calls within class Breinify.
+     */
+    public void applyConfiguration() {
+        Breinify.getBreinActivity().setConfig(getConfig());
     }
 
     /**
@@ -102,6 +116,9 @@ public class BreinifyExecutor {
      *
      */
     public void activity() {
+
+        // set the appropriate configuration
+        applyConfiguration();
 
         if (breinActivity.getBreinUser() == null) {
             throw new BreinException(BreinException.USER_NOT_SET);

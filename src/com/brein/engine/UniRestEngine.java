@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.concurrent.Future;
 
 /**
  * Unirest Implementation
@@ -101,7 +100,7 @@ public class UniRestEngine implements IRestEngine {
      *
      * @param breinLookup contains request data
      * @return response from Breinify
-     * @throws BreinException
+     * @throws BreinException in case of an error
      */
     @Override
     public BreinResult doLookup(final BreinLookup breinLookup) throws BreinException {
@@ -110,10 +109,16 @@ public class UniRestEngine implements IRestEngine {
         validate(breinLookup);
 
         try {
-            final HttpResponse<JsonNode> jsonResponse = Unirest.post(getFullyQualifiedUrl(breinLookup))
-                    .header(HEADER_ACCESS, HEADER_APP_JSON)
-                    .body(getRequestBody(breinLookup))
-                    .asJson();
+            final String requestBody = getRequestBody(breinLookup);
+            final HttpResponse<JsonNode> jsonResponse =
+                    Unirest.post(getFullyQualifiedUrl(breinLookup))
+                            .header(HEADER_ACCESS, HEADER_APP_JSON)
+                            .body(requestBody)
+                            .asJson();
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Result from lookup is: ");
+            }
 
             return new BreinResult(jsonResponse.getBody().toString());
 

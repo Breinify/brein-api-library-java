@@ -35,7 +35,7 @@ public class BreinConfig {
     public static final long DEFAULT_SOCKET_TIMEOUT = 6000;
 
     /**
-     * default breinify base url
+     * default Breinify base url
      */
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
 
@@ -88,6 +88,11 @@ public class BreinConfig {
      * socket timeout
      */
     private long socketTimeout = DEFAULT_SOCKET_TIMEOUT;
+
+    /**
+     * default category
+     */
+    private String defaultCategory = "";
 
     /**
      * contains the secret that will be used for the signature
@@ -351,6 +356,25 @@ public class BreinConfig {
     }
 
     /**
+     * returns the default category (if set)
+     *
+     * @return default category
+     */
+    public String getDefaultCategory() {
+        return defaultCategory;
+    }
+
+    /**
+     * sets the default category
+     *
+     * @param defaultCategory default to set
+     */
+    public BreinConfig setDefaultCategory(final String defaultCategory) {
+        this.defaultCategory = defaultCategory;
+        return this;
+    }
+
+    /**
      * invokes the termination of the rest engine.
      * Depending of the configured engine additional threads might
      * have been allocated and this will close those threads.
@@ -379,6 +403,5 @@ public class BreinConfig {
     public boolean isUrlValid(final String url) {
         return IRestEngine.isUrlValid(url);
     }
-
 
 }

@@ -21,8 +21,6 @@ public class TestLookup {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    // private static final String BASE_URL = "http://dev.breinify.com/api";
-
     private static final String BASE_URL = "https://api.breinify.com";
 
     /**
@@ -58,9 +56,8 @@ public class TestLookup {
      */
     @AfterClass
     public static void tearDown() {
-        /**
-         * we have to wait some time in order to allow the asynch rest processing
-         */
+        // we have to wait some time in order to allow
+        // the asynch rest processing
         try {
             Thread.sleep(4000);
         } catch (final InterruptedException e) {
@@ -70,7 +67,6 @@ public class TestLookup {
 
     /**
      * Tests the lookup functionality
-     *
      */
     @Test
     public void testLookup() {
@@ -80,9 +76,7 @@ public class TestLookup {
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
 
-        /**
-         * invoke lookup
-         */
+        // invoke lookup
         final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
 
         final Object dataFirstname = breinResult.get("firstname");

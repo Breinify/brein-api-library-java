@@ -1,7 +1,5 @@
 package com.brein.api;
 
-import com.brein.domain.BreinActivityType;
-import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
 import com.google.gson.FieldNamingPolicy;
@@ -33,31 +31,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     private String description;
 
     /**
-     * contains the ipAddress
-     */
-    private String ipAddress;
-
-    /**
-     * user sessionId
-     */
-    private String sessionId;
-
-    /**
-     * contains the userAgent in additional part
-     */
-    private String userAgent;
-
-    /**
-     * contains the referrer in additional part
-     */
-    private String referrer;
-
-    /**
-     * contains the url in additional part
-     */
-    private String additionalUrl;
-
-    /**
      * contains the tags
      */
     private Map<String, Object> tagsMap;
@@ -82,11 +55,16 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * retrieves brein category
+     * retrieves brein category. if it is empty or null then
+     * the default category (if set) will be used.
      *
      * @return category object
      */
     public String getBreinCategoryType() {
+        if (!BreinUtil.containsValue(breinCategoryType)) {
+            // try default category
+            return getConfig().getDefaultCategory();
+        }
         return breinCategoryType;
     }
 
@@ -130,103 +108,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * IpAddress
-     *
-     * @return configured ipaddress
-     */
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    /**
-     * Set the ipAddress
-     *
-     * @param ipAddress value of the ipaddress
-     */
-    public BreinActivity setIpAddress(final String ipAddress) {
-        this.ipAddress = ipAddress;
-        return this;
-    }
-
-    /**
-     * retrieves the session id
-     *
-     * @return id of the session
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    /**
-     * sets the sessionid
-     *
-     * @param sessionId id of the session
-     * @return this -> allows chaining
-     */
-    public BreinActivity setSessionId(final String sessionId) {
-        this.sessionId = sessionId;
-        return this;
-    }
-
-    /**
-     * retrieves the additional userAgent value
-     *
-     * @return value
-     */
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    /**
-     * sets the additional user agent value
-     *
-     * @param userAgent value
-     */
-    public BreinActivity setUserAgent(final String userAgent) {
-        this.userAgent = userAgent;
-        return this;
-    }
-
-    /**
-     * retrieves the additional referrer value
-     *
-     * @return value
-     */
-    public String getReferrer() {
-        return referrer;
-    }
-
-    /**
-     * sets the additional referrer value
-     *
-     * @param referrer value
-     */
-    public BreinActivity setReferrer(final String referrer) {
-        this.referrer = referrer;
-        return this;
-    }
-
-    /**
-     * retrieves the additional url
-     *
-     * @return value
-     */
-    public String getAdditionalUrl() {
-        return additionalUrl;
-    }
-
-    /**
-     * sets the additional url
-     *
-     * @param additionalUrl value
-     * @return self
-     */
-    public BreinActivity setAdditionalUrl(final String additionalUrl) {
-        this.additionalUrl = additionalUrl;
-        return this;
-    }
-
-    /**
      * retrieves the tagMap
      *
      * @return value
@@ -253,11 +134,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         breinActivityType = "";
         breinCategoryType = "";
         description = "";
-        ipAddress = "";
-        sessionId = "";
-        userAgent = "";
-        referrer = "";
-        additionalUrl = "";
         tagsMap = null;
     }
 
@@ -323,7 +199,9 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         if (breinUser != null) {
 
             final JsonObject userData = new JsonObject();
-            userData.addProperty("email", breinUser.getEmail());
+            if (BreinUtil.containsValue(breinUser.getEmail())) {
+                userData.addProperty("email", breinUser.getEmail());
+            }
 
             if (BreinUtil.containsValue(breinUser.getFirstName())) {
                 userData.addProperty("firstName", breinUser.getFirstName());
@@ -345,22 +223,22 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
                 userData.addProperty("imei", breinUser.getImei());
             }
 
-            if (BreinUtil.containsValue(getSessionId())) {
-                userData.addProperty("sessionId", getSessionId());
+            if (BreinUtil.containsValue(breinUser.getSessionId())) {
+                userData.addProperty("sessionId", breinUser.getSessionId());
             }
 
             // additional part
             final JsonObject additional = new JsonObject();
-            if (BreinUtil.containsValue(getUserAgent())) {
-                additional.addProperty("userAgent", getUserAgent());
+            if (BreinUtil.containsValue(breinUser.getUserAgent())) {
+                additional.addProperty("userAgent", breinUser.getUserAgent());
             }
 
-            if (BreinUtil.containsValue(getReferrer())) {
-                additional.addProperty("referrer", getReferrer());
+            if (BreinUtil.containsValue(breinUser.getReferrer())) {
+                additional.addProperty("referrer", breinUser.getReferrer());
             }
 
-            if (BreinUtil.containsValue(getAdditionalUrl())) {
-                additional.addProperty("url", getAdditionalUrl());
+            if (BreinUtil.containsValue(breinUser.getUrl())) {
+                additional.addProperty("url", breinUser.getUrl());
             }
 
             if (additional.size() > 0) {
@@ -415,10 +293,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         }
 
         requestData.addProperty("unixTimestamp", getUnixTimestamp());
-
-        if (BreinUtil.containsValue(getIpAddress())) {
-            requestData.addProperty("ipAddress", getIpAddress());
-        }
 
         // if sign is active
         if (isSign()) {

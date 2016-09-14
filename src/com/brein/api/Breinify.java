@@ -1,6 +1,7 @@
 package com.brein.api;
 
 import com.brein.domain.*;
+import com.brein.util.BreinUtil;
 
 /**
  * Static Implementation of Breinify activity & lookup calls
@@ -10,7 +11,7 @@ public class Breinify {
     /**
      * contains the current version of the usage library
      */
-    private static final String VERSION = "1.1.0";
+    private static final String VERSION = "1.2.0";
 
     /**
      * contains the configuration
@@ -80,25 +81,23 @@ public class Breinify {
      * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
      *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
      *                      be used
-     * @param category      the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     * @param categoryType  the category of the platform/service/products, i.e., one of apparel, home, education, family,
      *                      food, health, job, services, or other
      * @param description   a string with further information about the activity performed
      * @param sign          a boolean value specifying if the call should be signed
      */
     public static void activity(final BreinUser user,
                                 final String activityType,
-                                final String category,
+                                final String categoryType,
                                 final String description,
                                 final boolean sign) {
         breinActivity.setBreinUser(user);
         breinActivity.setBreinActivityType(activityType);
-        breinActivity.setBreinCategoryType(category);
+        breinActivity.setBreinCategoryType(categoryType);
         breinActivity.setDescription(description);
         breinActivity.setSign(sign);
 
-        /*
-         * invoke the request, "this" has all necessary information
-         */
+        // invoke the request, "this" has all necessary information
         if (null == breinActivity.getBreinEngine()) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
@@ -112,7 +111,7 @@ public class Breinify {
      * to do the following:
      * <p>
      * // retrieve BreinActivity instance from Breinify class
-     * BreinActivity breinActivity = Breinify.getBreinActitivty();
+     * BreinActivity breinActivity = Breinify.getBreinActivity();
      * <p>
      * // set methods as desired to breinActivity (for instance)
      * breinActivity.setBreinUser(new BreinUser("user.name@email.com");
@@ -138,7 +137,13 @@ public class Breinify {
         }
 
         if (breinActivity.getBreinCategoryType() == null) {
-            throw new BreinException(BreinException.CATEGORY_TYPE_NOT_SET);
+            // check if there is an default category set
+            final String defaultCategory = getConfig().getDefaultCategory();
+            if (BreinUtil.containsValue(defaultCategory)) {
+                breinActivity.setBreinCategoryType(defaultCategory);
+            } else {
+                throw new BreinException(BreinException.CATEGORY_TYPE_NOT_SET);
+            }
         }
 
         if (null == breinActivity.getBreinEngine()) {

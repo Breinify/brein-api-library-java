@@ -6,7 +6,7 @@ package com.brein.domain;
  */
 public class BreinActivityType {
 
-    // this pre-defined activity types can be used
+    //  pre-defined activity types
     public static final String SEARCH = "search";
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";

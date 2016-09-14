@@ -37,9 +37,9 @@ public class TestDomain {
         final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
         breinConfig.setApiKey(validApiKey);
 
-        final BreinUser breinUser = new BreinUser("toni.maroni@mail.com");
-        breinUser.setFirstName("Toni");
-        breinUser.setLastName("Maroni");
+        final BreinUser breinUser = new BreinUser("toni.maroni@mail.com")
+                .setFirstName("Toni")
+                .setLastName("Maroni");
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
@@ -62,8 +62,7 @@ public class TestDomain {
         final String validApiKey = "9D9C-C9E9-BC93-4D1D-9A61-3A0F-9BD9-CF14";
         breinConfig.setApiKey(validApiKey);
 
-        final BreinUser breinUser = new BreinUser("user.name@email.com");
-        breinUser.setLastName("");
+        final BreinUser breinUser = new BreinUser();
 
         final BreinActivity breinActivity = new BreinActivity();
         breinActivity.setConfig(breinConfig);
@@ -82,7 +81,7 @@ public class TestDomain {
     @Test
     public void testBirthday() {
 
-        final BreinUser breinUser = new BreinUser("test.me@email.com");
+        final BreinUser breinUser = new BreinUser();
 
         // set right values
         breinUser.setDateOfBirth(1, 22, 1966); // this is correct date
@@ -110,7 +109,7 @@ public class TestDomain {
     @Test
     public void testBreinUserMethods() {
 
-        final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
+        final BreinUser breinUser = new BreinUser()
                 .setFirstName("User")
                 .setLastName("Anyhere")
                 .setImei("356938035643809")
@@ -126,7 +125,7 @@ public class TestDomain {
     @Test
     public void testBreinUserWithNoMethods() {
 
-        final BreinUser breinUser = new BreinUser("user.anywhere@email.com");
+        final BreinUser breinUser = new BreinUser();
         assertFalse(breinUser.toString().isEmpty());
     }
 
@@ -161,7 +160,7 @@ public class TestDomain {
     }
 
     /**
-     *  Test of breinCategory options to flexible string
+     * Test of breinCategory options to flexible string
      */
     @Test
     public void testBreinCategoryTypeSetToFlexibleString() {

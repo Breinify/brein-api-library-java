@@ -20,7 +20,6 @@ public class TestApi {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    // private static final String BASE_URL = "http://dev.breinify.com/api";
     private static final String BASE_URL = "https://api.breinify.com";
 
     /**
@@ -382,8 +381,8 @@ public class TestApi {
 
     /**
      * test case how to invoke it with flebile values
-    */
-     @Test
+     */
+    @Test
     public void testFlexibleValues() {
 
         final String description = "Other-Description";
@@ -421,7 +420,12 @@ public class TestApi {
                 .setLastName("Recchioni")
                 .setDateOfBirth(11, 20, 1999)
                 .setDeviceId("DD-EEEEE")
-                .setImei("55544455333");
+                .setImei("55544455333")
+                .setSessionId("r3V2kDAvFFL_-RBhuc_-Dg")
+                .setUrl("https://sample.com.au/home")
+                .setReferrer("https://sample.com.au/track")
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+
 
         final Map<String, Object> tagMap = new HashMap<>();
         tagMap.put("t1", 0.0);
@@ -440,18 +444,13 @@ public class TestApi {
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
         breinActivity.setTagsMap(tagMap);
-        breinActivity.setIpAddress("11.222.333.444");
-        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://sample.com.au/home");
-        breinActivity.setReferrer("https://sample.com.au/track");
-        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         Breinify.activity();
     }
 
-
     /**
-     * test case containing additional information
+     * test case without having set the BreinUser.
+     * This will lead to an Exception.
      */
     @Test(expected = BreinException.class)
     public void testPageVisitWithException() {
@@ -463,12 +462,16 @@ public class TestApi {
         Breinify.setConfig(breinConfig);
 
         // user data
-        final BreinUser breinUser = new BreinUser("User.Name@email.com");
-        breinUser.setFirstName("User");
-        breinUser.setLastName("Name");
-        breinUser.setDateOfBirth(11, 20, 1999);
-        breinUser.setDeviceId("DD-EEEEE");
-        breinUser.setImei("55544455333");
+        final BreinUser breinUser = new BreinUser("User.Name@email.com")
+                .setFirstName("User")
+                .setLastName("Name")
+                .setDateOfBirth(11, 20, 1999)
+                .setDeviceId("DD-EEEEE")
+                .setImei("55544455333")
+                .setSessionId("r3V2kDAvFFL_-RBhuc_-Dg")
+                .setUrl("https://sample.com.au/home")
+                .setReferrer("https://sample.com.au/track")
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
 
@@ -476,11 +479,6 @@ public class TestApi {
         breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
-        breinActivity.setIpAddress("11.222.333.444");
-        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://sample.com.au/home");
-        breinActivity.setReferrer("https://sample.com.au/track");
-        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         // user not set -> exception expected
         Breinify.activity();
@@ -708,6 +706,96 @@ public class TestApi {
         final Object dataAgeGroup = response.get("agegroup");
         final Object dataDigitalFootprinting = response.get("digitalfootprint");
         final Object dataImages = response.get("images");
+    }
+
+    /**
+     * test case where an activity is sent without having set
+     * the category type for this particular activity object.
+     * In this case the default category type has to be used.
+     * If this is not set then the call needs to be rejected.
+     */
+    @Test
+    public void testActivityWithoutCategory() {
+
+        // create configuration
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                BASE_URL,
+                BreinEngineType.UNIREST_ENGINE)
+                .setDefaultCategory("DEF-CAT-TYPE");
+
+        Breinify.setConfig(breinConfig);
+
+        // create user
+        final BreinUser breinUser = new BreinUser()
+                .setSessionId("SESS-ID-IS-THIS");
+
+        // send activity with all fields sets so far
+        Breinify.activity(breinUser, "ACT-TYPE", "CAT-TYPE", "DESC", false);
+
+        // send activity without CAT-TYPE => use default
+        Breinify.activity(breinUser, "ACT-TYPE", "", "DESC", false);
+
+        Breinify.activity(breinUser, "ACT-TYPE", null, "DESC", false);
+
+        // send activity by setting the breinActivity methods
+        BreinActivity breinActivity = Breinify.getBreinActivity()
+                .setBreinCategoryType(null)
+                .setBreinActivityType("ACTI-TYPE")
+                .setDescription("DESC");
+
+        Breinify.activity();
+
+    }
+
+    /**
+     * test case how to use the activity api
+     */
+    // @Test
+    public void testLoginWithPauseToCheckWifiIssue() {
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+
+        // additional optional user information
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        int index = 1;
+
+        while (true) {
+
+            try {
+
+                while (true) {
+
+                    // invoke activity call
+                    Breinify.activity(breinUser,
+                            breinActivityType,
+                            breinCategoryType,
+                            "Login-Description",
+                            false);
+
+                    try {
+                        System.out.println("Waiting: " + Integer.toString(index++));
+                        Thread.sleep(2000);
+
+                    } catch (final Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            } catch (final BreinException e) {
+                System.out.println("Exception is: " + e);
+            }
+        }
+    }
+
+
+    @Test
+    public void testForDoc() {
+
+
     }
 
 }

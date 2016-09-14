@@ -63,7 +63,7 @@ The engine powering the DigitalDNA API provides two endpoints. The first endpoin
 The engine is informed of an activity by executing *Breinify.activity(...)*. 
 
 ```Java
-// create a user you are interested in with his email (mandatory field)
+// create a user you are interested in 
 final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
          .setFirstName("User")
          .setLastName("Anyhere");
@@ -77,7 +77,7 @@ Breinify.activity(breinUser,
 
 ```
 
-That's it! The call will be run asynchronously in the background.
+That's it! The call will run asynchronously in the background.
 
 
 ##### Placing look-up triggers

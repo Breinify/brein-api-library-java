@@ -18,7 +18,8 @@ public class TestJerseyApi {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    private static final String BASE_URL = "http://dev.breinify.com/api";
+    // private static final String BASE_URL = "http://dev.breinify.com/api";
+    private static final String BASE_URL = "https://api.breinify.com";
 
     /**
      * This has to be a valid api key
@@ -63,7 +64,6 @@ public class TestJerseyApi {
      */
     @Before
     public void setUp() {
-
     }
 
     /**
@@ -463,6 +463,51 @@ public class TestJerseyApi {
         final Object dataAgeGroup = response.get("agegroup");
         final Object dataDigitalFootprinting = response.get("digitalfootprint");
         final Object dataImages = response.get("images");
+
+    }
+
+    /**
+     * test case how to use the activity api
+     */
+    // @Test
+    public void testLoginWithPauseToCheckWifiIssue() {
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+
+        // additional optional user information
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        int index = 1;
+
+        while (true) {
+
+            try {
+
+                while (true) {
+
+                    // invoke activity call
+                    Breinify.activity(breinUser,
+                            breinActivityType,
+                            breinCategoryType,
+                            "Login-Description",
+                            false);
+
+                    try {
+                        System.out.println("Waiting: " + Integer.toString(index++));
+                        Thread.sleep(2000);
+
+                    } catch (final Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            } catch (final BreinException e) {
+                System.out.println("Exception is: " + e);
+            }
+        }
 
     }
 

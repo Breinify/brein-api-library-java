@@ -1,6 +1,56 @@
 # Change log Breinify Java Api
+This document contains a chronologically ordered list of changes for the Java Api library.
 
-This document contains the changes to the current verion (1.1.0) of the Breinify Java Api.
+
+# Version 1.2.0
+
+
+## Modifications
+
+###BreinActivity.java & BreinUser.java
+
+Some fields and their appropiate methods have been moved from BreinActivity.java to BreinUser.java. Those are:
+
+- sessionId
+- userAgent
+- referrer
+- url (has been renamed from additionUrl from BreinActivity.java)
+
+Furthermore the following field is not available anymore:
+- ipAddress
+
+
+## Enhancements
+
+###BreinConfig.java
+It is now possible to set a default category. This will be used whenever a category is not provided by the BreinActivity instance.
+
+```java
+// create configuration
+final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+          BASE_URL,
+          BreinEngineType.UNIREST_ENGINE)
+          .setDefaultCategory("DEF-CAT-TYPE");
+
+```
+
+###BreinUser.java
+Provides new methods to set fields that have been moved from BreinActivity.java. Those are:
+
+```java
+// user data
+final BreinUser breinUser = new BreinUser()
+         .setSessionId("r3V2kDAvFFL_-RBhuc_-Dg")
+         .setUrl("https://sample.com.au/home")
+         .setReferrer("https://sample.com.au/track")
+         .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+
+```
+
+
+
+# Version 1.1.0
+
 
 ## Enhancements
 
@@ -34,7 +84,8 @@ final BreinActivity breinActivity = Breinify.getBreinActivity();
 
 // set the appropriate properties
 breinActivity.setBreinUser(breinUser);
-breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);     breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
 ...
 // invoke the activity request
 Breinify.activity();
@@ -70,6 +121,10 @@ breinActivity.setDescription("your description");
 breinifyExecutor.activity();
 ````
 One difference of class BreinifyExecutor is that it has an instane of BreinActivity.
+
+###BreinUsery.java
+
+
 
 ###BreinActivity.java
 

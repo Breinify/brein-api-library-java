@@ -36,12 +36,39 @@ public class BreinUser {
     private String deviceId;
 
     /**
-     * create a brein user with mandatory field email.
+     * user sessionId
+     */
+    private String sessionId;
+
+    /**
+     * contains the userAgent in additional part
+     */
+    private String userAgent;
+
+    /**
+     * contains the referrer in additional part
+     */
+    private String referrer;
+
+    /**
+     * contains the url in additional part
+     */
+    private String url;
+
+    /**
+     * create a brein user with field email.
      *
      * @param email of the user
      */
     public BreinUser(final String email) {
         setEmail(email);
+    }
+
+    /**
+     * create a brein user
+     *
+     */
+    public BreinUser() {
     }
 
     /**
@@ -94,6 +121,81 @@ public class BreinUser {
      */
     public BreinUser setLastName(final String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    /**
+     * returns the sessionId (if set)
+     * @return sessionId
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * sets the sessionId
+     * @param sessionId value of the sessionId
+     */
+    public BreinUser setSessionId(final String sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
+    /**
+     * retrieves the additional userAgent value
+     *
+     * @return value
+     */
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    /**
+     * sets the additional user agent value
+     *
+     * @param userAgent value
+     */
+    public BreinUser setUserAgent(final String userAgent) {
+        this.userAgent = userAgent;
+        return this;
+    }
+
+    /**
+     * retrieves the additional referrer value
+     *
+     * @return value
+     */
+    public String getReferrer() {
+        return referrer;
+    }
+
+    /**
+     * sets the additional referrer value
+     *
+     * @param referrer value
+     */
+    public BreinUser setReferrer(final String referrer) {
+        this.referrer = referrer;
+        return this;
+    }
+
+    /**
+     * retrieves the additional url
+     *
+     * @return value
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * sets the additional url
+     *
+     * @param url value
+     * @return self
+     */
+    public BreinUser setUrl(final String url) {
+        this.url = url;
         return this;
     }
 

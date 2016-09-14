@@ -29,7 +29,7 @@ public class TestExecutor {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    private static final String BASE_URL = "http://dev.breinify.com/api";
+    private static final String BASE_URL = "https://api.breinify.com";
 
     /**
      * This has to be a valid api key
@@ -82,6 +82,10 @@ public class TestExecutor {
         breinUser.setDateOfBirth(11, 20, 1999);
         breinUser.setDeviceId("DD-EEEEE");
         breinUser.setImei("55544455333");
+        breinUser.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
+        breinUser.setUrl("https://sample.com.au/home");
+        breinUser.setReferrer("https://sample.com.au/track");
+        breinUser.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
@@ -97,11 +101,6 @@ public class TestExecutor {
         breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
-        breinActivity.setIpAddress("11.222.333.444");
-        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://sample.com.au/home");
-        breinActivity.setReferrer("https://sample.com.au/track");
-        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         /*
          * invoke activity call
@@ -205,6 +204,11 @@ public class TestExecutor {
                 BreinCategoryType.FOOD,
                 "description",
                 false);
+
+    }
+
+    @Test
+    public void testForQA() {
 
     }
 
