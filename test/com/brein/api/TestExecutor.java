@@ -138,6 +138,36 @@ public class TestExecutor {
     }
 
     /**
+     * testcase how to use the activity api
+     */
+    @Test
+    public void testWitoutCategorySet() {
+
+        /*
+         * additional user information
+         */
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        final BreinifyExecutor breinifyExecutor = new BreinConfig()
+                .setApiKey(VALID_API_KEY)
+                .setBaseUrl(BASE_URL)
+                .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
+                .build();
+
+        final String description = "your description";
+        /*
+         * invoke activity call
+         */
+        breinifyExecutor.activity(breinUser,
+                BreinActivityType.LOGIN,
+                null,
+                description,
+                false);
+    }
+
+
+    /**
      * Tests the lookup functionality
      */
     @Test

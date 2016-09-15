@@ -105,6 +105,33 @@ public class TestApi {
     }
 
     /**
+     * testcase without category type
+     */
+    @Test
+    public void testWithoutCategoryType() {
+
+        /*
+         * set configuration
+         */
+        Breinify.setConfig(breinConfig);
+
+        /*
+         * additional optional user information
+         */
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        /*
+         * invoke activity call
+         */
+        Breinify.activity(breinUser,
+                breinActivityType,
+                null,
+                "Login-Description",
+                false);
+    }
+
+    /**
      * Testcase with null value as apikey
      */
     @Test

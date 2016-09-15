@@ -127,6 +127,29 @@ public class TestActivity {
     }
 
     /**
+     * test case without category type
+     */
+    @Test
+    public void testWithoutCategoryTypeSet() {
+
+        final String description = "Login-Description";
+
+        /*
+         * additional user information
+         */
+        breinUser.setFirstName("Marco");
+        breinUser.setLastName("Recchioni");
+
+        /*
+         * invoke activity call
+         */
+        breinActivity.activity(breinUser,
+                BreinActivityType.LOGIN,
+                null, description, sign);
+    }
+
+
+    /**
      * Invoke a test call with 200 logins
      */
     @Test

@@ -77,14 +77,14 @@ public class Breinify {
      * <p>
      * This request is asynchronous.
      *
-     * @param user          a plain object specifying the user information the activity belongs to
-     * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
-     *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
-     *                      be used
-     * @param categoryType  the category of the platform/service/products, i.e., one of apparel, home, education, family,
-     *                      food, health, job, services, or other
-     * @param description   a string with further information about the activity performed
-     * @param sign          a boolean value specifying if the call should be signed
+     * @param user         a plain object specifying the user information the activity belongs to
+     * @param activityType the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                     removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                     be used
+     * @param categoryType the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                     food, health, job, services, or other
+     * @param description  a string with further information about the activity performed
+     * @param sign         a boolean value specifying if the call should be signed
      */
     public static void activity(final BreinUser user,
                                 final String activityType,
@@ -141,8 +141,6 @@ public class Breinify {
             final String defaultCategory = getConfig().getDefaultCategory();
             if (BreinUtil.containsValue(defaultCategory)) {
                 breinActivity.setBreinCategoryType(defaultCategory);
-            } else {
-                throw new BreinException(BreinException.CATEGORY_TYPE_NOT_SET);
             }
         }
 
