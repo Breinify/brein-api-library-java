@@ -56,6 +56,11 @@ public class BreinUser {
     private String url;
 
     /**
+     * contains the url in additional part
+     */
+    private String ipAddress;
+
+    /**
      * create a brein user with field email.
      *
      * @param email of the user
@@ -157,6 +162,23 @@ public class BreinUser {
      */
     public BreinUser setUserAgent(final String userAgent) {
         this.userAgent = userAgent;
+        return this;
+    }
+
+    /**
+     * retrieves the ipAddress (additional part)
+     * @return ipAddress
+     */
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    /**
+     * sets the ipAddress
+     * @param ipAddress value
+     */
+    public BreinUser setIpAddress(final String ipAddress) {
+        this.ipAddress = ipAddress;
         return this;
     }
 

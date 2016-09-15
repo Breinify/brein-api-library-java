@@ -241,6 +241,10 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
                 additional.addProperty("url", breinUser.getUrl());
             }
 
+            if (BreinUtil.containsValue(breinUser.getIpAddress())) {
+                additional.addProperty("ipAddress", breinUser.getIpAddress());
+            }
+
             if (additional.size() > 0) {
                 userData.add("additional", additional);
             }

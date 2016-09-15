@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Contains Breinify Endpoint configuration
+ * Provides the configuration of the library for the properties supplied.
  */
 public class BreinConfig {
 

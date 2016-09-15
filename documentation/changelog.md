@@ -43,6 +43,7 @@ final BreinUser breinUser = new BreinUser()
          .setSessionId("r3V2kDAvFFL_-RBhuc_-Dg")
          .setUrl("https://sample.com.au/home")
          .setReferrer("https://sample.com.au/track")
+         .setIpAddress("10.11.12.130)
          .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
 ```
