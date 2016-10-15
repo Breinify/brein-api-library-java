@@ -32,7 +32,7 @@ public class BreinEngine {
      */
     public void sendActivity(final BreinActivity activity) {
         if (activity != null) {
-            restEngine.doRequest(activity);
+            restEngine.doRequest(activity, activity.getErrorCallback());
         }
     }
 

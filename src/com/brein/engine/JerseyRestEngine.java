@@ -7,6 +7,8 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.sun.jersey.api.client.*;
 
+import java.util.function.Function;
+
 /**
  * could be the jersey rest engine implementation
  */
@@ -21,9 +23,11 @@ public class JerseyRestEngine implements IRestEngine {
      * invokes the post request
      *
      * @param breinActivity data
+     * @param errorCallback will be invoked in case of an error
      */
     @Override
-    public void doRequest(final BreinActivity breinActivity) {
+    public void doRequest(final BreinActivity breinActivity,
+                          final Function<String, Void> errorCallback) {
 
         // validate the input objects
         validate(breinActivity);
@@ -36,7 +40,10 @@ public class JerseyRestEngine implements IRestEngine {
         } catch (final UniformInterfaceException | ClientHandlerException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Exception", e);
-                throw new BreinException("jersey rest call exception");
+
+                if (errorCallback != null) {
+                    errorCallback.apply("jersey rest call not successful!");
+                }
             }
         }
     }

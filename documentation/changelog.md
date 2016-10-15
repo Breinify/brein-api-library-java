@@ -2,6 +2,77 @@
 This document contains a chronologically ordered list of changes for the Java Api library.
 
 
+# Version 1.3.0
+
+## Modifications
+
+###Callback support
+
+Within the activity request an error callback can now be configured. This one will be invoked if the activity request might fail. 
+
+```java
+// callback handler
+final Function<String, Void> callback = message -> {
+     System.out.println(message);
+     // do any logic here -> e.g. stop sending requests
+     return null;
+};
+
+
+// invoke activity call
+Breinify.activity(breinUser, breinActivityType, breinCategoryType,
+                  description, signFlag, callback);
+```
+
+###Flexible Key-Value maps 
+
+When creating the activity request it is now possible to add key-value pairs at each level instead of using the dedicated setter methods (e.g. actvitiy.setDescription("xxx") ).
+
+The following levels will be supported:
+
+- base 
+- activity
+- user
+- user additional
+
+```java
+// base level
+final Map<String, Object> dataBaseLevelMap = new HashMap<>();
+dataBaseLevelMap("enhancement-base", "value");
+
+final BreinActivity breinActivity = Breinify.getBreinActivity();
+breinActivity.setExtraMap(BreinActivity.MapKind.MK_BASE, dataBaseLevelMap);
+
+
+// activity level
+final Map<String, Object> dataActivityMap = new HashMap<>();
+dataActivityMap.put("enhancement-activity-1", "value-1");
+dataActivityMap.put("enhancement-activity-2", "value-2");
+
+final BreinActivity breinActivity = Breinify.getBreinActivity();
+breinActivity.setExtraMap(BreinActivity.MapKind.MK_ACTIVITY, dataActivityMap);
+
+
+// user level
+final Map<String, Object> dataUserMap = new HashMap<>();
+dataUserMap.put("enhancement-user-1", "user-value-1");
+dataUserMap.put("enhancement-user-2", "user-value-2");
+
+final BreinActivity breinActivity = Breinify.getBreinActivity();
+breinActivity.setExtraMap(BreinActivity.MapKind.MK_USER, dataUserMap);
+
+
+// user additinal level 
+final Map<String, Object> dataAdditionalMap = new HashMap<>();
+dataAdditionalMap.put("enhancement-user-additional-1", "user-add-value-1");
+dataAdditionalMap.put("enhancement-user-additional-2", "user-add-value-2");
+
+final BreinActivity breinActivity = Breinify.getBreinActivity();
+breinActivity.setExtraMap(BreinActivity.MapKind.MK_USER_ADDITIONAL, dataAdditionalMap);
+```
+
+
+
 # Version 1.2.0
 
 

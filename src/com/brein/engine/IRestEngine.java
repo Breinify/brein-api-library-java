@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.function.Function;
 
 
 /**
@@ -39,8 +40,10 @@ public interface IRestEngine {
      * invokes the post request
      *
      * @param breinActivity data
+     * @param errorCallback will be invoked in case of an error
      */
-    void doRequest(final BreinActivity breinActivity) throws BreinException;
+    void doRequest(final BreinActivity breinActivity,
+                   final Function<String, Void> errorCallback) throws BreinException;
 
     /**
      * performs a lookup and provides details

@@ -2,6 +2,8 @@ package com.brein.api;
 
 import com.brein.domain.*;
 
+import java.util.function.Function;
+
 /**
  * Static Implementation of Breinify activity & lookup calls
  */
@@ -90,12 +92,13 @@ public class BreinifyExecutor {
                          final String activityType,
                          final String category,
                          final String description,
-                         final boolean sign) {
+                         final boolean sign,
+                         final Function<String, Void> errorCallback) {
 
         // set the appropriate configuration
         applyConfiguration();
 
-        Breinify.activity(user, activityType, category, description, sign);
+        Breinify.activity(user, activityType, category, description, sign, errorCallback);
     }
 
     /**
@@ -140,7 +143,8 @@ public class BreinifyExecutor {
                 breinActivity.getBreinActivityType(),
                 breinActivity.getBreinCategoryType(),
                 breinActivity.getDescription(),
-                breinActivity.isSign());
+                breinActivity.isSign(),
+                breinActivity.getErrorCallback());
     }
 
     /**

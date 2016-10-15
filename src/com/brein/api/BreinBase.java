@@ -5,6 +5,7 @@ import com.brein.domain.BreinUser;
 import com.brein.engine.BreinEngine;
 
 import java.time.Instant;
+import java.util.function.Function;
 
 /**
  * Base Class for activity and lookup operations.
@@ -30,6 +31,11 @@ public class BreinBase {
      * if set to yes then a secret has to bo sent
      */
     private boolean sign;
+
+    /**
+     * contains the errorCallback
+     */
+    private Function<String, Void> errorCallback;
 
     /**
      * retrieves the configuration
@@ -124,6 +130,22 @@ public class BreinBase {
     public BreinBase setSign(final boolean sign) {
         this.sign = sign;
         return this;
+    }
+
+    /**
+     * Returns the callback function
+     * @return callback function
+     */
+    public Function<String, Void> getErrorCallback() {
+        return errorCallback;
+    }
+
+    /**
+     * sets the error callback function
+     * @param errorCallback function to callback
+     */
+    public void setErrorCallback(final Function<String, Void> errorCallback) {
+        this.errorCallback = errorCallback;
     }
 
     /**

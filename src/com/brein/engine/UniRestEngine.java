@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 /**
  * Unirest Implementation
@@ -49,12 +50,14 @@ public class UniRestEngine implements IRestEngine {
     }
 
     /**
-     * Invokes the asynch post call
+     * Invokes the asynchronous post call
      *
      * @param breinActivity data to send
+     * @param errorCallback will be invoked in case of an error
      */
     @Override
-    public void doRequest(final BreinActivity breinActivity) throws BreinException {
+    public void doRequest(final BreinActivity breinActivity,
+                          final Function<String, Void> errorCallback) throws BreinException {
 
         // validate the input objects
         validate(breinActivity);
@@ -82,14 +85,19 @@ public class UniRestEngine implements IRestEngine {
                             LOG.debug(MSG_REQUEST_HAS_FAILED);
                         }
 
-                        // replace with callback
-                        // throw new BreinException(BreinException.REQUEST_FAILED);
+                        if (errorCallback != null) {
+                            errorCallback.apply(MSG_REQUEST_HAS_FAILED);
+                        }
                     }
 
                     @Override
                     public void cancelled() {
                         if (LOG.isDebugEnabled()) {
                             LOG.debug(MSG_REQUEST_HAS_BEEN_CANCELLED);
+                        }
+
+                        if (errorCallback != null) {
+                            errorCallback.apply(MSG_REQUEST_HAS_BEEN_CANCELLED);
                         }
                     }
                 });

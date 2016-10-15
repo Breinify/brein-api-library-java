@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Properties;
+import java.util.function.Function;
 
 /**
  * Test of Breinify Java API (static option)
@@ -47,6 +48,11 @@ public class TestJerseyApi {
     final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
             BASE_URL,
             BreinEngineType.JERSEY_ENGINE);
+
+    /**
+     * indicator if the loops should be done forever :-)
+     */
+    boolean loopIndicator = true;
 
     /**
      * Init part
@@ -111,7 +117,7 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 "Login-Description",
-                false);
+                false, null);
     }
 
     /**
@@ -142,7 +148,7 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 description,
-                sign);
+                sign, null);
     }
 
     /**
@@ -173,7 +179,7 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 description,
-                sign);
+                sign, null);
 
     }
 
@@ -212,7 +218,7 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 description,
-                sign);
+                sign, null);
 
     }
 
@@ -247,7 +253,7 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 description,
-                false);
+                false, null);
 
 
     }
@@ -290,7 +296,7 @@ public class TestJerseyApi {
                 BreinActivityType.LOGOUT,
                 breinCategoryType,
                 description,
-                false);
+                false, null);
     }
 
     /**
@@ -313,7 +319,7 @@ public class TestJerseyApi {
                 BreinActivityType.SEARCH,
                 breinCategoryType,
                 description,
-                false);
+                false, null);
     }
 
     /**
@@ -336,7 +342,7 @@ public class TestJerseyApi {
                 BreinActivityType.ADD_TO_CART,
                 breinCategoryType,
                 description,
-                false);
+                false, null);
     }
 
     /**
@@ -359,7 +365,7 @@ public class TestJerseyApi {
                 BreinActivityType.REMOVE_FROM_CART,
                 breinCategoryType,
                 description,
-                false);
+                false, null);
     }
 
     /**
@@ -382,7 +388,7 @@ public class TestJerseyApi {
                 BreinActivityType.SELECT_PRODUCT,
                 breinCategoryType,
                 description,
-                false);
+                false, null);
     }
 
     /**
@@ -405,7 +411,7 @@ public class TestJerseyApi {
                 BreinActivityType.OTHER,
                 breinCategoryType,
                 description,
-                false);
+                false, null);
     }
 
     /**
@@ -447,23 +453,33 @@ public class TestJerseyApi {
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
 
-        /*
-         * invoke lookup
-         */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, false);
+        try {
+            // invoke lookup
+            final BreinResult response = Breinify.lookup(breinUser, breinDimension, false);
 
-        final Object dataFirstname = response.get("firstname");
-        final Object dataGender = response.get("gender");
-        final Object dataAge = response.get("age");
-        final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootprint");
-        final Object dataImages = response.get("images");
+            showLookupResult(response);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    /**
+     * helper method to show lookup result
+     * @param response contains the lookup data
+     */
+    public void showLookupResult(final BreinResult response) {
+        if (response != null) {
+            final Object dataFirstname = response.get("firstname");
+            final Object dataGender = response.get("gender");
+            final Object dataAge = response.get("age");
+            final Object dataAgeGroup = response.get("agegroup");
+            final Object dataDigitalFootprinting = response.get("digitalfootprint");
+            final Object dataImages = response.get("images");
+        }
     }
 
     /**
@@ -479,20 +495,27 @@ public class TestJerseyApi {
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
+        final Function<String, Void> errorCallback = s -> {
+            loopIndicator = false;
+            return null;
+        };
+
+
         int index = 1;
 
-        while (true) {
+        while (loopIndicator) {
 
             try {
 
-                while (true) {
+                while (loopIndicator) {
 
                     // invoke activity call
                     Breinify.activity(breinUser,
                             breinActivityType,
                             breinCategoryType,
                             "Login-Description",
-                            false);
+                            false,
+                            errorCallback);
 
                     try {
                         System.out.println("Waiting: " + Integer.toString(index++));

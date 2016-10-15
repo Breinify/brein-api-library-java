@@ -76,15 +76,21 @@ public class TestLookup {
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
 
-        // invoke lookup
-        final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
+        try {
+            // invoke lookup
+            final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
 
-        final Object dataFirstname = breinResult.get("firstname");
-        final Object dataGender = breinResult.get("gender");
-        final Object dataAge = breinResult.get("age");
-        final Object dataAgeGroup = breinResult.get("agegroup");
-        final Object dataDigitalFootprinting = breinResult.get("digitalfootprint");
-        final Object dataImages = breinResult.get("digitalfootprint");
+            if (breinResult != null) {
+                final Object dataFirstname = breinResult.get("firstname");
+                final Object dataGender = breinResult.get("gender");
+                final Object dataAge = breinResult.get("age");
+                final Object dataAgeGroup = breinResult.get("agegroup");
+                final Object dataDigitalFootprinting = breinResult.get("digitalfootprint");
+                final Object dataImages = breinResult.get("digitalfootprint");
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

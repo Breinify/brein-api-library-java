@@ -1,3 +1,5 @@
+More complete example
+
 ```java
 // user data
 final BreinUser breinUser = new BreinUser("User.Name@email.com")

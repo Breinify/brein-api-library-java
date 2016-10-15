@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,6 +15,16 @@ import java.util.Map;
  * that a valid API-key is configured prior to using this function.
  */
 public class BreinActivity extends BreinBase implements ISecretStrategy {
+
+    /**
+     * contains the map kind for the extra maps
+     */
+    enum MapKind {
+        MK_BASE,
+        MK_USER,
+        MK_ACTIVITY,
+        MK_USER_ADDITIONAL
+    }
 
     /**
      * ActivityType of the activity
@@ -31,9 +42,23 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     private String description;
 
     /**
-     * contains the tags
+     * contains the tags map
      */
     private Map<String, Object> tagsMap;
+
+    /**
+     * contains the extra maps that are not
+     * handled by the current dedicated setter and getter
+     *
+     * extraBaseMap -> root (base) level
+     * extraActivityMap -> activity level
+     * extraUserMap -> user level
+     * extra UserAdditionalMap -> user-additional level
+     */
+    private Map<String, Object> extraBaseMap;
+    private Map<String, Object> extraActivityMap;
+    private Map<String, Object> extraUserMap;
+    private Map<String, Object> extraUserAdditionalMap;
 
     /**
      * returns activity type
@@ -128,6 +153,48 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     }
 
     /**
+     * Returns the extra map on each level (base, activity, user, additional)
+     * @param kind contains the level
+     * @return map of data to be added to the json structure
+     */
+    public Map<String, Object> getExtraMap(final MapKind kind) {
+
+        switch (kind) {
+            case MK_BASE:
+                return extraBaseMap;
+            case MK_ACTIVITY:
+                return extraActivityMap;
+            case MK_USER:
+                return extraUserMap;
+            case MK_USER_ADDITIONAL:
+                return extraUserAdditionalMap;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * sets the extra map according to the level
+     *
+     * @param kind determines the level
+     * @param extraMap contains the extra map
+     * @return this
+     */
+    public BreinActivity setExtraMap(final MapKind kind, final Map<String, Object> extraMap) {
+
+        if (kind == MapKind.MK_BASE) {
+            extraBaseMap = extraMap;
+        } else if (kind == MapKind.MK_ACTIVITY) {
+            extraActivityMap = extraMap;
+        } else if (kind == MapKind.MK_USER) {
+            extraUserMap = extraMap;
+        } else if (kind == MapKind.MK_USER_ADDITIONAL) {
+            extraUserAdditionalMap = extraMap;
+        }
+        return this;
+    }
+
+    /**
      * initializes the values of this instance
      */
     public void init() {
@@ -135,6 +202,10 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         breinCategoryType = "";
         description = "";
         tagsMap = null;
+        extraBaseMap = null;
+        extraActivityMap = null;
+        extraUserMap = null;
+        extraUserAdditionalMap = null;
     }
 
     /**
@@ -172,12 +243,11 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         setDescription(description);
         setSign(sign);
 
-        /*
-         * invoke the request, "this" has all necessary information
-         */
+        // invoke the request, "this" has all necessary information
         if (null == getBreinEngine()) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
+
         getBreinEngine().sendActivity(this);
     }
 
@@ -189,107 +259,41 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     @Override
     public String prepareJsonRequest() {
 
-        // call base class
+        // call base class for base data
         super.prepareJsonRequest();
 
-        final JsonObject requestData = new JsonObject();
-
-        // user data
+        // user data level and additional
         final BreinUser breinUser = getBreinUser();
+        final JsonObject requestData = new JsonObject();
         if (breinUser != null) {
-
             final JsonObject userData = new JsonObject();
-            if (BreinUtil.containsValue(breinUser.getEmail())) {
-                userData.addProperty("email", breinUser.getEmail());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getFirstName())) {
-                userData.addProperty("firstName", breinUser.getFirstName());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getLastName())) {
-                userData.addProperty("lastName", breinUser.getLastName());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getDateOfBirth())) {
-                userData.addProperty("dateOfBirth", breinUser.getDateOfBirth());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getDeviceId())) {
-                userData.addProperty("deviceId", breinUser.getDeviceId());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getImei())) {
-                userData.addProperty("imei", breinUser.getImei());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getSessionId())) {
-                userData.addProperty("sessionId", breinUser.getSessionId());
-            }
-
-            // additional part
-            final JsonObject additional = new JsonObject();
-            if (BreinUtil.containsValue(breinUser.getUserAgent())) {
-                additional.addProperty("userAgent", breinUser.getUserAgent());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getReferrer())) {
-                additional.addProperty("referrer", breinUser.getReferrer());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getUrl())) {
-                additional.addProperty("url", breinUser.getUrl());
-            }
-
-            if (BreinUtil.containsValue(breinUser.getIpAddress())) {
-                additional.addProperty("ipAddress", breinUser.getIpAddress());
-            }
-
-            if (additional.size() > 0) {
-                userData.add("additional", additional);
-            }
-
-            requestData.add("user", userData);
+            prepareUserRequestData(requestData, breinUser, userData);
         }
 
-        /*
-         * activity data
-         */
+        // activity data
         final JsonObject activityData = new JsonObject();
-        if (BreinUtil.containsValue(getBreinActivityType())) {
-            activityData.addProperty("type", getBreinActivityType());
-        }
-        if (BreinUtil.containsValue(getDescription())) {
-            activityData.addProperty("description", getDescription());
-        }
-        if (BreinUtil.containsValue(getBreinCategoryType())) {
-            activityData.addProperty("category", getBreinCategoryType());
-        }
-
-        // tags
-        final Map<String, Object> tagsMap = getTagsMap();
-        if (tagsMap != null && tagsMap.size() > 0) {
-            final JsonObject tagsData = new JsonObject();
-
-            tagsMap.entrySet().forEach(entry -> {
-                if (entry.getValue().getClass() == String.class) {
-                    tagsData.addProperty(entry.getKey(), (String) entry.getValue());
-                } else if (entry.getValue().getClass() == Double.class ||
-                        entry.getValue().getClass() == Integer.class) {
-                    tagsData.addProperty(entry.getKey(), (Number) entry.getValue());
-                } else if (entry.getValue().getClass() == Boolean.class) {
-                    tagsData.addProperty(entry.getKey(), (Boolean) entry.getValue());
-                }
-            });
-
-            activityData.add("tags", tagsData);
-        }
-
+        prepareActivityRequestData(activityData);
         requestData.add("activity", activityData);
 
-        /*
-         * further data...
-         */
+        // base level data...
+        prepareBaseRequestData(requestData);
+
+        final Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .serializeNulls()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+
+        return gson.toJson(requestData);
+    }
+
+    /**
+     * Prepares the base request data
+     *
+     * @param requestData json structure
+     */
+    public void prepareBaseRequestData(final JsonObject requestData) {
+
         if (BreinUtil.containsValue(getConfig())) {
             if (BreinUtil.containsValue(getConfig().getApiKey())) {
                 requestData.addProperty("apiKey", getConfig().getApiKey());
@@ -303,13 +307,126 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
             requestData.addProperty("signatureType", createSignature());
         }
 
-        final Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .serializeNulls()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
+        // check if there are further extra maps to add on base level
+        if (extraBaseMap != null && extraBaseMap.size() > 0) {
+            fillMap(extraBaseMap, requestData);
+        }
+    }
 
-        return gson.toJson(requestData);
+    /**
+     * Prepares the activity json structure
+     * @param activityData contains the created data structure
+     */
+    public void prepareActivityRequestData(final JsonObject activityData) {
+
+        final Map<String, CheckFunction> requestActivityFunctions = new HashMap<>();
+
+        // configure the map
+        requestActivityFunctions.put("type", this::getBreinActivityType);
+        requestActivityFunctions.put("description", this::getDescription);
+        requestActivityFunctions.put("category", this::getBreinCategoryType);
+
+        // execute the map
+        executeMapFunctions(activityData, requestActivityFunctions);
+
+        // add tags map if configured
+        if (tagsMap != null && tagsMap.size() > 0) {
+            final JsonObject tagsData = new JsonObject();
+            fillMap(tagsMap, tagsData);
+            activityData.add("tags", tagsData);
+        }
+    }
+
+    /**
+     * Generic method to add an value from a data map if it contains a valid value
+     *
+     * @param dataMap map of data
+     * @param jsonData request
+     */
+    public void fillMap(final Map<String, Object> dataMap,
+                        final JsonObject jsonData) {
+
+        dataMap.entrySet().forEach(entry -> {
+            if (entry.getValue().getClass() == String.class) {
+                jsonData.addProperty(entry.getKey(), (String) entry.getValue());
+            } else if (entry.getValue().getClass() == Double.class ||
+                    entry.getValue().getClass() == Integer.class) {
+                jsonData.addProperty(entry.getKey(), (Number) entry.getValue());
+            } else if (entry.getValue().getClass() == Boolean.class) {
+                jsonData.addProperty(entry.getKey(), (Boolean) entry.getValue());
+            }
+        });
+    }
+
+    /**
+     * Prepares the request on user level
+     * @param requestData contains the json request that is generated (top level)
+     * @param breinUser contains the brein user data
+     * @param userData contains the json request on user level
+     */
+    public void prepareUserRequestData(final JsonObject requestData,
+                                       final BreinUser breinUser,
+                                       final JsonObject userData) {
+
+
+        final Map<String, CheckFunction> requestUserDataFunctions = new HashMap<>();
+
+        // configure the map
+        requestUserDataFunctions.put("email", breinUser::getEmail);
+        requestUserDataFunctions.put("firstName", breinUser::getFirstName);
+        requestUserDataFunctions.put("lastName", breinUser::getLastName);
+        requestUserDataFunctions.put("dateOfBirth", breinUser::getDateOfBirth);
+        requestUserDataFunctions.put("deviceId", breinUser::getDeviceId);
+        requestUserDataFunctions.put("imei", breinUser::getImei);
+        requestUserDataFunctions.put("sessionId", breinUser::getSessionId);
+
+        // Execute the functions and add it to userData
+        executeMapFunctions(userData, requestUserDataFunctions);
+
+        // check if there are further extra maps to add on user level
+        if (extraUserMap != null && extraUserMap.size() > 0) {
+            fillMap(extraUserMap, userData);
+        }
+
+        // additional part
+        final Map<String, CheckFunction> requestUserAdditionalDataFunctions = new HashMap<>();
+        requestUserAdditionalDataFunctions.put("userAgent", breinUser::getUserAgent);
+        requestUserAdditionalDataFunctions.put("referrer", breinUser::getReferrer);
+        requestUserAdditionalDataFunctions.put("url", breinUser::getUrl);
+        requestUserAdditionalDataFunctions.put("ipAddress", breinUser::getIpAddress);
+
+        final JsonObject additional = new JsonObject();
+
+        // Execute the functions and add it to userData
+        executeMapFunctions(additional, requestUserAdditionalDataFunctions);
+
+        // check if there are further extra maps to add on user additional level
+        if (extraUserAdditionalMap != null && extraUserAdditionalMap.size() > 0) {
+            fillMap(extraUserAdditionalMap, additional);
+        }
+
+        if (additional.size() > 0) {
+            userData.add("additional", additional);
+        }
+
+        // add the data
+        requestData.add("user", userData);
+    }
+
+    /**
+     * Executes the actions within the map. Checks if the value is valid and if this is
+     * the case then the property will be added to the json structure.
+     *
+     * @param jsonObject structure that will be added with a property
+     * @param functionMap map of actions (aka methods)
+     */
+    public void executeMapFunctions(final JsonObject jsonObject,
+                                    final Map<String, CheckFunction> functionMap) {
+        functionMap.entrySet().forEach(action -> {
+            if (BreinUtil.containsValue(action.getValue().invoke())) {
+                jsonObject.addProperty(action.getKey(), action.getValue().invoke());
+            }
+        });
     }
 
     /**

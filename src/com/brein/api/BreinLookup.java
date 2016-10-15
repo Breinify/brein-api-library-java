@@ -98,9 +98,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
             requestData.add("user", userData);
         }
 
-        /*
-         * Dimensions
-         */
+        // Dimensions
         if (BreinUtil.containsValue(getBreinDimension())) {
             final JsonObject lookupData = new JsonObject();
             final JsonArray dimensions = new JsonArray();
@@ -111,9 +109,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
             requestData.add("lookup", lookupData);
         }
 
-        /*
-         * API key
-         */
+        // API key
         if (BreinUtil.containsValue(getConfig().getApiKey())) {
             requestData.addProperty("apiKey", getConfig().getApiKey());
         }

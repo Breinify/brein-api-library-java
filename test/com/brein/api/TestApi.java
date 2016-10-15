@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Function;
 
 /**
  * Test of Breinify Java API (static option)
@@ -50,6 +51,11 @@ public class TestApi {
             BreinEngineType.UNIREST_ENGINE);
 
     /**
+     * indicator if the loops should be done forever :-)
+     */
+    boolean loopIndicator = true;
+
+    /**
      * Init part
      */
     @BeforeClass
@@ -83,6 +89,81 @@ public class TestApi {
     @Test
     public void testLogin() {
 
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * test case with extra fields on base level
+     *
+     */
+    @Test
+    public void testActivityRequestWithExtraBaseMap() {
+
+        final Map<String, Object> dataBaseLevelMap = new HashMap<>();
+        dataBaseLevelMap.put("enhancement-base", "value");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+        breinActivity.setExtraMap(BreinActivity.MapKind.MK_BASE, dataBaseLevelMap);
+
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * test case with extra fields on activity level
+     *
+     */
+    @Test
+    public void testActivityRequestWithExtraActivityMap() {
+
+        final Map<String, Object> dataActivityMap = new HashMap<>();
+        dataActivityMap.put("enhancement-activity-1", "value-1");
+        dataActivityMap.put("enhancement-activity-2", "value-2");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+        breinActivity.setExtraMap(BreinActivity.MapKind.MK_ACTIVITY, dataActivityMap);
+
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * test case with extra fields on activity level
+     *
+     */
+    @Test
+    public void testActivityRequestWithExtraUserMap() {
+
+        final Map<String, Object> dataUserMap = new HashMap<>();
+        dataUserMap.put("enhancement-user-1", "user-value-1");
+        dataUserMap.put("enhancement-user-2", "user-value-2");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+        breinActivity.setExtraMap(BreinActivity.MapKind.MK_USER, dataUserMap);
+
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * test case with extra fields on activity level
+     *
+     */
+    @Test
+    public void testActivityRequestWithExtraUserAdditionalMap() {
+
+        final Map<String, Object> dataAdditionalMap = new HashMap<>();
+        dataAdditionalMap.put("enhancement-user-additional-1", "user-add-value-1");
+        dataAdditionalMap.put("enhancement-user-additional-2", "user-add-value-2");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+        breinActivity.setExtraMap(BreinActivity.MapKind.MK_USER_ADDITIONAL, dataAdditionalMap);
+
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * helper method to call login
+     */
+    public void callLoginWithStandardValues() {
+
         /*
          * set configuration
          */
@@ -97,11 +178,96 @@ public class TestApi {
         /*
          * invoke activity call
          */
+        invokeActivityCall(breinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login",
+                false);
+    }
+
+    /**
+     * helper method to call login
+     *
+     * @param breinUser
+     * @param breinActivityType
+     * @param breinCategoryType
+     * @param description
+     * @param signFlag
+     */
+    public void callActivityWithStandardConfig(final BreinUser breinUser,
+                                               final String breinActivityType,
+                                               final String breinCategoryType,
+                                               final String description,
+                                               final boolean signFlag) {
+
+        /*
+         * set configuration
+         */
+        Breinify.setConfig(breinConfig);
+
+        /*
+         * additional optional user information
+         */
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        /*
+         * invoke activity call
+         */
+        invokeActivityCall(breinUser,
+                breinActivityType,
+                breinCategoryType,
+                description,
+                signFlag);
+    }
+
+    /**
+     * @param breinUser
+     * @param breinActivityType
+     * @param breinCategoryType
+     * @param description
+     * @param signFlag
+     */
+    public void invokeActivityCall(final BreinUser breinUser,
+                                   final String breinActivityType,
+                                   final String breinCategoryType,
+                                   final String description,
+                                   final boolean signFlag) {
+
+
+
+        Function<String, Void> callback = message -> {
+            System.out.println(message);
+            return null;
+        };
+
+
+        // invoke activity call
         Breinify.activity(breinUser,
                 breinActivityType,
                 breinCategoryType,
-                "Login-Description",
-                false);
+                description,
+                signFlag,
+                callback);
+
+    }
+
+
+    @Test
+    public void testCallBack() {
+
+        final Function<String, Void> callback = message -> {
+            System.out.println(message);
+            return null;
+        };
+
+
+        callTest(callback);
+    }
+
+    public void callTest(Function<String, Void> callback) {
+
+        callback.apply("Message from callback");
     }
 
     /**
@@ -110,25 +276,7 @@ public class TestApi {
     @Test
     public void testWithoutCategoryType() {
 
-        /*
-         * set configuration
-         */
-        Breinify.setConfig(breinConfig);
-
-        /*
-         * additional optional user information
-         */
-        breinUser.setFirstName("User");
-        breinUser.setLastName("Name");
-
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                null,
-                "Login-Description",
-                false);
+        callActivityWithStandardConfig(breinUser, breinActivityType, null, "login", false);
     }
 
     /**
@@ -152,14 +300,7 @@ public class TestApi {
         breinUser.setFirstName("User")
                 .setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                sign);
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description, sign);
     }
 
     /**
@@ -204,16 +345,7 @@ public class TestApi {
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                sign);
-
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description, sign);
     }
 
     /**
@@ -240,14 +372,7 @@ public class TestApi {
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description, false);
     }
 
     /**
@@ -281,14 +406,7 @@ public class TestApi {
          */
         breinUser.setDateOfBirth(12, 31, 2008);
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description, false);
     }
 
     /**
@@ -307,11 +425,7 @@ public class TestApi {
         /*
          * invoke activity call
          */
-        Breinify.activity(breinUser,
-                BreinActivityType.SEARCH,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, BreinActivityType.SEARCH, breinCategoryType, description, false);
     }
 
     /**
@@ -330,11 +444,7 @@ public class TestApi {
         /*
          * invoke activity call
          */
-        Breinify.activity(breinUser,
-                BreinActivityType.ADD_TO_CART,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, BreinActivityType.ADD_TO_CART, breinCategoryType, description, false);
     }
 
     /**
@@ -353,11 +463,7 @@ public class TestApi {
         /*
          * invoke activity call
          */
-        Breinify.activity(breinUser,
-                BreinActivityType.REMOVE_FROM_CART,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, BreinActivityType.REMOVE_FROM_CART, breinCategoryType, description, false);
     }
 
     /**
@@ -376,11 +482,7 @@ public class TestApi {
         /*
          * invoke activity call
          */
-        Breinify.activity(breinUser,
-                BreinActivityType.SELECT_PRODUCT,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, BreinActivityType.SELECT_PRODUCT, breinCategoryType, description, false);
     }
 
     /**
@@ -399,34 +501,7 @@ public class TestApi {
         /*
          * invoke activity call
          */
-        Breinify.activity(breinUser,
-                BreinActivityType.OTHER,
-                breinCategoryType,
-                description,
-                false);
-    }
-
-    /**
-     * test case how to invoke it with flebile values
-     */
-    @Test
-    public void testFlexibleValues() {
-
-        final String description = "Other-Description";
-
-        /*
-         * set configuration
-         */
-        Breinify.setConfig(breinConfig);
-
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.OTHER,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, BreinActivityType.OTHER, breinCategoryType, description, false);
     }
 
     /**
@@ -480,7 +555,7 @@ public class TestApi {
      * test case without having set the BreinUser.
      * This will lead to an Exception.
      */
-    @Test(expected = BreinException.class)
+    @Test(expected=BreinException.class)
     public void testPageVisitWithException() {
 
         // set configuration
@@ -542,9 +617,7 @@ public class TestApi {
     @Test(expected = BreinInvalidConfigurationException.class)
     public void testLoginWithBadUrl() {
 
-        /*
-         * Just to ensure that the right config has been set
-         */
+        // Just to ensure that the right config has been set
         final String badUrl = "www.beeeeeiiiniiify.com";
 
         final BreinConfig breinConfigWithBadUrl = new BreinConfig(VALID_API_KEY,
@@ -553,14 +626,8 @@ public class TestApi {
 
         Breinify.setConfig(breinConfigWithBadUrl);
 
-        /*
-         * invoke activity call, will cause an exception
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.HOME,
-                "Login-Description",
-                false);
+        // invoke activity call, will cause an exception
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Description", false);
     }
 
     /**
@@ -579,22 +646,18 @@ public class TestApi {
         final BreinDimension breinDimension = new BreinDimension(dimensions);
         final boolean sign = false;
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
+        BreinResult response = null;
 
-        /*
-         * invoke lookup
-         */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        try {
+            // invoke lookup
+            response = Breinify.lookup(breinUser, breinDimension, sign);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
-        final Object dataFirstname = response.get("firstname");
-        final Object dataGender = response.get("gender");
-        final Object dataAge = response.get("age");
-        final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootprint");
-        final Object dataImages = response.get("images");
+        showLookupOutput(response);
     }
 
     /**
@@ -617,12 +680,7 @@ public class TestApi {
         Breinify.setConfig(breinConfig);
 
         // invoke activity call
-        Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.HOME,
-                "Login-Description",
-                sign);
-
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Desc", sign);
     }
 
     /**
@@ -645,11 +703,7 @@ public class TestApi {
         Breinify.setConfig(breinConfig);
 
         // invoke activity call
-        Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.HOME,
-                "Login-Description",
-                sign);
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Desc", sign);
     }
 
     /**
@@ -680,18 +734,16 @@ public class TestApi {
          * set configuration
          */
         Breinify.setConfig(breinConfig);
+        BreinResult response = null;
 
-        /*
-         * invoke lookup
-         */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        try {
+            //invoke lookup
+            response = Breinify.lookup(breinUser, breinDimension, sign);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
-        final Object dataFirstname = response.get("firstname");
-        final Object dataGender = response.get("gender");
-        final Object dataAge = response.get("age");
-        final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootprint");
-        final Object dataImages = response.get("images");
+        showLookupOutput(response);
     }
 
     /**
@@ -718,23 +770,35 @@ public class TestApi {
         // set secret
         breinConfig.setSecret(thisIsAWrongSecret);
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
+        BreinResult response = null;
 
-        /*
-         * invoke lookup
-         */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        try {
+            // invoke lookup
+            response = Breinify.lookup(breinUser, breinDimension, sign);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
-        final Object dataFirstname = response.get("firstname");
-        final Object dataGender = response.get("gender");
-        final Object dataAge = response.get("age");
-        final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootprint");
-        final Object dataImages = response.get("images");
+        showLookupOutput(response);
     }
+
+    /**
+     * Helper to show output
+     * @param response contains the response from the request
+     */
+    public void showLookupOutput(final BreinResult response) {
+        if (response != null) {
+            final Object dataFirstname = response.get("firstname");
+            final Object dataGender = response.get("gender");
+            final Object dataAge = response.get("age");
+            final Object dataAgeGroup = response.get("agegroup");
+            final Object dataDigitalFootprinting = response.get("digitalfootprint");
+            final Object dataImages = response.get("images");
+        }
+    }
+
 
     /**
      * test case where an activity is sent without having set
@@ -758,12 +822,12 @@ public class TestApi {
                 .setSessionId("SESS-ID-IS-THIS");
 
         // send activity with all fields sets so far
-        Breinify.activity(breinUser, "ACT-TYPE", "CAT-TYPE", "DESC", false);
+        Breinify.activity(breinUser, "ACT-TYPE", "CAT-TYPE", "DESC", false, null);
 
         // send activity without CAT-TYPE => use default
-        Breinify.activity(breinUser, "ACT-TYPE", "", "DESC", false);
+        Breinify.activity(breinUser, "ACT-TYPE", "", "DESC", false, null);
 
-        Breinify.activity(breinUser, "ACT-TYPE", null, "DESC", false);
+        Breinify.activity(breinUser, "ACT-TYPE", null, "DESC", false, null);
 
         // send activity by setting the breinActivity methods
         BreinActivity breinActivity = Breinify.getBreinActivity()
@@ -788,20 +852,29 @@ public class TestApi {
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
+
+        final Function<String, Void> errorCallback = s -> {
+            loopIndicator = false;
+            return null;
+        };
+
         int index = 1;
 
-        while (true) {
+
+        while (index <= 20) {
+
+            // loopIndicator = true;
 
             try {
 
-                while (true) {
+                while (loopIndicator) {
 
                     // invoke activity call
                     Breinify.activity(breinUser,
                             breinActivityType,
                             breinCategoryType,
                             "Login-Description",
-                            false);
+                            false, errorCallback);
 
                     try {
                         System.out.println("Waiting: " + Integer.toString(index++));
