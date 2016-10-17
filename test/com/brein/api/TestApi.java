@@ -188,11 +188,11 @@ public class TestApi {
     /**
      * helper method to call login
      *
-     * @param breinUser
-     * @param breinActivityType
-     * @param breinCategoryType
-     * @param description
-     * @param signFlag
+     * @param breinUser brein unser
+     * @param breinActivityType activity type
+     * @param breinCategoryType category type
+     * @param description description
+     * @param signFlag sign true or false
      */
     public void callActivityWithStandardConfig(final BreinUser breinUser,
                                                final String breinActivityType,
@@ -236,7 +236,7 @@ public class TestApi {
 
 
 
-        Function<String, Void> callback = message -> {
+        final Function<String, Void> callback = message -> {
             System.out.println(message);
             return null;
         };
@@ -265,7 +265,7 @@ public class TestApi {
         callTest(callback);
     }
 
-    public void callTest(Function<String, Void> callback) {
+    public void callTest(final Function<String, Void> callback) {
 
         callback.apply("Message from callback");
     }
@@ -830,7 +830,7 @@ public class TestApi {
         Breinify.activity(breinUser, "ACT-TYPE", null, "DESC", false, null);
 
         // send activity by setting the breinActivity methods
-        BreinActivity breinActivity = Breinify.getBreinActivity()
+        final BreinActivity breinActivity = Breinify.getBreinActivity()
                 .setBreinCategoryType(null)
                 .setBreinActivityType("ACTI-TYPE")
                 .setDescription("DESC");

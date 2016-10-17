@@ -50,15 +50,30 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      * contains the extra maps that are not
      * handled by the current dedicated setter and getter
      *
-     * extraBaseMap -> root (base) level
+     * extraBaseMap     -> root (base) level
      * extraActivityMap -> activity level
-     * extraUserMap -> user level
+     * extraUserMap     -> user level
      * extra UserAdditionalMap -> user-additional level
      */
     private Map<String, Object> extraBaseMap;
     private Map<String, Object> extraActivityMap;
     private Map<String, Object> extraUserMap;
     private Map<String, Object> extraUserAdditionalMap;
+
+    /**
+     * contains the function map for user data related functions
+     */
+    private Map<String, CheckFunction> requestUserDataFunctions = null;
+
+    /**
+     * contains the function map for user additional data related functions
+     */
+    private Map<String, CheckFunction> requestUserAdditionalDataFunctions = null;
+
+    /**
+     *  contains the function map for activity data related functions
+     */
+    private Map<String, CheckFunction> requestActivityFunctions = null;
 
     /**
      * returns activity type
@@ -197,6 +212,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     /**
      * initializes the values of this instance
      */
+    @Override
     public void init() {
         breinActivityType = "";
         breinCategoryType = "";
@@ -206,6 +222,9 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         extraActivityMap = null;
         extraUserMap = null;
         extraUserAdditionalMap = null;
+        requestUserDataFunctions = null;
+        requestUserAdditionalDataFunctions = null;
+        requestActivityFunctions = null;
     }
 
     /**
@@ -319,12 +338,12 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      */
     public void prepareActivityRequestData(final JsonObject activityData) {
 
-        final Map<String, CheckFunction> requestActivityFunctions = new HashMap<>();
+        if (requestActivityFunctions == null) {
+            requestActivityFunctions = new HashMap<>();
 
-        // configure the map
-        requestActivityFunctions.put("type", this::getBreinActivityType);
-        requestActivityFunctions.put("description", this::getDescription);
-        requestActivityFunctions.put("category", this::getBreinCategoryType);
+            // configure the map
+            configureRequestActivityFunctionMap();
+        }
 
         // execute the map
         executeMapFunctions(activityData, requestActivityFunctions);
@@ -335,6 +354,15 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
             fillMap(tagsMap, tagsData);
             activityData.add("tags", tagsData);
         }
+    }
+
+    /**
+     * configures the activity related functions
+     */
+    public void configureRequestActivityFunctionMap() {
+        requestActivityFunctions.put("type", this::getBreinActivityType);
+        requestActivityFunctions.put("description", this::getDescription);
+        requestActivityFunctions.put("category", this::getBreinCategoryType);
     }
 
     /**
@@ -368,17 +396,11 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
                                        final BreinUser breinUser,
                                        final JsonObject userData) {
 
-
-        final Map<String, CheckFunction> requestUserDataFunctions = new HashMap<>();
-
-        // configure the map
-        requestUserDataFunctions.put("email", breinUser::getEmail);
-        requestUserDataFunctions.put("firstName", breinUser::getFirstName);
-        requestUserDataFunctions.put("lastName", breinUser::getLastName);
-        requestUserDataFunctions.put("dateOfBirth", breinUser::getDateOfBirth);
-        requestUserDataFunctions.put("deviceId", breinUser::getDeviceId);
-        requestUserDataFunctions.put("imei", breinUser::getImei);
-        requestUserDataFunctions.put("sessionId", breinUser::getSessionId);
+        // do it once
+        if (requestUserDataFunctions == null) {
+            requestUserDataFunctions = new HashMap<>();
+            configureRequestUserDataFunctionMap(breinUser);
+        }
 
         // Execute the functions and add it to userData
         executeMapFunctions(userData, requestUserDataFunctions);
@@ -389,12 +411,12 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         }
 
         // additional part
-        final Map<String, CheckFunction> requestUserAdditionalDataFunctions = new HashMap<>();
-        requestUserAdditionalDataFunctions.put("userAgent", breinUser::getUserAgent);
-        requestUserAdditionalDataFunctions.put("referrer", breinUser::getReferrer);
-        requestUserAdditionalDataFunctions.put("url", breinUser::getUrl);
-        requestUserAdditionalDataFunctions.put("ipAddress", breinUser::getIpAddress);
+        if (requestUserAdditionalDataFunctions == null) {
+            requestUserAdditionalDataFunctions = new HashMap<>();
+            configureRequestUserAdditionalFunctionMap(breinUser);
+        }
 
+        // additional part
         final JsonObject additional = new JsonObject();
 
         // Execute the functions and add it to userData
@@ -414,6 +436,32 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
     }
 
     /**
+     * configures the user additional part
+     * @param breinUser contains the brein user
+     */
+    public void configureRequestUserAdditionalFunctionMap(final BreinUser breinUser) {
+        requestUserAdditionalDataFunctions.put("userAgent", breinUser::getUserAgent);
+        requestUserAdditionalDataFunctions.put("referrer", breinUser::getReferrer);
+        requestUserAdditionalDataFunctions.put("url", breinUser::getUrl);
+        requestUserAdditionalDataFunctions.put("ipAddress", breinUser::getIpAddress);
+    }
+
+    /**
+     * configures the user data fucntion map
+     * @param breinUser contains the brein user
+     */
+    public void configureRequestUserDataFunctionMap(final BreinUser breinUser) {
+        // configure the map
+        requestUserDataFunctions.put("email", breinUser::getEmail);
+        requestUserDataFunctions.put("firstName", breinUser::getFirstName);
+        requestUserDataFunctions.put("lastName", breinUser::getLastName);
+        requestUserDataFunctions.put("dateOfBirth", breinUser::getDateOfBirth);
+        requestUserDataFunctions.put("deviceId", breinUser::getDeviceId);
+        requestUserDataFunctions.put("imei", breinUser::getImei);
+        requestUserDataFunctions.put("sessionId", breinUser::getSessionId);
+    }
+
+    /**
      * Executes the actions within the map. Checks if the value is valid and if this is
      * the case then the property will be added to the json structure.
      *
@@ -422,6 +470,7 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
      */
     public void executeMapFunctions(final JsonObject jsonObject,
                                     final Map<String, CheckFunction> functionMap) {
+
         functionMap.entrySet().forEach(action -> {
             if (BreinUtil.containsValue(action.getValue().invoke())) {
                 jsonObject.addProperty(action.getKey(), action.getValue().invoke());
@@ -440,7 +489,6 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
         final String message = String.format("%s%d%d",
                 getBreinActivityType() == null ? "" : getBreinActivityType(),
                 getUnixTimestamp(), 1);
-        // activities.size());
 
         return BreinUtil.generateSignature(message, getConfig().getSecret());
     }
