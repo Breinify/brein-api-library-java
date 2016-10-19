@@ -1,6 +1,9 @@
 package com.brein.api;
 
-import com.brein.domain.*;
+import com.brein.domain.BreinConfig;
+import com.brein.domain.BreinDimension;
+import com.brein.domain.BreinResult;
+import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
 
 import java.util.function.Function;
@@ -79,14 +82,15 @@ public class Breinify {
      * <p>
      * This request is asynchronous.
      *
-     * @param user         a plain object specifying the user information the activity belongs to
-     * @param activityType the type of the activity collected, i.e., one of search, login, logout, addToCart,
-     *                     removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
-     *                     be used
-     * @param categoryType the category of the platform/service/products, i.e., one of apparel, home, education, family,
-     *                     food, health, job, services, or other
-     * @param description  a string with further information about the activity performed
-     * @param sign         a boolean value specifying if the call should be signed
+     * @param user          a plain object specifying the user information the activity belongs to
+     * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                      be used
+     * @param categoryType  the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                      food, health, job, services, or other
+     * @param description   a string with further information about the activity performed
+     * @param sign          a boolean value specifying if the call should be signed
+     * @param errorCallback a callback function that is invoked in case of an error (can be null)
      */
     public static void activity(final BreinUser user,
                                 final String activityType,
@@ -107,6 +111,31 @@ public class Breinify {
 
         breinActivity.setErrorCallback(errorCallback);
         breinActivity.getBreinEngine().sendActivity(breinActivity);
+    }
+
+    /**
+     * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * This request is asynchronous.
+     *
+     * @param user         a plain object specifying the user information the activity belongs to
+     * @param activityType the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                     removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                     be used
+     * @param categoryType the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                     food, health, job, services, or other
+     * @param description  a string with further information about the activity performed
+     * @param sign         a boolean value specifying if the call should be signed
+     */
+    public static void activity(final BreinUser user,
+                                final String activityType,
+                                final String categoryType,
+                                final String description,
+                                final boolean sign) {
+
+        // default behaviour is no callback
+        activity(user, activityType, categoryType, description, sign, null);
     }
 
     /**

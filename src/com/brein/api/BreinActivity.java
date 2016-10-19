@@ -354,6 +354,11 @@ public class BreinActivity extends BreinBase implements ISecretStrategy {
             fillMap(tagsMap, tagsData);
             activityData.add("tags", tagsData);
         }
+
+        // check if there are further extra maps to add on base level
+        if (extraActivityMap != null && extraActivityMap.size() > 0) {
+            fillMap(extraActivityMap, activityData);
+        }
     }
 
     /**

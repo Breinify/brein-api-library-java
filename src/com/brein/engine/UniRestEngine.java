@@ -116,9 +116,10 @@ public class UniRestEngine implements IRestEngine {
         // validate the input objects
         validate(breinLookup);
 
+        HttpResponse<JsonNode> jsonResponse;
         try {
             final String requestBody = getRequestBody(breinLookup);
-            final HttpResponse<JsonNode> jsonResponse =
+            jsonResponse =
                     Unirest.post(getFullyQualifiedUrl(breinLookup))
                             .header(HEADER_ACCESS, HEADER_APP_JSON)
                             .body(requestBody)
