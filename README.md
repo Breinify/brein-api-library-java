@@ -73,7 +73,7 @@ Breinify.activity(breinUser,
          BreinActivityType.LOGIN,
          BreinCategoryType.HOME, 
          "Login-Description", 
-         false, null);
+         false);
 
 ```
 
