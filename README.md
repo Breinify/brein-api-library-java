@@ -18,7 +18,7 @@ Thanks to **Breinify's DigitalDNA** you are now able to adapt your online presen
 
 #### Step 1: Download the Library
 
-Download the Library from Maven Repository <<more details to come>>
+Download the Library from [Maven Central Repository] (http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22brein-api-library-java%22)
 
 
 #### Step 2: Integrate the library
@@ -68,7 +68,7 @@ final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
          .setFirstName("User")
          .setLastName("Anyhere");
                
-// invoke an activity noting that the user has logged in
+// invoke an activity request
 Breinify.activity(breinUser, 
          BreinActivityType.LOGIN,
          BreinCategoryType.HOME, 
@@ -108,6 +108,26 @@ final Object dataDigitalFootprinting = result.get("digitalfootprint");
 final Object dataImages = result.get("images");
 
 ```
+
+##### Placing temporalData triggers
+
+Temporal triggers will provide <....> information. They can be requested like this:
+
+```Java
+// create a user you are interested in 
+final BreinUser breinUser = new BreinUser()
+         .setTimezone("America/Los_Angeles")
+         .setLocalDateTime("Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)");
+               
+// invoke the temporal request 
+final BreinResult result = Breinify.temporalData(breinUser, false);
+final Object timeValues = result.get("time");
+final Object weatherValues = result.get("weather");
+final Object locationValues = result.get("location");
+final Object holidayValues = result.get("holiday");
+
+```
+
 #### Step 5: Teardown of the Library Services
 
 Depending of the rest engine (e.g. UNIREST) some threads needs to be stopped. This will be done by invoking the following statement:

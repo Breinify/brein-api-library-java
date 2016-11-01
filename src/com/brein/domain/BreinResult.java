@@ -44,4 +44,11 @@ public class BreinResult {
         return get(key) != null;
     }
 
+    /**
+     * provides the map containing the results
+     * @return map of <String, Object>
+     */
+    public Map<String, Object> getMap() {
+        return map;
+    }
 }

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.Properties;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -169,5 +170,21 @@ public class TestDomain {
         assertTrue(breinCategoryType.equals("flexibleString"));
     }
 
+    @Test
+    public void testTimeZoneAndLocalDateTime() {
+
+        final String timeZoneValue = "Europe/Berlin";
+        final String localDateTimeValue = "Mon Sep 28 2016 14:36:22 GMT+0200 (CET)";
+
+        final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
+                .setFirstName("User")
+                .setTimezone(timeZoneValue)
+                .setLocalDateTime(localDateTimeValue);
+
+        final String timeZone = breinUser.getTimezone();
+        assertEquals(timeZone, timeZoneValue);
+        final String localDateTime = breinUser.getLocalDateTime();
+        assertEquals(localDateTime, localDateTimeValue);
+    }
 
 }

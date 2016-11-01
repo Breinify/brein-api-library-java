@@ -4,7 +4,8 @@ import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Provides the lookup functionality
@@ -91,44 +92,30 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         super.prepareJsonRequest();
 
         final JsonObject requestData = new JsonObject();
+
+        // user data level and additional
         final BreinUser breinUser = getBreinUser();
-        if (breinUser != null) {
-            final JsonObject userData = new JsonObject();
-            userData.addProperty("email", breinUser.getEmail());
-            requestData.add("user", userData);
+        if (null != breinUser) {
+            getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
         }
 
-        // Dimensions
+        // this is the section that is only available within the lookup request
         if (BreinUtil.containsValue(getBreinDimension())) {
             final JsonObject lookupData = new JsonObject();
             final JsonArray dimensions = new JsonArray();
             for (final String field : getBreinDimension().getDimensionFields()) {
                 dimensions.add(field);
             }
-            lookupData.add("dimensions", dimensions);
-            requestData.add("lookup", lookupData);
+            if (getBreinDimension().getDimensionFields().length > 0) {
+                lookupData.add("dimensions", dimensions);
+                requestData.add("lookup", lookupData);
+            }
         }
 
-        // API key
-        if (BreinUtil.containsValue(getConfig().getApiKey())) {
-            requestData.addProperty("apiKey", getConfig().getApiKey());
-        }
+        // build base level structure
+        getBreinBaseRequest().prepareBaseRequestData(this, requestData, isSign());
 
-        // Unix time stamp
-        requestData.addProperty("unixTimestamp", getUnixTimestamp());
-
-        // set secret
-        if (isSign()) {
-            requestData.addProperty("signatureType", createSignature());
-        }
-
-        final Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .serializeNulls()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
-
-        return gson.toJson(requestData);
+        return getGson().toJson(requestData);
     }
 
     /**

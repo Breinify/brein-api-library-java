@@ -2,6 +2,7 @@ package com.brein.engine;
 
 import com.brein.api.BreinActivity;
 import com.brein.api.BreinLookup;
+import com.brein.api.BreinTemporalData;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 
@@ -66,5 +67,19 @@ public class BreinEngine {
      */
     public void configure(final BreinConfig breinConfig) {
         restEngine.configure(breinConfig);
+    }
+
+    /**
+     * performs a temporalData request
+     * @param breinTemporalData contains the appropriate data in order to perform the request
+     * @return result from Breinify engine
+     */
+    public BreinResult performTemporalDataRequest(final BreinTemporalData breinTemporalData) {
+
+        if (breinTemporalData != null) {
+            return restEngine.doTemporalDataRequest(breinTemporalData);
+        }
+
+        return null;
     }
 }

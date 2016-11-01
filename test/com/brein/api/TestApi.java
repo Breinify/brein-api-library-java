@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.function.Function;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * Test of Breinify Java API (static option)
  */
@@ -26,7 +29,8 @@ public class TestApi {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+    //private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
 
     /**
      * Contains the Breinify User
@@ -237,7 +241,7 @@ public class TestApi {
 
 
         final Function<String, Void> callback = message -> {
-            System.out.println(message);
+            fail(message);
             return null;
         };
 
@@ -252,7 +256,6 @@ public class TestApi {
 
     }
 
-
     @Test
     public void testCallBack() {
 
@@ -260,7 +263,6 @@ public class TestApi {
             System.out.println(message);
             return null;
         };
-
 
         callTest(callback);
     }
@@ -383,6 +385,7 @@ public class TestApi {
 
         final int maxLogin = 200;
         for (int index = 0; index < maxLogin; index++) {
+            System.out.println("index is: " + index);
             testLogin();
         }
 
@@ -426,6 +429,16 @@ public class TestApi {
          * invoke activity call
          */
         invokeActivityCall(breinUser, BreinActivityType.SEARCH, breinCategoryType, description, false);
+    }
+
+    @Test
+    public void testWithNullValues() {
+        // set config
+        Breinify.setConfig(breinConfig);
+
+        // invoke call
+        invokeActivityCall(breinUser, null, null, null, false);
+
     }
 
     /**
@@ -547,6 +560,7 @@ public class TestApi {
         breinActivity.setDescription("your description");
         breinActivity.setSign(false);
         breinActivity.setTagsMap(tagMap);
+        breinActivity.setIpAddress("10.11.12.13");
 
         Breinify.activity();
     }
@@ -892,10 +906,42 @@ public class TestApi {
         }
     }
 
+    /**
+     * Tests the lookup functionality
+     */
+    @Test
+    public void testTemporalData() {
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+        BreinResult response = null;
+
+        // important new fields
+        breinUser.setTimezone("Europe/Berlin");
+        breinUser.setLocalDateTime("Mon Sep 28 2016 14:36:22 GMT+0200 (CET)");
+
+        try {
+            // invoke temporaldata
+            response = Breinify.temporalData(breinUser, false);
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+        // show output
+        showTemporalDataOutput(response);
+    }
+
+    private void showTemporalDataOutput(final BreinResult response) {
+        if (response != null) {
+            final Object timeValues = response.get("time");
+            assertTrue (timeValues != null);
+            System.out.println(timeValues);
+        }
+    }
+
 
     @Test
     public void testForDoc() {
-
 
     }
 

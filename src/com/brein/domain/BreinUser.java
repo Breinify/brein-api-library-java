@@ -61,6 +61,16 @@ public class BreinUser {
     private String ipAddress;
 
     /**
+     * contains the localDateTime value (for temporalData request)
+     */
+    private String localDateTime;
+
+    /**
+     * contains the timezone value (for temporalData request)
+     */
+    private String timezone;
+
+    /**
      * create a brein user with field email.
      *
      * @param email of the user
@@ -295,6 +305,43 @@ public class BreinUser {
      */
     public BreinUser setDeviceId(final String deviceId) {
         this.deviceId = deviceId;
+        return this;
+    }
+
+    /**
+     * get's the localDateTime
+     * @return localDateTime (e.g. "Mon Sep 28 2016 14:36:22 GMT+0200 (CET)")
+     */
+    public String getLocalDateTime() {
+        return localDateTime;
+    }
+
+    /**
+     * set's the localDateTime
+     * @param localDateTime contains the localdate time
+     *
+     * @return this
+     */
+    public BreinUser setLocalDateTime(final String localDateTime) {
+        this.localDateTime = localDateTime;
+        return this;
+    }
+
+    /**
+     * gets the timezone
+     * @return timezone (e.g. "Europe/Berlin")
+     */
+    public String getTimezone() {
+        return timezone;
+    }
+
+    /**
+     * set the timezone
+     * @param timezone timezone (e.g. "Europe/Berlin"))
+     * @return this
+     */
+    public BreinUser setTimezone(final String timezone) {
+        this.timezone = timezone;
         return this;
     }
 

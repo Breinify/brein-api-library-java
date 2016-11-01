@@ -25,6 +25,11 @@ public class BreinConfig {
     public static final String DEFAULT_LOOKUP_ENDPOINT = "/lookup";
 
     /**
+     * default endpoint of temporalData
+     */
+    public static final String DEFAULT_TEMPORALDATA_ENDPOINT = "/temporaldata";
+
+    /**
      * default connection timeout
      */
     public static final long DEFAULT_CONNECTION_TIMEOUT = 1000;
@@ -73,6 +78,11 @@ public class BreinConfig {
      * contains the lookup endpoint (default = LOOKUP_ENDPOINT)
      */
     private String lookupEndpoint = DEFAULT_LOOKUP_ENDPOINT;
+
+    /**
+     * contains the temporalData endpoint (default = DEFAULT_TEMPORALDATA_ENDPOINT)
+     */
+    private String temporalDataEndpoint = DEFAULT_TEMPORALDATA_ENDPOINT;
 
     /**
      * connection timeout
@@ -334,6 +344,22 @@ public class BreinConfig {
     public BreinConfig setLookupEndpoint(final String lookupEndpoint) {
         this.lookupEndpoint = lookupEndpoint;
         return this;
+    }
+
+    /**
+     * retrieves the temporaldata endpoint
+     * @return temporaldata endpoint
+     */
+    public String getTemporalDataEndpoint() {
+        return temporalDataEndpoint;
+    }
+
+    /**
+     * sets the temporaldata endpoint
+     * @param temporalDataEndpoint endpoint
+     */
+    public void setTemporalDataEndpoint(final String temporalDataEndpoint) {
+        this.temporalDataEndpoint = temporalDataEndpoint;
     }
 
     /**

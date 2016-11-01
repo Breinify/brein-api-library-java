@@ -1,8 +1,13 @@
 package com.brein.api;
 
+import com.brein.domain.BreinBaseRequest;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
+import com.brein.domain.BreinUserRequest;
 import com.brein.engine.BreinEngine;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.Instant;
 import java.util.function.Function;
@@ -10,7 +15,7 @@ import java.util.function.Function;
 /**
  * Base Class for activity and lookup operations.
  */
-public class BreinBase {
+public class BreinBase implements ISecretStrategy {
 
     /**
      * contains the User that will be used for the request
@@ -28,14 +33,38 @@ public class BreinBase {
     private long unixTimestamp = 0;
 
     /**
+     * IpAddress
+     */
+    private String ipAddress;
+
+    /**
      * if set to yes then a secret has to bo sent
      */
     private boolean sign;
 
     /**
+     * contains the data structure for the user request part including additional
+     */
+    private final BreinUserRequest breinUserRequest = new BreinUserRequest();
+
+    /**
+     * contains the data structures for the base part
+     */
+    private final BreinBaseRequest breinBaseRequest = new BreinBaseRequest();
+
+    /**
      * contains the errorCallback
      */
     private Function<String, Void> errorCallback;
+
+    /**
+     * Builder for json creation
+     */
+    final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+            .create();
 
     /**
      * retrieves the configuration
@@ -133,6 +162,24 @@ public class BreinBase {
     }
 
     /**
+     * gets the ipAddress
+     * @return content of ipaddress
+     */
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    /**
+     * sets the ipaddress
+     * @param ipAddress contains the ipaddress
+     * @return object itself
+     */
+    public BreinBase setIpAddress(final String ipAddress) {
+        this.ipAddress = ipAddress;
+        return this;
+    }
+
+    /**
      * Returns the callback function
      * @return callback function
      */
@@ -144,8 +191,33 @@ public class BreinBase {
      * sets the error callback function
      * @param errorCallback function to callback
      */
-    public void setErrorCallback(final Function<String, Void> errorCallback) {
+    public BreinBase setErrorCallback(final Function<String, Void> errorCallback) {
         this.errorCallback = errorCallback;
+        return this;
+    }
+
+    /**
+     * return the gson builder instance
+     * @return gson instance
+     */
+    public Gson getGson() {
+        return gson;
+    }
+
+    /**
+     * returns the instance of BreinUserRequestData
+     * @return instance of BreinUserRequestData
+     */
+    public BreinUserRequest getBreinUserRequest() {
+        return breinUserRequest;
+    }
+
+    /**
+     * return the instance of BreinBaseRequestData
+     * @return instance of BreinBaseRequestData
+     */
+    public BreinBaseRequest getBreinBaseRequest() {
+        return breinBaseRequest;
     }
 
     /**
@@ -171,4 +243,12 @@ public class BreinBase {
         return "";
     }
 
+    /**
+     * used to create the signature depending of the request type
+     * @return signature
+     */
+    @Override
+    public String createSignature() {
+        return null;
+    }
 }

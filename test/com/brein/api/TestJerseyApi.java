@@ -11,6 +11,9 @@ import org.junit.Test;
 import java.util.Properties;
 import java.util.function.Function;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * Test of Breinify Java API (static option)
  */
@@ -25,7 +28,10 @@ public class TestJerseyApi {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    // private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+
+    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
+
 
     /**
      * Contains the Breinify User
@@ -93,26 +99,71 @@ public class TestJerseyApi {
         }
     }
 
+    public void invokeActivityCall(final BreinUser breinUser,
+                                   final String breinActivityType,
+                                   final String breinCategoryType,
+                                   final String description,
+                                   final boolean signFlag) {
+
+
+        final Function<String, Void> callback = message -> {
+            fail(message);
+            return null;
+        };
+
+
+        // invoke activity call
+        Breinify.activity(breinUser,
+                breinActivityType,
+                breinCategoryType,
+                description,
+                signFlag,
+                callback);
+
+    }
+
+    @Test
+    public void testLoginWithCallback() {
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+
+        // additional optional user information
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "desc", false);
+    }
+
+    @Test
+    public void test200LoginWithCallback() {
+        // set configuration
+        Breinify.setConfig(breinConfig);
+
+        // additional optional user information
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        for (int index = 0; index < 200; index++) {
+            System.out.println("index is: " + index);
+            invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "desc", false);
+        }
+    }
+
     /**
      * testcase how to use the activity api
      */
     @Test
     public void testLogin() {
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
 
-        /*
-         * additional optional user information
-         */
-        breinUser.setFirstName("Usr");
+        // additional optional user information
+        breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
+        // invoke activity call
         Breinify.activity(breinUser,
                 breinActivityType,
                 breinCategoryType,
@@ -469,6 +520,7 @@ public class TestJerseyApi {
 
     /**
      * helper method to show lookup result
+     *
      * @param response contains the lookup data
      */
     public void showLookupResult(final BreinResult response) {
@@ -522,16 +574,93 @@ public class TestJerseyApi {
                         Thread.sleep(2000);
 
                     } catch (final Exception e) {
-                        e.printStackTrace();
+                        fail("Rest Exception is: " + e);
                     }
 
                 }
 
             } catch (final BreinException e) {
-                System.out.println("Exception is: " + e);
+                fail("Rest Exception is: " + e);
             }
         }
 
+    }
+
+    /**
+     * Tests the lookup functionality
+     */
+    @Test
+    public void testTemporalData() {
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+        BreinResult response = null;
+
+        final BreinTemporalData breinTemporalData = Breinify.getBreinTemporal();
+
+        final BreinUser user = new BreinUser()
+                // important new fields
+                .setTimezone("America/Los_Angeles")
+                .setLocalDateTime("Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)");
+
+        try {
+            // invoke temporaldata
+            response = Breinify.temporalData(user, false);
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+        // show output
+        showTemporalDataOutput(response);
+    }
+
+    /**
+     * Tests the lookup functionality
+     */
+    @Test
+    public void testTemporalDataWithSign() {
+
+        final String secret = "lmcoj4k27hbbszzyiqamhg==";
+        final String apiKeyWithSecret = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
+
+        final BreinConfig breinConfig = new BreinConfig(apiKeyWithSecret,
+                BASE_URL,
+                BreinEngineType.JERSEY_ENGINE);
+
+        // set secret
+        breinConfig.setSecret(secret);
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+        BreinResult response = null;
+
+        final BreinTemporalData breinTemporalData = Breinify.getBreinTemporal();
+
+        // important new fields
+        breinUser.setTimezone("Europe/Berlin")
+                .setLocalDateTime("Mon Sep 28 2016 14:36:22 GMT+0200 (CET)");
+
+        try {
+            // invoke temporaldata
+            response = Breinify.temporalData(breinUser, true);
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+        // show output
+        showTemporalDataOutput(response);
+    }
+
+    private void showTemporalDataOutput(final BreinResult response) {
+        if (response != null) {
+            final Object timeValues = response.get("time");
+            assertTrue(timeValues != null);
+            System.out.println(timeValues);
+
+            final Object weatherValues = response.get("weather");
+            final Object locationValues = response.get("location");
+            final Object holidayValues = response.get("holiday");
+        }
     }
 
 }

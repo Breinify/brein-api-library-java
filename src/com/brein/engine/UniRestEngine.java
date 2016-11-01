@@ -1,8 +1,6 @@
 package com.brein.engine;
 
-import com.brein.api.BreinActivity;
-import com.brein.api.BreinException;
-import com.brein.api.BreinLookup;
+import com.brein.api.*;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.mashape.unirest.http.HttpResponse;
@@ -116,27 +114,8 @@ public class UniRestEngine implements IRestEngine {
         // validate the input objects
         validate(breinLookup);
 
-        HttpResponse<JsonNode> jsonResponse;
-        try {
-            final String requestBody = getRequestBody(breinLookup);
-            jsonResponse =
-                    Unirest.post(getFullyQualifiedUrl(breinLookup))
-                            .header(HEADER_ACCESS, HEADER_APP_JSON)
-                            .body(requestBody)
-                            .asJson();
+        return invokeRequest(breinLookup);
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Result from lookup is: ");
-            }
-
-            return new BreinResult(jsonResponse.getBody().toString());
-
-        } catch (final UnirestException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("within doLookup - exception has occurred. " + e);
-            }
-            throw new BreinException(BreinException.LOOKUP_EXCEPTION, e);
-        }
     }
 
     /**
@@ -150,6 +129,52 @@ public class UniRestEngine implements IRestEngine {
             if (LOG.isDebugEnabled()) {
                 LOG.error("Exception within UNIREST shutdown has occurred. ", e);
             }
+        }
+    }
+
+    /**
+     * performs a temporalData request
+     *
+     * @param breinTemporalData contains the request data
+     * @return result from request
+     * @throws BreinException exception will be thrown
+     */
+    @Override
+    public BreinResult doTemporalDataRequest(final BreinTemporalData breinTemporalData) throws BreinException {
+
+        // validate the input objects
+        validate(breinTemporalData);
+
+        return invokeRequest(breinTemporalData);
+    }
+
+    /**
+     * invokes the request
+     *
+     * @param breinRequestObject contains the request data
+     * @return result from the Breinify engine
+     */
+    public BreinResult invokeRequest(final BreinBase breinRequestObject) {
+        HttpResponse<JsonNode> jsonResponse;
+        try {
+            final String requestBody = getRequestBody(breinRequestObject);
+            jsonResponse =
+                    Unirest.post(getFullyQualifiedUrl(breinRequestObject))
+                            .header(HEADER_ACCESS, HEADER_APP_JSON)
+                            .body(requestBody)
+                            .asJson();
+
+            if (jsonResponse.getStatus() == 200) {
+                return new BreinResult(jsonResponse.getBody().toString());
+            } else {
+                throw new BreinException("invoke request exception. Status is: " + jsonResponse.getStatus());
+            }
+
+        } catch (final UnirestException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("within invokeRequest - exception has occurred. " + e);
+            }
+            throw new BreinException("invoke request exception " + e);
         }
     }
 }

@@ -100,7 +100,7 @@ public class BreinifyExecutor {
                          final Function<String, Void> errorCallback) {
 
         // set the appropriate configuration
-        applyConfiguration();
+        applyActivityConfiguration();
 
         Breinify.activity(user, activityType, category, description, sign, errorCallback);
     }
@@ -135,8 +135,19 @@ public class BreinifyExecutor {
      * class Breinify in order to invoke the activity and
      * lookup calls within class Breinify.
      */
-    public void applyConfiguration() {
+    public void applyActivityConfiguration() {
         Breinify.getBreinActivity().setConfig(getConfig());
+    }
+
+
+    /**
+     * This is necessary because the configuration from
+     * class BreinifyExecutor needs to be transferred to
+     * class Breinify in order to invoke the temporaldata
+     * calls within class Breinify.
+     */
+    public void applyTemporalDataConfiguration() {
+        Breinify.getBreinTemporal().setConfig(getConfig());
     }
 
     /**
@@ -149,7 +160,7 @@ public class BreinifyExecutor {
     public void activity() {
 
         // set the appropriate configuration
-        applyConfiguration();
+        applyActivityConfiguration();
 
         if (breinActivity.getBreinUser() == null) {
             throw new BreinException(BreinException.USER_NOT_SET);
@@ -192,9 +203,27 @@ public class BreinifyExecutor {
     }
 
     /**
+     * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * Furthermore it uses the internal instance of BreinTemporalData.
+     *
+     * @param breinUser a plain object specifying information about the user to retrieve data for.
+     * @param sign a boolean value specifying if the call should be signed.
+     * @return result from the Breinify engine
+     */
+    public BreinResult temporalData(final BreinUser breinUser, final boolean sign) {
+
+        // set the appropriate configuration
+        applyTemporalDataConfiguration();
+
+        return Breinify.temporalData(breinUser, sign);
+    }
+    /**
      * Shutdown Breinify services
      */
     public void shutdown() {
         this.config.shutdownEngine();
     }
+
 }

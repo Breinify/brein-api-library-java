@@ -1,8 +1,6 @@
 package com.brein.engine;
 
-import com.brein.api.BreinActivity;
-import com.brein.api.BreinException;
-import com.brein.api.BreinLookup;
+import com.brein.api.*;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.sun.jersey.api.client.*;
@@ -60,13 +58,51 @@ public class JerseyRestEngine implements IRestEngine {
         // validate the input objects
         validate(breinLookup);
 
-        final WebResource webResource = client.resource(getFullyQualifiedUrl(breinLookup));
+        return invokeRequest(breinLookup);
+    }
+
+    /**
+     * stops possible functionality (e.g. threads)
+     */
+    @Override
+    public void terminate() {
+    }
+
+    /**
+     * performs a temporalData request
+     *
+     * @param breinTemporalData contains the request data
+     * @return result from request
+     * @throws BreinException exception will be thrown
+     */
+    @Override
+    public BreinResult doTemporalDataRequest(final BreinTemporalData breinTemporalData) throws BreinException {
+        // validate the input objects
+        validate(breinTemporalData);
+
+        return invokeRequest(breinTemporalData);
+    }
+
+    /**
+     * invokes the request
+     *
+     * @param breinRequestObject contains the request data
+     * @return result from the Breinify engine
+     */
+    public BreinResult invokeRequest(final BreinBase breinRequestObject) {
+
+        final WebResource webResource = client.resource(getFullyQualifiedUrl(breinRequestObject));
 
         try {
             final ClientResponse response = webResource.type("application/json")
-                    .post(ClientResponse.class, getRequestBody(breinLookup));
+                    .post(ClientResponse.class, getRequestBody(breinRequestObject));
 
-            return new BreinResult(response.getEntity(String.class));
+            if (response.getStatus() == 200) {
+                return new BreinResult(response.getEntity(String.class));
+            } else {
+                final String exceptionMsg = "Rest call exception with status code: " + response.getStatus();
+                throw new BreinException(exceptionMsg);
+            }
         } catch (final UniformInterfaceException | ClientHandlerException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Exception", e);
@@ -75,13 +111,6 @@ public class JerseyRestEngine implements IRestEngine {
         }
 
         return null;
-    }
-
-    /**
-     * stops possible functionality (e.g. threads)
-     */
-    @Override
-    public void terminate() {
     }
 
     /**

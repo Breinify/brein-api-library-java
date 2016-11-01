@@ -34,6 +34,11 @@ public class Breinify {
     private static final BreinLookup breinLookup = new BreinLookup();
 
     /**
+     * contains the temporaldata object
+     */
+    private static final BreinTemporalData BREIN_TEMPORAL = new BreinTemporalData();
+
+    /**
      * sets the configuration
      *
      * @param breinConfig config object
@@ -42,6 +47,7 @@ public class Breinify {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
+        BREIN_TEMPORAL.setConfig(breinConfig);
     }
 
     /**
@@ -77,6 +83,13 @@ public class Breinify {
     }
 
     /**
+     * @return temporaldata instance
+     */
+    public static BreinTemporalData getBreinTemporal() {
+        return BREIN_TEMPORAL;
+    }
+
+    /**
      * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      * <p>
@@ -98,6 +111,11 @@ public class Breinify {
                                 final String description,
                                 final boolean sign,
                                 final Function<String, Void> errorCallback) {
+
+        if (user == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
         breinActivity.setBreinUser(user);
         breinActivity.setBreinActivityType(activityType);
         breinActivity.setBreinCategoryType(categoryType);
@@ -105,7 +123,7 @@ public class Breinify {
         breinActivity.setSign(sign);
 
         // invoke the request, "this" has all necessary information
-        if (null == breinActivity.getBreinEngine()) {
+        if (breinActivity.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
 
@@ -201,21 +219,82 @@ public class Breinify {
         return lookup(breinLookup, user, dimension, sign);
     }
 
+    /**
+     * Retrieves a lookup result from the engine. The function needs a valid API-key to be configured to succeed.
+     * <p>
+     * This request is synchronous.
+     *
+     * @param breinLookup  a plain object specifying the lookup information.
+     * @param user         a plain object specifying information about the user to retrieve data for.
+     * @param dimension    an object (with an array) containing the names of the dimensions to lookup.
+     * @param sign         a boolean value specifying if the call should be signed.
+     * @return response from request wrapped in an object called BreinResponse
+     */
     public static BreinResult lookup(final BreinLookup breinLookup,
                                      final BreinUser user,
                                      final BreinDimension dimension,
                                      final boolean sign) {
+
+        if (user == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        if (dimension == null) {
+            throw new BreinException("Dimension not set");
+        }
+
         breinLookup.setBreinUser(user);
         breinLookup.setBreinDimension(dimension);
         breinLookup.setSign(sign);
 
-        /*
-         * invoke the lookup request
-         */
-        if (null == breinLookup.getBreinEngine()) {
+        // invoke the lookup request
+        if (breinLookup.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
         return breinLookup.getBreinEngine().performLookUp(breinLookup);
+    }
+
+    /**
+     * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * Furthermore it uses the internal instance of BreinTemporalData.
+     *
+     * @param user a plain object specifying information about the user to retrieve data for.
+     * @param sign a boolean value specifying if the call should be signed.
+     * @return result from the Breinify engine
+     */
+    public static BreinResult temporalData(final BreinUser user,
+                                           final boolean sign) {
+
+        return temporalData(BREIN_TEMPORAL, user, sign);
+    }
+
+    /**
+     * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * @param breinTemporalData a plain object specifying the information of the temporaldata.
+     * @param user a plain object specifying information about the user to retrieve data for.
+     * @param sign a boolean value specifying if the call should be signed.
+     * @return result from the Breinify engine
+     */
+    public static BreinResult temporalData(final BreinTemporalData breinTemporalData,
+                                           final BreinUser user,
+                                           final boolean sign) {
+
+        if (user == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        breinTemporalData.setBreinUser(user);
+        breinTemporalData.setSign(sign);
+
+        // invoke the temporaldata request
+        if (breinTemporalData.getBreinEngine() == null) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
+        return breinTemporalData.getBreinEngine().performTemporalDataRequest(breinTemporalData);
     }
 
     /**

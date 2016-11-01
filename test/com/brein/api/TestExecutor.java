@@ -9,6 +9,9 @@ import org.junit.Test;
 import java.time.Instant;
 import java.util.Properties;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * Test of Breinify Java API (static option)
  */
@@ -32,7 +35,8 @@ public class TestExecutor {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+    // private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
 
     /**
      * Contains the Breinify User
@@ -164,7 +168,6 @@ public class TestExecutor {
                 false, null);
     }
 
-
     /**
      * Tests the lookup functionality
      */
@@ -233,6 +236,40 @@ public class TestExecutor {
                 BreinCategoryType.FOOD,
                 "description",
                 false, null);
+
+    }
+
+
+    /**
+     * testcase how to use the activity api
+     */
+    @Test
+    public void testTemporalData() {
+
+        // additional user information
+        // important new fields
+        breinUser.setTimezone("Europe/Berlin")
+                .setLocalDateTime("Mon Sep 28 2016 14:36:22 GMT+0200 (CET)");
+
+        final BreinifyExecutor breinifyExecutor = new BreinConfig()
+                .setApiKey(VALID_API_KEY)
+                .setBaseUrl(BASE_URL)
+                .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
+                .build();
+
+        BreinResult response = null;
+        try {
+            // invoke temporaldata call
+            response = breinifyExecutor.temporalData(breinUser, false);
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+        if (response != null) {
+            final Object timeValues = response.get("time");
+            assertTrue (timeValues != null);
+            System.out.println(timeValues);
+        }
 
     }
 

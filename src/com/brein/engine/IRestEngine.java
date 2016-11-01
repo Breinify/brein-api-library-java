@@ -1,9 +1,6 @@
 package com.brein.engine;
 
-import com.brein.api.BreinActivity;
-import com.brein.api.BreinBase;
-import com.brein.api.BreinException;
-import com.brein.api.BreinLookup;
+import com.brein.api.*;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.util.BreinUtil;
@@ -210,4 +207,11 @@ public interface IRestEngine {
         validateConfig(breinBase);
     }
 
+    /**
+     * performs a temporalData request
+     * @param breinTemporalData contains the request data
+     * @return result from request
+     * @throws BreinException exception that will be thrown
+     */
+    BreinResult doTemporalDataRequest(BreinTemporalData breinTemporalData) throws BreinException;
 }
