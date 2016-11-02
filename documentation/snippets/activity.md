@@ -1,8 +1,24 @@
 > ```java
-> // Create user with following user data
+
+> // simple activity request
+> final BreinUser breinUser = new BreinUser()
+>         .setFirstName("User")
+>         .setLastName("Name")
+>         .setIpAddress("10.11.12.130")
+>
+>
+// invoke activity call (without secret and no callback)
+> Breinify.activity(breinUser,
+>                "Login",
+>                "Home",
+>                "Login-Description",
+>                false, null);
+
+
+> // comprehensive sample to set various fields
 > final BreinUser breinUser = new BreinUser("User.Name@email.com")
->         .setFirstName("Marco")
->         .setLastName("Recchioni")
+>         .setFirstName("User")
+>         .setLastName("Name")
 >         .setDateOfBirth(11, 20, 1999)
 >         .setDeviceId("DD-EEEEE")
 >         .setImei("55544455333");
@@ -24,7 +40,6 @@
 > breinActivity.setDescription("your description");
 > breinActivity.setSign(false);
 > breinActivity.setTagsMap(tagMap);
-> breinActivity.setIpAddress("11.222.333.444");
 > breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
 > breinActivity.setAdditionalUrl("https://sample.com.au/home");
 > breinActivity.setReferrer("https://sample.com.au/track");
