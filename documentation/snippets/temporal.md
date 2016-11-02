@@ -1,12 +1,12 @@
 >
 ```java
+
+//add an example with just IP address
+//add an example with just city location
+//add these examples after user object
 // provide an user object
 final BreinUser breinUser = new BreinUser()
          .setLocalDateTime("Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)");
-
-//add an example with just IP address
-
-//add an example with just city location
 
 ```
 
