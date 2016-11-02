@@ -16,6 +16,7 @@ public class BreinBaseRequest {
 
     /**
      * returns the extra map for the base section
+     *
      * @return map <String, Object>
      */
     public Map<String, Object> getExtraBaseMap() {
@@ -49,8 +50,15 @@ public class BreinBaseRequest {
             }
         }
 
+        final BreinUser breinUser = breinBase.getBreinUser();
+
+        /*
         if (BreinUtil.containsValue(breinBase.getIpAddress())) {
             requestData.addProperty("ipAddress", breinBase.getIpAddress());
+        } */
+
+        if (BreinUtil.containsValue(breinUser.getIpAddress())) {
+            requestData.addProperty("ipAddress", breinUser.getIpAddress());
         }
 
         requestData.addProperty("unixTimestamp", breinBase.getUnixTimestamp());
