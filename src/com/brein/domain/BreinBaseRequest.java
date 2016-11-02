@@ -57,7 +57,8 @@ public class BreinBaseRequest {
 
         // if sign is active
         if (isSign) {
-            requestData.addProperty("signatureType", breinBase.createSignature());
+            requestData.addProperty("signature", breinBase.createSignature());
+            requestData.addProperty("signatureType", "HmacSHA256");
         }
 
         // check if there are further extra maps to add on base level
