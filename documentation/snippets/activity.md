@@ -1,5 +1,4 @@
 > ```java
->
 > // Simple activity request
 > final BreinUser breinUser = new BreinUser()
 >         .setFirstName("User")
