@@ -310,7 +310,7 @@ public class BreinUser {
 
     /**
      * get's the localDateTime
-     * @return localDateTime (e.g. "Mon Sep 28 2016 14:36:22 GMT+0200 (CET)")
+     * @return localDateTime (e.g. "Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)")
      */
     public String getLocalDateTime() {
         return localDateTime;
@@ -329,7 +329,7 @@ public class BreinUser {
 
     /**
      * gets the timezone
-     * @return timezone (e.g. "Europe/Berlin")
+     * @return timezone (e.g. "America/Los_Angeles")
      */
     public String getTimezone() {
         return timezone;
@@ -337,7 +337,7 @@ public class BreinUser {
 
     /**
      * set the timezone
-     * @param timezone timezone (e.g. "Europe/Berlin"))
+     * @param timezone timezone (e.g. "America/Los_Angeles"))
      * @return this
      */
     public BreinUser setTimezone(final String timezone) {
