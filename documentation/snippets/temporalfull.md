@@ -7,8 +7,10 @@
 >
 > // Invoke the temporal request
 > final BreinResult result = Breinify.temporalData(breinUser, false);
-> final Object timeValues = result.get("time");
-> final Object weatherValues = result.get("weather");
-> final Object locationValues = result.get("location");
-> final Object holidayValues = result.get("holiday");
+>
+> // Retrieve the results
+> final Map<String, Object> timeValues = (Map<String, Object>) result.get("time");
+> final Map<String, Object> weatherValues = (Map<String, Object>) result.get("weather");
+> final Map<String, Object> locationValues = (Map<String, Object>) result.get("location");
+> final Map<String, Object> holidayValues = (Map<String, Object>) result.get("holiday");
 > ```
