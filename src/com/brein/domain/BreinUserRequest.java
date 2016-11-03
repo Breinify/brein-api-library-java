@@ -72,7 +72,7 @@ public class BreinUserRequest {
         requestUserAdditionalDataFunctions.put("referrer", breinUser::getReferrer);
         requestUserAdditionalDataFunctions.put("url", breinUser::getUrl);
         // requestUserAdditionalDataFunctions.put("ipAddress", breinUser::getIpAddress);
-        requestUserAdditionalDataFunctions.put("localdatetime", breinUser::getLocalDateTime);
+        requestUserAdditionalDataFunctions.put("localDateTime", breinUser::getLocalDateTime);
         requestUserAdditionalDataFunctions.put("timezone", breinUser::getTimezone);
     }
 
