@@ -102,7 +102,6 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
      */
     @Override
     public String createSignature() {
-
         final String localDateTime = getBreinUser().getLocalDateTime();
         final String paraLocalDateTime = localDateTime == null ? "" : localDateTime;
 
