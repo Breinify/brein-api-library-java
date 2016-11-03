@@ -1,21 +1,19 @@
 > ```java
-
-> // simple activity request
+> // Create a user you are interested in with their information
 > final BreinUser breinUser = new BreinUser()
 >         .setFirstName("User")
 >         .setLastName("Name")
 >         .setIpAddress("10.11.12.130")
 >
->
-// invoke activity call (without secret and no callback)
+> // Invoke activity call (without secret and no callback)
 > Breinify.activity(breinUser,
 >                "Login",
 >                "Home",
 >                "Login-Description",
 >                false, null);
-
-
-> // comprehensive sample to set various fields
+>
+>
+> // Comprehensive sample to set various fields
 > final BreinUser breinUser = new BreinUser("User.Name@email.com")
 >         .setFirstName("User")
 >         .setLastName("Name")

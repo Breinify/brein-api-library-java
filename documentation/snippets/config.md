@@ -1,9 +1,9 @@
 > ```java
 > // This is the valid api-key
-> final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+> final String apiKey = "time-is-ticking";
 >
 > // This is the URL of the Breinify service
-> final String serviceEndpoint = "http://dev.breinify.com/api";
+> final String serviceEndpoint = "https://api.breinify.com";
 >
 > // This is one rest engine that can be used internally
 > final BreinEngineType engineType = BreinEngineType.JERSEY_ENGINE;
