@@ -1,10 +1,9 @@
 > ```java
-> // Simple activity request
+> // Create a user you are interested in with their information
 > final BreinUser breinUser = new BreinUser()
 >         .setFirstName("User")
 >         .setLastName("Name")
 >         .setIpAddress("10.11.12.130")
->
 >
 > // Invoke activity call (without secret and no callback)
 > Breinify.activity(breinUser,
