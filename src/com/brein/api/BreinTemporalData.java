@@ -109,7 +109,6 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
         final String timeZone = getBreinUser().getTimezone();
         final String paraTimezone = timeZone == null ? "" : timeZone;
 
-
         final String message = String.format("%d-%s-%s",
                 getUnixTimestamp(), paraLocalDateTime, paraTimezone);
 
