@@ -5,12 +5,14 @@
 >          .setTimezone("America/New_York")
 >          .setLocalDateTime("Wed Oct 26 2016 13:02:06 GMT-0700 (EDT)");
 >
+> final boolean withSecret = false;
+>
 > // Invoke the temporal request
-> final BreinResult result = Breinify.temporalData(breinUser, false);
+> final BreinResult result = Breinify.temporalData(breinUser, withSecret);
 >
 > // Retrieve the results
-> final Map<String, Object> timeValues = (Map<String, Object>) result.get("time");
-> final Map<String, Object> weatherValues = (Map<String, Object>) result.get("weather");
-> final Map<String, Object> locationValues = (Map<String, Object>) result.get("location");
-> final Map<String, Object> holidayValues = (Map<String, Object>) result.get("holiday");
+> final Map<String, Object> timeValues = result.get("time");
+> final Map<String, Object> weatherValues = result.get("weather");
+> final Map<String, Object> locationValues = result.get("location");
+> final Map<String, Object> holidayValues = result.get("holiday");
 > ```
