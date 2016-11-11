@@ -62,7 +62,7 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * prepares a JSON request for a lookup
+     * prepares a JSON request for a temporalData
      *
      * @return well formed json request
      */
