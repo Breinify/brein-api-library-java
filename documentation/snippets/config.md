@@ -1,4 +1,3 @@
-
 >
 ```java
 // Install via maven dependency
@@ -9,7 +8,6 @@
       <version>1.2.0</version>
     </dependency>
 ```
-
 
 > ```java
 > // This is the valid api-key
