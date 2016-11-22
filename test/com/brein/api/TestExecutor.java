@@ -35,8 +35,7 @@ public class TestExecutor {
     /**
      * This has to be a valid api key
      */
-    // private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
-    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
+    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
     /**
      * Contains the Breinify User
