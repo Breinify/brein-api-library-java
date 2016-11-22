@@ -1,6 +1,34 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 1.4.0
+
+## Modifications
+
+###Flexible Key-Value maps
+The extra maps now supports also HashMaps and nested HashMaps. 
+Furthermore the configuration has changed according to the belonging 
+base objects. So it looks like this:
+
+```java
+Breinify.setConfig(breinConfig);
+
+final Map<String, Object> dataUserMap = new HashMap<>();
+dataUserMap.put("enhancement-user-1", "user-value-1");
+dataUserMap.put("enhancement-user-2", "user-value-2");
+
+final BreinUser localBreinUser = new BreinUser()
+      .setEmail("fred.firestone@email.com")
+      .setExtraMap(dataUserMap);
+
+invokeActivityCall(localBreinUser,
+      breinActivityType,
+      breinCategoryType,
+      "login",
+      false);
+
+```
+
 
 # Version 1.3.0
 
