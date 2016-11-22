@@ -40,7 +40,7 @@ final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 final String serviceEndpoint = "https://api.breinify.com";
 
 // this is one rest engine that can be used internally
-final BreinEngineType engineType = BreinEngineType.UNIREST_ENGINE;
+final BreinEngineType engineType = BreinEngineType.JERSEY_ENGINE;
 
 // create the configuration object
 final BreinConfig breinConfig = new BreinConfig(apiKey,
