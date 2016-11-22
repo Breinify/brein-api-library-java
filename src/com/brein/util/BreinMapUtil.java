@@ -3,6 +3,7 @@ package com.brein.util;
 import com.brein.api.CheckFunction;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,6 +28,15 @@ public class BreinMapUtil {
                 jsonData.addProperty(entry.getKey(), (Number) entry.getValue());
             } else if (entry.getValue().getClass() == Boolean.class) {
                 jsonData.addProperty(entry.getKey(), (Boolean) entry.getValue());
+            } else if (entry.getValue().getClass() == HashMap.class) {
+                // iterate over map elements
+                final JsonObject extra = new JsonObject();
+                final Map<String, Object> innerMap = (Map<String, Object>)entry.getValue();
+                BreinMapUtil.fillMap(innerMap, extra);
+
+                if (extra.size() > 0) {
+                    jsonData.add(entry.getKey(), extra);
+                }
             }
         });
     }

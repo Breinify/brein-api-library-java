@@ -96,7 +96,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         // user data level and additional
         final BreinUser breinUser = getBreinUser();
         if (null != breinUser) {
-            getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
+            breinUser.getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
         }
 
         // this is the section that is only available within the lookup request

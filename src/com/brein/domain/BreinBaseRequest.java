@@ -52,11 +52,6 @@ public class BreinBaseRequest {
 
         final BreinUser breinUser = breinBase.getBreinUser();
 
-        /*
-        if (BreinUtil.containsValue(breinBase.getIpAddress())) {
-            requestData.addProperty("ipAddress", breinBase.getIpAddress());
-        } */
-
         if (BreinUtil.containsValue(breinUser.getIpAddress())) {
             requestData.addProperty("ipAddress", breinUser.getIpAddress());
         }

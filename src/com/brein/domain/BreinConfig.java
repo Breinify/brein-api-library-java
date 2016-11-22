@@ -15,6 +15,11 @@ import org.slf4j.LoggerFactory;
 public class BreinConfig {
 
     /**
+     * Logger instance
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
+
+    /**
      * default endpoint of activity
      */
     public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
@@ -43,16 +48,6 @@ public class BreinConfig {
      * default Breinify base url
      */
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
-
-    /**
-     * Logger instance
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
-
-    /**
-     * default validation
-     */
-    public static boolean DEFAULT_VALIDATE = true;
 
     /**
      * BASE URL

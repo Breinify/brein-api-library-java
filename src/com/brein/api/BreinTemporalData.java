@@ -1,9 +1,7 @@
 package com.brein.api;
 
-import com.brein.domain.BreinBaseRequest;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
-import com.brein.domain.BreinUserRequest;
 import com.brein.util.BreinUtil;
 import com.google.gson.JsonObject;
 
@@ -11,16 +9,6 @@ import com.google.gson.JsonObject;
  * Provides the lookup functionality
  */
 public class BreinTemporalData extends BreinBase implements ISecretStrategy {
-
-    /**
-     * contains the data structures for the base part
-     */
-    private final BreinBaseRequest breinBaseRequest = new BreinBaseRequest();
-
-    /**
-     * contains the data structure for the user request part including additional
-     */
-    private final BreinUserRequest breinUserRequest = new BreinUserRequest();
 
     /**
      * initializes the values of this instance
@@ -51,12 +39,12 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
     public BreinResult temporalData(final BreinUser breinUser,
                                     final boolean sign) {
 
-        setBreinUser(breinUser);
-        setSign(sign);
-
         if (getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
+
+        setBreinUser(breinUser);
+        setSign(sign);
 
         return getBreinEngine().performTemporalDataRequest(this);
     }
@@ -76,11 +64,11 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
         final BreinUser breinUser = getBreinUser();
         final JsonObject requestData = new JsonObject();
         if (breinUser != null) {
-            breinUserRequest.prepareUserRequestData(requestData, breinUser);
+            breinUser.getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
         }
 
         // base level data...
-        breinBaseRequest.prepareBaseRequestData(this, requestData, isSign());
+        getBreinBaseRequest().prepareBaseRequestData(this, requestData, isSign());
 
         return getGson().toJson(requestData);
     }

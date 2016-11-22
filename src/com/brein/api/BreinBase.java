@@ -3,13 +3,13 @@ package com.brein.api;
 import com.brein.domain.BreinBaseRequest;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
-import com.brein.domain.BreinUserRequest;
 import com.brein.engine.BreinEngine;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -41,11 +41,6 @@ public class BreinBase implements ISecretStrategy {
      * if set to yes then a secret has to bo sent
      */
     private boolean sign;
-
-    /**
-     * contains the data structure for the user request part including additional
-     */
-    private final BreinUserRequest breinUserRequest = new BreinUserRequest();
 
     /**
      * contains the data structures for the base part
@@ -205,19 +200,21 @@ public class BreinBase implements ISecretStrategy {
     }
 
     /**
-     * returns the instance of BreinUserRequestData
-     * @return instance of BreinUserRequestData
-     */
-    public BreinUserRequest getBreinUserRequest() {
-        return breinUserRequest;
-    }
-
-    /**
      * return the instance of BreinBaseRequestData
      * @return instance of BreinBaseRequestData
      */
     public BreinBaseRequest getBreinBaseRequest() {
         return breinBaseRequest;
+    }
+
+    /**
+     *
+     * @param dataMap
+     * @return
+     */
+    public BreinBase setExtraBaseMap(final Map<String, Object> dataMap) {
+        getBreinBaseRequest().setExtraBaseMap(dataMap);
+        return this;
     }
 
     /**

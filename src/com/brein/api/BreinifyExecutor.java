@@ -147,7 +147,7 @@ public class BreinifyExecutor {
      * calls within class Breinify.
      */
     public void applyTemporalDataConfiguration() {
-        Breinify.getBreinTemporal().setConfig(getConfig());
+        Breinify.getBreinTemporalData().setConfig(getConfig());
     }
 
     /**

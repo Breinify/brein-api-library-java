@@ -40,7 +40,8 @@ public class JerseyRestEngine implements IRestEngine {
                 LOG.debug("Exception", e);
 
                 if (errorCallback != null) {
-                    errorCallback.apply("jersey rest call not successful!");
+                    final String message = "Failure in rest call. Reason " + e.getLocalizedMessage();
+                    errorCallback.apply(message);
                 }
             }
         }

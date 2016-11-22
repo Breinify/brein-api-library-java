@@ -36,7 +36,7 @@ public class Breinify {
     /**
      * contains the temporaldata object
      */
-    private static final BreinTemporalData BREIN_TEMPORAL = new BreinTemporalData();
+    private static final BreinTemporalData breinTemporalData = new BreinTemporalData();
 
     /**
      * sets the configuration
@@ -47,7 +47,7 @@ public class Breinify {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
-        BREIN_TEMPORAL.setConfig(breinConfig);
+        breinTemporalData.setConfig(breinConfig);
     }
 
     /**
@@ -85,8 +85,8 @@ public class Breinify {
     /**
      * @return temporaldata instance
      */
-    public static BreinTemporalData getBreinTemporal() {
-        return BREIN_TEMPORAL;
+    public static BreinTemporalData getBreinTemporalData() {
+        return breinTemporalData;
     }
 
     /**
@@ -243,6 +243,10 @@ public class Breinify {
             throw new BreinException("Dimension not set");
         }
 
+        if (breinLookup == null) {
+            throw new BreinException("BreinLookup object is null");
+        }
+
         breinLookup.setBreinUser(user);
         breinLookup.setBreinDimension(dimension);
         breinLookup.setSign(sign);
@@ -267,7 +271,7 @@ public class Breinify {
     public static BreinResult temporalData(final BreinUser user,
                                            final boolean sign) {
 
-        return temporalData(BREIN_TEMPORAL, user, sign);
+        return temporalData(breinTemporalData, user, sign);
     }
 
     /**
@@ -285,6 +289,10 @@ public class Breinify {
 
         if (user == null) {
             throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        if (breinTemporalData == null) {
+            throw new BreinException("BreinTemporalData object not set");
         }
 
         breinTemporalData.setBreinUser(user);

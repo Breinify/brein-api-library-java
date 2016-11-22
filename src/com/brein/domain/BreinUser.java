@@ -1,5 +1,7 @@
 package com.brein.domain;
 
+import java.util.Map;
+
 /**
  * A plain object specifying the user information the activity belongs to
  */
@@ -69,6 +71,11 @@ public class BreinUser {
      * contains the timezone value (for temporalData request)
      */
     private String timezone;
+
+    /**
+     * contains the data structure for the user request part including additional
+     */
+    private final BreinUserRequest breinUserRequest = new BreinUserRequest();
 
     /**
      * create a brein user with field email.
@@ -346,6 +353,34 @@ public class BreinUser {
     }
 
     /**
+     * returns the instance of BreinUserRequestData
+     * @return instance of BreinUserRequestData
+     */
+    public BreinUserRequest getBreinUserRequest() {
+        return breinUserRequest;
+    }
+
+    /**
+     *
+     * @param dataMap
+     * @return
+     */
+    public BreinUser setExtraAdditionalMap(final Map<String, Object> dataMap) {
+        getBreinUserRequest().setExtraUserAdditionalMap(dataMap);
+        return this;
+    }
+
+    /**
+     *
+     * @param dataMap
+     * @return
+     */
+    public BreinUser setExtraMap(final Map<String, Object> dataMap) {
+        getBreinUserRequest().setExtraUserMap(dataMap);
+        return this;
+    }
+
+    /**
      * provides a nicer output of the user details
      * @return output
      */
@@ -369,5 +404,7 @@ public class BreinUser {
                 + (this.deviceId == null ? "n/a" : this.deviceId)
                 + "\n";
     }
+
+
 }
 

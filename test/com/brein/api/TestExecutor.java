@@ -248,8 +248,11 @@ public class TestExecutor {
 
         // additional user information
         // important new fields
-        breinUser.setTimezone("Europe/Berlin")
-                .setLocalDateTime("Mon Sep 28 2016 14:36:22 GMT+0200 (CET)");
+        final BreinUser user = new BreinUser()
+                // important new fields
+                .setIpAddress("74.115.209.58")
+                .setTimezone("America/Los_Angeles")
+                .setLocalDateTime("Sun Dec 25 2016 18:15:48 GMT-0800 (PST)");
 
         final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
@@ -260,7 +263,7 @@ public class TestExecutor {
         BreinResult response = null;
         try {
             // invoke temporaldata call
-            response = breinifyExecutor.temporalData(breinUser, false);
+            response = breinifyExecutor.temporalData(user, false);
         } catch (final Exception e) {
             fail("REST exception is: " + e);
         }

@@ -15,16 +15,6 @@ import java.util.Map;
 public class BreinActivity extends BreinBase {
 
     /**
-     * contains the map kind for the extra maps
-     */
-    enum MapKind {
-        MK_BASE,
-        MK_USER,
-        MK_ACTIVITY,
-        MK_USER_ADDITIONAL
-    }
-
-    /**
      * ActivityType of the activity
      */
     private String breinActivityType;
@@ -147,46 +137,11 @@ public class BreinActivity extends BreinBase {
     }
 
     /**
-     * Returns the extra map on each level (base, activity, user, additional)
-     * @param kind contains the level
-     * @return map of data to be added to the json structure
+     * sets the extra actvitiy map
+     * @param dataActivityMap containing additional values
      */
-    public Map<String, Object> getExtraMap(final MapKind kind) {
-
-        switch (kind) {
-            case MK_BASE:
-                return getBreinBaseRequest().getExtraBaseMap();
-            case MK_ACTIVITY:
-                return extraActivityMap;
-            case MK_USER:
-                return getBreinUserRequest().getExtraUserMap();
-            case MK_USER_ADDITIONAL:
-                return getBreinUserRequest().getExtraUserAdditionalMap();
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * sets the extra map according to the level
-     *
-     * @param kind determines the level
-     * @param extraMap contains the extra map
-     * @return this
-     */
-    public BreinActivity setExtraMap(final MapKind kind,
-                                     final Map<String, Object> extraMap) {
-
-        if (kind == MapKind.MK_BASE) {
-            getBreinBaseRequest().setExtraBaseMap(extraMap);
-        } else if (kind == MapKind.MK_ACTIVITY) {
-            extraActivityMap = extraMap;
-        } else if (kind == MapKind.MK_USER) {
-            getBreinUserRequest().setExtraUserMap(extraMap);
-        } else if (kind == MapKind.MK_USER_ADDITIONAL) {
-            getBreinUserRequest().setExtraUserAdditionalMap(extraMap);
-        }
-        return this;
+    public void setExtraActivityMap(final Map<String, Object> dataActivityMap) {
+        this.extraActivityMap = dataActivityMap;
     }
 
     /**
@@ -261,7 +216,7 @@ public class BreinActivity extends BreinBase {
         // user data level and additional
         final BreinUser breinUser = getBreinUser();
         if (null != breinUser) {
-            getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
+            breinUser.getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
         }
 
         // activity data
@@ -327,5 +282,7 @@ public class BreinActivity extends BreinBase {
 
         return BreinUtil.generateSignature(message, getConfig().getSecret());
     }
+
+
 }
 
