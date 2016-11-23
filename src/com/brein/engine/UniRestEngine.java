@@ -155,7 +155,7 @@ public class UniRestEngine implements IRestEngine {
      * @return result from the Breinify engine
      */
     public BreinResult invokeRequest(final BreinBase breinRequestObject) {
-        HttpResponse<JsonNode> jsonResponse;
+        final HttpResponse<JsonNode> jsonResponse;
         try {
             final String requestBody = getRequestBody(breinRequestObject);
             jsonResponse =
