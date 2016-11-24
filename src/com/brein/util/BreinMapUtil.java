@@ -14,7 +14,7 @@ public class BreinMapUtil {
     /**
      * Generic method to add an value from a data map if it contains a valid value
      *
-     * @param dataMap map of data
+     * @param dataMap  map of data
      * @param jsonData request
      */
     public static void fillMap(final Map<String, Object> dataMap,
@@ -31,7 +31,7 @@ public class BreinMapUtil {
             } else if (entry.getValue().getClass() == HashMap.class) {
                 // iterate over map elements
                 final JsonObject extra = new JsonObject();
-                final Map<String, Object> innerMap = (Map<String, Object>)entry.getValue();
+                @SuppressWarnings("unchecked") final Map<String, Object> innerMap = (Map<String, Object>) entry.getValue();
                 BreinMapUtil.fillMap(innerMap, extra);
 
                 if (extra.size() > 0) {
@@ -45,7 +45,7 @@ public class BreinMapUtil {
      * Executes the actions within the map. Checks if the value is valid and if this is
      * the case then the property will be added to the json structure.
      *
-     * @param jsonObject structure that will be added with a property
+     * @param jsonObject  structure that will be added with a property
      * @param functionMap map of actions (aka methods)
      */
     public static void executeMapFunctions(final JsonObject jsonObject,

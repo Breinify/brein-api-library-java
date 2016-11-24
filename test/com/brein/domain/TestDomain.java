@@ -25,7 +25,6 @@ public class TestDomain {
         // set logging on
         final Properties props = System.getProperties();
         props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
-
     }
 
     /**

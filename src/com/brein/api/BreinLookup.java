@@ -61,17 +61,13 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      *
      * @param breinUser      contains the breinify user
      * @param breinDimension contains the dimensions to look after
-     * @param sign           if set to true a secret will be sent as well
-     *
      * @return response from request or null if no data can be retrieved
      */
     public BreinResult lookUp(final BreinUser breinUser,
-                              final BreinDimension breinDimension,
-                              final boolean sign) {
+                              final BreinDimension breinDimension) {
 
         setBreinUser(breinUser);
         setBreinDimension(breinDimension);
-        setSign(sign);
 
         if (null == getBreinEngine()) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
@@ -113,7 +109,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         }
 
         // build base level structure
-        getBreinBaseRequest().prepareBaseRequestData(this, requestData, isSign());
+        getBreinBaseRequest().prepareBaseRequestData(this, requestData);
 
         return getGson().toJson(requestData);
     }
@@ -130,6 +126,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
 
     /**
      * Creates the signature for lookup
+     *
      * @return signature
      */
     @Override

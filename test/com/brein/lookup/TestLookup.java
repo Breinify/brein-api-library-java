@@ -5,7 +5,6 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
-import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,12 +42,7 @@ public class TestLookup {
      */
     @Before
     public void setUp() {
-
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
-
-        breinLookup.setConfig(breinConfig);
+        breinLookup.setConfig(new BreinConfig(VALID_API_KEY));
     }
 
     /**
@@ -78,7 +72,7 @@ public class TestLookup {
 
         try {
             // invoke lookup
-            final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
+            final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension);
 
             if (breinResult != null) {
                 final Object dataFirstname = breinResult.get("firstname");
@@ -107,9 +101,7 @@ public class TestLookup {
 
         breinLookup.setBreinDimension(breinDimension);
         breinLookup.setBreinUser(new BreinUser("user.name@email.com"));
-        breinLookup.setConfig(new BreinConfig("KEY",
-                BreinConfig.DEFAULT_BASE_URL,
-                BreinEngineType.UNIREST_ENGINE));
+        breinLookup.setConfig(new BreinConfig("KEY"));
 
         // first check init
         breinLookup.init();

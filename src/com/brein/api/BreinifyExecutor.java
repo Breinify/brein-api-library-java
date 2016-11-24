@@ -89,20 +89,18 @@ public class BreinifyExecutor {
      * @param category      the category of the platform/service/products, i.e., one of apparel, home, education, family,
      *                      food, health, job, services, or other
      * @param description   a string with further information about the activity performed
-     * @param sign          a boolean value specifying if the call should be signed
      * @param errorCallback a callback function that is invoked in case of an error (can be null)
      */
     public void activity(final BreinUser user,
                          final String activityType,
                          final String category,
                          final String description,
-                         final boolean sign,
                          final Function<String, Void> errorCallback) {
 
         // set the appropriate configuration
         applyActivityConfiguration();
 
-        Breinify.activity(user, activityType, category, description, sign, errorCallback);
+        Breinify.activity(user, activityType, category, description, errorCallback);
     }
 
     /**
@@ -111,22 +109,20 @@ public class BreinifyExecutor {
      * <p>
      * This request is asynchronous.
      *
-     * @param user          a plain object specifying the user information the activity belongs to
-     * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
-     *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
-     *                      be used
-     * @param category      the category of the platform/service/products, i.e., one of apparel, home, education, family,
-     *                      food, health, job, services, or other
-     * @param description   a string with further information about the activity performed
-     * @param sign          a boolean value specifying if the call should be signed
+     * @param user         a plain object specifying the user information the activity belongs to
+     * @param activityType the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                     removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                     be used
+     * @param category     the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                     food, health, job, services, or other
+     * @param description  a string with further information about the activity performed
      */
     public void activity(final BreinUser user,
                          final String activityType,
                          final String category,
-                         final String description,
-                         final boolean sign) {
+                         final String description) {
 
-        activity(user, activityType, category, description, sign, null);
+        activity(user, activityType, category, description, null);
     }
 
     /**
@@ -155,7 +151,6 @@ public class BreinifyExecutor {
      * important that a valid API-key is configured prior to using this function.
      * <p>
      * This request is asynchronous.
-     *
      */
     public void activity() {
 
@@ -182,7 +177,6 @@ public class BreinifyExecutor {
                 breinActivity.getBreinActivityType(),
                 breinActivity.getBreinCategoryType(),
                 breinActivity.getDescription(),
-                breinActivity.isSign(),
                 breinActivity.getErrorCallback());
     }
 
@@ -193,32 +187,30 @@ public class BreinifyExecutor {
      *
      * @param user      a plain object specifying information about the user to retrieve data for.
      * @param dimension an object (with an array) containing the names of the dimensions to lookup.
-     * @param sign      a boolean value specifying if the call should be signed.
      * @return response from request wrapped in an object called BreinResponse
      */
     public BreinResult lookup(final BreinUser user,
-                              final BreinDimension dimension,
-                              final boolean sign) {
-        return Breinify.lookup(breinLookup, user, dimension, sign);
+                              final BreinDimension dimension) {
+        return Breinify.lookup(breinLookup, user, dimension);
     }
 
     /**
      * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
-     *
+     * <p>
      * Furthermore it uses the internal instance of BreinTemporalData.
      *
      * @param breinUser a plain object specifying information about the user to retrieve data for.
-     * @param sign a boolean value specifying if the call should be signed.
      * @return result from the Breinify engine
      */
-    public BreinResult temporalData(final BreinUser breinUser, final boolean sign) {
+    public BreinResult temporalData(final BreinUser breinUser) {
 
         // set the appropriate configuration
         applyTemporalDataConfiguration();
 
-        return Breinify.temporalData(breinUser, sign);
+        return Breinify.temporalData(breinUser);
     }
+
     /**
      * Shutdown Breinify services
      */

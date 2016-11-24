@@ -10,39 +10,37 @@ import java.util.Map;
 public class BreinBaseRequest {
 
     /**
-     * contains an extra map for the base section
+     * contains a map for the base section
      */
-    private Map<String, Object> extraBaseMap;
+    private Map<String, Object> baseMap;
 
     /**
-     * returns the extra map for the base section
+     * returns the map for the base section
      *
      * @return map <String, Object>
      */
-    public Map<String, Object> getExtraBaseMap() {
-        return extraBaseMap;
+    public Map<String, Object> getBaseMap() {
+        return baseMap;
     }
 
     /**
-     * sets an extra map for the base section
+     * sets an map for the base section
      *
-     * @param extraBaseMap map of <String, Object></String,>
+     * @param baseMap map of <String, Object></String,>
      */
-    public void setExtraBaseMap(final Map<String, Object> extraBaseMap) {
-        this.extraBaseMap = extraBaseMap;
+    public void setBaseMap(final Map<String, Object> baseMap) {
+        this.baseMap = baseMap;
     }
 
     /**
      * prepares the request for the base section with standard fields
-     * plus possible extra fields if configured
+     * plus possible fields if configured
      *
      * @param breinBase   contains the appropriate request object
      * @param requestData contains the created json structure
-     * @param isSign      indicates if the request must be signed (secret option)
      */
     public void prepareBaseRequestData(final BreinBase breinBase,
-                                       final JsonObject requestData,
-                                       final boolean isSign) {
+                                       final JsonObject requestData) {
 
         if (BreinUtil.containsValue(breinBase.getConfig())) {
             if (BreinUtil.containsValue(breinBase.getConfig().getApiKey())) {
@@ -59,14 +57,14 @@ public class BreinBaseRequest {
         requestData.addProperty("unixTimestamp", breinBase.getUnixTimestamp());
 
         // if sign is active
-        if (isSign) {
+        if (breinBase.isSign()) {
             requestData.addProperty("signature", breinBase.createSignature());
             requestData.addProperty("signatureType", "HmacSHA256");
         }
 
-        // check if there are further extra maps to add on base level
-        if (extraBaseMap != null && extraBaseMap.size() > 0) {
-            BreinMapUtil.fillMap(extraBaseMap, requestData);
+        // check if there are further maps to add on base level
+        if (baseMap != null && baseMap.size() > 0) {
+            BreinMapUtil.fillMap(baseMap, requestData);
         }
     }
 }

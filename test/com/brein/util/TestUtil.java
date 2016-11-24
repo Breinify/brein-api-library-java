@@ -21,5 +21,4 @@ public class TestUtil {
             BreinUtil.generateSignature(BreinUtil.randomString(), secret);
         }
     }
-
 }

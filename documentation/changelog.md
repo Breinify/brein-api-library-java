@@ -1,31 +1,55 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 2.0
+
+## Modifications
+
+### TemporalData
+Support of new endpoint temporalData
+
+### Request will be signed if secret is set
+This implies that no additional sign flag has to be set within the call and has
+been removed from the appropriate:
+* activity
+* temporalData
+* lookup
+
+calls.
+
+
+### Flexible Maps 
+The flexible maps now belongs to their related classes. This means that:
+* BreinBase has a map for the base level
+* BreinActivity has a map for the activity level
+* BreinUser has two maps. One for the user level and one for the additional level.
+
+
+### BreinConfig
+The constructors of class BreinConfig have changed.
+
+
 # Version 1.4.0
 
 ## Modifications
 
 ###Flexible Key-Value maps
-The extra maps now supports also HashMaps and nested HashMaps. 
-Furthermore the configuration has changed according to the belonging 
-base objects. So it looks like this:
+It is now possible to add additional maps on each level (base, user, additional)
+to the requst.
 
 ```java
-Breinify.setConfig(breinConfig);
-
 final Map<String, Object> dataUserMap = new HashMap<>();
 dataUserMap.put("enhancement-user-1", "user-value-1");
 dataUserMap.put("enhancement-user-2", "user-value-2");
 
 final BreinUser localBreinUser = new BreinUser()
       .setEmail("fred.firestone@email.com")
-      .setExtraMap(dataUserMap);
+      .setMap(dataUserMap);
 
 invokeActivityCall(localBreinUser,
       breinActivityType,
       breinCategoryType,
-      "login",
-      false);
+      "login");
 
 ```
 

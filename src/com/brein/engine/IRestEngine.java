@@ -92,6 +92,7 @@ public interface IRestEngine {
 
     /**
      * checks if the url is valid -> if not an exception will be thrown
+     *
      * @param fullyQualifiedUrl url with endpoint
      */
     default void validateUrl(final String fullyQualifiedUrl) throws BreinException {
@@ -99,7 +100,7 @@ public interface IRestEngine {
         final boolean validUrl = isUrlValid(fullyQualifiedUrl);
         if (!validUrl) {
             final String msg = "URL: " + fullyQualifiedUrl + " is not valid!";
-            if(LOG.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(msg);
             }
             throw new BreinException(msg);
@@ -209,6 +210,7 @@ public interface IRestEngine {
 
     /**
      * performs a temporalData request
+     *
      * @param breinTemporalData contains the request data
      * @return result from request
      * @throws BreinException exception that will be thrown

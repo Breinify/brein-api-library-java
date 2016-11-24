@@ -54,9 +54,7 @@ This is snippet shows how to use the UNIREST engine:
 final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
 // create the configuration object with UNIREST engine 
-final BreinConfig breinConfig = new BreinConfig(apiKey,
-      "https://api.breinify.com",
-      BreinEngineType.UNIREST_ENGINE);
+final BreinConfig breinConfig = new BreinConfig(apiKey).setAndInitRestEngine(BreinEngineType.UNIREST_ENGINE);
 
 // set the configuration for later usage
 Breinify.setConfig(breinConfig);
@@ -70,9 +68,7 @@ In case you would like to use the Jersey implementation simple change the engine
 final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
 // create the configuration object with Jersey engine 
-final BreinConfig breinConfig = new BreinConfig(apiKey,
-      "https://api.breinify.com",
-      BreinEngineType.JERSEY_ENGINE);
+final BreinConfig breinConfig = new BreinConfig(apiKey).setAndInitRestEngine(BreinEngineType.JERSEY_ENGINE);
 
 // set the configuration for later usage
 Breinify.setConfig(breinConfig);
@@ -85,15 +81,12 @@ Within the configuration a default category type can be set. This
 one will be used when the activity itself is configured without one. 
 
 ```java
-final String BASE_URL = "https://api.breinify.com";
 final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 final String DEFAULT_CATEGORY = "Soccer-Products"; 
 
 // set configuration
-final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-          BASE_URL,
-          BreinEngineType.UNIREST_ENGINE)
-          .setDefaultCategory(DEFAULT_CATEGORY);
+final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY)
+     .setDefaultCategory(DEFAULT_CATEGORY);
 Breinify.setConfig(breinConfig);
 
 ```
@@ -104,13 +97,10 @@ Breinify.setConfig(breinConfig);
 The following sample provides an overview how to configure all fields for an activity request:
 
 ```java
-final String BASE_URL = "https://api.breinify.com";
 final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
 // set configuration
-final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-          BASE_URL,
-          BreinEngineType.UNIREST_ENGINE);
+final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
 Breinify.setConfig(breinConfig);
 
 // user data
@@ -142,7 +132,6 @@ breinActivity.setBreinUser(breinUser);
 breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
 breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
 breinActivity.setDescription("your description");
-breinActivity.setSign(false);
 breinActivity.setTagsMap(tagMap);
 
 // invoke the call
@@ -163,17 +152,15 @@ final BreinUser breinUser = new BreinUser("user.anywhere@email.com");
 
 // configure and build the Breinify Executor
 final BreinifyExecutor breinifyExecutor = new BreinConfig()
-                .setApiKey(apiKey)
-                .setBaseUrl("https://api.breinify.com")
-                .setRestEngineType(BreinEngineType.UNIREST_ENGINE)
-                .build();
+          .setApiKey(apiKey)
+          .setAndInitRestEngine(BreinEngineType.UNIREST_ENGINE)
+          .build();
 
 // invoke an activity call
 breinifyExecutor.activity(breinUser,
                 BreinActivityType.LOGIN,
                 BreinCategoryType.FOOD,
-                "This is a description",
-                false);
+                "This is a description");
                 
 // prepare the lookup part
 
@@ -190,7 +177,7 @@ final BreinDimension breinDimension = new BreinDimension(dimensions);
 
 // invoke the lookup
 final BreinResult result = breinifyExecutor.lookup(breinUser,
-                breinDimension, false);
+                breinDimension);
 
 // retrieve possible values
 final Object dataFirstname = result.get("firstname");

@@ -36,16 +36,8 @@ In order to use the library you need a valid API-key, which you can get for free
 // this is the valid api-key
 final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
-// this is the URL of the Breinify service
-final String serviceEndpoint = "https://api.breinify.com";
-
-// this is one rest engine that can be used internally
-final BreinEngineType engineType = BreinEngineType.JERSEY_ENGINE;
-
 // create the configuration object
-final BreinConfig breinConfig = new BreinConfig(apiKey,
-          serviceEndpoint,
-          engineType);
+final BreinConfig breinConfig = new BreinConfig(apiKey);
 
 // set the configuration for later usage
 Breinify.setConfig(breinConfig);
@@ -72,8 +64,7 @@ final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
 Breinify.activity(breinUser, 
          BreinActivityType.LOGIN,
          BreinCategoryType.HOME, 
-         "Login-Description", 
-         false);
+         "Login-Description");
 
 ```
 
@@ -97,7 +88,7 @@ final String[] dimensions = {"firstname",
 final BreinDimension breinDimension = new BreinDimension(dimensions);
 
 // invoke the lookup
-final BreinResult result = Breinify.lookup(breinUser, breinDimension, false);
+final BreinResult result = Breinify.lookup(breinUser, breinDimension);
 
 // retrieve the values of interest
 final Object dataFirstname = result.get("firstname");
@@ -120,7 +111,7 @@ final BreinUser breinUser = new BreinUser()
          .setLocalDateTime("Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)");
                
 // invoke the temporal request 
-final BreinResult result = Breinify.temporalData(breinUser, false);
+final BreinResult result = Breinify.temporalData(breinUser);
 final Object timeValues = result.get("time");
 final Object weatherValues = result.get("weather");
 final Object locationValues = result.get("location");

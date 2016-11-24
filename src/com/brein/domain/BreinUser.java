@@ -88,7 +88,6 @@ public class BreinUser {
 
     /**
      * create a brein user
-     *
      */
     public BreinUser() {
     }
@@ -102,16 +101,18 @@ public class BreinUser {
 
     /**
      * sets the email of the user
+     *
      * @param email to set (will not be checked)
      * @return this -> allows chaining
      */
-   public BreinUser setEmail(final String email) {
+    public BreinUser setEmail(final String email) {
         this.email = email;
         return this;
     }
 
     /**
      * Retrieves the first name of the user
+     *
      * @return first name
      */
     public String getFirstName() {
@@ -120,6 +121,7 @@ public class BreinUser {
 
     /**
      * set the first name of the user
+     *
      * @param firstName name to set
      * @return this -> allows chaining
      */
@@ -130,6 +132,7 @@ public class BreinUser {
 
     /**
      * Retrieves the last name of the user
+     *
      * @return last name
      */
     public String getLastName() {
@@ -138,6 +141,7 @@ public class BreinUser {
 
     /**
      * set the last name of the user
+     *
      * @param lastName last name
      * @return thi -> allows chaining
      */
@@ -148,6 +152,7 @@ public class BreinUser {
 
     /**
      * returns the sessionId (if set)
+     *
      * @return sessionId
      */
     public String getSessionId() {
@@ -156,6 +161,7 @@ public class BreinUser {
 
     /**
      * sets the sessionId
+     *
      * @param sessionId value of the sessionId
      */
     public BreinUser setSessionId(final String sessionId) {
@@ -184,6 +190,7 @@ public class BreinUser {
 
     /**
      * retrieves the ipAddress (additional part)
+     *
      * @return ipAddress
      */
     public String getIpAddress() {
@@ -192,6 +199,7 @@ public class BreinUser {
 
     /**
      * sets the ipAddress
+     *
      * @param ipAddress value
      */
     public BreinUser setIpAddress(final String ipAddress) {
@@ -240,6 +248,7 @@ public class BreinUser {
 
     /**
      * Returns the date of birth
+     *
      * @return date of birth
      */
     public String getDateOfBirth() {
@@ -254,7 +263,7 @@ public class BreinUser {
      * @param month (1..12)
      * @param day   (1..31)
      * @param year  (1900..2100)
-     * @return this -> allows chaining
+     * @return self
      */
     public BreinUser setDateOfBirth(final int month, final int day, final int year) {
 
@@ -281,6 +290,7 @@ public class BreinUser {
 
     /**
      * Retrieves imei (International Mobile Equipment Identity)
+     *
      * @return serial number as string
      */
     public String getImei() {
@@ -289,8 +299,9 @@ public class BreinUser {
 
     /**
      * Sets the imei number
+     *
      * @param imei number
-     * @return this -> allows chaining
+     * @return self
      */
     public BreinUser setImei(final String imei) {
         this.imei = imei;
@@ -298,7 +309,8 @@ public class BreinUser {
     }
 
     /**
-     * retrieves the deviceid
+     * retrieves the device-id
+     *
      * @return device id
      */
     public String getDeviceId() {
@@ -307,8 +319,9 @@ public class BreinUser {
 
     /**
      * sets the device id
+     *
      * @param deviceId the id of the device
-     * @return this -> allows chaining
+     * @return self
      */
     public BreinUser setDeviceId(final String deviceId) {
         this.deviceId = deviceId;
@@ -317,6 +330,7 @@ public class BreinUser {
 
     /**
      * get's the localDateTime
+     *
      * @return localDateTime (e.g. "Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)")
      */
     public String getLocalDateTime() {
@@ -325,9 +339,9 @@ public class BreinUser {
 
     /**
      * set's the localDateTime
-     * @param localDateTime contains the localdate time
      *
-     * @return this
+     * @param localDateTime contains the localdate time
+     * @return self
      */
     public BreinUser setLocalDateTime(final String localDateTime) {
         this.localDateTime = localDateTime;
@@ -336,6 +350,7 @@ public class BreinUser {
 
     /**
      * gets the timezone
+     *
      * @return timezone (e.g. "America/Los_Angeles")
      */
     public String getTimezone() {
@@ -344,8 +359,9 @@ public class BreinUser {
 
     /**
      * set the timezone
+     *
      * @param timezone timezone (e.g. "America/Los_Angeles"))
-     * @return this
+     * @return self
      */
     public BreinUser setTimezone(final String timezone) {
         this.timezone = timezone;
@@ -354,6 +370,7 @@ public class BreinUser {
 
     /**
      * returns the instance of BreinUserRequestData
+     *
      * @return instance of BreinUserRequestData
      */
     public BreinUserRequest getBreinUserRequest() {
@@ -361,27 +378,30 @@ public class BreinUser {
     }
 
     /**
+     * sets the additional map
      *
-     * @param dataMap
-     * @return
+     * @param dataMap map containing the additional fields
+     * @return self
      */
-    public BreinUser setExtraAdditionalMap(final Map<String, Object> dataMap) {
-        getBreinUserRequest().setExtraUserAdditionalMap(dataMap);
+    public BreinUser setAdditionalMap(final Map<String, Object> dataMap) {
+        getBreinUserRequest().setAdditionalMap(dataMap);
         return this;
     }
 
     /**
+     * sets the user map
      *
-     * @param dataMap
-     * @return
+     * @param dataMap map containing fields on user level
+     * @return self
      */
-    public BreinUser setExtraMap(final Map<String, Object> dataMap) {
-        getBreinUserRequest().setExtraUserMap(dataMap);
+    public BreinUser setUserMap(final Map<String, Object> dataMap) {
+        getBreinUserRequest().setUserMap(dataMap);
         return this;
     }
 
     /**
      * provides a nicer output of the user details
+     *
      * @return output
      */
     @Override

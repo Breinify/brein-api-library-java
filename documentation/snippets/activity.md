@@ -5,12 +5,12 @@
 >         .setLastName("Name")
 >         .setIpAddress("10.11.12.130")
 >
-> // Invoke activity call (without secret and no callback)
+> // Invoke activity call (without callback)
 > Breinify.activity(breinUser,
 >                "Login",
 >                "Home",
 >                "Login-Description",
->                false, null);
+>                null);
 >
 >
 > // Comprehensive sample to set various fields
@@ -36,7 +36,6 @@
 > breinActivity.setBreinCategoryType("apparel");
 > breinActivity.setBreinActivityType("pagevisit");
 > breinActivity.setDescription("your description");
-> breinActivity.setSign(false);
 > breinActivity.setTagsMap(tagMap);
 > breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
 > breinActivity.setAdditionalUrl("https://sample.com.au/home");

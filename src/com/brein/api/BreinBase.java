@@ -38,11 +38,6 @@ public class BreinBase implements ISecretStrategy {
     private String ipAddress;
 
     /**
-     * if set to yes then a secret has to bo sent
-     */
-    private boolean sign;
-
-    /**
      * contains the data structures for the base part
      */
     private final BreinBaseRequest breinBaseRequest = new BreinBaseRequest();
@@ -140,25 +135,24 @@ public class BreinBase implements ISecretStrategy {
     /**
      * retrieves the sign flag
      *
-     * @return flag (true / false)
+     * @return true or false depending on configured secret
      */
     public boolean isSign() {
-        return sign;
-    }
+        if (breinConfig == null) {
+            return false;
+        }
 
-    /**
-     * sets the sign flag
-     *
-     * @param sign value to set
-     */
-    public BreinBase setSign(final boolean sign) {
-        this.sign = sign;
-        return this;
+        if (breinConfig.getSecret() == null) {
+            return false;
+        }
+
+        return breinConfig.getSecret().length() > 0;
     }
 
     /**
      * gets the ipAddress
-     * @return content of ipaddress
+     *
+     * @return content of ipAddress
      */
     public String getIpAddress() {
         return ipAddress;
@@ -166,7 +160,8 @@ public class BreinBase implements ISecretStrategy {
 
     /**
      * sets the ipaddress
-     * @param ipAddress contains the ipaddress
+     *
+     * @param ipAddress contains the ipAddress
      * @return object itself
      */
     public BreinBase setIpAddress(final String ipAddress) {
@@ -176,6 +171,7 @@ public class BreinBase implements ISecretStrategy {
 
     /**
      * Returns the callback function
+     *
      * @return callback function
      */
     public Function<String, Void> getErrorCallback() {
@@ -184,6 +180,7 @@ public class BreinBase implements ISecretStrategy {
 
     /**
      * sets the error callback function
+     *
      * @param errorCallback function to callback
      */
     public BreinBase setErrorCallback(final Function<String, Void> errorCallback) {
@@ -193,6 +190,7 @@ public class BreinBase implements ISecretStrategy {
 
     /**
      * return the gson builder instance
+     *
      * @return gson instance
      */
     public Gson getGson() {
@@ -201,6 +199,7 @@ public class BreinBase implements ISecretStrategy {
 
     /**
      * return the instance of BreinBaseRequestData
+     *
      * @return instance of BreinBaseRequestData
      */
     public BreinBaseRequest getBreinBaseRequest() {
@@ -208,12 +207,13 @@ public class BreinBase implements ISecretStrategy {
     }
 
     /**
+     * sets the base map
      *
-     * @param dataMap
-     * @return
+     * @param dataMap contains the map
+     * @return self
      */
-    public BreinBase setExtraBaseMap(final Map<String, Object> dataMap) {
-        getBreinBaseRequest().setExtraBaseMap(dataMap);
+    public BreinBase setBaseMap(final Map<String, Object> dataMap) {
+        getBreinBaseRequest().setBaseMap(dataMap);
         return this;
     }
 
@@ -224,7 +224,6 @@ public class BreinBase implements ISecretStrategy {
         breinUser = null;
         breinConfig = null;
         unixTimestamp = 0;
-        sign = false;
     }
 
     /**
@@ -242,6 +241,7 @@ public class BreinBase implements ISecretStrategy {
 
     /**
      * used to create the signature depending of the request type
+     *
      * @return signature
      */
     @Override

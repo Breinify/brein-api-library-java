@@ -29,7 +29,8 @@ public class TestJerseyApi {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    // private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
 
     /**
      * Contains the Breinify User
@@ -49,9 +50,7 @@ public class TestJerseyApi {
     /**
      * Correct configuration
      */
-    final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-            BASE_URL,
-            BreinEngineType.JERSEY_ENGINE);
+    final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
 
     /**
      * indicator if the loops should be done forever :-)
@@ -100,8 +99,7 @@ public class TestJerseyApi {
     public void invokeActivityCall(final BreinUser breinUser,
                                    final String breinActivityType,
                                    final String breinCategoryType,
-                                   final String description,
-                                   final boolean signFlag) {
+                                   final String description) {
 
 
         final Function<String, Void> callback = message -> {
@@ -115,7 +113,6 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 description,
-                signFlag,
                 callback);
 
     }
@@ -130,7 +127,7 @@ public class TestJerseyApi {
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "desc", false);
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "desc");
     }
 
     @Test
@@ -144,7 +141,7 @@ public class TestJerseyApi {
 
         for (int index = 0; index < 200; index++) {
             System.out.println("index is: " + index);
-            invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "desc", false);
+            invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "desc");
         }
     }
 
@@ -166,7 +163,7 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 "Login-Description",
-                false, null);
+                null);
     }
 
     /**
@@ -176,28 +173,18 @@ public class TestJerseyApi {
     public void testLoginWithNullApiKey() {
 
         final String description = "Login-Description";
-        final boolean sign = false;
-
-        final BreinConfig config = new BreinConfig(null,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
+        final BreinConfig config = new BreinConfig();
 
         Breinify.setConfig(config);
 
-        /*
-         * additional user information
-         */
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
         Breinify.activity(breinUser,
                 breinActivityType,
                 breinCategoryType,
                 description,
-                sign, null);
+                null);
     }
 
     /**
@@ -207,29 +194,20 @@ public class TestJerseyApi {
     public void testLoginWithNullBaseUrl() {
 
         final String description = "Login-Description";
-        final boolean sign = false;
-
-        final BreinConfig config = new BreinConfig(VALID_API_KEY,
-                null,
-                BreinEngineType.UNIREST_ENGINE);
+        final BreinConfig config = new BreinConfig(VALID_API_KEY).setBaseUrl(null);
 
         Breinify.setConfig(config);
 
-        /*
-         * additional user information
-         */
+        // additional user information
         breinUser.setFirstName("User")
                 .setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
+        // invoke activity call
         Breinify.activity(breinUser,
                 breinActivityType,
                 breinCategoryType,
                 description,
-                sign, null);
-
+                null);
     }
 
     /**
@@ -240,35 +218,18 @@ public class TestJerseyApi {
     public void testLoginWithNoRestEngine() {
 
         final String description = "Login-Description";
-        final boolean sign = false;
-
-
-        BreinConfig config = null;
-        try {
-            config = new BreinConfig(VALID_API_KEY,
-                    BASE_URL,
-                    BreinEngineType.NO_ENGINE);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
+        final BreinConfig config = new BreinConfig(VALID_API_KEY).setAndInitRestEngine(BreinEngineType.NO_ENGINE);
 
         Breinify.setConfig(config);
 
-        /*
-         * additional user information
-         */
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
         Breinify.activity(breinUser,
                 breinActivityType,
                 breinCategoryType,
                 description,
-                sign, null);
-
+                null);
     }
 
     /**
@@ -279,12 +240,8 @@ public class TestJerseyApi {
 
         final String description = "Login-Description";
 
-        /*
-         * set configuration
-         */
-        final BreinConfig config = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
+        // set configuration
+        final BreinConfig config = new BreinConfig(VALID_API_KEY);
         config.setActivityEndpoint("/wrongEndPoint");
 
         Breinify.setConfig(config);
@@ -302,7 +259,7 @@ public class TestJerseyApi {
                 breinActivityType,
                 breinCategoryType,
                 description,
-                false, null);
+                null);
 
 
     }
@@ -345,7 +302,7 @@ public class TestJerseyApi {
                 BreinActivityType.LOGOUT,
                 breinCategoryType,
                 description,
-                false, null);
+                null);
     }
 
     /**
@@ -368,7 +325,7 @@ public class TestJerseyApi {
                 BreinActivityType.SEARCH,
                 breinCategoryType,
                 description,
-                false, null);
+                null);
     }
 
     /**
@@ -391,7 +348,7 @@ public class TestJerseyApi {
                 BreinActivityType.ADD_TO_CART,
                 breinCategoryType,
                 description,
-                false, null);
+                null);
     }
 
     /**
@@ -414,7 +371,7 @@ public class TestJerseyApi {
                 BreinActivityType.REMOVE_FROM_CART,
                 breinCategoryType,
                 description,
-                false, null);
+                null);
     }
 
     /**
@@ -437,7 +394,7 @@ public class TestJerseyApi {
                 BreinActivityType.SELECT_PRODUCT,
                 breinCategoryType,
                 description,
-                false, null);
+                null);
     }
 
     /**
@@ -460,7 +417,7 @@ public class TestJerseyApi {
                 BreinActivityType.OTHER,
                 breinCategoryType,
                 description,
-                false, null);
+                null);
     }
 
     /**
@@ -507,7 +464,7 @@ public class TestJerseyApi {
 
         try {
             // invoke lookup
-            final BreinResult response = Breinify.lookup(breinUser, breinDimension, false);
+            final BreinResult response = Breinify.lookup(breinUser, breinDimension);
 
             showLookupResult(response);
         } catch (final Exception e) {
@@ -564,7 +521,6 @@ public class TestJerseyApi {
                             breinActivityType,
                             breinCategoryType,
                             "Login-Description",
-                            false,
                             errorCallback);
 
                     try {
@@ -592,22 +548,14 @@ public class TestJerseyApi {
 
         // final String secret = "p3rqlab6m7/172pdgiq6ng==";
         final String secret = "lmcoj4k27hbbszzyiqamhg==";
-        final boolean sign = true;
-
         final String secretApiKey = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
-
-        final BreinConfig breinConfig = new BreinConfig(secretApiKey,
-                BASE_URL,
-                BreinEngineType.JERSEY_ENGINE);
-
-        // set secret
-        breinConfig.setSecret(secret);
+        final BreinConfig breinConfig = new BreinConfig(secretApiKey, secret);
 
         // set config
         Breinify.setConfig(breinConfig);
 
         // invoke activity call
-        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Desc", sign);
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Desc");
     }
 
 
@@ -621,7 +569,7 @@ public class TestJerseyApi {
         dataBaseLevelMap.put("enhancement-base", "value");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setExtraBaseMap(dataBaseLevelMap);
+        breinActivity.setBaseMap(dataBaseLevelMap);
 
         callLoginWithStandardValues();
     }
@@ -637,7 +585,7 @@ public class TestJerseyApi {
         dataActivityMap.put("enhancement-activity-2", "value-2");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setExtraActivityMap(dataActivityMap);
+        breinActivity.setActivityMap(dataActivityMap);
 
         callLoginWithStandardValues();
     }
@@ -655,7 +603,7 @@ public class TestJerseyApi {
         dataRootActivityMap.put("activityRoot", dataActivityMap);
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setExtraActivityMap(dataRootActivityMap);
+        breinActivity.setActivityMap(dataRootActivityMap);
 
         callLoginWithStandardValues();
     }
@@ -684,11 +632,10 @@ public class TestJerseyApi {
         dataRootMap.put("Right", dataRootRightActivityMap);
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setExtraActivityMap(dataRootMap);
+        breinActivity.setActivityMap(dataRootMap);
 
         callLoginWithStandardValues();
     }
-
 
 
     /**
@@ -705,13 +652,12 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setExtraMap(dataUserMap);
+                .setUserMap(dataUserMap);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
                 breinCategoryType,
-                "login",
-                false);
+                "login");
     }
 
     /**
@@ -726,15 +672,14 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setExtraAdditionalMap(dataAdditionalMap);
+                .setAdditionalMap(dataAdditionalMap);
 
         Breinify.setConfig(breinConfig);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
                 breinCategoryType,
-                "login",
-                false);
+                "login");
     }
 
     /**
@@ -752,15 +697,14 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setExtraAdditionalMap(locationAdditionalMap);
+                .setAdditionalMap(locationAdditionalMap);
 
         Breinify.setConfig(breinConfig);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
                 breinCategoryType,
-                "login",
-                false);
+                "login");
     }
 
     /**
@@ -777,15 +721,14 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setExtraMap(dataUserRootMap);
+                .setUserMap(dataUserRootMap);
 
         Breinify.setConfig(breinConfig);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
                 breinCategoryType,
-                "login",
-                false);
+                "login");
     }
 
 
@@ -811,8 +754,7 @@ public class TestJerseyApi {
         invokeActivityCall(breinUser,
                 breinActivityType,
                 breinCategoryType,
-                "selectProduct",
-                false);
+                "selectProduct");
     }
 
 
@@ -834,7 +776,7 @@ public class TestJerseyApi {
 
         try {
             // invoke temporaldata
-            response = Breinify.temporalData(user, false);
+            response = Breinify.temporalData(user);
         } catch (final Exception e) {
             fail("REST exception is: " + e);
         }
@@ -858,14 +800,14 @@ public class TestJerseyApi {
         locationAdditionalMap.put("location", locationValueMap);
 
         final BreinUser user = new BreinUser()
-                .setExtraAdditionalMap(locationAdditionalMap);
+                .setAdditionalMap(locationAdditionalMap);
 
         try {
             // set configuration
             Breinify.setConfig(breinConfig);
 
             // invoke temporaldata
-            final BreinResult response = Breinify.temporalData(user, false);
+            final BreinResult response = Breinify.temporalData(user);
 
             // show output
             showTemporalDataOutput(response);
@@ -875,6 +817,31 @@ public class TestJerseyApi {
         }
     }
 
+    /**
+     *
+     */
+    @Test
+    public void testTemporalDataFromPhilipp() {
+
+        final String API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
+
+        Breinify.setConfig(new BreinConfig(API_KEY));
+
+        final Map<String, Object> locationAdditionalMap = new HashMap<>();
+        final Map<String, Object> locationValueMap = new HashMap<>();
+        locationValueMap.put("latitude", Math.random() * 10 + 39 - 5);
+        locationValueMap.put("longitude", Math.random() * 50 - 98 - 25);
+        locationAdditionalMap.put("location", locationValueMap);
+
+        final BreinUser user = new BreinUser()
+                .setAdditionalMap(locationAdditionalMap)
+                .setIpAddress("127.0.0.1");
+
+        final BreinResult response = Breinify.temporalData(user);
+
+        // show output
+        showTemporalDataOutput(response);
+    }
 
     /**
      * Tests the lookup functionality
@@ -885,12 +852,7 @@ public class TestJerseyApi {
         final String secret = "lmcoj4k27hbbszzyiqamhg==";
         final String apiKeyWithSecret = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
 
-        final BreinConfig breinConfig = new BreinConfig(apiKeyWithSecret,
-                BASE_URL,
-                BreinEngineType.JERSEY_ENGINE);
-
-        // set secret
-        breinConfig.setSecret(secret);
+        final BreinConfig breinConfig = new BreinConfig(apiKeyWithSecret, secret);
 
         // set configuration
         Breinify.setConfig(breinConfig);
@@ -907,7 +869,7 @@ public class TestJerseyApi {
 
         try {
             // invoke temporaldata
-            breinResult = Breinify.temporalData(user, true);
+            breinResult = Breinify.temporalData(user);
         } catch (final Exception e) {
             fail("REST exception is: " + e);
         }
@@ -915,7 +877,7 @@ public class TestJerseyApi {
         final Map<String, Object> resultMap = breinResult.getMap();
 
 
-        final Map<String, Object> timeValues =  breinResult.get("time");
+        final Map<String, Object> timeValues = breinResult.get("time");
         final Map<String, Object> weatherValues = breinResult.get("weather");
         final Map<String, Object> locationValues = breinResult.get("location");
         final Map<String, Object> holidayValues = breinResult.get("holiday");

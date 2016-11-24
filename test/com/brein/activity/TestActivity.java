@@ -5,7 +5,6 @@ import com.brein.domain.BreinActivityType;
 import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
-import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -49,11 +48,6 @@ public class TestActivity {
     private final String breinCategoryType = BreinCategoryType.SERVICES;
 
     /**
-     * Sign parameter
-     */
-    private final boolean sign = false;
-
-    /**
      * The Activity itself
      */
     private final BreinActivity breinActivity = new BreinActivity();
@@ -80,11 +74,7 @@ public class TestActivity {
         final Properties props = System.getProperties();
         props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
 
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
-
-        breinActivity.setConfig(breinConfig);
+        breinActivity.setConfig(new BreinConfig(VALID_API_KEY));
     }
 
     /**
@@ -123,7 +113,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGIN,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -145,7 +135,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGIN,
-                null, description, sign);
+                null, description);
     }
 
 
@@ -185,17 +175,13 @@ public class TestActivity {
 
         final String description = "Logout-Description";
 
-        /*
-         * additional user information
-         */
+        // additional user information
         breinUser.setDateOfBirth(12, 31, 2008);
 
-        /*
-         * invoke activity call
-         */
+        // invoke activity call
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGOUT,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -206,12 +192,10 @@ public class TestActivity {
 
         final String description = "Search-Description";
 
-        /*
-         * invoke activity call
-         */
+        // invoke activity call
         breinActivity.activity(breinUser,
                 BreinActivityType.SEARCH,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -227,7 +211,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.ADD_TO_CART,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -243,7 +227,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.REMOVE_FROM_CART,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -259,7 +243,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.SELECT_PRODUCT,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -275,7 +259,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.OTHER,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -294,9 +278,7 @@ public class TestActivity {
         tagMap.put("t1", "0.0");
         breinActivity.setTagsMap(tagMap);
         breinActivity.setBreinUser(new BreinUser("user.name@email.com"));
-        breinActivity.setConfig(new BreinConfig("KEY",
-                BreinConfig.DEFAULT_BASE_URL,
-                BreinEngineType.UNIREST_ENGINE));
+        breinActivity.setConfig(new BreinConfig("KEY"));
 
         // first check init
         breinActivity.init();

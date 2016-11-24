@@ -33,18 +33,15 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
      * (BreinDimension)
      *
      * @param breinUser contains the breinify user
-     * @param sign      if set to true a secret will be sent as well
      * @return response from request or null if no data can be retrieved
      */
-    public BreinResult temporalData(final BreinUser breinUser,
-                                    final boolean sign) {
+    public BreinResult temporalData(final BreinUser breinUser) {
 
         if (getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
 
         setBreinUser(breinUser);
-        setSign(sign);
 
         return getBreinEngine().performTemporalDataRequest(this);
     }
@@ -68,7 +65,7 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
         }
 
         // base level data...
-        getBreinBaseRequest().prepareBaseRequestData(this, requestData, isSign());
+        getBreinBaseRequest().prepareBaseRequestData(this, requestData);
 
         return getGson().toJson(requestData);
     }

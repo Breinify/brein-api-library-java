@@ -14,16 +14,9 @@
 // This is the valid api-key
 final String apiKey = "time-is-ticking";
 >
-// This is the URL of the Breinify service
-final String serviceEndpoint = "https://api.breinify.com";
->
-// This is one rest engine that can be used internally
-final BreinEngineType engineType = BreinEngineType.JERSEY_ENGINE;
->
+
 // Create the configuration object
-final BreinConfig breinConfig = new BreinConfig(apiKey,
-          serviceEndpoint,
-          engineType);
+final BreinConfig breinConfig = new BreinConfig(apiKey);
 >
 // Set the configuration for later usage
 Breinify.setConfig(breinConfig);

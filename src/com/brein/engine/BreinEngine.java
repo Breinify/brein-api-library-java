@@ -20,6 +20,7 @@ public class BreinEngine {
 
     /**
      * Creates the engine
+     *
      * @param engineType (e.g. UNIREST...)
      */
     public BreinEngine(final BreinEngineType engineType) {
@@ -55,6 +56,7 @@ public class BreinEngine {
 
     /**
      * returns the brein engine
+     *
      * @return engine itself
      */
     public IRestEngine getRestEngine() {
@@ -63,6 +65,7 @@ public class BreinEngine {
 
     /**
      * configuration of engine
+     *
      * @param breinConfig configuration object
      */
     public void configure(final BreinConfig breinConfig) {
@@ -71,6 +74,7 @@ public class BreinEngine {
 
     /**
      * performs a temporalData request
+     *
      * @param breinTemporalData contains the appropriate data in order to perform the request
      * @return result from Breinify engine
      */

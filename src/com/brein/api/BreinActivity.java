@@ -35,12 +35,12 @@ public class BreinActivity extends BreinBase {
     private Map<String, Object> tagsMap;
 
     /**
-     * contains the extra fields that are part of the activity map
+     * contains the fields that are part of the activity map
      */
-    private Map<String, Object> extraActivityMap;
+    private Map<String, Object> activityMap;
 
     /**
-     *  contains the function map for activity data related functions
+     * contains the function map for activity data related functions
      */
     private Map<String, CheckFunction> requestActivityFunctions = null;
 
@@ -137,11 +137,12 @@ public class BreinActivity extends BreinBase {
     }
 
     /**
-     * sets the extra actvitiy map
+     * sets the actvitiy map
+     *
      * @param dataActivityMap containing additional values
      */
-    public void setExtraActivityMap(final Map<String, Object> dataActivityMap) {
-        this.extraActivityMap = dataActivityMap;
+    public void setActivityMap(final Map<String, Object> dataActivityMap) {
+        this.activityMap = dataActivityMap;
     }
 
     /**
@@ -153,7 +154,7 @@ public class BreinActivity extends BreinBase {
         breinCategoryType = "";
         description = "";
         tagsMap = null;
-        extraActivityMap = null;
+        activityMap = null;
         requestActivityFunctions = null;
     }
 
@@ -176,21 +177,17 @@ public class BreinActivity extends BreinBase {
      * @param breinActivityType the type of activity
      * @param breinCategoryType the category (can be null or undefined)
      * @param description       the description for the activity
-     * @param sign              true if a signature should be added (needs the secret to be configured - not recommended
-     *                          in open systems), otherwise false (can be null or undefined)
      */
     public void activity(final BreinUser breinUser,
                          final String breinActivityType,
                          final String breinCategoryType,
-                         final String description,
-                         final boolean sign) {
+                         final String description) {
 
         // set the values for further usage
         setBreinUser(breinUser);
         setBreinActivityType(breinActivityType);
         setBreinCategoryType(breinCategoryType);
         setDescription(description);
-        setSign(sign);
 
         // invoke the request, "this" has all necessary information
         if (null == getBreinEngine()) {
@@ -225,13 +222,14 @@ public class BreinActivity extends BreinBase {
         requestData.add("activity", activityData);
 
         // base level data...
-        getBreinBaseRequest().prepareBaseRequestData(this, requestData, isSign());
+        getBreinBaseRequest().prepareBaseRequestData(this, requestData);
 
         return getGson().toJson(requestData);
     }
 
     /**
      * Prepares the activity json structure
+     *
      * @param activityData contains the created data structure
      */
     public void prepareActivityRequestData(final JsonObject activityData) {
@@ -253,9 +251,9 @@ public class BreinActivity extends BreinBase {
             activityData.add("tags", tagsData);
         }
 
-        // check if there are further extra maps to add on base level
-        if (extraActivityMap != null && extraActivityMap.size() > 0) {
-            BreinMapUtil.fillMap(extraActivityMap, activityData);
+        // check if there are further maps to add on base level
+        if (activityMap != null && activityMap.size() > 0) {
+            BreinMapUtil.fillMap(activityMap, activityData);
         }
     }
 

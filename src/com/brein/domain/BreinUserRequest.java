@@ -22,49 +22,54 @@ public class BreinUserRequest {
     private Map<String, CheckFunction> requestUserAdditionalDataFunctions = null;
 
     /**
-     * contains extra fields in the user additional section
+     * contains further fields in the user additional section
      */
-    private Map<String, Object> extraUserAdditionalMap;
+    private Map<String, Object> additionalMap;
 
     /**
-     * contains extra fields in the user section
+     * contains further fields in the user section
      */
-    private Map<String, Object> extraUserMap;
+    private Map<String, Object> userMap;
 
     /**
-     * returns the extra user map
-     * @return the extra user map
+     * returns the user map
+     *
+     * @return the user map
      */
-    public Map<String, Object> getExtraUserMap() {
-        return extraUserMap;
+    public Map<String, Object> getUserMap() {
+        return userMap;
     }
 
     /**
-     * sets the extra user map
-     * @param extraUserMap map
+     * sets the user map
+     *
+     * @param userMap map
      */
-    public void setExtraUserMap(final Map<String, Object> extraUserMap) {
-        this.extraUserMap = extraUserMap;
+    public void setUserMap(final Map<String, Object> userMap) {
+        this.userMap = userMap;
     }
 
     /**
-     * returns the extra user additional map
+     * returns the user additional map
+     *
      * @return map
      */
-    public Map<String, Object> getExtraUserAdditionalMap() {
-        return extraUserAdditionalMap;
+    public Map<String, Object> getAdditionalMap() {
+        return additionalMap;
     }
 
     /**
-     * sets the extra user additional map
-     * @param extraUserAdditionalMap map
+     * sets the user additional map
+     *
+     * @param additionalMap map
      */
-    public void setExtraUserAdditionalMap(final Map<String, Object> extraUserAdditionalMap) {
-        this.extraUserAdditionalMap = extraUserAdditionalMap;
+    public void setAdditionalMap(final Map<String, Object> additionalMap) {
+        this.additionalMap = additionalMap;
     }
 
     /**
      * configures the user additional part
+     *
      * @param breinUser contains the brein user
      */
     public void configureRequestUserAdditionalFunctionMap(final BreinUser breinUser) {
@@ -77,6 +82,7 @@ public class BreinUserRequest {
 
     /**
      * configures the user data function map
+     *
      * @param breinUser contains the brein user
      */
     public void configureRequestUserDataFunctionMap(final BreinUser breinUser) {
@@ -92,8 +98,9 @@ public class BreinUserRequest {
 
     /**
      * Prepares the request on user level
+     *
      * @param requestData contains the json request that is generated (top level)
-     * @param breinUser contains the brein user data
+     * @param breinUser   contains the brein user data
      */
     public void prepareUserRequestData(final JsonObject requestData,
                                        final BreinUser breinUser) {
@@ -109,9 +116,9 @@ public class BreinUserRequest {
         // Execute the functions and add it to userData
         executeMapFunctions(userData, requestUserDataFunctions);
 
-        // check if there are further extra maps to add on user level
-        if (extraUserMap != null && extraUserMap.size() > 0) {
-            BreinMapUtil.fillMap(extraUserMap, userData);
+        // check if there are further maps to add on user level
+        if (userMap != null && userMap.size() > 0) {
+            BreinMapUtil.fillMap(userMap, userData);
         }
 
         // additional part
@@ -126,9 +133,9 @@ public class BreinUserRequest {
         // Execute the functions and add it to userData
         executeMapFunctions(additional, requestUserAdditionalDataFunctions);
 
-        // check if there are further extra maps to add on user additional level
-        if (extraUserAdditionalMap != null && extraUserAdditionalMap.size() > 0) {
-            BreinMapUtil.fillMap(extraUserAdditionalMap, additional);
+        // check if there are further maps to add on user additional level
+        if (additionalMap != null && additionalMap.size() > 0) {
+            BreinMapUtil.fillMap(additionalMap, additional);
         }
 
         if (additional.size() > 0) {
@@ -143,7 +150,7 @@ public class BreinUserRequest {
      * Executes the actions within the map. Checks if the value is valid and if this is
      * the case then the property will be added to the json structure.
      *
-     * @param jsonObject structure that will be added with a property
+     * @param jsonObject  structure that will be added with a property
      * @param functionMap map of actions (aka methods)
      */
     public void executeMapFunctions(final JsonObject jsonObject,

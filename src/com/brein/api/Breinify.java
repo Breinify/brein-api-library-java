@@ -102,14 +102,12 @@ public class Breinify {
      * @param categoryType  the category of the platform/service/products, i.e., one of apparel, home, education, family,
      *                      food, health, job, services, or other
      * @param description   a string with further information about the activity performed
-     * @param sign          a boolean value specifying if the call should be signed
      * @param errorCallback a callback function that is invoked in case of an error (can be null)
      */
     public static void activity(final BreinUser user,
                                 final String activityType,
                                 final String categoryType,
                                 final String description,
-                                final boolean sign,
                                 final Function<String, Void> errorCallback) {
 
         if (user == null) {
@@ -120,7 +118,6 @@ public class Breinify {
         breinActivity.setBreinActivityType(activityType);
         breinActivity.setBreinCategoryType(categoryType);
         breinActivity.setDescription(description);
-        breinActivity.setSign(sign);
 
         // invoke the request, "this" has all necessary information
         if (breinActivity.getBreinEngine() == null) {
@@ -144,16 +141,14 @@ public class Breinify {
      * @param categoryType the category of the platform/service/products, i.e., one of apparel, home, education, family,
      *                     food, health, job, services, or other
      * @param description  a string with further information about the activity performed
-     * @param sign         a boolean value specifying if the call should be signed
      */
     public static void activity(final BreinUser user,
                                 final String activityType,
                                 final String categoryType,
-                                final String description,
-                                final boolean sign) {
+                                final String description) {
 
         // default behaviour is no callback
-        activity(user, activityType, categoryType, description, sign, null);
+        activity(user, activityType, categoryType, description, null);
     }
 
     /**
@@ -210,13 +205,11 @@ public class Breinify {
      *
      * @param user      a plain object specifying information about the user to retrieve data for.
      * @param dimension an object (with an array) containing the names of the dimensions to lookup.
-     * @param sign      a boolean value specifying if the call should be signed.
      * @return response from request wrapped in an object called BreinResponse
      */
     public static BreinResult lookup(final BreinUser user,
-                                     final BreinDimension dimension,
-                                     final boolean sign) {
-        return lookup(breinLookup, user, dimension, sign);
+                                     final BreinDimension dimension) {
+        return lookup(breinLookup, user, dimension);
     }
 
     /**
@@ -224,16 +217,14 @@ public class Breinify {
      * <p>
      * This request is synchronous.
      *
-     * @param breinLookup  a plain object specifying the lookup information.
-     * @param user         a plain object specifying information about the user to retrieve data for.
-     * @param dimension    an object (with an array) containing the names of the dimensions to lookup.
-     * @param sign         a boolean value specifying if the call should be signed.
+     * @param breinLookup a plain object specifying the lookup information.
+     * @param user        a plain object specifying information about the user to retrieve data for.
+     * @param dimension   an object (with an array) containing the names of the dimensions to lookup.
      * @return response from request wrapped in an object called BreinResponse
      */
     public static BreinResult lookup(final BreinLookup breinLookup,
                                      final BreinUser user,
-                                     final BreinDimension dimension,
-                                     final boolean sign) {
+                                     final BreinDimension dimension) {
 
         if (user == null) {
             throw new BreinException(BreinException.USER_NOT_SET);
@@ -249,7 +240,6 @@ public class Breinify {
 
         breinLookup.setBreinUser(user);
         breinLookup.setBreinDimension(dimension);
-        breinLookup.setSign(sign);
 
         // invoke the lookup request
         if (breinLookup.getBreinEngine() == null) {
@@ -261,17 +251,15 @@ public class Breinify {
     /**
      * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
-     *
+     * <p>
      * Furthermore it uses the internal instance of BreinTemporalData.
      *
      * @param user a plain object specifying information about the user to retrieve data for.
-     * @param sign a boolean value specifying if the call should be signed.
      * @return result from the Breinify engine
      */
-    public static BreinResult temporalData(final BreinUser user,
-                                           final boolean sign) {
+    public static BreinResult temporalData(final BreinUser user) {
 
-        return temporalData(breinTemporalData, user, sign);
+        return temporalData(breinTemporalData, user);
     }
 
     /**
@@ -279,13 +267,11 @@ public class Breinify {
      * important that a valid API-key is configured prior to using this function.
      *
      * @param breinTemporalData a plain object specifying the information of the temporaldata.
-     * @param user a plain object specifying information about the user to retrieve data for.
-     * @param sign a boolean value specifying if the call should be signed.
+     * @param user              a plain object specifying information about the user to retrieve data for.
      * @return result from the Breinify engine
      */
     public static BreinResult temporalData(final BreinTemporalData breinTemporalData,
-                                           final BreinUser user,
-                                           final boolean sign) {
+                                           final BreinUser user) {
 
         if (user == null) {
             throw new BreinException(BreinException.USER_NOT_SET);
@@ -296,7 +282,6 @@ public class Breinify {
         }
 
         breinTemporalData.setBreinUser(user);
-        breinTemporalData.setSign(sign);
 
         // invoke the temporaldata request
         if (breinTemporalData.getBreinEngine() == null) {

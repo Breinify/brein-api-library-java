@@ -11,8 +11,7 @@ final String[] dimensions = {"firstname",
 final BreinDimension breinDimension = new BreinDimension(dimensions);
 
 // invoke the lookup
-final boolean withSecret = false;
-final BreinResult result = Breinify.lookup(breinUser, breinDimension, withSecret);
+final BreinResult result = Breinify.lookup(breinUser, breinDimension);
 
 // retrieve the values of interest
 final Object dataFirstname = result.get("firstname");

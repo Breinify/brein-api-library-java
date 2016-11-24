@@ -60,9 +60,9 @@ public class BreinConfig {
     private String apiKey;
 
     /**
-     * Default REST client
+     * Default REST client configuration
      */
-    private BreinEngineType restEngineType = BreinEngineType.UNIREST_ENGINE;
+    private BreinEngineType restEngineType = BreinEngineType.JERSEY_ENGINE;
 
     /**
      * contains the activity endpoint (default = ACTIVITY_ENDPOINT)
@@ -105,45 +105,41 @@ public class BreinConfig {
     private String secret;
 
     /**
-     * @param apiKey  contains the Breinify api key
-     * @param baseUrl contains the base url
+     * @param apiKey contains the Breinify api key
      */
-    public BreinConfig(final String apiKey,
-                       final String baseUrl) {
-
+    public BreinConfig(final String apiKey) {
+        this();
         setApiKey(apiKey);
-        setBaseUrl(baseUrl);
-        setRestEngineType(BreinEngineType.NO_ENGINE);
     }
 
     /**
-     * Configuration object
-     *
-     * @param apiKey          contains the Breinify api-key
-     * @param baseUrl         contains the base url
-     * @param breinEngineType selected engine
+     * @param apiKey contains the Breinify api key
+     * @param secret contains the secret
      */
     public BreinConfig(final String apiKey,
-                       final String baseUrl,
-                       final BreinEngineType breinEngineType) {
-
-        setApiKey(apiKey);
-        setBaseUrl(baseUrl);
-        setRestEngineType(breinEngineType);
-        initEngine();
+                       final String secret) {
+        this(apiKey);
+        setSecret(secret);
     }
 
     /**
-     * Empty Ctor - necessary
+     * Base Constructor - will be invoked in any case to initialize the
+     * Rest Engine.
      */
     public BreinConfig() {
+        initEngine();
     }
 
     /**
      * initializes the rest client
      */
-    public void initEngine() {
+    public BreinConfig initEngine() {
+
+        // todo: detect dependency from classpath
+        // currently the default one will be used
+
         breinEngine = new BreinEngine(getRestEngineType());
+        return this;
     }
 
     /**
@@ -217,8 +213,9 @@ public class BreinConfig {
      * @param restEngineType of the rest impl
      * @return the config object itself
      */
-    public BreinConfig setRestEngineType(final BreinEngineType restEngineType) {
+    public BreinConfig setAndInitRestEngine(final BreinEngineType restEngineType) {
         this.restEngineType = restEngineType;
+        initEngine();
         return this;
     }
 
@@ -343,6 +340,7 @@ public class BreinConfig {
 
     /**
      * retrieves the temporaldata endpoint
+     *
      * @return temporaldata endpoint
      */
     public String getTemporalDataEndpoint() {
@@ -351,6 +349,7 @@ public class BreinConfig {
 
     /**
      * sets the temporaldata endpoint
+     *
      * @param temporalDataEndpoint endpoint
      */
     public void setTemporalDataEndpoint(final String temporalDataEndpoint) {

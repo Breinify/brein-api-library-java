@@ -8,16 +8,16 @@
 > locationAdditionalMap.put("location", locationValueMap);
 >
 > final BreinUser user = new BreinUser()
->       .setExtraAdditionalMap(locationAdditionalMap);
+>       .setAdditionalMap(locationAdditionalMap);
 >
 >        try {
 >            // set configuration
 >            Breinify.setConfig(breinConfig);
 >
 >            // invoke temporaldata
->            final BreinResult response = Breinify.temporalData(user, false);
+>            final BreinResult response = Breinify.temporalData(user);
 >
 >        } catch (final Exception e) {
->            fail("REST exception is: " + e);
+>            LOG("REST exception is: " + e);
 >        }
 > ```
