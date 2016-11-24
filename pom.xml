@@ -29,11 +29,14 @@
         -->
 
         <!-- can be activated to see some logging   -->
+        <!-- please add your flf4j binding as needed -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4jVersion}</version>
+            <optional>true</optional>
         </dependency>
+
 
         <!-- UNIREST -->
         <dependency>
