@@ -29,8 +29,7 @@ public class TestJerseyApi {
     /**
      * This has to be a valid api key
      */
-    // private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
-    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
+    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
 
     /**
      * Contains the Breinify User
