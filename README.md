@@ -102,7 +102,15 @@ final Object dataImages = result.get("images");
 
 ##### Placing temporalData triggers
 
-Temporal triggers will provide <....> information. They can be requested like this:
+Temporal Intelligence API provides temporal triggers and visualizes patterns
+enabling you to predict a visitor’s dynamic activities. Currently this will
+cover:
+* Current Weather
+* Upcoming Holidays
+* Time Zone
+* Regional Events
+
+They can be requested like this:
 
 ```Java
 // create a user you are interested in 
