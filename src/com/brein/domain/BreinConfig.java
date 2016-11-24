@@ -9,6 +9,8 @@ import com.brein.util.BreinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.Stream;
+
 /**
  * Provides the configuration of the library for the properties supplied.
  */
@@ -50,6 +52,11 @@ public class BreinConfig {
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
 
     /**
+     * default {@code BreinEngineType}
+     */
+    public static final BreinEngineType DEFAULT_ENGINE_TYPE = BreinEngineType.AUTO_DETECT;
+
+    /**
      * BASE URL
      */
     private String baseUrl = DEFAULT_BASE_URL;
@@ -62,7 +69,7 @@ public class BreinConfig {
     /**
      * Default REST client configuration
      */
-    private BreinEngineType restEngineType = BreinEngineType.JERSEY_ENGINE;
+    private BreinEngineType restEngineType = DEFAULT_ENGINE_TYPE;
 
     /**
      * contains the activity endpoint (default = ACTIVITY_ENDPOINT)
@@ -134,11 +141,20 @@ public class BreinConfig {
      * initializes the rest client
      */
     public BreinConfig initEngine() {
+        BreinEngineType engine = getRestEngineType();
 
-        // todo: detect dependency from classpath
-        // currently the default one will be used
+        if (BreinEngineType.AUTO_DETECT.equals(engine)) {
+            engine = Stream.of(BreinEngineType.values())
+                    .filter(BreinEngineType::isSupported)
+                    .findFirst()
+                    .orElse(BreinEngineType.AUTO_DETECT);
 
-        breinEngine = new BreinEngine(getRestEngineType());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Selected '" + engine + "' through auto-detection.");
+            }
+        }
+
+        breinEngine = new BreinEngine(engine);
         return this;
     }
 
@@ -172,6 +188,7 @@ public class BreinConfig {
      * if the URL is valid.
      *
      * @param baseUrl contains the url
+     *
      * @return the config object itself
      */
     public BreinConfig setBaseUrl(final String baseUrl) {
@@ -211,6 +228,7 @@ public class BreinConfig {
      * set rest type client
      *
      * @param restEngineType of the rest impl
+     *
      * @return the config object itself
      */
     public BreinConfig setAndInitRestEngine(final BreinEngineType restEngineType) {
@@ -241,6 +259,7 @@ public class BreinConfig {
      * sets the apikey
      *
      * @param apiKey the apikey
+     *
      * @return the config object itself
      */
     public BreinConfig setApiKey(final String apiKey) {
@@ -311,6 +330,7 @@ public class BreinConfig {
      * sets the activity endpoint
      *
      * @param activityEndpoint endpoint
+     *
      * @return the config object itself
      */
     public BreinConfig setActivityEndpoint(final String activityEndpoint) {
@@ -331,6 +351,7 @@ public class BreinConfig {
      * sets the lookup endpoint
      *
      * @param lookupEndpoint endpoint
+     *
      * @return the config object itself
      */
     public BreinConfig setLookupEndpoint(final String lookupEndpoint) {
@@ -418,10 +439,10 @@ public class BreinConfig {
      * Validates if the URL is correct.
      *
      * @param url to check
+     *
      * @return true if ok otherwise false
      */
     public boolean isUrlValid(final String url) {
         return IRestEngine.isUrlValid(url);
     }
-
 }

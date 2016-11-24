@@ -121,6 +121,9 @@ public interface IRestEngine {
             case JERSEY_ENGINE:
                 return new JerseyRestEngine();
 
+            case AUTO_DETECT:
+                throw new BreinException("unable to detect any engine from class-path!");
+
             default:
                 throw new BreinException("no rest engine specified!");
         }

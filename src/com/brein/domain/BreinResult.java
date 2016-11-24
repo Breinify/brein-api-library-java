@@ -55,4 +55,9 @@ public class BreinResult {
     public Map<String, Object> getMap() {
         return map;
     }
+
+    @Override
+    public String toString() {
+        return map.toString();
+    }
 }
