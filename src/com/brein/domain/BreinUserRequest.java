@@ -68,6 +68,22 @@ public class BreinUserRequest {
     }
 
     /**
+     *
+     * @return
+     */
+    public Map<String, CheckFunction> getRequestUserDataFunctions() {
+        return requestUserDataFunctions;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Map<String, CheckFunction> getRequestUserAdditionalDataFunctions() {
+        return requestUserAdditionalDataFunctions;
+    }
+
+    /**
      * configures the user additional part
      *
      * @param breinUser contains the brein user

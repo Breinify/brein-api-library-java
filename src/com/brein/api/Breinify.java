@@ -85,7 +85,7 @@ public class Breinify {
     /**
      * @return temporaldata instance
      */
-    public static BreinTemporalData getBreinTemporalData() {
+       public static BreinTemporalData getBreinTemporalData() {
         return breinTemporalData;
     }
 
@@ -259,7 +259,16 @@ public class Breinify {
      */
     public static BreinResult temporalData(final BreinUser user) {
 
-        return temporalData(breinTemporalData, user);
+        final BreinTemporalData breinTemporalData = new BreinTemporalData();
+        breinTemporalData.setConfig(getConfig());
+
+        // clone user
+        final BreinUser clonedUser = new BreinUser(user);
+
+        return temporalData(breinTemporalData, clonedUser);
+
+
+        // return temporalData(breinTemporalData, user);
     }
 
     /**

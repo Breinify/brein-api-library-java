@@ -57,4 +57,28 @@ public class BreinMapUtil {
             }
         });
     }
+
+
+    public static Map copyMap(final Map source) throws Exception {
+        if (source == null) {
+            return null;
+        }
+
+        // final Map newMap = source.getClass().newInstance();
+        // newMap.putAll(source);
+
+        /*
+        final Map newMap = source.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey(), Map.Entry::getValue));
+
+
+        */
+
+
+                       //  e -> new Column(e.getValue())));
+
+
+        return null;
+    }
 }

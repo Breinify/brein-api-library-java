@@ -1,5 +1,7 @@
 package com.brein.domain;
 
+import com.brein.util.BreinMapUtil;
+
 import java.util.Map;
 
 /**
@@ -84,6 +86,14 @@ public class BreinUser {
      */
     public BreinUser(final String email) {
         setEmail(email);
+    }
+
+    /**
+     *
+     * @param originalBreinUser
+     */
+    public BreinUser(final BreinUser originalBreinUser) {
+        this.cloneFrom(originalBreinUser);
     }
 
     /**
@@ -282,6 +292,13 @@ public class BreinUser {
     }
 
     /**
+     * @param dateOfBirthString
+     */
+    private void setDateOfBirthString(final String dateOfBirthString) {
+        this.dateOfBirth = dateOfBirthString;
+    }
+
+    /**
      * resets the dateOfBirth to an empty value
      */
     public void resetDateOfBirth() {
@@ -398,6 +415,100 @@ public class BreinUser {
         getBreinUserRequest().setUserMap(dataMap);
         return this;
     }
+
+
+    public void cloneFrom(final BreinUser sourceUser) {
+
+        // cloneFrom inmutable objects (Strings)
+        this.setEmail(sourceUser.getEmail());
+        this.setFirstName(sourceUser.getFirstName());
+        this.setLastName(sourceUser.getLastName());
+        this.setDateOfBirthString(sourceUser.getDateOfBirth());
+        this.setImei(sourceUser.getImei());
+        this.setDeviceId(sourceUser.getDeviceId());
+        this.setUrl(sourceUser.getUrl());
+        this.setSessionId(sourceUser.getSessionId());
+        this.setImei(sourceUser.getImei());
+        this.setUserAgent(sourceUser.getUserAgent());
+        this.setReferrer(sourceUser.getReferrer());
+        this.setIpAddress(sourceUser.getIpAddress());
+        this.setLocalDateTime(sourceUser.getLocalDateTime());
+        this.setTimezone(sourceUser.getTimezone());
+
+        final BreinUserRequest newBreinUserRequest = new BreinUserRequest();
+
+        try {
+            final Map<String, Object> userMap = sourceUser.getBreinUserRequest().getUserMap();
+            final Map<String, Object> copyUserMap = BreinMapUtil.copyMap(userMap);
+            this.setUserMap(copyUserMap);
+
+            final Map<String, Object> additionalMap = sourceUser.getBreinUserRequest().getAdditionalMap();
+            final Map<String, Object> copyAdditionalMap = BreinMapUtil.copyMap(additionalMap);
+            this.setAdditionalMap(copyAdditionalMap);
+
+            // final Map<String, CheckFunction>
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //final Map<String, Object> copyUserMap = userMap.entrySet().stream()
+        //        .collect(Collectors.toMap(e -> e.getKey(), e -> new Object(e.getValue())));
+
+
+
+    }
+
+    public BreinUser createClone() {
+
+        final BreinUser newBreinUser = new BreinUser();
+
+        // cloneFrom inmutable objects (Strings)
+        newBreinUser.setEmail(this.getEmail());
+        newBreinUser.setFirstName(this.getFirstName());
+        newBreinUser.setLastName(this.getLastName());
+        newBreinUser.setDateOfBirthString(this.getDateOfBirth());
+        newBreinUser.setImei(this.getImei());
+        newBreinUser.setDeviceId(this.getDeviceId());
+        newBreinUser.setUrl(this.getUrl());
+        newBreinUser.setSessionId(this.getSessionId());
+        newBreinUser.setImei(this.getImei());
+        newBreinUser.setUserAgent(this.getUserAgent());
+        newBreinUser.setReferrer(this.getReferrer());
+        newBreinUser.setIpAddress(this.getIpAddress());
+        newBreinUser.setLocalDateTime(this.getLocalDateTime());
+        newBreinUser.setTimezone(this.getTimezone());
+
+        final BreinUserRequest newBreinUserRequest = new BreinUserRequest();
+
+        try {
+            final Map<String, Object> userMap = this.getBreinUserRequest().getUserMap();
+            final Map<String, Object> copyUserMap = BreinMapUtil.copyMap(userMap);
+            newBreinUser.setUserMap(copyUserMap);
+
+            final Map<String, Object> additionalMap = this.getBreinUserRequest().getAdditionalMap();
+            final Map<String, Object> copyAdditionalMap = BreinMapUtil.copyMap(additionalMap);
+            newBreinUser.setAdditionalMap(copyAdditionalMap);
+
+            // final Map<String, CheckFunction>
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //final Map<String, Object> copyUserMap = userMap.entrySet().stream()
+        //        .collect(Collectors.toMap(e -> e.getKey(), e -> new Object(e.getValue())));
+
+
+        return newBreinUser;
+
+
+    }
+
 
     /**
      * provides a nicer output of the user details

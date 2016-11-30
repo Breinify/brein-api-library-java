@@ -274,10 +274,10 @@ public class TestApi {
     /**
      * Helper method. Invokes an activity call
      *
-     * @param breinUser the brein user
+     * @param breinUser         the brein user
      * @param breinActivityType the activity type
      * @param breinCategoryType the category type
-     * @param description the description
+     * @param description       the description
      */
     public void invokeActivityCall(final BreinUser breinUser,
                                    final String breinActivityType,
@@ -346,7 +346,7 @@ public class TestApi {
     /**
      * Testcase with null value as base url, should throw an exception
      */
-    @Test(expected=BreinInvalidConfigurationException.class)
+    @Test(expected = BreinInvalidConfigurationException.class)
     public void testWithNullBaseUrl() {
 
         final BreinConfig config = new BreinConfig(VALID_API_KEY).setBaseUrl(null);
@@ -357,7 +357,7 @@ public class TestApi {
      * Testcase with no rest engine set. This will throw an
      * exception.
      */
-    @Test(expected=BreinException.class)
+    @Test(expected = BreinException.class)
     public void testLoginWithNoRestEngine() {
 
         final String description = "Login-Description";
@@ -374,7 +374,6 @@ public class TestApi {
 
     /**
      * Testcase with later set UNIREST_ENGINE
-     *
      */
     @Test
     public void testLoginWithNoSetToUnirestEngine() {
@@ -579,7 +578,7 @@ public class TestApi {
      * test case without having set the BreinUser.
      * This will lead to an Exception.
      */
-    @Test(expected=BreinException.class)
+    @Test(expected = BreinException.class)
     public void testPageVisitWithException() {
 
         // set configuration
@@ -911,17 +910,7 @@ public class TestApi {
         showTemporalDataOutput(response);
     }
 
-    /**
-     * Test case supporting the following additional feature:
-     * <p>
-     * additional: {
-     * location: {
-     * city: 'Cupertino',
-     * state: 'CA',
-     * country: 'US'
-     * }
-     * }
-     */
+
     @Test
     public void testTemporalDataWithAdditionalLocation() {
 
@@ -930,15 +919,21 @@ public class TestApi {
         // set configuration
         Breinify.setConfig(breinConfig);
 
-        final BreinUser user = new BreinUser()
-                // important new fields
-                .setIpAddress("74.115.209.58")
-                .setTimezone("America/Los_Angeles")
-                .setLocalDateTime("Sun Dec 25 2016 18:15:48 GMT-0800 (PST)");
+        final Map<String, Object> locationAdditionalMap = new HashMap<>();
+        final Map<String, Object> locationValueMap = new HashMap<>();
+
+        locationValueMap.put("latitude", Math.random() * 10 + 39 - 5);
+        locationValueMap.put("longitude", Math.random() * 50 - 98 - 25);
+        locationAdditionalMap.put("location", locationValueMap);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setIpAddress("127.0.0.1")
+                .setAdditionalMap(locationAdditionalMap);
 
         try {
             // invoke temporaldata
-            final BreinResult response = Breinify.temporalData(user);
+            final BreinResult response = Breinify.temporalData(localBreinUser);
             // show output
             showTemporalDataOutput(response);
         } catch (final Exception e) {
@@ -953,6 +948,19 @@ public class TestApi {
             final Object timeValues = response.get("time");
             assertTrue(timeValues != null);
             System.out.println(timeValues);
+
+            final Object holidayValues = response.get("holidays");
+            assertTrue(holidayValues != null);
+            System.out.println(holidayValues);
+
+            final Object loationValues = response.get("location");
+            assertTrue(loationValues != null);
+            System.out.println(loationValues);
+
+            final Object weatherValues = response.get("weather");
+            //assertTrue(weatherValues != null);
+            // System.out.println(weatherValues);
+
         }
     }
 
