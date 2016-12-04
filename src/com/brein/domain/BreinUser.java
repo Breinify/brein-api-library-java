@@ -1,7 +1,5 @@
 package com.brein.domain;
 
-import com.brein.util.BreinMapUtil;
-
 import java.util.Map;
 
 /**
@@ -77,7 +75,7 @@ public class BreinUser {
     /**
      * contains the data structure for the user request part including additional
      */
-    private final BreinUserRequest breinUserRequest = new BreinUserRequest();
+    private final BreinUserRequest breinUserRequest;
 
     /**
      * create a brein user with field email.
@@ -85,21 +83,25 @@ public class BreinUser {
      * @param email of the user
      */
     public BreinUser(final String email) {
+        this();
         setEmail(email);
-    }
-
-    /**
-     *
-     * @param originalBreinUser
-     */
-    public BreinUser(final BreinUser originalBreinUser) {
-        this.cloneFrom(originalBreinUser);
     }
 
     /**
      * create a brein user
      */
     public BreinUser() {
+        breinUserRequest = new BreinUserRequest();
+    }
+
+    /**
+     * creates a brein user with a given brein user request.
+     * This might come from a clone operation.
+     *
+     * @param breinUserRequest contains the brein user request object
+     */
+    public BreinUser(final BreinUserRequest breinUserRequest) {
+        this.breinUserRequest = breinUserRequest;
     }
 
     /**
@@ -292,10 +294,13 @@ public class BreinUser {
     }
 
     /**
-     * @param dateOfBirthString
+     * Sets the value of dateOfBirth as String. This is only used internally.
+     *
+     * @param dateOfBirthString contains the date of birth string
      */
-    private void setDateOfBirthString(final String dateOfBirthString) {
+    private BreinUser setDateOfBirthString(final String dateOfBirthString) {
         this.dateOfBirth = dateOfBirthString;
+        return this;
     }
 
     /**
@@ -416,99 +421,55 @@ public class BreinUser {
         return this;
     }
 
-
-    public void cloneFrom(final BreinUser sourceUser) {
-
-        // cloneFrom inmutable objects (Strings)
-        this.setEmail(sourceUser.getEmail());
-        this.setFirstName(sourceUser.getFirstName());
-        this.setLastName(sourceUser.getLastName());
-        this.setDateOfBirthString(sourceUser.getDateOfBirth());
-        this.setImei(sourceUser.getImei());
-        this.setDeviceId(sourceUser.getDeviceId());
-        this.setUrl(sourceUser.getUrl());
-        this.setSessionId(sourceUser.getSessionId());
-        this.setImei(sourceUser.getImei());
-        this.setUserAgent(sourceUser.getUserAgent());
-        this.setReferrer(sourceUser.getReferrer());
-        this.setIpAddress(sourceUser.getIpAddress());
-        this.setLocalDateTime(sourceUser.getLocalDateTime());
-        this.setTimezone(sourceUser.getTimezone());
-
-        final BreinUserRequest newBreinUserRequest = new BreinUserRequest();
-
-        try {
-            final Map<String, Object> userMap = sourceUser.getBreinUserRequest().getUserMap();
-            final Map<String, Object> copyUserMap = BreinMapUtil.copyMap(userMap);
-            this.setUserMap(copyUserMap);
-
-            final Map<String, Object> additionalMap = sourceUser.getBreinUserRequest().getAdditionalMap();
-            final Map<String, Object> copyAdditionalMap = BreinMapUtil.copyMap(additionalMap);
-            this.setAdditionalMap(copyAdditionalMap);
-
-            // final Map<String, CheckFunction>
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        //final Map<String, Object> copyUserMap = userMap.entrySet().stream()
-        //        .collect(Collectors.toMap(e -> e.getKey(), e -> new Object(e.getValue())));
-
-
-
+    /**
+     * returns the user field map
+     *
+     * @return user field map
+     */
+    public Map<String, Object> getUserMap() {
+        return this.getBreinUserRequest().getUserMap();
     }
 
-    public BreinUser createClone() {
-
-        final BreinUser newBreinUser = new BreinUser();
-
-        // cloneFrom inmutable objects (Strings)
-        newBreinUser.setEmail(this.getEmail());
-        newBreinUser.setFirstName(this.getFirstName());
-        newBreinUser.setLastName(this.getLastName());
-        newBreinUser.setDateOfBirthString(this.getDateOfBirth());
-        newBreinUser.setImei(this.getImei());
-        newBreinUser.setDeviceId(this.getDeviceId());
-        newBreinUser.setUrl(this.getUrl());
-        newBreinUser.setSessionId(this.getSessionId());
-        newBreinUser.setImei(this.getImei());
-        newBreinUser.setUserAgent(this.getUserAgent());
-        newBreinUser.setReferrer(this.getReferrer());
-        newBreinUser.setIpAddress(this.getIpAddress());
-        newBreinUser.setLocalDateTime(this.getLocalDateTime());
-        newBreinUser.setTimezone(this.getTimezone());
-
-        final BreinUserRequest newBreinUserRequest = new BreinUserRequest();
-
-        try {
-            final Map<String, Object> userMap = this.getBreinUserRequest().getUserMap();
-            final Map<String, Object> copyUserMap = BreinMapUtil.copyMap(userMap);
-            newBreinUser.setUserMap(copyUserMap);
-
-            final Map<String, Object> additionalMap = this.getBreinUserRequest().getAdditionalMap();
-            final Map<String, Object> copyAdditionalMap = BreinMapUtil.copyMap(additionalMap);
-            newBreinUser.setAdditionalMap(copyAdditionalMap);
-
-            // final Map<String, CheckFunction>
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        //final Map<String, Object> copyUserMap = userMap.entrySet().stream()
-        //        .collect(Collectors.toMap(e -> e.getKey(), e -> new Object(e.getValue())));
-
-
-        return newBreinUser;
-
-
+    /**
+     * returns the map that is part of the addtional section
+     *
+     * @return addtional map
+     */
+    public Map<String, Object> getAdditionalMap() {
+        return this.getBreinUserRequest().getAdditionalMap();
     }
 
+    /**
+     * Creates a clone of a given BreinUser object
+     *
+     * @param sourceUser contains the original brein user
+     * @return a copy of the original brein user
+     */
+    public static BreinUser clone(final BreinUser sourceUser) {
+
+        // firstly create a copy of the breinuser request
+        final BreinUserRequest newBreinUserRequest = BreinUserRequest
+                .clone(sourceUser.getBreinUserRequest());
+
+        // then a new user with the new created brein user request
+        final BreinUser newUser = new BreinUser(newBreinUserRequest)
+                .setEmail(sourceUser.getEmail())
+                .setFirstName(sourceUser.getFirstName())
+                .setLastName(sourceUser.getLastName())
+                .setDateOfBirthString(sourceUser.getDateOfBirth())
+                .setImei(sourceUser.getImei())
+                .setDeviceId(sourceUser.getDeviceId())
+                .setUrl(sourceUser.getUrl())
+                .setSessionId(sourceUser.getSessionId())
+                .setImei(sourceUser.getImei())
+                .setUserAgent(sourceUser.getUserAgent())
+                .setReferrer(sourceUser.getReferrer())
+                .setIpAddress(sourceUser.getIpAddress())
+                .setLocalDateTime(sourceUser.getLocalDateTime())
+                .setTimezone(sourceUser.getTimezone());
+
+        return newUser;
+    }
 
     /**
      * provides a nicer output of the user details
@@ -535,7 +496,6 @@ public class BreinUser {
                 + (this.deviceId == null ? "n/a" : this.deviceId)
                 + "\n";
     }
-
 
 }
 

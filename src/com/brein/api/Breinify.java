@@ -4,19 +4,16 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
+import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
+import java.util.Map;
 import java.util.function.Function;
 
 /**
  * Static Implementation of Breinify activity & lookup calls
  */
 public class Breinify {
-
-    /**
-     * contains the current version of the usage library
-     */
-    private static final String VERSION = "1.2.0";
 
     /**
      * contains the configuration
@@ -60,15 +57,6 @@ public class Breinify {
     }
 
     /**
-     * returns the  version
-     *
-     * @return version
-     */
-    public String getVersion() {
-        return VERSION;
-    }
-
-    /**
      * @return breinActivity instance
      */
     public static BreinActivity getBreinActivity() {
@@ -85,7 +73,7 @@ public class Breinify {
     /**
      * @return temporaldata instance
      */
-       public static BreinTemporalData getBreinTemporalData() {
+    public static BreinTemporalData getBreinTemporalData() {
         return breinTemporalData;
     }
 
@@ -114,18 +102,20 @@ public class Breinify {
             throw new BreinException(BreinException.USER_NOT_SET);
         }
 
-        breinActivity.setBreinUser(user);
-        breinActivity.setBreinActivityType(activityType);
-        breinActivity.setBreinCategoryType(categoryType);
-        breinActivity.setDescription(description);
-
-        // invoke the request, "this" has all necessary information
         if (breinActivity.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
 
+        // apply the current configuration
+        breinActivity.setBreinUser(user);
+        breinActivity.setBreinActivityType(activityType);
+        breinActivity.setBreinCategoryType(categoryType);
+        breinActivity.setDescription(description);
         breinActivity.setErrorCallback(errorCallback);
-        breinActivity.getBreinEngine().sendActivity(breinActivity);
+
+        // create a clone in order to prevent concurrency issues
+        final BreinActivity newActivity = Breinify.cloneActivity(breinActivity);
+        newActivity.getBreinEngine().sendActivity(newActivity);
     }
 
     /**
@@ -172,7 +162,7 @@ public class Breinify {
      */
     public static void activity() {
 
-        // use the own instance
+        // request is based on the static instance
         final BreinActivity breinActivity = getBreinActivity();
 
         if (breinActivity.getBreinUser() == null) {
@@ -191,11 +181,55 @@ public class Breinify {
             }
         }
 
-        if (null == breinActivity.getBreinEngine()) {
+        if (breinActivity.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
 
-        breinActivity.getBreinEngine().sendActivity(breinActivity);
+        // create a clone in order to prevent concurrency issues
+        final BreinActivity newActivity = Breinify.cloneActivity(breinActivity);
+
+        breinActivity.getBreinEngine().sendActivity(newActivity);
+    }
+
+    /**
+     * Used to create a clone of an activity. This is important in order to prevent
+     * concurrency issues.
+     *
+     * @param breinActivity contains the original activity object
+     * @return the clone of the activity object
+     */
+    public static BreinActivity cloneActivity(final BreinActivity breinActivity) {
+
+        // create a new activity object
+        final BreinActivity activity = new BreinActivity()
+                .setBreinActivityType(breinActivity.getBreinActivityType())
+                .setBreinCategoryType(breinActivity.getBreinCategoryType())
+                .setDescription(breinActivity.getDescription());
+
+        // set further data...
+        activity.setIpAddress(breinActivity.getIpAddress());
+        activity.setUnixTimestamp(breinActivity.getUnixTimestamp());
+
+        // callback
+        activity.setErrorCallback(breinActivity.getErrorCallback());
+
+        // configuration
+        activity.setConfig(breinActivity.getConfig());
+
+        // clone user
+        final BreinUser clonedUser = BreinUser.clone(breinActivity.getBreinUser());
+        activity.setBreinUser(clonedUser);
+
+        // clone maps
+        final Map<String, Object> activityMap = BreinMapUtil
+                .copyMap(breinActivity.getActivityMap());
+        activity.setActivityMap(activityMap);
+
+        final Map<String, Object> tagsMapCopy = BreinMapUtil
+                .copyMap(breinActivity.getTagsMap());
+        activity.setTagsMap(tagsMapCopy);
+
+        return activity;
     }
 
     /**
@@ -238,13 +272,14 @@ public class Breinify {
             throw new BreinException("BreinLookup object is null");
         }
 
+        if (breinLookup.getBreinEngine() == null) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
+
         breinLookup.setBreinUser(user);
         breinLookup.setBreinDimension(dimension);
 
         // invoke the lookup request
-        if (breinLookup.getBreinEngine() == null) {
-            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
-        }
         return breinLookup.getBreinEngine().performLookUp(breinLookup);
     }
 
@@ -263,12 +298,8 @@ public class Breinify {
         breinTemporalData.setConfig(getConfig());
 
         // clone user
-        final BreinUser clonedUser = new BreinUser(user);
-
+        final BreinUser clonedUser = BreinUser.clone(user);
         return temporalData(breinTemporalData, clonedUser);
-
-
-        // return temporalData(breinTemporalData, user);
     }
 
     /**
@@ -290,12 +321,13 @@ public class Breinify {
             throw new BreinException("BreinTemporalData object not set");
         }
 
-        breinTemporalData.setBreinUser(user);
-
-        // invoke the temporaldata request
         if (breinTemporalData.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
+
+        breinTemporalData.setBreinUser(user);
+
+        // invoke the temporaldata request
         return breinTemporalData.getBreinEngine().performTemporalDataRequest(breinTemporalData);
     }
 

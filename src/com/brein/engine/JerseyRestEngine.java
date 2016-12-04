@@ -35,6 +35,19 @@ public class JerseyRestEngine implements IRestEngine {
         try {
             final ClientResponse response = webResource.type("application/json")
                     .post(ClientResponse.class, getRequestBody(breinActivity));
+
+            if (response.getStatus() != 200) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Response is: " + response.toString());
+                }
+
+                if (errorCallback != null) {
+                    final String message = "Failure in rest call. Reason: " + response.toString();
+                    errorCallback.apply(message);
+                }
+            }
+
+
         } catch (final UniformInterfaceException | ClientHandlerException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Exception", e);

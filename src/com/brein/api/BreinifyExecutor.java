@@ -13,17 +13,20 @@ import java.util.function.Function;
 public class BreinifyExecutor {
 
     /**
-     * contains the current version of the library
-     */
-    private static final String VERSION = "1.2.0";
-    /**
      * contains the activity object
      */
     private final BreinActivity breinActivity = new BreinActivity();
+
     /**
      * contains the lookup object
      */
     private final BreinLookup breinLookup = new BreinLookup();
+
+    /**
+     * contains the temporalData object
+     */
+    private final BreinTemporalData breinTemporalData = new BreinTemporalData();
+
     /**
      * contains the configuration
      */
@@ -47,15 +50,7 @@ public class BreinifyExecutor {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
-    }
-
-    /**
-     * returns the version
-     *
-     * @return version
-     */
-    public String getVersion() {
-        return VERSION;
+        breinTemporalData.setConfig(breinConfig);
     }
 
     /**

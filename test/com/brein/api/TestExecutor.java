@@ -35,7 +35,7 @@ public class TestExecutor {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+    private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
 
     /**
      * Contains the Breinify User
@@ -75,9 +75,6 @@ public class TestExecutor {
     @Test
     public void testPageVisit() {
 
-        /*
-         * additional user information
-         */
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
         breinUser.setDateOfBirth(11, 20, 1999);
@@ -90,7 +87,6 @@ public class TestExecutor {
 
         final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
-                .setBaseUrl(BASE_URL)
                 .setAndInitRestEngine(BreinEngineType.UNIREST_ENGINE)
                 .build();
 
@@ -114,22 +110,17 @@ public class TestExecutor {
     @Test
     public void testLogin() {
 
-        /*
-         * additional user information
-         */
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
         final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
-                .setBaseUrl(BASE_URL)
                 .setAndInitRestEngine(BreinEngineType.UNIREST_ENGINE)
                 .build();
 
         final String description = "your description";
-        /*
-         * invoke activity call
-         */
+
+        // invoke activity call
         breinifyExecutor.activity(breinUser,
                 BreinActivityType.LOGIN,
                 BreinCategoryType.FOOD,
@@ -143,9 +134,7 @@ public class TestExecutor {
     @Test
     public void testWitoutCategorySet() {
 
-        /*
-         * additional user information
-         */
+        // additional user information
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
@@ -156,9 +145,8 @@ public class TestExecutor {
                 .build();
 
         final String description = "your description";
-        /*
-         * invoke activity call
-         */
+
+        // invoke activity call
         breinifyExecutor.activity(breinUser,
                 BreinActivityType.LOGIN,
                 null,
@@ -218,11 +206,7 @@ public class TestExecutor {
     @Test(expected = BreinInvalidConfigurationException.class)
     public void testLoginWithBadUrl() {
 
-        /*
-         * Just to ensure that the right config has been set
-         */
         final String badUrl = "www.beeeeeiiiniiify.com";
-
         final BreinifyExecutor breinifyExecutor = new BreinConfig()
                 .setApiKey(VALID_API_KEY)
                 .setBaseUrl(badUrl)

@@ -29,7 +29,7 @@ public class TestApi {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+    private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
 
     /**
      * Contains the Breinify User
@@ -574,11 +574,42 @@ public class TestApi {
         Breinify.activity();
     }
 
+
+    @Test
+    public void testPageVisitWithTimestampAndSecret() {
+
+        final String secret = "lmcoj4k27hbbszzyiqamhg==";
+        final String secretApiKey = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
+
+        // set configuration
+        final BreinConfig breinConfig = new BreinConfig(secretApiKey, secret);
+        Breinify.setConfig(breinConfig);
+
+        // user data
+        final BreinUser breinUser = new BreinUser("User.Name@email.com")
+                .setFirstName("Marco")
+                .setLastName("Recchioni");
+
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+
+        breinActivity.setUnixTimestamp(1480643035);
+        breinActivity.setBreinUser(breinUser);
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+        breinActivity.setDescription("your description");
+
+        Breinify.activity();
+        Breinify.activity();
+        Breinify.activity();
+        Breinify.activity();
+    }
+
     /**
      * test case without having set the BreinUser.
      * This will lead to an Exception.
      */
-    @Test(expected = BreinException.class)
+    @Test(expected=BreinException.class)
     public void testPageVisitWithException() {
 
         // set configuration
@@ -914,7 +945,6 @@ public class TestApi {
     @Test
     public void testTemporalDataWithAdditionalLocation() {
 
-        // TODO: build testcase
 
         // set configuration
         Breinify.setConfig(breinConfig);
@@ -933,9 +963,16 @@ public class TestApi {
 
         try {
             // invoke temporaldata
-            final BreinResult response = Breinify.temporalData(localBreinUser);
-            // show output
-            showTemporalDataOutput(response);
+
+            for (int i = 0; i < 100; i++) {
+                final BreinResult response = Breinify.temporalData(localBreinUser);
+
+                // show output
+                showTemporalDataOutput(response);
+
+                Thread.sleep(300);
+            }
+
         } catch (final Exception e) {
             fail("REST exception is: " + e);
         }

@@ -1,25 +1,13 @@
 package com.brein.domain;
 
-import com.brein.api.CheckFunction;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 import com.google.gson.JsonObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
 public class BreinUserRequest {
-
-    /**
-     * contains the function map for user data related functions
-     */
-    private Map<String, CheckFunction> requestUserDataFunctions = null;
-
-    /**
-     * contains the function map for user additional data related functions
-     */
-    private Map<String, CheckFunction> requestUserAdditionalDataFunctions = null;
 
     /**
      * contains further fields in the user additional section
@@ -68,51 +56,6 @@ public class BreinUserRequest {
     }
 
     /**
-     *
-     * @return
-     */
-    public Map<String, CheckFunction> getRequestUserDataFunctions() {
-        return requestUserDataFunctions;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Map<String, CheckFunction> getRequestUserAdditionalDataFunctions() {
-        return requestUserAdditionalDataFunctions;
-    }
-
-    /**
-     * configures the user additional part
-     *
-     * @param breinUser contains the brein user
-     */
-    public void configureRequestUserAdditionalFunctionMap(final BreinUser breinUser) {
-        requestUserAdditionalDataFunctions.put("userAgent", breinUser::getUserAgent);
-        requestUserAdditionalDataFunctions.put("referrer", breinUser::getReferrer);
-        requestUserAdditionalDataFunctions.put("url", breinUser::getUrl);
-        requestUserAdditionalDataFunctions.put("localDateTime", breinUser::getLocalDateTime);
-        requestUserAdditionalDataFunctions.put("timezone", breinUser::getTimezone);
-    }
-
-    /**
-     * configures the user data function map
-     *
-     * @param breinUser contains the brein user
-     */
-    public void configureRequestUserDataFunctionMap(final BreinUser breinUser) {
-        // configure the map
-        requestUserDataFunctions.put("email", breinUser::getEmail);
-        requestUserDataFunctions.put("firstName", breinUser::getFirstName);
-        requestUserDataFunctions.put("lastName", breinUser::getLastName);
-        requestUserDataFunctions.put("dateOfBirth", breinUser::getDateOfBirth);
-        requestUserDataFunctions.put("deviceId", breinUser::getDeviceId);
-        requestUserDataFunctions.put("imei", breinUser::getImei);
-        requestUserDataFunctions.put("sessionId", breinUser::getSessionId);
-    }
-
-    /**
      * Prepares the request on user level
      *
      * @param requestData contains the json request that is generated (top level)
@@ -121,16 +64,9 @@ public class BreinUserRequest {
     public void prepareUserRequestData(final JsonObject requestData,
                                        final BreinUser breinUser) {
 
+        // user fields...
         final JsonObject userData = new JsonObject();
-
-        // do it once
-        if (requestUserDataFunctions == null) {
-            requestUserDataFunctions = new HashMap<>();
-            configureRequestUserDataFunctionMap(breinUser);
-        }
-
-        // Execute the functions and add it to userData
-        executeMapFunctions(userData, requestUserDataFunctions);
+        prepareUserFields(breinUser, userData);
 
         // check if there are further maps to add on user level
         if (userMap != null && userMap.size() > 0) {
@@ -138,16 +74,8 @@ public class BreinUserRequest {
         }
 
         // additional part
-        if (requestUserAdditionalDataFunctions == null) {
-            requestUserAdditionalDataFunctions = new HashMap<>();
-            configureRequestUserAdditionalFunctionMap(breinUser);
-        }
-
-        // additional part
         final JsonObject additional = new JsonObject();
-
-        // Execute the functions and add it to userData
-        executeMapFunctions(additional, requestUserAdditionalDataFunctions);
+        prepareAdditionalFields(breinUser, additional);
 
         // check if there are further maps to add on user additional level
         if (additionalMap != null && additionalMap.size() > 0) {
@@ -159,23 +87,98 @@ public class BreinUserRequest {
         }
 
         // add the data
-        requestData.add("user", userData);
+        if (userData.size() > 0) {
+            requestData.add("user", userData);
+        }
     }
 
     /**
-     * Executes the actions within the map. Checks if the value is valid and if this is
-     * the case then the property will be added to the json structure.
+     * Prepares the fields that are part of the user section
      *
-     * @param jsonObject  structure that will be added with a property
-     * @param functionMap map of actions (aka methods)
+     * @param breinUser  contains the brein user object
+     * @param jsonObject contains the json array
      */
-    public void executeMapFunctions(final JsonObject jsonObject,
-                                    final Map<String, CheckFunction> functionMap) {
+    public void prepareUserFields(final BreinUser breinUser, final JsonObject jsonObject) {
 
-        functionMap.entrySet().forEach(action -> {
-            if (BreinUtil.containsValue(action.getValue().invoke())) {
-                jsonObject.addProperty(action.getKey(), action.getValue().invoke());
-            }
-        });
+        if (BreinUtil.containsValue(breinUser.getEmail())) {
+            jsonObject.addProperty("email", breinUser.getEmail());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getFirstName())) {
+            jsonObject.addProperty("firstName", breinUser.getFirstName());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getLastName())) {
+            jsonObject.addProperty("lastName", breinUser.getLastName());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getDateOfBirth())) {
+            jsonObject.addProperty("dateOfBirth", breinUser.getDateOfBirth());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getDeviceId())) {
+            jsonObject.addProperty("deviceId", breinUser.getDeviceId());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getImei())) {
+            jsonObject.addProperty("imei", breinUser.getImei());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getSessionId())) {
+            jsonObject.addProperty("sessionId", breinUser.getSessionId());
+        }
+
+    }
+
+    /**
+     * Prepares the fields that are part of the user additional section
+     *
+     * @param breinUser  contains the brein user object
+     * @param jsonObject contains the json array
+     */
+    public void prepareAdditionalFields(final BreinUser breinUser, final JsonObject jsonObject) {
+
+        if (BreinUtil.containsValue(breinUser.getUserAgent())) {
+            jsonObject.addProperty("userAgent", breinUser.getUserAgent());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getReferrer())) {
+            jsonObject.addProperty("referrer", breinUser.getReferrer());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getUrl())) {
+            jsonObject.addProperty("url", breinUser.getUrl());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getLocalDateTime())) {
+            jsonObject.addProperty("localDateTime", breinUser.getLocalDateTime());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getTimezone())) {
+            jsonObject.addProperty("timezone", breinUser.getTimezone());
+        }
+
+    }
+
+    /**
+     * Used to create a clone of a given BreinUserRequest
+     *
+     * @param breinUserRequest original brein user object
+     * @return contains the clone
+     */
+    public static BreinUserRequest clone(final BreinUserRequest breinUserRequest) {
+
+        final BreinUserRequest newBreinUserRequest = new BreinUserRequest();
+
+        // a copy of all maps
+        final Map<String, Object> userMap = breinUserRequest.getUserMap();
+        final Map<String, Object> copyUserMap = BreinMapUtil.copyMap(userMap);
+        newBreinUserRequest.setUserMap(copyUserMap);
+
+        final Map<String, Object> additionalMap = breinUserRequest.getAdditionalMap();
+        final Map<String, Object> copyAdditionalMap = BreinMapUtil.copyMap(additionalMap);
+        newBreinUserRequest.setAdditionalMap(copyAdditionalMap);
+
+        return newBreinUserRequest;
     }
 }

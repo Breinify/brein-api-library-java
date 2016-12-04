@@ -188,7 +188,6 @@ public class BreinConfig {
      * if the URL is valid.
      *
      * @param baseUrl contains the url
-     *
      * @return the config object itself
      */
     public BreinConfig setBaseUrl(final String baseUrl) {
@@ -228,7 +227,6 @@ public class BreinConfig {
      * set rest type client
      *
      * @param restEngineType of the rest impl
-     *
      * @return the config object itself
      */
     public BreinConfig setAndInitRestEngine(final BreinEngineType restEngineType) {
@@ -259,7 +257,6 @@ public class BreinConfig {
      * sets the apikey
      *
      * @param apiKey the apikey
-     *
      * @return the config object itself
      */
     public BreinConfig setApiKey(final String apiKey) {
@@ -330,7 +327,6 @@ public class BreinConfig {
      * sets the activity endpoint
      *
      * @param activityEndpoint endpoint
-     *
      * @return the config object itself
      */
     public BreinConfig setActivityEndpoint(final String activityEndpoint) {
@@ -351,7 +347,6 @@ public class BreinConfig {
      * sets the lookup endpoint
      *
      * @param lookupEndpoint endpoint
-     *
      * @return the config object itself
      */
     public BreinConfig setLookupEndpoint(final String lookupEndpoint) {
@@ -439,7 +434,6 @@ public class BreinConfig {
      * Validates if the URL is correct.
      *
      * @param url to check
-     *
      * @return true if ok otherwise false
      */
     public boolean isUrlValid(final String url) {

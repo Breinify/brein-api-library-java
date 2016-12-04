@@ -5,7 +5,6 @@ import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 import com.google.gson.JsonObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,11 +37,6 @@ public class BreinActivity extends BreinBase {
      * contains the fields that are part of the activity map
      */
     private Map<String, Object> activityMap;
-
-    /**
-     * contains the function map for activity data related functions
-     */
-    private Map<String, CheckFunction> requestActivityFunctions = null;
 
     /**
      * returns activity type
@@ -140,9 +134,20 @@ public class BreinActivity extends BreinBase {
      * sets the actvitiy map
      *
      * @param dataActivityMap containing additional values
+     * @return self
      */
-    public void setActivityMap(final Map<String, Object> dataActivityMap) {
+    public BreinActivity setActivityMap(final Map<String, Object> dataActivityMap) {
         this.activityMap = dataActivityMap;
+        return this;
+    }
+
+    /**
+     * returns the activity map
+     *
+     * @return the activity map
+     */
+    public Map<String, Object> getActivityMap() {
+        return activityMap;
     }
 
     /**
@@ -155,7 +160,6 @@ public class BreinActivity extends BreinBase {
         description = "";
         tagsMap = null;
         activityMap = null;
-        requestActivityFunctions = null;
     }
 
     /**
@@ -219,7 +223,9 @@ public class BreinActivity extends BreinBase {
         // activity data
         final JsonObject activityData = new JsonObject();
         prepareActivityRequestData(activityData);
-        requestData.add("activity", activityData);
+        if (activityData.size() > 0) {
+            requestData.add("activity", activityData);
+        }
 
         // base level data...
         getBreinBaseRequest().prepareBaseRequestData(this, requestData);
@@ -234,15 +240,18 @@ public class BreinActivity extends BreinBase {
      */
     public void prepareActivityRequestData(final JsonObject activityData) {
 
-        if (requestActivityFunctions == null) {
-            requestActivityFunctions = new HashMap<>();
-
-            // configure the map
-            configureRequestActivityFunctionMap();
+        // activity fields...
+        if (BreinUtil.containsValue(getBreinActivityType())) {
+            activityData.addProperty("type", getBreinActivityType());
         }
 
-        // execute the map
-        BreinMapUtil.executeMapFunctions(activityData, requestActivityFunctions);
+        if (BreinUtil.containsValue(getDescription())) {
+            activityData.addProperty("description", getDescription());
+        }
+
+        if (BreinUtil.containsValue(getBreinCategoryType())) {
+            activityData.addProperty("category", getBreinCategoryType());
+        }
 
         // add tags map if configured
         if (tagsMap != null && tagsMap.size() > 0) {
@@ -255,15 +264,6 @@ public class BreinActivity extends BreinBase {
         if (activityMap != null && activityMap.size() > 0) {
             BreinMapUtil.fillMap(activityMap, activityData);
         }
-    }
-
-    /**
-     * configures the activity related functions
-     */
-    public void configureRequestActivityFunctionMap() {
-        requestActivityFunctions.put("type", this::getBreinActivityType);
-        requestActivityFunctions.put("description", this::getDescription);
-        requestActivityFunctions.put("category", this::getBreinCategoryType);
     }
 
     /**
@@ -280,7 +280,6 @@ public class BreinActivity extends BreinBase {
 
         return BreinUtil.generateSignature(message, getConfig().getSecret());
     }
-
 
 }
 

@@ -58,27 +58,35 @@ public class BreinMapUtil {
         });
     }
 
-
-    public static Map copyMap(final Map source) throws Exception {
+    /**
+     * Map Helper method used to copy a hashmap of type <String, Object>
+     *
+     * @param source contains the original map
+     * @return a copy of the map or null if source is null
+     */
+    public static Map<String, Object> copyMap(final Map<String, Object> source) {
         if (source == null) {
             return null;
         }
 
-        // final Map newMap = source.getClass().newInstance();
-        // newMap.putAll(source);
+        final HashMap<String, Object> copyMap = new HashMap<>();
 
-        /*
-        final Map newMap = source.entrySet()
-                .stream()
-                .collect(Collectors.toMap(e -> e.getKey(), Map.Entry::getValue));
+        for (final Map.Entry<String, Object> entry : source.entrySet()) {
 
+            final String key = entry.getKey();
+            final Object value = entry.getValue();
 
-        */
+            if (value.getClass() == HashMap.class) {
+                @SuppressWarnings("unchecked")
+                final Map<String, Object> newMap = BreinMapUtil.copyMap((Map<String, Object>) value);
+                copyMap.put(key, newMap);
+            } else {
+                copyMap.put(key, value);
+            }
 
+        }
 
-                       //  e -> new Column(e.getValue())));
-
-
-        return null;
+        return copyMap;
     }
+
 }

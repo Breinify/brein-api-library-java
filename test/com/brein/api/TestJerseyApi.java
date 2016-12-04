@@ -29,7 +29,7 @@ public class TestJerseyApi {
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
 
     /**
      * Contains the Breinify User
@@ -49,7 +49,7 @@ public class TestJerseyApi {
     /**
      * Correct configuration
      */
-    final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
+    final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY ).setAndInitRestEngine(BreinEngineType.JERSEY_ENGINE);
 
     /**
      * indicator if the loops should be done forever :-)
@@ -824,7 +824,7 @@ public class TestJerseyApi {
 
         final String API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
 
-        Breinify.setConfig(new BreinConfig(API_KEY));
+        Breinify.setConfig(new BreinConfig(API_KEY).setAndInitRestEngine(BreinEngineType.JERSEY_ENGINE));
 
         final Map<String, Object> locationAdditionalMap = new HashMap<>();
         final Map<String, Object> locationValueMap = new HashMap<>();
@@ -836,10 +836,18 @@ public class TestJerseyApi {
                 .setAdditionalMap(locationAdditionalMap)
                 .setIpAddress("127.0.0.1");
 
-        final BreinResult response = Breinify.temporalData(user);
+        for (int i=0; i < 100; i++) {
+            final BreinResult response = Breinify.temporalData(user);
 
-        // show output
-        showTemporalDataOutput(response);
+            // show output
+            System.out.println("Index is: " + i);
+            showTemporalDataOutput(response);
+            try {
+                Thread.sleep(10);
+            } catch (final InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
