@@ -568,7 +568,7 @@ public class TestJerseyApi {
         dataBaseLevelMap.put("enhancement-base", "value");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setBaseMap(dataBaseLevelMap);
+        breinActivity.setBase(dataBaseLevelMap);
 
         callLoginWithStandardValues();
     }
@@ -584,7 +584,7 @@ public class TestJerseyApi {
         dataActivityMap.put("enhancement-activity-2", "value-2");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setActivityMap(dataActivityMap);
+        breinActivity.set(dataActivityMap);
 
         callLoginWithStandardValues();
     }
@@ -602,7 +602,7 @@ public class TestJerseyApi {
         dataRootActivityMap.put("activityRoot", dataActivityMap);
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setActivityMap(dataRootActivityMap);
+        breinActivity.set(dataRootActivityMap);
 
         callLoginWithStandardValues();
     }
@@ -631,7 +631,7 @@ public class TestJerseyApi {
         dataRootMap.put("Right", dataRootRightActivityMap);
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setActivityMap(dataRootMap);
+        breinActivity.set(dataRootMap);
 
         callLoginWithStandardValues();
     }
@@ -651,7 +651,7 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setUserMap(dataUserMap);
+                .set(dataUserMap);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
@@ -671,7 +671,7 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setAdditionalMap(dataAdditionalMap);
+                .setAdditional(dataAdditionalMap);
 
         Breinify.setConfig(breinConfig);
 
@@ -696,7 +696,7 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setAdditionalMap(locationAdditionalMap);
+                .setAdditional(locationAdditionalMap);
 
         Breinify.setConfig(breinConfig);
 
@@ -720,7 +720,7 @@ public class TestJerseyApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setUserMap(dataUserRootMap);
+                .set(dataUserRootMap);
 
         Breinify.setConfig(breinConfig);
 
@@ -799,7 +799,7 @@ public class TestJerseyApi {
         locationAdditionalMap.put("location", locationValueMap);
 
         final BreinUser user = new BreinUser()
-                .setAdditionalMap(locationAdditionalMap);
+                .setAdditional(locationAdditionalMap);
 
         try {
             // set configuration
@@ -833,7 +833,7 @@ public class TestJerseyApi {
         locationAdditionalMap.put("location", locationValueMap);
 
         final BreinUser user = new BreinUser()
-                .setAdditionalMap(locationAdditionalMap)
+                .setAdditional(locationAdditionalMap)
                 .setIpAddress("127.0.0.1");
 
         for (int i=0; i < 100; i++) {
@@ -843,7 +843,7 @@ public class TestJerseyApi {
             System.out.println("Index is: " + i);
             showTemporalDataOutput(response);
             try {
-                Thread.sleep(10);
+                Thread.sleep(300);
             } catch (final InterruptedException e) {
                 e.printStackTrace();
             }

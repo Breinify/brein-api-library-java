@@ -1,14 +1,12 @@
 > ```java
 > // Example with location latitude / longitude data
-> final Map<String, Object> locationAdditionalMap = new HashMap<>();
-> final Map<String, Object> locationValueMap = new HashMap<>();
+> final Map<String, Object> location = new HashMap<>();
 >
-> locationValueMap.put("latitude", 32.7157);
-> locationValueMap.put("longitude", -117.1611);
-> locationAdditionalMap.put("location", locationValueMap);
+> location.put("latitude", 32.7157);
+> location.put("longitude", -117.1611);
 >
 > final BreinUser user = new BreinUser()
->       .setAdditionalMap(locationAdditionalMap);
+>       .setAdditional("location", location);
 >
 >        try {
 >            // set configuration

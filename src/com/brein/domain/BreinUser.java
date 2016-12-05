@@ -391,7 +391,7 @@ public class BreinUser {
      *
      * @return the user map
      */
-    public Map<String, Object> getUserMap() {
+    public Map<String, Object> get() {
         return userMap;
     }
 
@@ -400,7 +400,7 @@ public class BreinUser {
      *
      * @param userMap map
      */
-    public BreinUser setUserMap(final Map<String, Object> userMap) {
+    public BreinUser set(final Map<String, Object> userMap) {
         if (userMap == null) {
             return this;
         }
@@ -416,11 +416,11 @@ public class BreinUser {
      * @param key  contains the key for the nested map
      * @param userMap map of fields
      */
-    public BreinUser setUserMap(final String key, final Map<String, Object> userMap) {
+    public BreinUser set(final String key, final Map<String, Object> userMap) {
         if (userMap == null) {
             return this;
         }
-        return setUserMap(Collections.singletonMap(key, userMap));
+        return set(Collections.singletonMap(key, userMap));
     }
 
     /**
@@ -428,7 +428,7 @@ public class BreinUser {
      *
      * @return map
      */
-    public Map<String, Object> getAdditionalMap() {
+    public Map<String, Object> getAdditional() {
         return additionalMap;
     }
 
@@ -437,7 +437,7 @@ public class BreinUser {
      *
      * @param additional map
      */
-    public BreinUser setAdditionalMap(final Map<String, Object> additional) {
+    public BreinUser setAdditional(final Map<String, Object> additional) {
         if (additional == null) {
             return this;
         }
@@ -454,11 +454,11 @@ public class BreinUser {
      * @param key  contains the key for the nested map
      * @param additional map of fields
      */
-    public BreinUser setAdditionalMap(final String key, final Map<String, Object> additional) {
+    public BreinUser setAdditional(final String key, final Map<String, Object> additional) {
         if (additional == null) {
             return this;
         }
-        return setAdditionalMap(Collections.singletonMap(key, additional));
+        return setAdditional(Collections.singletonMap(key, additional));
     }
 
     /**
@@ -592,13 +592,13 @@ public class BreinUser {
                 .setTimezone(sourceUser.getTimezone());
 
         // copy maps
-        final Map<String, Object> additionalMap = sourceUser.getAdditionalMap();
+        final Map<String, Object> additionalMap = sourceUser.getAdditional();
         final Map<String, Object> copyOfAdditionalMap = BreinMapUtil.copyMap(additionalMap);
-        newUser.setAdditionalMap(copyOfAdditionalMap);
+        newUser.setAdditional(copyOfAdditionalMap);
 
-        final Map<String, Object> userMap = sourceUser.getUserMap();
+        final Map<String, Object> userMap = sourceUser.get();
         final Map<String, Object> copyOfUserMap = BreinMapUtil.copyMap(userMap);
-        newUser.setUserMap(copyOfUserMap);
+        newUser.set(copyOfUserMap);
 
         return newUser;
     }

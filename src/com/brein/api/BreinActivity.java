@@ -31,7 +31,7 @@ public class BreinActivity extends BreinBase {
     private String description;
 
     /**
-     * contains the tags map
+     * contains the tagsMap map
      */
     private Map<String, Object> tagsMap;
 
@@ -117,7 +117,7 @@ public class BreinActivity extends BreinBase {
      *
      * @return value
      */
-    public Map<String, Object> getTagsMap() {
+    public Map<String, Object> getTags() {
         return tagsMap;
     }
 
@@ -127,7 +127,7 @@ public class BreinActivity extends BreinBase {
      * @param tagsMap created map (e.g. HashMap)
      * @return self
      */
-    public BreinActivity setTagsMap(final Map<String, Object> tagsMap) {
+    public BreinActivity setTags(final Map<String, Object> tagsMap) {
         this.tagsMap = tagsMap;
         return this;
     }
@@ -138,7 +138,7 @@ public class BreinActivity extends BreinBase {
      * @param dataActivityMap containing additional values
      * @return self
      */
-    public BreinActivity setActivityMap(final Map<String, Object> dataActivityMap) {
+    public BreinActivity set(final Map<String, Object> dataActivityMap) {
         if (dataActivityMap == null) {
             return this;
         }
@@ -157,13 +157,13 @@ public class BreinActivity extends BreinBase {
      * @param dataActivityMap containing additional values
      * @return self
      */
-    public BreinActivity setActivityMap(final String key, final Map<String, Object> dataActivityMap) {
+    public BreinActivity set(final String key, final Map<String, Object> dataActivityMap) {
 
         if (dataActivityMap == null) {
             return this;
         }
 
-        return setActivityMap(Collections.singletonMap(key, dataActivityMap));
+        return set(Collections.singletonMap(key, dataActivityMap));
     }
 
     /**
@@ -171,7 +171,7 @@ public class BreinActivity extends BreinBase {
      *
      * @return the activity map
      */
-    public Map<String, Object> getActivityMap() {
+    public Map<String, Object> get() {
         return activityMap;
     }
 
@@ -278,7 +278,7 @@ public class BreinActivity extends BreinBase {
             activityData.addProperty("category", getBreinCategoryType());
         }
 
-        // add tags map if configured
+        // add tagsMap map if configured
         if (tagsMap != null && tagsMap.size() > 0) {
             final JsonObject tagsData = new JsonObject();
             BreinMapUtil.fillMap(tagsMap, tagsData);
@@ -308,12 +308,12 @@ public class BreinActivity extends BreinBase {
 
         // clone maps
         final Map<String, Object> activityMap = BreinMapUtil
-                .copyMap(sourceActivity.getActivityMap());
-        activity.setActivityMap(activityMap);
+                .copyMap(sourceActivity.get());
+        activity.set(activityMap);
 
         final Map<String, Object> tagsMapCopy = BreinMapUtil
-                .copyMap(sourceActivity.getTagsMap());
-        activity.setTagsMap(tagsMapCopy);
+                .copyMap(sourceActivity.getTags());
+        activity.setTags(tagsMapCopy);
 
         // clone from base class
         activity.cloneBase(sourceActivity);

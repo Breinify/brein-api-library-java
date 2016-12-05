@@ -1,6 +1,24 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 2.1
+
+## Modifications
+
+### Concurrency Support
+With each activity or temporalData request the associated request classes are cloned before the request call will be invoked. This will prevent concurrency issues in multithread situations.
+
+
+### Flexible Maps 
+The method names have changed for the flexible Maps.
+
+* breinBase.setBase(..) instead of breinBase.setBaseMap(..)
+* breinActivity.setActivity(..) instead of breinActivity.setActivityMap(..)
+* breinUser.set(..) instead of breinUser.setUserMap(..)
+* breinUser.setAdditional(..) instead of breinUser.setAdditionalMap(..)
+
+
+
 # Version 2.0
 
 ## Modifications
@@ -260,7 +278,7 @@ The activity request contains now the following fields:
 - userAgent
 - referrer
 - additionalUrl
-- tags
+- tagsMap
 
 The result of an activity request looks like this:
 

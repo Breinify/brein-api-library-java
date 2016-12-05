@@ -115,14 +115,14 @@ final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
          .setReferrer("https://sample.com.au/track")
          .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
-// configure the tags
-final Map<String, Object> tagMap = new HashMap<>();
-tagMap.put("t1", 0.0);
-tagMap.put("t2", 5);
-tagMap.put("t3", "0.0");
-tagMap.put("t4", 5.0000);
-tagMap.put("nr", 3000);
-tagMap.put("sortid", "1.0");
+// configure the tagsMap
+final Map<String, Object> tags = new HashMap<>();
+tags.put("t1", 0.0);
+tags.put("t2", 5);
+tags.put("t3", "0.0");
+tags.put("t4", 5.0000);
+tags.put("nr", 3000);
+tags.put("sortid", "1.0");
 
 // create an activity object and send the appropriate values
 final BreinActivity breinActivity = Breinify.getBreinActivity()
@@ -132,7 +132,7 @@ breinActivity.setBreinUser(breinUser);
 breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
 breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
 breinActivity.setDescription("your description");
-breinActivity.setTagsMap(tagMap);
+breinActivity.setTags(tags);
 
 // invoke the call
 Breinify.activity();

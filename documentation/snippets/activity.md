@@ -21,13 +21,13 @@
 >         .setDeviceId("DD-EEEEE")
 >         .setImei("55544455333");
 > 
-> final Map<String, String> tagMap = new HashMap<>();
-> tagMap.put("t1", "0.0");
-> tagMap.put("t2", "0.0");
-> tagMap.put("t3", "0.0");
-> tagMap.put("t4", "0.0");
-> tagMap.put("nr", "1.0");
-> tagMap.put("sortid", "1.0");
+> final Map<String, String> tags = new HashMap<>();
+> tags.put("t1", "0.0");
+> tags.put("t2", "0.0");
+> tags.put("t3", "0.0");
+> tags.put("t4", "0.0");
+> tags.put("nr", "1.0");
+> tags.put("sortid", "1.0");
 > 
 > final BreinActivity breinActivity = Breinify.getBreinActivity();
 > 
@@ -36,7 +36,7 @@
 > breinActivity.setBreinCategoryType("apparel");
 > breinActivity.setBreinActivityType("pagevisit");
 > breinActivity.setDescription("your description");
-> breinActivity.setTagsMap(tagMap);
+> breinActivity.setTags(tags);
 > breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
 > breinActivity.setAdditionalUrl("https://sample.com.au/home");
 > breinActivity.setReferrer("https://sample.com.au/track");

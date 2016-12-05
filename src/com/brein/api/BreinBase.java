@@ -54,7 +54,7 @@ public class BreinBase implements ISecretStrategy {
      *
      * @return map <String, Object>
      */
-    public Map<String, Object> getBaseMap() {
+    public Map<String, Object> getBase() {
         return baseMap;
     }
 
@@ -213,7 +213,7 @@ public class BreinBase implements ISecretStrategy {
      *
      * @param baseMap map of <String, Object></String,>
      */
-    public void setBaseMap(final Map<String, Object> baseMap) {
+    public void setBase(final Map<String, Object> baseMap) {
         this.baseMap = baseMap;
     }
 
@@ -297,9 +297,9 @@ public class BreinBase implements ISecretStrategy {
 
         // clone maps
         // a copy of all maps
-        final Map<String, Object> baseMap = source.getBaseMap();
+        final Map<String, Object> baseMap = source.getBase();
         final Map<String, Object> copyOfBaseMap = BreinMapUtil.copyMap(baseMap);
-        this.setBaseMap(copyOfBaseMap);
+        this.setBase(copyOfBaseMap);
     }
 
     /**

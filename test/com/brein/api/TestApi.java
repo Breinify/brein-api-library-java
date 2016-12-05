@@ -103,7 +103,7 @@ public class TestApi {
         dataBaseLevelMap.put("enhancement-base", "value");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setBaseMap(dataBaseLevelMap);
+        breinActivity.setBase(dataBaseLevelMap);
 
         callLoginWithStandardValues();
     }
@@ -119,7 +119,7 @@ public class TestApi {
         dataActivityMap.put("enhancement-activity-2", "value-2");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
-        breinActivity.setActivityMap(dataActivityMap);
+        breinActivity.set(dataActivityMap);
 
         callLoginWithStandardValues();
     }
@@ -138,7 +138,7 @@ public class TestApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setUserMap(dataUserMap);
+                .set(dataUserMap);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
@@ -160,7 +160,7 @@ public class TestApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setUserMap(dataUserRootMap);
+                .set(dataUserRootMap);
 
         Breinify.setConfig(breinConfig);
 
@@ -169,6 +169,7 @@ public class TestApi {
                 breinCategoryType,
                 "login");
     }
+
 
     /**
      * test case with fields on activity level
@@ -182,7 +183,7 @@ public class TestApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setAdditionalMap(dataAdditionalMap);
+                .setAdditional(dataAdditionalMap);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
@@ -205,7 +206,28 @@ public class TestApi {
 
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
-                .setAdditionalMap(locationAdditionalMap);
+                .setAdditional(locationAdditionalMap);
+
+        invokeActivityCall(localBreinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login");
+    }
+
+    /**
+     * Test case with user additional map containing a map as an object
+     */
+    @Test
+    public void testActivityRequestWithUserAdditionalSimpleMapMap() {
+
+        final Map<String, Object> location = new HashMap<>();
+
+        location.put("latitude", 32.7157);
+        location.put("longitude", -117.1611);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setAdditional("location", location);
 
         invokeActivityCall(localBreinUser,
                 breinActivityType,
@@ -289,7 +311,6 @@ public class TestApi {
             fail(message);
             return null;
         };
-
 
         // invoke activity call
         Breinify.activity(breinUser,
@@ -568,7 +589,7 @@ public class TestApi {
         breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
         breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
-        breinActivity.setTagsMap(tagMap);
+        breinActivity.setTags(tagMap);
         breinActivity.setIpAddress("10.11.12.13");
 
         Breinify.activity();
@@ -959,7 +980,7 @@ public class TestApi {
         final BreinUser localBreinUser = new BreinUser()
                 .setEmail("fred.firestone@email.com")
                 .setIpAddress("127.0.0.1")
-                .setAdditionalMap(locationAdditionalMap);
+                .setAdditional(locationAdditionalMap);
 
         try {
             // invoke temporaldata
@@ -995,9 +1016,8 @@ public class TestApi {
             System.out.println(loationValues);
 
             final Object weatherValues = response.get("weather");
-            //assertTrue(weatherValues != null);
-            // System.out.println(weatherValues);
-
+            assertTrue(weatherValues != null);
+            System.out.println(weatherValues);
         }
     }
 

@@ -5,7 +5,7 @@
     <dependency>
       <groupId>com.breinify</groupId>
       <artifactId>brein-api-library-java</artifactId>
-      <version>1.2.0</version>
+      <version>2.1.0</version>
     </dependency>
 ```
 

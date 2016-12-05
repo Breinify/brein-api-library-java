@@ -45,11 +45,12 @@ public class TestConcurrency {
                 final BreinUser localBreinUser = new BreinUser()
                         .setEmail("fred.firestone@email.com")
                         .setIpAddress("74.115.209.58")
-                        .setAdditionalMap(locationAdditionalMap);
+                        .setAdditional(locationAdditionalMap);
 
                 // invoke temporalData
-                final BreinResult response = Breinify.temporalData(user);
+                final BreinResult response = Breinify.temporalData(localBreinUser);
                 System.out.println(response);
+                Thread.sleep(300);
 
                 // Assert.assertNotNull(response);
             }
@@ -98,7 +99,7 @@ public class TestConcurrency {
                 breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
                 breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
                 breinActivity.setDescription("your description");
-                breinActivity.setTagsMap(tagMap);
+                breinActivity.setTags(tagMap);
                 breinActivity.setIpAddress("10.11.12.13");
 
                 Breinify.activity();
