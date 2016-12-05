@@ -1,5 +1,11 @@
 package com.brein.domain;
 
+import com.brein.util.BreinMapUtil;
+import com.brein.util.BreinUtil;
+import com.google.gson.JsonObject;
+
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -73,9 +79,14 @@ public class BreinUser {
     private String timezone;
 
     /**
-     * contains the data structure for the user request part including additional
+     * contains further fields in the user additional section
      */
-    private final BreinUserRequest breinUserRequest;
+    private Map<String, Object> additionalMap;
+
+    /**
+     * contains further fields in the user section
+     */
+    private Map<String, Object> userMap;
 
     /**
      * create a brein user with field email.
@@ -83,25 +94,10 @@ public class BreinUser {
      * @param email of the user
      */
     public BreinUser(final String email) {
-        this();
         setEmail(email);
     }
 
-    /**
-     * create a brein user
-     */
     public BreinUser() {
-        breinUserRequest = new BreinUserRequest();
-    }
-
-    /**
-     * creates a brein user with a given brein user request.
-     * This might come from a clone operation.
-     *
-     * @param breinUserRequest contains the brein user request object
-     */
-    public BreinUser(final BreinUserRequest breinUserRequest) {
-        this.breinUserRequest = breinUserRequest;
     }
 
     /**
@@ -391,52 +387,183 @@ public class BreinUser {
     }
 
     /**
-     * returns the instance of BreinUserRequestData
+     * returns the user map
      *
-     * @return instance of BreinUserRequestData
+     * @return the user map
      */
-    public BreinUserRequest getBreinUserRequest() {
-        return breinUserRequest;
-    }
-
-    /**
-     * sets the additional map
-     *
-     * @param dataMap map containing the additional fields
-     * @return self
-     */
-    public BreinUser setAdditionalMap(final Map<String, Object> dataMap) {
-        getBreinUserRequest().setAdditionalMap(dataMap);
-        return this;
+    public Map<String, Object> getUserMap() {
+        return userMap;
     }
 
     /**
      * sets the user map
      *
-     * @param dataMap map containing fields on user level
-     * @return self
+     * @param userMap map
      */
-    public BreinUser setUserMap(final Map<String, Object> dataMap) {
-        getBreinUserRequest().setUserMap(dataMap);
+    public BreinUser setUserMap(final Map<String, Object> userMap) {
+        if (userMap == null) {
+            return this;
+        }
+        if (this.userMap == null) {
+            this.userMap = new HashMap<>();
+        }
+        this.userMap.putAll(userMap);
         return this;
     }
 
     /**
-     * returns the user field map
-     *
-     * @return user field map
+     * sets the user additional fields
+     * @param key  contains the key for the nested map
+     * @param userMap map of fields
      */
-    public Map<String, Object> getUserMap() {
-        return this.getBreinUserRequest().getUserMap();
+    public BreinUser setUserMap(final String key, final Map<String, Object> userMap) {
+        if (userMap == null) {
+            return this;
+        }
+        return setUserMap(Collections.singletonMap(key, userMap));
     }
 
     /**
-     * returns the map that is part of the addtional section
+     * returns the user additional map
      *
-     * @return addtional map
+     * @return map
      */
     public Map<String, Object> getAdditionalMap() {
-        return this.getBreinUserRequest().getAdditionalMap();
+        return additionalMap;
+    }
+
+    /**
+     * sets the user additional map
+     *
+     * @param additional map
+     */
+    public BreinUser setAdditionalMap(final Map<String, Object> additional) {
+        if (additional == null) {
+            return this;
+        }
+
+        if (this.additionalMap == null) {
+            this.additionalMap = new HashMap<>();
+        }
+        this.additionalMap.putAll(additional);
+        return this;
+    }
+
+    /**
+     * sets the user additional fields
+     * @param key  contains the key for the nested map
+     * @param additional map of fields
+     */
+    public BreinUser setAdditionalMap(final String key, final Map<String, Object> additional) {
+        if (additional == null) {
+            return this;
+        }
+        return setAdditionalMap(Collections.singletonMap(key, additional));
+    }
+
+    /**
+     * Prepares the request on user level
+     *
+     * @param requestData contains the json request that is generated (top level)
+     * @param breinUser   contains the brein user data
+     */
+    public void prepareUserRequestData(final JsonObject requestData,
+                                       final BreinUser breinUser) {
+
+        // user fields...
+        final JsonObject userData = new JsonObject();
+        prepareUserFields(breinUser, userData);
+
+        // check if there are further maps to add on user level
+        if (userMap != null && userMap.size() > 0) {
+            BreinMapUtil.fillMap(userMap, userData);
+        }
+
+        // additional part
+        final JsonObject additional = new JsonObject();
+        prepareAdditionalFields(breinUser, additional);
+
+        // check if there are further maps to add on user additional level
+        if (additionalMap != null && additionalMap.size() > 0) {
+            BreinMapUtil.fillMap(additionalMap, additional);
+        }
+
+        if (additional.size() > 0) {
+            userData.add("additional", additional);
+        }
+
+        // add the data
+        if (userData.size() > 0) {
+            requestData.add("user", userData);
+        }
+    }
+
+    /**
+     * Prepares the fields that are part of the user section
+     *
+     * @param breinUser  contains the brein user object
+     * @param jsonObject contains the json array
+     */
+    public void prepareUserFields(final BreinUser breinUser, final JsonObject jsonObject) {
+
+        if (BreinUtil.containsValue(breinUser.getEmail())) {
+            jsonObject.addProperty("email", breinUser.getEmail());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getFirstName())) {
+            jsonObject.addProperty("firstName", breinUser.getFirstName());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getLastName())) {
+            jsonObject.addProperty("lastName", breinUser.getLastName());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getDateOfBirth())) {
+            jsonObject.addProperty("dateOfBirth", breinUser.getDateOfBirth());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getDeviceId())) {
+            jsonObject.addProperty("deviceId", breinUser.getDeviceId());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getImei())) {
+            jsonObject.addProperty("imei", breinUser.getImei());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getSessionId())) {
+            jsonObject.addProperty("sessionId", breinUser.getSessionId());
+        }
+
+    }
+
+    /**
+     * Prepares the fields that are part of the user additional section
+     *
+     * @param breinUser  contains the brein user object
+     * @param jsonObject contains the json array
+     */
+    public void prepareAdditionalFields(final BreinUser breinUser, final JsonObject jsonObject) {
+
+        if (BreinUtil.containsValue(breinUser.getUserAgent())) {
+            jsonObject.addProperty("userAgent", breinUser.getUserAgent());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getReferrer())) {
+            jsonObject.addProperty("referrer", breinUser.getReferrer());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getUrl())) {
+            jsonObject.addProperty("url", breinUser.getUrl());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getLocalDateTime())) {
+            jsonObject.addProperty("localDateTime", breinUser.getLocalDateTime());
+        }
+
+        if (BreinUtil.containsValue(breinUser.getTimezone())) {
+            jsonObject.addProperty("timezone", breinUser.getTimezone());
+        }
+
     }
 
     /**
@@ -447,12 +574,8 @@ public class BreinUser {
      */
     public static BreinUser clone(final BreinUser sourceUser) {
 
-        // firstly create a copy of the breinuser request
-        final BreinUserRequest newBreinUserRequest = BreinUserRequest
-                .clone(sourceUser.getBreinUserRequest());
-
         // then a new user with the new created brein user request
-        final BreinUser newUser = new BreinUser(newBreinUserRequest)
+        final BreinUser newUser = new BreinUser()
                 .setEmail(sourceUser.getEmail())
                 .setFirstName(sourceUser.getFirstName())
                 .setLastName(sourceUser.getLastName())
@@ -467,6 +590,15 @@ public class BreinUser {
                 .setIpAddress(sourceUser.getIpAddress())
                 .setLocalDateTime(sourceUser.getLocalDateTime())
                 .setTimezone(sourceUser.getTimezone());
+
+        // copy maps
+        final Map<String, Object> additionalMap = sourceUser.getAdditionalMap();
+        final Map<String, Object> copyOfAdditionalMap = BreinMapUtil.copyMap(additionalMap);
+        newUser.setAdditionalMap(copyOfAdditionalMap);
+
+        final Map<String, Object> userMap = sourceUser.getUserMap();
+        final Map<String, Object> copyOfUserMap = BreinMapUtil.copyMap(userMap);
+        newUser.setUserMap(copyOfUserMap);
 
         return newUser;
     }

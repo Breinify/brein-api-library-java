@@ -61,13 +61,31 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
         final BreinUser breinUser = getBreinUser();
         final JsonObject requestData = new JsonObject();
         if (breinUser != null) {
-            breinUser.getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
+            breinUser.prepareUserRequestData(requestData, breinUser);
         }
 
         // base level data...
-        getBreinBaseRequest().prepareBaseRequestData(this, requestData);
+        prepareBaseRequestData(this, requestData);
 
         return getGson().toJson(requestData);
+    }
+
+    /**
+     * Used to create a clone of a temporal data object. This is important in order to prevent
+     * concurrency issues.
+     *
+     * @param source contains the original temporaldata object
+     * @return the clone of the temporaldata object
+     */
+    public static BreinTemporalData clone(final BreinTemporalData source) {
+
+        // create a new activity object
+        final BreinTemporalData temporalData = new BreinTemporalData();
+
+        // clone from base class
+        temporalData.cloneBase(source);
+
+        return temporalData;
     }
 
     /**

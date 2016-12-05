@@ -4,10 +4,8 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
-import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
-import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -114,7 +112,7 @@ public class Breinify {
         breinActivity.setErrorCallback(errorCallback);
 
         // create a clone in order to prevent concurrency issues
-        final BreinActivity newActivity = Breinify.cloneActivity(breinActivity);
+        final BreinActivity newActivity = BreinActivity.clone(breinActivity);
         newActivity.getBreinEngine().sendActivity(newActivity);
     }
 
@@ -186,53 +184,12 @@ public class Breinify {
         }
 
         // create a clone in order to prevent concurrency issues
-        final BreinActivity newActivity = Breinify.cloneActivity(breinActivity);
+        final BreinActivity newActivity = BreinActivity.clone(breinActivity);
 
         breinActivity.getBreinEngine().sendActivity(newActivity);
     }
 
-    /**
-     * Used to create a clone of an activity. This is important in order to prevent
-     * concurrency issues.
-     *
-     * @param breinActivity contains the original activity object
-     * @return the clone of the activity object
-     */
-    public static BreinActivity cloneActivity(final BreinActivity breinActivity) {
-
-        // create a new activity object
-        final BreinActivity activity = new BreinActivity()
-                .setBreinActivityType(breinActivity.getBreinActivityType())
-                .setBreinCategoryType(breinActivity.getBreinCategoryType())
-                .setDescription(breinActivity.getDescription());
-
-        // set further data...
-        activity.setIpAddress(breinActivity.getIpAddress());
-        activity.setUnixTimestamp(breinActivity.getUnixTimestamp());
-
-        // callback
-        activity.setErrorCallback(breinActivity.getErrorCallback());
-
-        // configuration
-        activity.setConfig(breinActivity.getConfig());
-
-        // clone user
-        final BreinUser clonedUser = BreinUser.clone(breinActivity.getBreinUser());
-        activity.setBreinUser(clonedUser);
-
-        // clone maps
-        final Map<String, Object> activityMap = BreinMapUtil
-                .copyMap(breinActivity.getActivityMap());
-        activity.setActivityMap(activityMap);
-
-        final Map<String, Object> tagsMapCopy = BreinMapUtil
-                .copyMap(breinActivity.getTagsMap());
-        activity.setTagsMap(tagsMapCopy);
-
-        return activity;
-    }
-
-    /**
+     /**
      * Retrieves a lookup result from the engine. The function needs a valid API-key to be configured to succeed.
      * <p>
      * This request is synchronous.
@@ -294,12 +251,11 @@ public class Breinify {
      */
     public static BreinResult temporalData(final BreinUser user) {
 
-        final BreinTemporalData breinTemporalData = new BreinTemporalData();
-        breinTemporalData.setConfig(getConfig());
+        // create a working temporal data object
+        final BreinTemporalData newBreinTemporalData = new BreinTemporalData();
+        newBreinTemporalData.setConfig(getBreinTemporalData().getConfig());
 
-        // clone user
-        final BreinUser clonedUser = BreinUser.clone(user);
-        return temporalData(breinTemporalData, clonedUser);
+        return temporalData(newBreinTemporalData, user);
     }
 
     /**
@@ -327,8 +283,11 @@ public class Breinify {
 
         breinTemporalData.setBreinUser(user);
 
+        // clone temporaldata
+        final BreinTemporalData clonedTemporalData = BreinTemporalData.clone(breinTemporalData);
+
         // invoke the temporaldata request
-        return breinTemporalData.getBreinEngine().performTemporalDataRequest(breinTemporalData);
+        return clonedTemporalData.getBreinEngine().performTemporalDataRequest(clonedTemporalData);
     }
 
     /**

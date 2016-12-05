@@ -5,6 +5,8 @@ import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 import com.google.gson.JsonObject;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -131,14 +133,37 @@ public class BreinActivity extends BreinBase {
     }
 
     /**
-     * sets the actvitiy map
+     * sets the activity map
      *
      * @param dataActivityMap containing additional values
      * @return self
      */
     public BreinActivity setActivityMap(final Map<String, Object> dataActivityMap) {
-        this.activityMap = dataActivityMap;
+        if (dataActivityMap == null) {
+            return this;
+        }
+
+        if (this.activityMap == null) {
+            this.activityMap = new HashMap<>();
+        }
+
+        this.activityMap.putAll(dataActivityMap);
         return this;
+    }
+
+    /**
+     * sets the activity map
+     *
+     * @param dataActivityMap containing additional values
+     * @return self
+     */
+    public BreinActivity setActivityMap(final String key, final Map<String, Object> dataActivityMap) {
+
+        if (dataActivityMap == null) {
+            return this;
+        }
+
+        return setActivityMap(Collections.singletonMap(key, dataActivityMap));
     }
 
     /**
@@ -217,7 +242,7 @@ public class BreinActivity extends BreinBase {
         // user data level and additional
         final BreinUser breinUser = getBreinUser();
         if (null != breinUser) {
-            breinUser.getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
+            breinUser.prepareUserRequestData(requestData, breinUser);
         }
 
         // activity data
@@ -228,7 +253,7 @@ public class BreinActivity extends BreinBase {
         }
 
         // base level data...
-        getBreinBaseRequest().prepareBaseRequestData(this, requestData);
+        prepareBaseRequestData(this, requestData);
 
         return getGson().toJson(requestData);
     }
@@ -264,6 +289,36 @@ public class BreinActivity extends BreinBase {
         if (activityMap != null && activityMap.size() > 0) {
             BreinMapUtil.fillMap(activityMap, activityData);
         }
+    }
+
+    /**
+     * Used to create a clone of an activity. This is important in order to prevent
+     * concurrency issues.
+     *
+     * @param sourceActivity contains the original activity object
+     * @return the clone of the activity object
+     */
+    public static BreinActivity clone(final BreinActivity sourceActivity) {
+
+        // create a new activity object
+        final BreinActivity activity = new BreinActivity()
+                .setBreinActivityType(sourceActivity.getBreinActivityType())
+                .setBreinCategoryType(sourceActivity.getBreinCategoryType())
+                .setDescription(sourceActivity.getDescription());
+
+        // clone maps
+        final Map<String, Object> activityMap = BreinMapUtil
+                .copyMap(sourceActivity.getActivityMap());
+        activity.setActivityMap(activityMap);
+
+        final Map<String, Object> tagsMapCopy = BreinMapUtil
+                .copyMap(sourceActivity.getTagsMap());
+        activity.setTagsMap(tagsMapCopy);
+
+        // clone from base class
+        activity.cloneBase(sourceActivity);
+
+        return activity;
     }
 
     /**

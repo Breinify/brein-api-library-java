@@ -92,7 +92,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         // user data level and additional
         final BreinUser breinUser = getBreinUser();
         if (null != breinUser) {
-            breinUser.getBreinUserRequest().prepareUserRequestData(requestData, breinUser);
+            breinUser.prepareUserRequestData(requestData, breinUser);
         }
 
         // this is the section that is only available within the lookup request
@@ -109,7 +109,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         }
 
         // build base level structure
-        getBreinBaseRequest().prepareBaseRequestData(this, requestData);
+        prepareBaseRequestData(this, requestData);
 
         return getGson().toJson(requestData);
     }
