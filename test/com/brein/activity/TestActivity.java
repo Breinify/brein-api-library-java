@@ -276,7 +276,7 @@ public class TestActivity {
 
         final Map<String, Object> tagMap = new HashMap<>();
         tagMap.put("t1", "0.0");
-        breinActivity.setTagsMap(tagMap);
+        breinActivity.setTags(tagMap);
         breinActivity.setBreinUser(new BreinUser("user.name@email.com"));
         breinActivity.setConfig(new BreinConfig("KEY"));
 
@@ -285,7 +285,7 @@ public class TestActivity {
         assertTrue("breinActivityType is not empty", breinActivity.getBreinActivityType().equals(""));
         assertTrue("breinCategoryType is not empty", breinActivity.getBreinCategoryType().equals(""));
         assertTrue("description is not empty", breinActivity.getDescription().equals(""));
-        assertTrue("tags lib is not null", breinActivity.getTagsMap() == null);
+        assertTrue("tags lib is not null", breinActivity.getTags() == null);
 
         // breinUser and breinConfig should be valid
         assertTrue("breinUser is null!", breinActivity.getBreinUser() != null);
