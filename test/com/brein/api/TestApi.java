@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -31,7 +32,7 @@ public class TestApi {
      */
     private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
 
-    /**
+   /**
      * Contains the Breinify User
      */
     private final BreinUser breinUser = new BreinUser("User.Name@email.com");
@@ -311,6 +312,8 @@ public class TestApi {
             fail(message);
             return null;
         };
+
+        Breinify.setConfig(breinConfig);
 
         // invoke activity call
         Breinify.activity(breinUser,
@@ -630,7 +633,7 @@ public class TestApi {
      * test case without having set the BreinUser.
      * This will lead to an Exception.
      */
-    @Test(expected=BreinException.class)
+    @Test(expected = BreinException.class)
     public void testPageVisitWithException() {
 
         // set configuration
@@ -984,7 +987,6 @@ public class TestApi {
 
         try {
             // invoke temporaldata
-
             for (int i = 0; i < 100; i++) {
                 final BreinResult response = Breinify.temporalData(localBreinUser);
 
@@ -1019,6 +1021,41 @@ public class TestApi {
             assertTrue(weatherValues != null);
             System.out.println(weatherValues);
         }
+    }
+
+
+    /**
+     * Test case for different kind of tag fields
+     */
+    @Test
+    public void testTag() {
+
+        // set configuration
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
+        Breinify.setConfig(breinConfig);
+
+        final Map<String, Object> tags = new HashMap<>();
+
+        tags.put("TAG_PRODUCTS_HANDLED", Collections.singletonList("productBought"));
+
+        tags.put("Test", Collections.singletonList("hi"));
+        tags.put("Test 2", "There");
+
+        tags.put("TAG_TOTAL_PURCHASE_PRICE", 5 * 5 * 10.5);
+        tags.put("TAG_PRODUCTS_HANDLED_ITEM_SKU_ARRAY",
+                Collections.singletonList(String.valueOf(1000 % 5)));
+        tags.put("TAG_PRODUCTS_HANDLED_UNIT_PRICE_ARRAY",
+                new String[]{String.valueOf(45000 % 5 * 10.5)});
+        tags.put("test 3", "test3");
+        tags.put("test 4", new String[]{"test4"});
+        tags.put("test 5", Collections.singletonList("test5"));
+        tags.put("test 6", Collections.singleton("test6"));
+        System.out.println(tags);
+        Breinify.getBreinActivity().setBreinActivityType("checkOut")
+                .setTags(tags)
+                .setBreinUser(new BreinUser("e.mail@me.com"));
+
+        Breinify.activity();
     }
 
 

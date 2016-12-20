@@ -106,14 +106,12 @@ public class TestJerseyApi {
             return null;
         };
 
-
         // invoke activity call
         Breinify.activity(breinUser,
                 breinActivityType,
                 breinCategoryType,
                 description,
                 callback);
-
     }
 
     @Test
@@ -266,7 +264,7 @@ public class TestJerseyApi {
     /**
      * Invoke a test call with 200 logins
      */
-    @Test
+    // @Test
     public void testWith200Logins() {
 
         final int maxLogin = 200;

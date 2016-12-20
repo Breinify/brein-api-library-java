@@ -4,8 +4,8 @@ import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+
+import java.util.*;
 
 /**
  * Provides the lookup functionality
@@ -87,7 +87,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         // call base class
         super.prepareJsonRequest();
 
-        final JsonObject requestData = new JsonObject();
+        final Map<String, Object> requestData = new HashMap<>();
 
         // user data level and additional
         final BreinUser breinUser = getBreinUser();
@@ -97,14 +97,12 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
 
         // this is the section that is only available within the lookup request
         if (BreinUtil.containsValue(getBreinDimension())) {
-            final JsonObject lookupData = new JsonObject();
-            final JsonArray dimensions = new JsonArray();
-            for (final String field : getBreinDimension().getDimensionFields()) {
-                dimensions.add(field);
-            }
+            final Map<String, Object> lookupData = new HashMap<>();
+            final List<String> dimensions = new ArrayList<>();
+            Collections.addAll(dimensions, getBreinDimension().getDimensionFields());
             if (getBreinDimension().getDimensionFields().length > 0) {
-                lookupData.add("dimensions", dimensions);
-                requestData.add("lookup", lookupData);
+                lookupData.put("dimensions", dimensions);
+                requestData.put("lookup", lookupData);
             }
         }
 

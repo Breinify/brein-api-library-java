@@ -8,7 +8,6 @@ import com.brein.util.BreinUtil;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import java.time.Instant;
 import java.util.Map;
@@ -225,31 +224,31 @@ public class BreinBase implements ISecretStrategy {
      * @param requestData contains the created json structure
      */
     public void prepareBaseRequestData(final BreinBase breinBase,
-                                       final JsonObject requestData) {
+                                       final Map<String, Object> requestData) {
 
         if (BreinUtil.containsValue(breinBase.getConfig())) {
             if (BreinUtil.containsValue(breinBase.getConfig().getApiKey())) {
-                requestData.addProperty("apiKey", breinBase.getConfig().getApiKey());
+                requestData.put("apiKey", breinBase.getConfig().getApiKey());
             }
         }
 
         final BreinUser breinUser = breinBase.getBreinUser();
 
         if (BreinUtil.containsValue(breinUser.getIpAddress())) {
-            requestData.addProperty("ipAddress", breinUser.getIpAddress());
+            requestData.put("ipAddress", breinUser.getIpAddress());
         }
 
-        requestData.addProperty("unixTimestamp", breinBase.getUnixTimestamp());
+        requestData.put("unixTimestamp", breinBase.getUnixTimestamp());
 
         // if sign is active
         if (breinBase.isSign()) {
-            requestData.addProperty("signature", breinBase.createSignature());
-            requestData.addProperty("signatureType", "HmacSHA256");
+            requestData.put("signature", breinBase.createSignature());
+            requestData.put("signatureType", "HmacSHA256");
         }
 
         // check if there are further maps to add on base level
         if (baseMap != null && baseMap.size() > 0) {
-            BreinMapUtil.fillMap(baseMap, requestData);
+            requestData.putAll(baseMap);
         }
     }
     /**

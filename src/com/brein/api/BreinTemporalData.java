@@ -3,7 +3,9 @@ package com.brein.api;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
-import com.google.gson.JsonObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Provides the lookup functionality
@@ -59,7 +61,7 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
 
         // user data level and additional
         final BreinUser breinUser = getBreinUser();
-        final JsonObject requestData = new JsonObject();
+        final Map<String, Object> requestData = new HashMap<>();
         if (breinUser != null) {
             breinUser.prepareUserRequestData(requestData, breinUser);
         }

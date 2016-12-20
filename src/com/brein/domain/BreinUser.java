@@ -2,7 +2,6 @@ package com.brein.domain;
 
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
-import com.google.gson.JsonObject;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -467,34 +466,34 @@ public class BreinUser {
      * @param requestData contains the json request that is generated (top level)
      * @param breinUser   contains the brein user data
      */
-    public void prepareUserRequestData(final JsonObject requestData,
+    public void prepareUserRequestData(final Map<String, Object> requestData,
                                        final BreinUser breinUser) {
 
         // user fields...
-        final JsonObject userData = new JsonObject();
+        final Map<String, Object> userData = new HashMap<>();
         prepareUserFields(breinUser, userData);
 
         // check if there are further maps to add on user level
         if (userMap != null && userMap.size() > 0) {
-            BreinMapUtil.fillMap(userMap, userData);
+            requestData.putAll(userMap);
         }
 
         // additional part
-        final JsonObject additional = new JsonObject();
+        final Map<String, Object> additional = new HashMap<>();
         prepareAdditionalFields(breinUser, additional);
 
         // check if there are further maps to add on user additional level
         if (additionalMap != null && additionalMap.size() > 0) {
-            BreinMapUtil.fillMap(additionalMap, additional);
+            additional.putAll(additionalMap);
         }
 
         if (additional.size() > 0) {
-            userData.add("additional", additional);
+            userData.put("additional", additional);
         }
 
         // add the data
         if (userData.size() > 0) {
-            requestData.add("user", userData);
+            requestData.put("user", userData);
         }
     }
 
@@ -504,34 +503,34 @@ public class BreinUser {
      * @param breinUser  contains the brein user object
      * @param jsonObject contains the json array
      */
-    public void prepareUserFields(final BreinUser breinUser, final JsonObject jsonObject) {
+    public void prepareUserFields(final BreinUser breinUser, final Map<String, Object> jsonObject) {
 
         if (BreinUtil.containsValue(breinUser.getEmail())) {
-            jsonObject.addProperty("email", breinUser.getEmail());
+            jsonObject.put("email", breinUser.getEmail());
         }
 
         if (BreinUtil.containsValue(breinUser.getFirstName())) {
-            jsonObject.addProperty("firstName", breinUser.getFirstName());
+            jsonObject.put("firstName", breinUser.getFirstName());
         }
 
         if (BreinUtil.containsValue(breinUser.getLastName())) {
-            jsonObject.addProperty("lastName", breinUser.getLastName());
+            jsonObject.put("lastName", breinUser.getLastName());
         }
 
         if (BreinUtil.containsValue(breinUser.getDateOfBirth())) {
-            jsonObject.addProperty("dateOfBirth", breinUser.getDateOfBirth());
+            jsonObject.put("dateOfBirth", breinUser.getDateOfBirth());
         }
 
         if (BreinUtil.containsValue(breinUser.getDeviceId())) {
-            jsonObject.addProperty("deviceId", breinUser.getDeviceId());
+            jsonObject.put("deviceId", breinUser.getDeviceId());
         }
 
         if (BreinUtil.containsValue(breinUser.getImei())) {
-            jsonObject.addProperty("imei", breinUser.getImei());
+            jsonObject.put("imei", breinUser.getImei());
         }
 
         if (BreinUtil.containsValue(breinUser.getSessionId())) {
-            jsonObject.addProperty("sessionId", breinUser.getSessionId());
+            jsonObject.put("sessionId", breinUser.getSessionId());
         }
 
     }
@@ -542,26 +541,26 @@ public class BreinUser {
      * @param breinUser  contains the brein user object
      * @param jsonObject contains the json array
      */
-    public void prepareAdditionalFields(final BreinUser breinUser, final JsonObject jsonObject) {
+    public void prepareAdditionalFields(final BreinUser breinUser, final Map<String, Object> jsonObject) {
 
         if (BreinUtil.containsValue(breinUser.getUserAgent())) {
-            jsonObject.addProperty("userAgent", breinUser.getUserAgent());
+            jsonObject.put("userAgent", breinUser.getUserAgent());
         }
 
         if (BreinUtil.containsValue(breinUser.getReferrer())) {
-            jsonObject.addProperty("referrer", breinUser.getReferrer());
+            jsonObject.put("referrer", breinUser.getReferrer());
         }
 
         if (BreinUtil.containsValue(breinUser.getUrl())) {
-            jsonObject.addProperty("url", breinUser.getUrl());
+            jsonObject.put("url", breinUser.getUrl());
         }
 
         if (BreinUtil.containsValue(breinUser.getLocalDateTime())) {
-            jsonObject.addProperty("localDateTime", breinUser.getLocalDateTime());
+            jsonObject.put("localDateTime", breinUser.getLocalDateTime());
         }
 
         if (BreinUtil.containsValue(breinUser.getTimezone())) {
-            jsonObject.addProperty("timezone", breinUser.getTimezone());
+            jsonObject.put("timezone", breinUser.getTimezone());
         }
 
     }

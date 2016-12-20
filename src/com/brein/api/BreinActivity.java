@@ -3,7 +3,6 @@ package com.brein.api;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
-import com.google.gson.JsonObject;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -234,7 +233,9 @@ public class BreinActivity extends BreinBase {
     @Override
     public String prepareJsonRequest() {
 
-        final JsonObject requestData = new JsonObject();
+        // final JsonObject requestData = new JsonObject();
+
+        final Map<String, Object> requestData = new HashMap<>();
 
         // call base class for base data
         super.prepareJsonRequest();
@@ -246,10 +247,10 @@ public class BreinActivity extends BreinBase {
         }
 
         // activity data
-        final JsonObject activityData = new JsonObject();
+        final Map<String, Object> activityData = new HashMap<>();
         prepareActivityRequestData(activityData);
         if (activityData.size() > 0) {
-            requestData.add("activity", activityData);
+            requestData.put("activity", activityData);
         }
 
         // base level data...
@@ -263,31 +264,31 @@ public class BreinActivity extends BreinBase {
      *
      * @param activityData contains the created data structure
      */
-    public void prepareActivityRequestData(final JsonObject activityData) {
+    public void prepareActivityRequestData(final Map<String, Object> activityData) {
 
         // activity fields...
         if (BreinUtil.containsValue(getBreinActivityType())) {
-            activityData.addProperty("type", getBreinActivityType());
+            activityData.put("type", getBreinActivityType());
         }
 
         if (BreinUtil.containsValue(getDescription())) {
-            activityData.addProperty("description", getDescription());
+            activityData.put("description", getDescription());
         }
 
         if (BreinUtil.containsValue(getBreinCategoryType())) {
-            activityData.addProperty("category", getBreinCategoryType());
+            activityData.put("category", getBreinCategoryType());
         }
 
         // add tagsMap map if configured
         if (tagsMap != null && tagsMap.size() > 0) {
-            final JsonObject tagsData = new JsonObject();
-            BreinMapUtil.fillMap(tagsMap, tagsData);
-            activityData.add("tags", tagsData);
+            final Map<String, Object> tagsData = new HashMap<>();
+            tagsData.putAll(tagsMap);
+            activityData.put("tags", tagsData);
         }
 
         // check if there are further maps to add on base level
         if (activityMap != null && activityMap.size() > 0) {
-            BreinMapUtil.fillMap(activityMap, activityData);
+            activityData.putAll(activityMap);
         }
     }
 
