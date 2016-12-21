@@ -219,4 +219,14 @@ public interface IRestEngine {
      * @throws BreinException exception that will be thrown
      */
     BreinResult doTemporalDataRequest(BreinTemporalData breinTemporalData) throws BreinException;
+
+
+    /**
+     * performs a recommendation request
+     *
+     * @param breinRecommendation contains the request data
+     * @return result from request
+     * @throws BreinException exception that will be thrown
+     */
+    BreinResult doRecommendation(BreinRecommendation breinRecommendation) throws BreinException;
 }

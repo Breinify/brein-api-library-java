@@ -412,7 +412,8 @@ public class BreinUser {
 
     /**
      * sets the user additional fields
-     * @param key  contains the key for the nested map
+     *
+     * @param key     contains the key for the nested map
      * @param userMap map of fields
      */
     public BreinUser set(final String key, final Map<String, Object> userMap) {
@@ -450,7 +451,8 @@ public class BreinUser {
 
     /**
      * sets the user additional fields
-     * @param key  contains the key for the nested map
+     *
+     * @param key        contains the key for the nested map
      * @param additional map of fields
      */
     public BreinUser setAdditional(final String key, final Map<String, Object> additional) {

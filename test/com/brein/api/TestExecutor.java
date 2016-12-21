@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import static junit.framework.TestCase.assertTrue;
@@ -248,6 +249,35 @@ public class TestExecutor {
             fail("REST exception is: " + e);
         }
 
+    }
+
+    /**
+     * Testcase how to use recommendation
+     */
+    @Test
+    public void testRecommendation() {
+
+        final BreinUser user = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setSessionId("1133AADDDEEE");
+
+        final BreinifyExecutor breinifyExecutor = new BreinConfig()
+                .setApiKey("XXXX-2506-68B1-45C3-8DCC-B8B8-32D4-9870")
+                .setSecret("XXXXeprunt/kgkoe/3b0uw==")
+                .build();
+
+        final int numberOfRecommendations = 10;
+        final BreinResult result = breinifyExecutor.recommendation(user, numberOfRecommendations);
+
+        // result
+        if (result.getStatus() == 200) {
+            System.out.println("Message from BreinRecommendation is: " + result.getMessage());
+
+            final ArrayList arrayList = result.get("result");
+            assertTrue(arrayList != null);
+
+            arrayList.forEach((value) -> System.out.println("Item : " + value));
+        }
     }
 
     @Test

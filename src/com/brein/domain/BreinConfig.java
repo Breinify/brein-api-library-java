@@ -22,19 +22,24 @@ public class BreinConfig {
     private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
 
     /**
-     * default endpoint of activity
+     * default endpoint for activity
      */
     public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
 
     /**
-     * default endpoint of lookup
+     * default endpoint for lookup
      */
     public static final String DEFAULT_LOOKUP_ENDPOINT = "/lookup";
 
     /**
-     * default endpoint of temporalData
+     * default endpoint for temporalData
      */
     public static final String DEFAULT_TEMPORALDATA_ENDPOINT = "/temporaldata";
+
+    /**
+     * default endpoint for recommendation
+     */
+    public static final String DEFAULT_RECOMMENDATION_ENDPOINT = "/recommendation";
 
     /**
      * default connection timeout
@@ -85,6 +90,11 @@ public class BreinConfig {
      * contains the temporalData endpoint (default = DEFAULT_TEMPORALDATA_ENDPOINT)
      */
     private String temporalDataEndpoint = DEFAULT_TEMPORALDATA_ENDPOINT;
+
+    /**
+     * contains the recommendation endpoint (default = DEFAULT_RECOMMENDATION_ENDPOINT)
+     */
+    private String recommendationEndpoint = DEFAULT_RECOMMENDATION_ENDPOINT;
 
     /**
      * connection timeout
@@ -370,6 +380,26 @@ public class BreinConfig {
      */
     public void setTemporalDataEndpoint(final String temporalDataEndpoint) {
         this.temporalDataEndpoint = temporalDataEndpoint;
+    }
+
+    /**
+     * returns the recommendation endpoint
+     *
+     * @return the recommendation endpoint
+     */
+    public String getRecommendationEndpoint() {
+        return recommendationEndpoint;
+    }
+
+    /**
+     * sets the recommendation endpoint
+     *
+     * @param recommendationEndpoint contains the endpoint
+     * @return self
+     */
+    public BreinConfig setRecommendationEndpoint(final String recommendationEndpoint) {
+        this.recommendationEndpoint = recommendationEndpoint;
+        return this;
     }
 
     /**

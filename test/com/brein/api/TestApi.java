@@ -8,10 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.function.Function;
 
 import static junit.framework.TestCase.assertTrue;
@@ -1058,6 +1055,35 @@ public class TestApi {
         Breinify.activity();
     }
 
+
+    /**
+     * Test of recommendation
+     */
+    @Test
+    public void testRecommendation() {
+
+        final BreinConfig breinConfig = new BreinConfig("2514-2506-68B1-45C3-8DCC-B8B8-32D4-9870",
+                "nd8ieprunt/kgkoe/3b0uw==");
+
+        Breinify.setConfig(breinConfig);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setSessionId("1133AADDDEEE");
+
+        final int numberOfRecommendations = 10;
+        final BreinRecommendation breinRecommendation = new BreinRecommendation(breinUser, numberOfRecommendations);
+        final BreinResult result = Breinify.recommendation(breinRecommendation);
+
+        // result
+        if (result.getStatus() == 200) {
+            System.out.println("Message from BreinRecommendation is: " + result.getMessage());
+
+            final ArrayList arrayList = result.get("result");
+
+            arrayList.forEach((value)->System.out.println("Item : " + value));
+        }
+    }
 
     @Test
     public void testForDoc() {

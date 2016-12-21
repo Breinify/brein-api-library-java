@@ -7,6 +7,7 @@ import com.brein.test.TestHelper;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,6 +105,43 @@ public class TestConcurrency {
 
                 Breinify.activity();
 
+            }
+        });
+
+    }
+
+    /**
+     * Test case for recommendation with 1000 calls
+     */
+    @Test
+    public void testRecommendationConcurrency() {
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
+                "secret-here").setAndInitRestEngine(BreinEngineType.JERSEY_ENGINE);
+
+        Breinify.setConfig(breinConfig);
+
+        TestHelper.threadTesting(100, () -> {
+            for (int ct = 0; ct < 1000; ct++) {
+
+                System.out.println("Invoking Thread: " + ct);
+
+                final BreinUser localBreinUser = new BreinUser()
+                        .setEmail("fred.firestone@email.com")
+                        .setSessionId("1133AADDDEEE");
+
+                final int numberOfRecommendations = 10;
+                final BreinRecommendation breinRecommendation = new BreinRecommendation(localBreinUser, numberOfRecommendations);
+                final BreinResult result = Breinify.recommendation(breinRecommendation);
+
+                // result
+                if (result.getStatus() == 200) {
+                    System.out.println("Message from BreinRecommendation is: " + result.getMessage());
+
+                    final ArrayList arrayList = result.get("result");
+
+                    arrayList.forEach((value)->System.out.println("Item : " + value));
+                }
             }
         });
 

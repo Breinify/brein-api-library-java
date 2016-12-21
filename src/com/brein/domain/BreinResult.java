@@ -10,6 +10,8 @@ import java.util.Map;
  */
 public class BreinResult {
 
+    private int status;
+
     /**
      * contains the collected data as map
      */
@@ -23,6 +25,11 @@ public class BreinResult {
     @SuppressWarnings("unchecked")
     public BreinResult(final String jsonResponse) {
         map = new Gson().fromJson(jsonResponse, Map.class);
+    }
+
+    public BreinResult(final String jsonResponse, final int status) {
+        this(jsonResponse);
+        this.status = status;
     }
 
     /**
@@ -54,6 +61,23 @@ public class BreinResult {
      */
     public Map<String, Object> getMap() {
         return map;
+    }
+
+    public String getMessage() {
+
+        if (has("message")) {
+            return get("message");
+        }
+
+        return null;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(final int status) {
+        this.status = status;
     }
 
     @Override

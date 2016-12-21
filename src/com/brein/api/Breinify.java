@@ -34,6 +34,11 @@ public class Breinify {
     private static final BreinTemporalData breinTemporalData = new BreinTemporalData();
 
     /**
+     * contains the recommendation object
+     */
+    private static final BreinRecommendation breinRecommendation = new BreinRecommendation();
+
+    /**
      * sets the configuration
      *
      * @param breinConfig config object
@@ -43,6 +48,7 @@ public class Breinify {
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
         breinTemporalData.setConfig(breinConfig);
+        breinRecommendation.setConfig(breinConfig);
     }
 
     /**
@@ -73,6 +79,13 @@ public class Breinify {
      */
     public static BreinTemporalData getBreinTemporalData() {
         return breinTemporalData;
+    }
+
+    /**
+     * @return breinRecommendation instance
+     */
+    public static BreinRecommendation getBreinRecommendation() {
+        return breinRecommendation;
     }
 
     /**
@@ -189,7 +202,7 @@ public class Breinify {
         breinActivity.getBreinEngine().sendActivity(newActivity);
     }
 
-     /**
+    /**
      * Retrieves a lookup result from the engine. The function needs a valid API-key to be configured to succeed.
      * <p>
      * This request is synchronous.
@@ -288,6 +301,26 @@ public class Breinify {
 
         // invoke the temporaldata request
         return clonedTemporalData.getBreinEngine().performTemporalDataRequest(clonedTemporalData);
+    }
+
+    /**
+     * Sends a recommendation request to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * @param breinRecommenationPara contains the brein recommendation object
+     */
+    public static BreinResult recommendation(final BreinRecommendation breinRecommenationPara) {
+
+        if (breinRecommenationPara == null) {
+            throw new BreinException("BreinRecommendation is null");
+        }
+
+        // apply the current configuration
+        breinRecommenationPara.setConfig(getBreinRecommendation().getConfig());
+
+        // create a clone in order to prevent concurrency issues
+        final BreinRecommendation newBreinRecommendation = BreinRecommendation.clone(breinRecommenationPara);
+        return newBreinRecommendation.getBreinEngine().invokeRecommendation(newBreinRecommendation);
     }
 
     /**

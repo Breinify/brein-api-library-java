@@ -142,6 +142,16 @@ public class BreinifyExecutor {
     }
 
     /**
+     * This is necessary because the configuration from
+     * class BreinifyExecutor needs to be transferred to
+     * class Breinify in order to invoke the recommendation
+     * calls within class Breinify.
+     */
+    public void applyRecommendationConfiguration() {
+        Breinify.getBreinRecommendation().setConfig(getConfig());
+    }
+
+    /**
      * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      * <p>
@@ -207,10 +217,31 @@ public class BreinifyExecutor {
     }
 
     /**
+     * Invokes the recommendation request to the engine utilizing the API. This call is don synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * @param user a plain object specifying the information about the user.
+     * @param numberOfRecommendations number of recommendations
+     * @return result from the Breinify engine
+     */
+    public BreinResult recommendation(final BreinUser user, int numberOfRecommendations) {
+
+        applyRecommendationConfiguration();
+
+        final BreinRecommendation breinRecommendation = new BreinRecommendation();
+
+        breinRecommendation.setBreinUser(user);
+        breinRecommendation.setNumberOfRecommendations(numberOfRecommendations);
+
+        return Breinify.recommendation(breinRecommendation);
+    }
+
+    /**
      * Shutdown Breinify services
      */
     public void shutdown() {
         this.config.shutdownEngine();
     }
+
 
 }

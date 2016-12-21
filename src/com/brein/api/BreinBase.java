@@ -232,10 +232,9 @@ public class BreinBase implements ISecretStrategy {
             }
         }
 
-        final BreinUser breinUser = breinBase.getBreinUser();
-
-        if (BreinUtil.containsValue(breinUser.getIpAddress())) {
-            requestData.put("ipAddress", breinUser.getIpAddress());
+        final BreinUser user = breinBase.getBreinUser();
+        if (BreinUtil.containsValue(user.getIpAddress())) {
+            requestData.put("ipAddress", user.getIpAddress());
         }
 
         requestData.put("unixTimestamp", breinBase.getUnixTimestamp());
@@ -251,6 +250,7 @@ public class BreinBase implements ISecretStrategy {
             requestData.putAll(baseMap);
         }
     }
+
     /**
      * Initializes all values
      */

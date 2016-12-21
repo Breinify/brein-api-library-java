@@ -2,6 +2,7 @@ package com.brein.engine;
 
 import com.brein.api.BreinActivity;
 import com.brein.api.BreinLookup;
+import com.brein.api.BreinRecommendation;
 import com.brein.api.BreinTemporalData;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
@@ -49,6 +50,21 @@ public class BreinEngine {
     public BreinResult performLookUp(final BreinLookup breinLookup) {
         if (breinLookup != null) {
             return restEngine.doLookup(breinLookup);
+        }
+
+        return null;
+    }
+
+    /**
+     * invokes the recommendation request
+     *
+     * @param breinRecommendation contains the breinRecommendation object
+     * @return result of request or null
+     */
+    public BreinResult invokeRecommendation(final BreinRecommendation breinRecommendation) {
+
+        if (breinRecommendation != null) {
+            return restEngine.doRecommendation(breinRecommendation);
         }
 
         return null;

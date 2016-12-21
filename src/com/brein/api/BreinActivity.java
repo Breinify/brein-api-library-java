@@ -233,8 +233,6 @@ public class BreinActivity extends BreinBase {
     @Override
     public String prepareJsonRequest() {
 
-        // final JsonObject requestData = new JsonObject();
-
         final Map<String, Object> requestData = new HashMap<>();
 
         // call base class for base data

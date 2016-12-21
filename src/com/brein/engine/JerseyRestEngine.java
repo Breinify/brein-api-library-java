@@ -98,6 +98,20 @@ public class JerseyRestEngine implements IRestEngine {
     }
 
     /**
+     * invokes a recommendation request
+     *
+     * @param breinRecommendation contains the request data
+     * @return result from the request
+     * @throws BreinException
+     */
+    @Override
+    public BreinResult doRecommendation(final BreinRecommendation breinRecommendation) throws BreinException {
+
+        validate(breinRecommendation);
+        return invokeRequest(breinRecommendation);
+    }
+
+    /**
      * invokes the request
      *
      * @param breinRequestObject contains the request data
@@ -112,7 +126,7 @@ public class JerseyRestEngine implements IRestEngine {
                     .post(ClientResponse.class, getRequestBody(breinRequestObject));
 
             if (response.getStatus() == 200) {
-                return new BreinResult(response.getEntity(String.class));
+                return new BreinResult(response.getEntity(String.class), response.getStatus());
             } else {
                 final String exceptionMsg = "Rest call exception with status code: " + response.getStatus();
                 throw new BreinException(exceptionMsg);
