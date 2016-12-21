@@ -16,6 +16,5 @@ public class BreinActivityType {
     public static final String CHECKOUT = "checkOut";
     public static final String PAGEVISIT = "pageVisit";
     public static final String OTHER = "other";
-
 }
 
