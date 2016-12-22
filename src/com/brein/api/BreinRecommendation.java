@@ -32,7 +32,7 @@ public class BreinRecommendation extends BreinBase {
      * @param breinUser contains the brein user
      * @param numberOfRecommendations the number of recommendations
      */
-    BreinRecommendation(final BreinUser breinUser, final int numberOfRecommendations) {
+    public BreinRecommendation(final BreinUser breinUser, final int numberOfRecommendations) {
         this(breinUser);
         this.numberOfRecommendations = numberOfRecommendations;
     }
