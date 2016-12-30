@@ -543,9 +543,8 @@ public class TestJerseyApi {
     @Test
     public void testLoginWithSign() {
 
-        // final String secret = "p3rqlab6m7/172pdgiq6ng==";
-        final String secret = "lmcoj4k27hbbszzyiqamhg==";
-        final String secretApiKey = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
+        final String secret = "xxxxj4k27hbbszzyiqamhg==";
+        final String secretApiKey = "xxxx-8D28-3408-45A8-8E20-8474-06C0-8548";
         final BreinConfig breinConfig = new BreinConfig(secretApiKey, secret);
 
         // set config
@@ -820,7 +819,7 @@ public class TestJerseyApi {
     @Test
     public void testTemporalDataFromPhilipp() {
 
-        final String API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
+        final String API_KEY = "XXXX-F48C-156A-409A-B465-317F-A0B4-E0E8";
 
         Breinify.setConfig(new BreinConfig(API_KEY).setAndInitRestEngine(BreinEngineType.JERSEY_ENGINE));
 
@@ -854,8 +853,8 @@ public class TestJerseyApi {
     @Test
     public void testTemporalDataWithSign() {
 
-        final String secret = "lmcoj4k27hbbszzyiqamhg==";
-        final String apiKeyWithSecret = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
+        final String secret = "xxxxj4k27hbbszzyiqamhg==";
+        final String apiKeyWithSecret = "XXXX-8D28-3408-45A8-8E20-8474-06C0-8548";
 
         final BreinConfig breinConfig = new BreinConfig(apiKeyWithSecret, secret);
 
