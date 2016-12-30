@@ -29,6 +29,11 @@ public class TestApi {
      */
     private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
 
+    /**
+     * This has to be a valid secret
+     */
+    private static final String VALID_SECRET = "-HAS TO BE A VALID SECRET";
+
    /**
      * Contains the Breinify User
      */
@@ -261,7 +266,7 @@ public class TestApi {
     /**
      * helper method to call login
      *
-     * @param breinUser         brein unser
+     * @param breinUser         brein user
      * @param breinActivityType activity type
      * @param breinCategoryType category type
      * @param description       description
@@ -1062,8 +1067,7 @@ public class TestApi {
     @Test
     public void testRecommendation() {
 
-        final BreinConfig breinConfig = new BreinConfig("2514-2506-68B1-45C3-8DCC-B8B8-32D4-9870",
-                "nd8ieprunt/kgkoe/3b0uw==");
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, VALID_SECRET);
 
         Breinify.setConfig(breinConfig);
 
