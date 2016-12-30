@@ -154,7 +154,7 @@ public class UniRestEngine implements IRestEngine {
      *
      * @param breinRecommendation contains the request data
      * @return result from the request
-     * @throws BreinException
+     * @throws BreinException exception
      */
     @Override
     public BreinResult doRecommendation(final BreinRecommendation breinRecommendation) throws BreinException {

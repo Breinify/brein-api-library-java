@@ -32,7 +32,7 @@ public class BreinMapUtil {
     }
 
     /**
-     * Map Helper method used to copy a hashmap of type <String, Object>
+     * Map Helper method used to copy a hashmap of type String, Object
      *
      * @param source contains the original map
      * @return a copy of the map or null if source is null

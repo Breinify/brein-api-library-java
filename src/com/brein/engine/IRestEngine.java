@@ -91,7 +91,7 @@ public interface IRestEngine {
     }
 
     /**
-     * checks if the url is valid -> if not an exception will be thrown
+     * checks if the url is valid. If not an exception will be thrown
      *
      * @param fullyQualifiedUrl url with endpoint
      */

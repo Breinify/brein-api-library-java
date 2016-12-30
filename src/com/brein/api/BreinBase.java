@@ -51,7 +51,7 @@ public class BreinBase implements ISecretStrategy {
     /**
      * returns the map for the base section
      *
-     * @return map <String, Object>
+     * @return map
      */
     public Map<String, Object> getBase() {
         return baseMap;
@@ -79,6 +79,7 @@ public class BreinBase implements ISecretStrategy {
      * sets the brein config
      *
      * @param breinConfig object
+     * @return self
      */
     public BreinBase setConfig(final BreinConfig breinConfig) {
         this.breinConfig = breinConfig;
@@ -96,9 +97,9 @@ public class BreinBase implements ISecretStrategy {
 
     /**
      * sets the brein user
-     * ~
      *
      * @param breinUser user data
+     * @return self
      */
     public BreinBase setBreinUser(final BreinUser breinUser) {
         this.breinUser = breinUser;
@@ -136,6 +137,7 @@ public class BreinBase implements ISecretStrategy {
      * sets the timestamp
      *
      * @param unixTimestamp value from 1.1.1970
+     * @return self
      */
     public BreinBase setUnixTimestamp(final long unixTimestamp) {
         this.unixTimestamp = unixTimestamp;
@@ -192,6 +194,7 @@ public class BreinBase implements ISecretStrategy {
      * sets the error callback function
      *
      * @param errorCallback function to callback
+     * @return self
      */
     public BreinBase setErrorCallback(final Function<String, Void> errorCallback) {
         this.errorCallback = errorCallback;
@@ -210,10 +213,12 @@ public class BreinBase implements ISecretStrategy {
     /**
      * sets an map for the base section
      *
-     * @param baseMap map of <String, Object></String,>
+     * @param baseMap map of String, Object
+     * @return self
      */
-    public void setBase(final Map<String, Object> baseMap) {
+    public BreinBase setBase(final Map<String, Object> baseMap) {
         this.baseMap = baseMap;
+        return this;
     }
 
     /**

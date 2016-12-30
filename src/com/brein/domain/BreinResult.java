@@ -57,7 +57,7 @@ public class BreinResult {
     /**
      * provides the map containing the results
      *
-     * @return map of <String, Object>
+     * @return map of String, Object
      */
     public Map<String, Object> getMap() {
         return map;
@@ -72,10 +72,18 @@ public class BreinResult {
         return null;
     }
 
+    /**
+     * returns the http request status
+     * @return valus like 200, 403...
+     */
     public int getStatus() {
         return status;
     }
 
+    /**
+     * sets the http request status
+     * @param status contains the value
+     */
     public void setStatus(final int status) {
         this.status = status;
     }

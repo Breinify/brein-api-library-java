@@ -8,7 +8,7 @@ import com.brein.util.BreinUtil;
 
 import java.util.function.Function;
 
-/**
+/*
  * Static Implementation of Breinify activity & lookup calls
  */
 public class Breinify {
@@ -168,7 +168,6 @@ public class Breinify {
      * // invoke this method
      * Breinify.activity();
      * <p>
-     * <p>
      * This request is asynchronous.
      */
     public static void activity() {
@@ -307,19 +306,20 @@ public class Breinify {
      * Sends a recommendation request to the engine utilizing the API. The call is done synchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      *
-     * @param breinRecommenationPara contains the brein recommendation object
+     * @param breinRecommendationPara contains the brein recommendation object
+     * @return BreinResult object
      */
-    public static BreinResult recommendation(final BreinRecommendation breinRecommenationPara) {
+    public static BreinResult recommendation(final BreinRecommendation breinRecommendationPara) {
 
-        if (breinRecommenationPara == null) {
+        if (breinRecommendationPara == null) {
             throw new BreinException("BreinRecommendation is null");
         }
 
         // apply the current configuration
-        breinRecommenationPara.setConfig(getBreinRecommendation().getConfig());
+        breinRecommendationPara.setConfig(getBreinRecommendation().getConfig());
 
         // create a clone in order to prevent concurrency issues
-        final BreinRecommendation newBreinRecommendation = BreinRecommendation.clone(breinRecommenationPara);
+        final BreinRecommendation newBreinRecommendation = BreinRecommendation.clone(breinRecommendationPara);
         return newBreinRecommendation.getBreinEngine().invokeRecommendation(newBreinRecommendation);
     }
 

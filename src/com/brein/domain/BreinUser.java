@@ -100,7 +100,8 @@ public class BreinUser {
     }
 
     /**
-     * setter & getter of the properties
+     * get the email of the user
+     * @return email
      */
     public String getEmail() {
         return email;
@@ -110,7 +111,7 @@ public class BreinUser {
      * sets the email of the user
      *
      * @param email to set (will not be checked)
-     * @return this -> allows chaining
+     * @return this
      */
     public BreinUser setEmail(final String email) {
         this.email = email;
@@ -130,7 +131,7 @@ public class BreinUser {
      * set the first name of the user
      *
      * @param firstName name to set
-     * @return this -> allows chaining
+     * @return this
      */
     public BreinUser setFirstName(final String firstName) {
         this.firstName = firstName;
@@ -150,7 +151,7 @@ public class BreinUser {
      * set the last name of the user
      *
      * @param lastName last name
-     * @return thi -> allows chaining
+     * @return thi
      */
     public BreinUser setLastName(final String lastName) {
         this.lastName = lastName;
@@ -170,6 +171,7 @@ public class BreinUser {
      * sets the sessionId
      *
      * @param sessionId value of the sessionId
+     * @return self
      */
     public BreinUser setSessionId(final String sessionId) {
         this.sessionId = sessionId;
@@ -189,6 +191,7 @@ public class BreinUser {
      * sets the additional user agent value
      *
      * @param userAgent value
+     * @return self
      */
     public BreinUser setUserAgent(final String userAgent) {
         this.userAgent = userAgent;
@@ -208,6 +211,7 @@ public class BreinUser {
      * sets the ipAddress
      *
      * @param ipAddress value
+     * @return self
      */
     public BreinUser setIpAddress(final String ipAddress) {
         this.ipAddress = ipAddress;
@@ -227,6 +231,7 @@ public class BreinUser {
      * sets the additional referrer value
      *
      * @param referrer value
+     * @return self
      */
     public BreinUser setReferrer(final String referrer) {
         this.referrer = referrer;
@@ -292,6 +297,7 @@ public class BreinUser {
      * Sets the value of dateOfBirth as String. This is only used internally.
      *
      * @param dateOfBirthString contains the date of birth string
+     * @return self
      */
     private BreinUser setDateOfBirthString(final String dateOfBirthString) {
         this.dateOfBirth = dateOfBirthString;
@@ -398,6 +404,7 @@ public class BreinUser {
      * sets the user map
      *
      * @param userMap map
+     * @return self
      */
     public BreinUser set(final Map<String, Object> userMap) {
         if (userMap == null) {
@@ -415,6 +422,7 @@ public class BreinUser {
      *
      * @param key     contains the key for the nested map
      * @param userMap map of fields
+     * @return self
      */
     public BreinUser set(final String key, final Map<String, Object> userMap) {
         if (userMap == null) {
@@ -436,6 +444,7 @@ public class BreinUser {
      * sets the user additional map
      *
      * @param additional map
+     * @return self
      */
     public BreinUser setAdditional(final Map<String, Object> additional) {
         if (additional == null) {
@@ -454,6 +463,7 @@ public class BreinUser {
      *
      * @param key        contains the key for the nested map
      * @param additional map of fields
+     * @return self
      */
     public BreinUser setAdditional(final String key, final Map<String, Object> additional) {
         if (additional == null) {
@@ -564,7 +574,6 @@ public class BreinUser {
         if (BreinUtil.containsValue(breinUser.getTimezone())) {
             jsonObject.put("timezone", breinUser.getTimezone());
         }
-
     }
 
     /**

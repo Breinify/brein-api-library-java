@@ -52,6 +52,7 @@ public class BreinActivity extends BreinBase {
      * Sets activity type
      *
      * @param breinActivityType to set
+     * @return self
      */
     public BreinActivity setBreinActivityType(final String breinActivityType) {
         this.breinActivityType = breinActivityType;
@@ -76,6 +77,7 @@ public class BreinActivity extends BreinBase {
      * sets brein category
      *
      * @param breinCategoryType object
+     * @return self
      */
     public BreinActivity setBreinCategoryType(final String breinCategoryType) {
         this.breinCategoryType = breinCategoryType;
@@ -95,6 +97,7 @@ public class BreinActivity extends BreinBase {
      * sets the description
      *
      * @param description string to set as description
+     * @return self
      */
     public BreinActivity setDescription(final String description) {
         this.description = description;
@@ -153,6 +156,7 @@ public class BreinActivity extends BreinBase {
     /**
      * sets the activity map
      *
+     * @param key contains the key
      * @param dataActivityMap containing additional values
      * @return self
      */

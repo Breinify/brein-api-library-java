@@ -7,9 +7,7 @@ import com.brein.domain.BreinUser;
 
 import java.util.function.Function;
 
-/**
- * Static Implementation of Breinify activity & lookup calls
- */
+// Static Implementation of Breinify activity & lookup calls
 public class BreinifyExecutor {
 
     /**

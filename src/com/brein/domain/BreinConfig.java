@@ -149,6 +149,7 @@ public class BreinConfig {
 
     /**
      * initializes the rest client
+     * @return self
      */
     public BreinConfig initEngine() {
         BreinEngineType engine = getRestEngineType();
@@ -299,6 +300,7 @@ public class BreinConfig {
      * set the connection timeout
      *
      * @param connectionTimeout value
+     * @return self
      */
     public BreinConfig setConnectionTimeout(final long connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
@@ -318,6 +320,7 @@ public class BreinConfig {
      * set the socket timeout
      *
      * @param socketTimeout value
+     * @return self
      */
     public BreinConfig setSocketTimeout(final long socketTimeout) {
         this.socketTimeout = socketTimeout;
@@ -415,6 +418,7 @@ public class BreinConfig {
      * set the secret
      *
      * @param secret raw secret
+     * @return self
      */
     public BreinConfig setSecret(final String secret) {
         this.secret = secret;
@@ -434,6 +438,7 @@ public class BreinConfig {
      * sets the default category
      *
      * @param defaultCategory default to set
+     * @return self
      */
     public BreinConfig setDefaultCategory(final String defaultCategory) {
         this.defaultCategory = defaultCategory;

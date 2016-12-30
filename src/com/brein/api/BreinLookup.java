@@ -30,6 +30,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      * sets the breindimension object - will be used for lookup
      *
      * @param breinDimension object to set
+     * @return self
      */
     public BreinLookup setBreinDimension(final BreinDimension breinDimension) {
         this.breinDimension = breinDimension;
