@@ -14,6 +14,11 @@ public class BreinRecommendation extends BreinBase {
     private int numberOfRecommendations = 3;
 
     /**
+     * contains the category for the recommendation
+     */
+    private String category;
+
+    /**
      * empty ctor
      */
     BreinRecommendation() {
@@ -58,6 +63,24 @@ public class BreinRecommendation extends BreinBase {
     }
 
     /**
+     * get the recommendation category
+     * @return category
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    /**
+     * set the recommendation category
+     * @param category contains the category
+     * @return self
+     */
+    public BreinRecommendation setCategory(final String category) {
+        this.category = category;
+        return this;
+    }
+
+    /**
      * retrieves the configured activity endpoint (e.g. \activity)
      *
      * @return endpoint
@@ -88,7 +111,13 @@ public class BreinRecommendation extends BreinBase {
         // recommendation data
         final Map<String, Object> recommendationData = new HashMap<>();
 
-        recommendationData.put("numRecommendations", this.getNumberOfRecommendations());
+        // check optional field(s)
+        if (BreinUtil.containsValue(getCategory())) {
+            recommendationData.put("recommendationCategory", getCategory());
+        }
+
+        // mandatory field
+        recommendationData.put("numRecommendations", getNumberOfRecommendations());
         requestData.put("recommendation", recommendationData);
 
         // base level data...
@@ -109,6 +138,7 @@ public class BreinRecommendation extends BreinBase {
         // create a new activity object
         final BreinRecommendation recommendation = new BreinRecommendation();
         recommendation.setNumberOfRecommendations(sourceRecommendation.getNumberOfRecommendations());
+        recommendation.setCategory(sourceRecommendation.getCategory());
 
         recommendation.cloneBase(sourceRecommendation);
         return recommendation;
@@ -125,5 +155,6 @@ public class BreinRecommendation extends BreinBase {
         final String message = String.format("%d", getUnixTimestamp());
         return BreinUtil.generateSignature(message, getConfig().getSecret());
     }
+
 
 }

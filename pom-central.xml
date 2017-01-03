@@ -5,7 +5,7 @@
 
     <groupId>com.breinify</groupId>
     <artifactId>brein-api-library-java</artifactId>
-    <version>2.1.0</version>
+    <version>1.1.1</version>
 
     <name>brein-api-library-java</name>
     <description>Brein API Library Java</description>

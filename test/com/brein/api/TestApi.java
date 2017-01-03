@@ -1089,6 +1089,35 @@ public class TestApi {
         }
     }
 
+    /**
+     * Test of recommendation with (optional) recommendationCategory
+     */
+    @Test
+    public void testRecommendationWithCategorie() {
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, VALID_SECRET);
+
+        Breinify.setConfig(breinConfig);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("toni.maroni@email.com")
+                .setSessionId("1133AADDDEEE");
+
+        final int numberOfRecommendations = 10;
+        final BreinRecommendation breinRecommendation = new BreinRecommendation(breinUser, numberOfRecommendations);
+        breinRecommendation.setCategory("some category");
+        final BreinResult result = Breinify.recommendation(breinRecommendation);
+
+        // result
+        if (result.getStatus() == 200) {
+            System.out.println("Message from BreinRecommendation is: " + result.getMessage());
+
+            final ArrayList arrayList = result.get("result");
+
+            arrayList.forEach((value)->System.out.println("Item : " + value));
+        }
+    }
+
     @Test
     public void testForDoc() {
 
