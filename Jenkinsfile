@@ -4,7 +4,11 @@ node() {
 
     // checkout workspace
     dir('../brein-workspace') {
-        git url: 'https://github.com/Breinify/brein-workspace.git'
+
+    // git@github.com:MarcoRecchioni/reponame.git
+
+       //  git url: 'https://github.com/Breinify/brein-workspace.git'
+        git url: 'git@github.com:MarcoRecchioni/Breinify/brein-workspace.git'
     }
 
     // checkout
@@ -15,8 +19,7 @@ node() {
     stage 'Build'
 
     // compile
-    sh('ant build')
-
+    sh('ant 03-wrap-up')
 
     stage 'Test'
 
