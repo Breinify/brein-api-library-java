@@ -20,7 +20,6 @@ node() {
 
     stage 'Test'
 
-
     stage 'Upload'
 
 }
