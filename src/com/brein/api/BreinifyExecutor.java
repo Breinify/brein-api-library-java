@@ -1,24 +1,30 @@
 package com.brein.api;
 
-import com.brein.domain.*;
+import com.brein.domain.BreinConfig;
+import com.brein.domain.BreinDimension;
+import com.brein.domain.BreinResult;
+import com.brein.domain.BreinUser;
 
-/**
- * Static Implementation of Breinify activity & lookup calls
- */
+import java.util.function.Function;
+
+// Static Implementation of Breinify activity & lookup calls
 public class BreinifyExecutor {
 
-    /**
-     * contains the current version of the library
-     */
-    private static final String VERSION = "1.1.0";
     /**
      * contains the activity object
      */
     private final BreinActivity breinActivity = new BreinActivity();
+
     /**
      * contains the lookup object
      */
     private final BreinLookup breinLookup = new BreinLookup();
+
+    /**
+     * contains the temporalData object
+     */
+    private final BreinTemporalData breinTemporalData = new BreinTemporalData();
+
     /**
      * contains the configuration
      */
@@ -42,15 +48,7 @@ public class BreinifyExecutor {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
-    }
-
-    /**
-     * returns the version
-     *
-     * @return version
-     */
-    public String getVersion() {
-        return VERSION;
+        breinTemporalData.setConfig(breinConfig);
     }
 
     /**
@@ -77,21 +75,25 @@ public class BreinifyExecutor {
      * <p>
      * This request is asynchronous.
      *
-     * @param user         a plain object specifying the user information the activity belongs to
-     * @param activityType the type of the activity collected, i.e., one of search, login, logout, addToCart,
-     *                     removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
-     *                     be used
-     * @param category     the category of the platform/service/products, i.e., one of apparel, home, education, family,
-     *                     food, health, job, services, or other
-     * @param description  a string with further information about the activity performed
-     * @param sign         a boolean value specifying if the call should be signed
+     * @param user          a plain object specifying the user information the activity belongs to
+     * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                      be used
+     * @param category      the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                      food, health, job, services, or other
+     * @param description   a string with further information about the activity performed
+     * @param errorCallback a callback function that is invoked in case of an error (can be null)
      */
     public void activity(final BreinUser user,
                          final String activityType,
                          final String category,
                          final String description,
-                         final boolean sign) {
-        Breinify.activity(user, activityType, category, description, sign);
+                         final Function<String, Void> errorCallback) {
+
+        // set the appropriate configuration
+        applyActivityConfiguration();
+
+        Breinify.activity(user, activityType, category, description, errorCallback);
     }
 
     /**
@@ -100,8 +102,63 @@ public class BreinifyExecutor {
      * <p>
      * This request is asynchronous.
      *
+     * @param user         a plain object specifying the user information the activity belongs to
+     * @param activityType the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                     removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                     be used
+     * @param category     the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                     food, health, job, services, or other
+     * @param description  a string with further information about the activity performed
+     */
+    public void activity(final BreinUser user,
+                         final String activityType,
+                         final String category,
+                         final String description) {
+
+        activity(user, activityType, category, description, null);
+    }
+
+    /**
+     * This is necessary because the configuration from
+     * class BreinifyExecutor needs to be transferred to
+     * class Breinify in order to invoke the activity and
+     * lookup calls within class Breinify.
+     */
+    public void applyActivityConfiguration() {
+        Breinify.getBreinActivity().setConfig(getConfig());
+    }
+
+
+    /**
+     * This is necessary because the configuration from
+     * class BreinifyExecutor needs to be transferred to
+     * class Breinify in order to invoke the temporaldata
+     * calls within class Breinify.
+     */
+    public void applyTemporalDataConfiguration() {
+        Breinify.getBreinTemporalData().setConfig(getConfig());
+    }
+
+    /**
+     * This is necessary because the configuration from
+     * class BreinifyExecutor needs to be transferred to
+     * class Breinify in order to invoke the recommendation
+     * calls within class Breinify.
+     */
+    public void applyRecommendationConfiguration() {
+        Breinify.getBreinRecommendation().setConfig(getConfig());
+    }
+
+    /**
+     * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * This request is asynchronous.
      */
     public void activity() {
+
+        // set the appropriate configuration
+        applyActivityConfiguration();
 
         if (breinActivity.getBreinUser() == null) {
             throw new BreinException(BreinException.USER_NOT_SET);
@@ -123,7 +180,7 @@ public class BreinifyExecutor {
                 breinActivity.getBreinActivityType(),
                 breinActivity.getBreinCategoryType(),
                 breinActivity.getDescription(),
-                breinActivity.isSign());
+                breinActivity.getErrorCallback());
     }
 
     /**
@@ -133,13 +190,48 @@ public class BreinifyExecutor {
      *
      * @param user      a plain object specifying information about the user to retrieve data for.
      * @param dimension an object (with an array) containing the names of the dimensions to lookup.
-     * @param sign      a boolean value specifying if the call should be signed.
      * @return response from request wrapped in an object called BreinResponse
      */
     public BreinResult lookup(final BreinUser user,
-                              final BreinDimension dimension,
-                              final boolean sign) {
-        return Breinify.lookup(breinLookup, user, dimension, sign);
+                              final BreinDimension dimension) {
+        return Breinify.lookup(breinLookup, user, dimension);
+    }
+
+    /**
+     * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * Furthermore it uses the internal instance of BreinTemporalData.
+     *
+     * @param breinUser a plain object specifying information about the user to retrieve data for.
+     * @return result from the Breinify engine
+     */
+    public BreinResult temporalData(final BreinUser breinUser) {
+
+        // set the appropriate configuration
+        applyTemporalDataConfiguration();
+
+        return Breinify.temporalData(breinUser);
+    }
+
+    /**
+     * Invokes the recommendation request to the engine utilizing the API. This call is don synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * @param user a plain object specifying the information about the user.
+     * @param numberOfRecommendations number of recommendations
+     * @return result from the Breinify engine
+     */
+    public BreinResult recommendation(final BreinUser user, int numberOfRecommendations) {
+
+        applyRecommendationConfiguration();
+
+        final BreinRecommendation breinRecommendation = new BreinRecommendation();
+
+        breinRecommendation.setBreinUser(user);
+        breinRecommendation.setNumberOfRecommendations(numberOfRecommendations);
+
+        return Breinify.recommendation(breinRecommendation);
     }
 
     /**
@@ -148,4 +240,6 @@ public class BreinifyExecutor {
     public void shutdown() {
         this.config.shutdownEngine();
     }
+
+
 }

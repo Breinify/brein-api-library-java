@@ -10,13 +10,16 @@ import java.util.Map;
  */
 public class BreinResult {
 
+    private int status;
+
     /**
      * contains the collected data as map
      */
     private final Map<String, Object> map;
 
-     /**
+    /**
      * creates a brein result object
+     *
      * @param jsonResponse as json string
      */
     @SuppressWarnings("unchecked")
@@ -24,8 +27,14 @@ public class BreinResult {
         map = new Gson().fromJson(jsonResponse, Map.class);
     }
 
+    public BreinResult(final String jsonResponse, final int status) {
+        this(jsonResponse);
+        this.status = status;
+    }
+
     /**
      * retrieves the object according to the requested key
+     *
      * @param key to look for
      * @param <T> Object
      * @return Object retrieved
@@ -37,6 +46,7 @@ public class BreinResult {
 
     /**
      * checks if key exists in map
+     *
      * @param key to check
      * @return true or false
      */
@@ -44,4 +54,42 @@ public class BreinResult {
         return get(key) != null;
     }
 
+    /**
+     * provides the map containing the results
+     *
+     * @return map of String, Object
+     */
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public String getMessage() {
+
+        if (has("message")) {
+            return get("message");
+        }
+
+        return null;
+    }
+
+    /**
+     * returns the http request status
+     * @return valus like 200, 403...
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    /**
+     * sets the http request status
+     * @param status contains the value
+     */
+    public void setStatus(final int status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return map.toString();
+    }
 }

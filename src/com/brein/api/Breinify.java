@@ -1,16 +1,17 @@
 package com.brein.api;
 
-import com.brein.domain.*;
+import com.brein.domain.BreinConfig;
+import com.brein.domain.BreinDimension;
+import com.brein.domain.BreinResult;
+import com.brein.domain.BreinUser;
+import com.brein.util.BreinUtil;
 
-/**
+import java.util.function.Function;
+
+/*
  * Static Implementation of Breinify activity & lookup calls
  */
 public class Breinify {
-
-    /**
-     * contains the current version of the usage library
-     */
-    private static final String VERSION = "1.1.0";
 
     /**
      * contains the configuration
@@ -28,6 +29,16 @@ public class Breinify {
     private static final BreinLookup breinLookup = new BreinLookup();
 
     /**
+     * contains the temporaldata object
+     */
+    private static final BreinTemporalData breinTemporalData = new BreinTemporalData();
+
+    /**
+     * contains the recommendation object
+     */
+    private static final BreinRecommendation breinRecommendation = new BreinRecommendation();
+
+    /**
      * sets the configuration
      *
      * @param breinConfig config object
@@ -36,6 +47,8 @@ public class Breinify {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
+        breinTemporalData.setConfig(breinConfig);
+        breinRecommendation.setConfig(breinConfig);
     }
 
     /**
@@ -45,15 +58,6 @@ public class Breinify {
      */
     public static BreinConfig getConfig() {
         return config;
-    }
-
-    /**
-     * returns the  version
-     *
-     * @return version
-     */
-    public String getVersion() {
-        return VERSION;
     }
 
     /**
@@ -71,6 +75,20 @@ public class Breinify {
     }
 
     /**
+     * @return temporaldata instance
+     */
+    public static BreinTemporalData getBreinTemporalData() {
+        return breinTemporalData;
+    }
+
+    /**
+     * @return breinRecommendation instance
+     */
+    public static BreinRecommendation getBreinRecommendation() {
+        return breinRecommendation;
+    }
+
+    /**
      * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      * <p>
@@ -80,29 +98,58 @@ public class Breinify {
      * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
      *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
      *                      be used
-     * @param category      the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     * @param categoryType  the category of the platform/service/products, i.e., one of apparel, home, education, family,
      *                      food, health, job, services, or other
      * @param description   a string with further information about the activity performed
-     * @param sign          a boolean value specifying if the call should be signed
+     * @param errorCallback a callback function that is invoked in case of an error (can be null)
      */
     public static void activity(final BreinUser user,
                                 final String activityType,
-                                final String category,
+                                final String categoryType,
                                 final String description,
-                                final boolean sign) {
-        breinActivity.setBreinUser(user);
-        breinActivity.setBreinActivityType(activityType);
-        breinActivity.setBreinCategoryType(category);
-        breinActivity.setDescription(description);
-        breinActivity.setSign(sign);
+                                final Function<String, Void> errorCallback) {
 
-        /*
-         * invoke the request, "this" has all necessary information
-         */
-        if (null == breinActivity.getBreinEngine()) {
+        if (user == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        if (breinActivity.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
-        breinActivity.getBreinEngine().sendActivity(breinActivity);
+
+        // apply the current configuration
+        breinActivity.setBreinUser(user);
+        breinActivity.setBreinActivityType(activityType);
+        breinActivity.setBreinCategoryType(categoryType);
+        breinActivity.setDescription(description);
+        breinActivity.setErrorCallback(errorCallback);
+
+        // create a clone in order to prevent concurrency issues
+        final BreinActivity newActivity = BreinActivity.clone(breinActivity);
+        newActivity.getBreinEngine().sendActivity(newActivity);
+    }
+
+    /**
+     * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * This request is asynchronous.
+     *
+     * @param user         a plain object specifying the user information the activity belongs to
+     * @param activityType the type of the activity collected, i.e., one of search, login, logout, addToCart,
+     *                     removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
+     *                     be used
+     * @param categoryType the category of the platform/service/products, i.e., one of apparel, home, education, family,
+     *                     food, health, job, services, or other
+     * @param description  a string with further information about the activity performed
+     */
+    public static void activity(final BreinUser user,
+                                final String activityType,
+                                final String categoryType,
+                                final String description) {
+
+        // default behaviour is no callback
+        activity(user, activityType, categoryType, description, null);
     }
 
     /**
@@ -112,7 +159,7 @@ public class Breinify {
      * to do the following:
      * <p>
      * // retrieve BreinActivity instance from Breinify class
-     * BreinActivity breinActivity = Breinify.getBreinActitivty();
+     * BreinActivity breinActivity = Breinify.getBreinActivity();
      * <p>
      * // set methods as desired to breinActivity (for instance)
      * breinActivity.setBreinUser(new BreinUser("user.name@email.com");
@@ -121,12 +168,11 @@ public class Breinify {
      * // invoke this method
      * Breinify.activity();
      * <p>
-     * <p>
      * This request is asynchronous.
      */
     public static void activity() {
 
-        // use the own instance
+        // request is based on the static instance
         final BreinActivity breinActivity = getBreinActivity();
 
         if (breinActivity.getBreinUser() == null) {
@@ -138,14 +184,21 @@ public class Breinify {
         }
 
         if (breinActivity.getBreinCategoryType() == null) {
-            throw new BreinException(BreinException.CATEGORY_TYPE_NOT_SET);
+            // check if there is an default category set
+            final String defaultCategory = getConfig().getDefaultCategory();
+            if (BreinUtil.containsValue(defaultCategory)) {
+                breinActivity.setBreinCategoryType(defaultCategory);
+            }
         }
 
-        if (null == breinActivity.getBreinEngine()) {
+        if (breinActivity.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
 
-        breinActivity.getBreinEngine().sendActivity(breinActivity);
+        // create a clone in order to prevent concurrency issues
+        final BreinActivity newActivity = BreinActivity.clone(breinActivity);
+
+        breinActivity.getBreinEngine().sendActivity(newActivity);
     }
 
     /**
@@ -155,30 +208,119 @@ public class Breinify {
      *
      * @param user      a plain object specifying information about the user to retrieve data for.
      * @param dimension an object (with an array) containing the names of the dimensions to lookup.
-     * @param sign      a boolean value specifying if the call should be signed.
      * @return response from request wrapped in an object called BreinResponse
      */
     public static BreinResult lookup(final BreinUser user,
-                                     final BreinDimension dimension,
-                                     final boolean sign) {
-        return lookup(breinLookup, user, dimension, sign);
+                                     final BreinDimension dimension) {
+        return lookup(breinLookup, user, dimension);
     }
 
+    /**
+     * Retrieves a lookup result from the engine. The function needs a valid API-key to be configured to succeed.
+     * <p>
+     * This request is synchronous.
+     *
+     * @param breinLookup a plain object specifying the lookup information.
+     * @param user        a plain object specifying information about the user to retrieve data for.
+     * @param dimension   an object (with an array) containing the names of the dimensions to lookup.
+     * @return response from request wrapped in an object called BreinResponse
+     */
     public static BreinResult lookup(final BreinLookup breinLookup,
                                      final BreinUser user,
-                                     final BreinDimension dimension,
-                                     final boolean sign) {
-        breinLookup.setBreinUser(user);
-        breinLookup.setBreinDimension(dimension);
-        breinLookup.setSign(sign);
+                                     final BreinDimension dimension) {
 
-        /*
-         * invoke the lookup request
-         */
-        if (null == breinLookup.getBreinEngine()) {
+        if (user == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        if (dimension == null) {
+            throw new BreinException("Dimension not set");
+        }
+
+        if (breinLookup == null) {
+            throw new BreinException("BreinLookup object is null");
+        }
+
+        if (breinLookup.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
+
+        breinLookup.setBreinUser(user);
+        breinLookup.setBreinDimension(dimension);
+
+        // invoke the lookup request
         return breinLookup.getBreinEngine().performLookUp(breinLookup);
+    }
+
+    /**
+     * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * Furthermore it uses the internal instance of BreinTemporalData.
+     *
+     * @param user a plain object specifying information about the user to retrieve data for.
+     * @return result from the Breinify engine
+     */
+    public static BreinResult temporalData(final BreinUser user) {
+
+        // create a working temporal data object
+        final BreinTemporalData newBreinTemporalData = new BreinTemporalData();
+        newBreinTemporalData.setConfig(getBreinTemporalData().getConfig());
+
+        return temporalData(newBreinTemporalData, user);
+    }
+
+    /**
+     * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * @param breinTemporalData a plain object specifying the information of the temporaldata.
+     * @param user              a plain object specifying information about the user to retrieve data for.
+     * @return result from the Breinify engine
+     */
+    public static BreinResult temporalData(final BreinTemporalData breinTemporalData,
+                                           final BreinUser user) {
+
+        if (user == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        if (breinTemporalData == null) {
+            throw new BreinException("BreinTemporalData object not set");
+        }
+
+        if (breinTemporalData.getBreinEngine() == null) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
+
+        breinTemporalData.setBreinUser(user);
+
+        // clone temporaldata
+        final BreinTemporalData clonedTemporalData = BreinTemporalData.clone(breinTemporalData);
+
+        // invoke the temporaldata request
+        return clonedTemporalData.getBreinEngine().performTemporalDataRequest(clonedTemporalData);
+    }
+
+    /**
+     * Sends a recommendation request to the engine utilizing the API. The call is done synchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     *
+     * @param breinRecommendationPara contains the brein recommendation object
+     * @return BreinResult object
+     */
+    public static BreinResult recommendation(final BreinRecommendation breinRecommendationPara) {
+
+        if (breinRecommendationPara == null) {
+            throw new BreinException("BreinRecommendation is null");
+        }
+
+        // apply the current configuration
+        breinRecommendationPara.setConfig(getBreinRecommendation().getConfig());
+
+        // create a clone in order to prevent concurrency issues
+        final BreinRecommendation newBreinRecommendation = BreinRecommendation.clone(breinRecommendationPara);
+        return newBreinRecommendation.getBreinEngine().invokeRecommendation(newBreinRecommendation);
     }
 
     /**

@@ -1,9 +1,6 @@
 package com.brein.engine;
 
-import com.brein.api.BreinActivity;
-import com.brein.api.BreinBase;
-import com.brein.api.BreinException;
-import com.brein.api.BreinLookup;
+import com.brein.api.*;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.util.BreinUtil;
@@ -13,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.function.Function;
 
 
 /**
@@ -39,8 +37,10 @@ public interface IRestEngine {
      * invokes the post request
      *
      * @param breinActivity data
+     * @param errorCallback will be invoked in case of an error
      */
-    void doRequest(final BreinActivity breinActivity) throws BreinException;
+    void doRequest(final BreinActivity breinActivity,
+                   final Function<String, Void> errorCallback) throws BreinException;
 
     /**
      * performs a lookup and provides details
@@ -91,7 +91,8 @@ public interface IRestEngine {
     }
 
     /**
-     * checks if the url is valid -> if not an exception will be thrown
+     * checks if the url is valid. If not an exception will be thrown
+     *
      * @param fullyQualifiedUrl url with endpoint
      */
     default void validateUrl(final String fullyQualifiedUrl) throws BreinException {
@@ -99,7 +100,7 @@ public interface IRestEngine {
         final boolean validUrl = isUrlValid(fullyQualifiedUrl);
         if (!validUrl) {
             final String msg = "URL: " + fullyQualifiedUrl + " is not valid!";
-            if(LOG.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(msg);
             }
             throw new BreinException(msg);
@@ -119,6 +120,9 @@ public interface IRestEngine {
 
             case JERSEY_ENGINE:
                 return new JerseyRestEngine();
+
+            case AUTO_DETECT:
+                throw new BreinException("unable to detect any engine from class-path!");
 
             default:
                 throw new BreinException("no rest engine specified!");
@@ -207,4 +211,22 @@ public interface IRestEngine {
         validateConfig(breinBase);
     }
 
+    /**
+     * performs a temporalData request
+     *
+     * @param breinTemporalData contains the request data
+     * @return result from request
+     * @throws BreinException exception that will be thrown
+     */
+    BreinResult doTemporalDataRequest(BreinTemporalData breinTemporalData) throws BreinException;
+
+
+    /**
+     * performs a recommendation request
+     *
+     * @param breinRecommendation contains the request data
+     * @return result from request
+     * @throws BreinException exception that will be thrown
+     */
+    BreinResult doRecommendation(BreinRecommendation breinRecommendation) throws BreinException;
 }

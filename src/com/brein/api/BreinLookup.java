@@ -4,7 +4,8 @@ import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinUtil;
-import com.google.gson.*;
+
+import java.util.*;
 
 /**
  * Provides the lookup functionality
@@ -29,6 +30,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      * sets the breindimension object - will be used for lookup
      *
      * @param breinDimension object to set
+     * @return self
      */
     public BreinLookup setBreinDimension(final BreinDimension breinDimension) {
         this.breinDimension = breinDimension;
@@ -60,17 +62,13 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
      *
      * @param breinUser      contains the breinify user
      * @param breinDimension contains the dimensions to look after
-     * @param sign           if set to true a secret will be sent as well
-     *
      * @return response from request or null if no data can be retrieved
      */
     public BreinResult lookUp(final BreinUser breinUser,
-                              final BreinDimension breinDimension,
-                              final boolean sign) {
+                              final BreinDimension breinDimension) {
 
         setBreinUser(breinUser);
         setBreinDimension(breinDimension);
-        setSign(sign);
 
         if (null == getBreinEngine()) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
@@ -90,49 +88,29 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
         // call base class
         super.prepareJsonRequest();
 
-        final JsonObject requestData = new JsonObject();
+        final Map<String, Object> requestData = new HashMap<>();
+
+        // user data level and additional
         final BreinUser breinUser = getBreinUser();
-        if (breinUser != null) {
-            final JsonObject userData = new JsonObject();
-            userData.addProperty("email", breinUser.getEmail());
-            requestData.add("user", userData);
+        if (null != breinUser) {
+            breinUser.prepareUserRequestData(requestData, breinUser);
         }
 
-        /*
-         * Dimensions
-         */
+        // this is the section that is only available within the lookup request
         if (BreinUtil.containsValue(getBreinDimension())) {
-            final JsonObject lookupData = new JsonObject();
-            final JsonArray dimensions = new JsonArray();
-            for (final String field : getBreinDimension().getDimensionFields()) {
-                dimensions.add(field);
+            final Map<String, Object> lookupData = new HashMap<>();
+            final List<String> dimensions = new ArrayList<>();
+            Collections.addAll(dimensions, getBreinDimension().getDimensionFields());
+            if (getBreinDimension().getDimensionFields().length > 0) {
+                lookupData.put("dimensions", dimensions);
+                requestData.put("lookup", lookupData);
             }
-            lookupData.add("dimensions", dimensions);
-            requestData.add("lookup", lookupData);
         }
 
-        /*
-         * API key
-         */
-        if (BreinUtil.containsValue(getConfig().getApiKey())) {
-            requestData.addProperty("apiKey", getConfig().getApiKey());
-        }
+        // build base level structure
+        prepareBaseRequestData(this, requestData);
 
-        // Unix time stamp
-        requestData.addProperty("unixTimestamp", getUnixTimestamp());
-
-        // set secret
-        if (isSign()) {
-            requestData.addProperty("signatureType", createSignature());
-        }
-
-        final Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .serializeNulls()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
-
-        return gson.toJson(requestData);
+        return getGson().toJson(requestData);
     }
 
     /**
@@ -147,6 +125,7 @@ public class BreinLookup extends BreinBase implements ISecretStrategy {
 
     /**
      * Creates the signature for lookup
+     *
      * @return signature
      */
     @Override

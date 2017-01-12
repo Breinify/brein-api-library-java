@@ -5,7 +5,6 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
-import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,14 +20,12 @@ public class TestLookup {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    // private static final String BASE_URL = "http://dev.breinify.com/api";
-
     private static final String BASE_URL = "https://api.breinify.com";
 
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "A187-B1DF-E3C5-4BDB-93C4-4729-7B54-E5B1";
+    private static final String VALID_API_KEY = "XXXX-XXXX-E3C5-4BDB-93C4-4729-7B54-E5B1";
 
     /**
      * Contains the Breinify User
@@ -45,12 +42,7 @@ public class TestLookup {
      */
     @Before
     public void setUp() {
-
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
-
-        breinLookup.setConfig(breinConfig);
+        breinLookup.setConfig(new BreinConfig(VALID_API_KEY));
     }
 
     /**
@@ -58,9 +50,8 @@ public class TestLookup {
      */
     @AfterClass
     public static void tearDown() {
-        /**
-         * we have to wait some time in order to allow the asynch rest processing
-         */
+        // we have to wait some time in order to allow
+        // the asynch rest processing
         try {
             Thread.sleep(4000);
         } catch (final InterruptedException e) {
@@ -70,7 +61,6 @@ public class TestLookup {
 
     /**
      * Tests the lookup functionality
-     *
      */
     @Test
     public void testLookup() {
@@ -80,17 +70,21 @@ public class TestLookup {
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
 
-        /**
-         * invoke lookup
-         */
-        final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension, false);
+        try {
+            // invoke lookup
+            final BreinResult breinResult = breinLookup.lookUp(breinUser, breinDimension);
 
-        final Object dataFirstname = breinResult.get("firstname");
-        final Object dataGender = breinResult.get("gender");
-        final Object dataAge = breinResult.get("age");
-        final Object dataAgeGroup = breinResult.get("agegroup");
-        final Object dataDigitalFootprinting = breinResult.get("digitalfootprint");
-        final Object dataImages = breinResult.get("digitalfootprint");
+            if (breinResult != null) {
+                final Object dataFirstname = breinResult.get("firstname");
+                final Object dataGender = breinResult.get("gender");
+                final Object dataAge = breinResult.get("age");
+                final Object dataAgeGroup = breinResult.get("agegroup");
+                final Object dataDigitalFootprinting = breinResult.get("digitalfootprint");
+                final Object dataImages = breinResult.get("digitalfootprint");
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -107,9 +101,7 @@ public class TestLookup {
 
         breinLookup.setBreinDimension(breinDimension);
         breinLookup.setBreinUser(new BreinUser("user.name@email.com"));
-        breinLookup.setConfig(new BreinConfig("KEY",
-                BreinConfig.DEFAULT_BASE_URL,
-                BreinEngineType.UNIREST_ENGINE));
+        breinLookup.setConfig(new BreinConfig("KEY"));
 
         // first check init
         breinLookup.init();

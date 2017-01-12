@@ -8,9 +8,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
+import java.util.function.Function;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test of Breinify Java API (static option)
@@ -20,15 +22,19 @@ public class TestApi {
     /**
      * Contains the BASE URL of the Breinify Backend
      */
-    // private static final String BASE_URL = "http://dev.breinify.com/api";
     private static final String BASE_URL = "https://api.breinify.com";
 
     /**
      * This has to be a valid api key
      */
-    private static final String VALID_API_KEY = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
+    private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
 
     /**
+     * This has to be a valid secret
+     */
+    private static final String VALID_SECRET = "-HAS TO BE A VALID SECRET";
+
+   /**
      * Contains the Breinify User
      */
     private final BreinUser breinUser = new BreinUser("User.Name@email.com");
@@ -46,9 +52,12 @@ public class TestApi {
     /**
      * Correct configuration
      */
-    final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-            BASE_URL,
-            BreinEngineType.UNIREST_ENGINE);
+    final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
+
+    /**
+     * indicator if the loops should be done forever :-)
+     */
+    boolean loopIndicator = true;
 
     /**
      * Init part
@@ -84,6 +93,156 @@ public class TestApi {
     @Test
     public void testLogin() {
 
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * test case with fields on base level
+     */
+    @Test
+    public void testActivityRequestWithBaseMap() {
+
+        final Map<String, Object> dataBaseLevelMap = new HashMap<>();
+        dataBaseLevelMap.put("enhancement-base", "value");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+        breinActivity.setBase(dataBaseLevelMap);
+
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * test case with fields on activity level
+     */
+    @Test
+    public void testActivityRequestWithActivityMap() {
+
+        final Map<String, Object> dataActivityMap = new HashMap<>();
+        dataActivityMap.put("enhancement-activity-1", "value-1");
+        dataActivityMap.put("enhancement-activity-2", "value-2");
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+        breinActivity.set(dataActivityMap);
+
+        callLoginWithStandardValues();
+    }
+
+    /**
+     * test case with fields on activity level
+     */
+    @Test
+    public void testActivityRequestWithUserMap() {
+
+        Breinify.setConfig(breinConfig);
+
+        final Map<String, Object> dataUserMap = new HashMap<>();
+        dataUserMap.put("enhancement-user-1", "user-value-1");
+        dataUserMap.put("enhancement-user-2", "user-value-2");
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .set(dataUserMap);
+
+        invokeActivityCall(localBreinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login");
+    }
+
+    /**
+     * test case with fields on activity level
+     */
+    @Test
+    public void testActivityRequestWithUserMapMap() {
+
+        final Map<String, Object> dataUserRootMap = new HashMap<>();
+        final Map<String, Object> dataUserMap = new HashMap<>();
+        dataUserMap.put("enhancement-user-1", "user-value-1");
+        dataUserMap.put("enhancement-user-2", "user-value-2");
+        dataUserRootMap.put("rootMap", dataUserMap);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .set(dataUserRootMap);
+
+        Breinify.setConfig(breinConfig);
+
+        invokeActivityCall(localBreinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login");
+    }
+
+
+    /**
+     * test case with fields on activity level
+     */
+    @Test
+    public void testActivityRequestWithUserAdditionalMap() {
+
+        final Map<String, Object> dataAdditionalMap = new HashMap<>();
+        dataAdditionalMap.put("enhancement-user-additional-1", "user-add-value-1");
+        dataAdditionalMap.put("enhancement-user-additional-2", "user-add-value-2");
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setAdditional(dataAdditionalMap);
+
+        invokeActivityCall(localBreinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login");
+    }
+
+    /**
+     * Test case with user additional map containing a map as an object
+     */
+    @Test
+    public void testActivityRequestWithUserAdditionalMapMap() {
+
+        final Map<String, Object> locationAdditionalMap = new HashMap<>();
+        final Map<String, Object> locationValueMap = new HashMap<>();
+
+        locationValueMap.put("latitude", 32.7157);
+        locationValueMap.put("longitude", -117.1611);
+        locationAdditionalMap.put("location", locationValueMap);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setAdditional(locationAdditionalMap);
+
+        invokeActivityCall(localBreinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login");
+    }
+
+    /**
+     * Test case with user additional map containing a map as an object
+     */
+    @Test
+    public void testActivityRequestWithUserAdditionalSimpleMapMap() {
+
+        final Map<String, Object> location = new HashMap<>();
+
+        location.put("latitude", 32.7157);
+        location.put("longitude", -117.1611);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setAdditional("location", location);
+
+        invokeActivityCall(localBreinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login");
+    }
+
+    /**
+     * helper method to call login
+     */
+    public void callLoginWithStandardValues() {
+
         /*
          * set configuration
          */
@@ -98,11 +257,98 @@ public class TestApi {
         /*
          * invoke activity call
          */
+        invokeActivityCall(breinUser,
+                breinActivityType,
+                breinCategoryType,
+                "login");
+    }
+
+    /**
+     * helper method to call login
+     *
+     * @param breinUser         brein user
+     * @param breinActivityType activity type
+     * @param breinCategoryType category type
+     * @param description       description
+     */
+    public void callActivityWithStandardConfig(final BreinUser breinUser,
+                                               final String breinActivityType,
+                                               final String breinCategoryType,
+                                               final String description) {
+
+        /*
+         * set configuration
+         */
+        Breinify.setConfig(breinConfig);
+
+        /*
+         * additional optional user information
+         */
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        /*
+         * invoke activity call
+         */
+        invokeActivityCall(breinUser,
+                breinActivityType,
+                breinCategoryType,
+                description);
+    }
+
+    /**
+     * Helper method. Invokes an activity call
+     *
+     * @param breinUser         the brein user
+     * @param breinActivityType the activity type
+     * @param breinCategoryType the category type
+     * @param description       the description
+     */
+    public void invokeActivityCall(final BreinUser breinUser,
+                                   final String breinActivityType,
+                                   final String breinCategoryType,
+                                   final String description) {
+
+
+        final Function<String, Void> callback = message -> {
+            fail(message);
+            return null;
+        };
+
+        Breinify.setConfig(breinConfig);
+
+        // invoke activity call
         Breinify.activity(breinUser,
                 breinActivityType,
                 breinCategoryType,
-                "Login-Description",
-                false);
+                description,
+                callback);
+
+    }
+
+    @Test
+    public void testCallBack() {
+
+        final Function<String, Void> callback = message -> {
+            System.out.println(message);
+            return null;
+        };
+
+        callTest(callback);
+    }
+
+    public void callTest(final Function<String, Void> callback) {
+
+        callback.apply("Message from callback");
+    }
+
+    /**
+     * testcase without category type
+     */
+    @Test
+    public void testWithoutCategoryType() {
+
+        callActivityWithStandardConfig(breinUser, breinActivityType, null, "login");
     }
 
     /**
@@ -112,83 +358,63 @@ public class TestApi {
     public void testLoginWithNullApiKey() {
 
         final String description = "Login-Description";
-        final boolean sign = false;
 
-        final BreinConfig config = new BreinConfig(null,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
-
+        final BreinConfig config = new BreinConfig();
         Breinify.setConfig(config);
 
-        /*
-         * additional user information
-         */
+        // additional user information
         breinUser.setFirstName("User")
                 .setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                sign);
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description);
     }
 
     /**
-     * Testcase with null value as base url
+     * Testcase with null value as base url, should throw an exception
      */
     @Test(expected = BreinInvalidConfigurationException.class)
     public void testWithNullBaseUrl() {
 
-        final BreinConfig config = new BreinConfig(VALID_API_KEY,
-                null,
-                BreinEngineType.UNIREST_ENGINE);
-
+        final BreinConfig config = new BreinConfig(VALID_API_KEY).setBaseUrl(null);
         Breinify.setConfig(config);
-
     }
 
     /**
-     * Testcase with null rest engine. This will throw an
+     * Testcase with no rest engine set. This will throw an
      * exception.
      */
     @Test(expected = BreinException.class)
-    public void testLoginWithDefaultRestEngine() {
+    public void testLoginWithNoRestEngine() {
 
         final String description = "Login-Description";
-        final boolean sign = false;
-
-
-        BreinConfig config = null;
-        try {
-            config = new BreinConfig(VALID_API_KEY,
-                    BASE_URL,
-                    BreinEngineType.NO_ENGINE);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-
+        final BreinConfig config = new BreinConfig(VALID_API_KEY).setAndInitRestEngine(BreinEngineType.NO_ENGINE);
         Breinify.setConfig(config);
 
-        /*
-         * additional user information
-         */
+        // additional user information
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                sign);
-
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description);
     }
+
+
+    /**
+     * Testcase with later set UNIREST_ENGINE
+     */
+    @Test
+    public void testLoginWithNoSetToUnirestEngine() {
+
+        final String description = "Login-Description";
+        final BreinConfig config = new BreinConfig(VALID_API_KEY).setAndInitRestEngine(BreinEngineType.UNIREST_ENGINE);
+        Breinify.setConfig(config);
+
+        // additional user information
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description);
+    }
+
 
     /**
      * Test case with wrong endpoint configuration
@@ -198,40 +424,26 @@ public class TestApi {
 
         final String description = "Login-Description";
 
-        /*
-         * set configuration
-         */
-        final BreinConfig config = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
+        final BreinConfig config = new BreinConfig(VALID_API_KEY);
         config.setActivityEndpoint("/wrongEndPoint");
 
         Breinify.setConfig(config);
 
-        /*
-         * additional user information
-         */
         breinUser.setFirstName("User");
         breinUser.setLastName("Name");
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description);
     }
 
     /**
      * Invoke a test call with 200 logins
      */
-    @Test
+    // @Test
     public void testWith200Logins() {
 
         final int maxLogin = 200;
         for (int index = 0; index < maxLogin; index++) {
+            System.out.println("index is: " + index);
             testLogin();
         }
 
@@ -245,24 +457,13 @@ public class TestApi {
 
         final String description = "Logout-Description";
 
-        /*
-         * set configuration
-         */
+        // set config
         Breinify.setConfig(breinConfig);
 
-        /*
-         * additional user information
-         */
+        // additional user information
         breinUser.setDateOfBirth(12, 31, 2008);
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                breinActivityType,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, breinActivityType, breinCategoryType, description);
     }
 
     /**
@@ -273,19 +474,21 @@ public class TestApi {
 
         final String description = "Search-Description";
 
-        /*
-         * set configuration
-         */
+        // set config
         Breinify.setConfig(breinConfig);
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.SEARCH,
-                breinCategoryType,
-                description,
-                false);
+        // invoke activity call
+        invokeActivityCall(breinUser, BreinActivityType.SEARCH, breinCategoryType, description);
+    }
+
+    @Test
+    public void testWithNullValues() {
+        // set config
+        Breinify.setConfig(breinConfig);
+
+        // invoke call
+        invokeActivityCall(breinUser, null, null, null);
+
     }
 
     /**
@@ -296,19 +499,11 @@ public class TestApi {
 
         final String description = "AddToCart-Description";
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.ADD_TO_CART,
-                breinCategoryType,
-                description,
-                false);
+        // invoke activity call
+        invokeActivityCall(breinUser, BreinActivityType.ADD_TO_CART, breinCategoryType, description);
     }
 
     /**
@@ -319,19 +514,11 @@ public class TestApi {
 
         final String description = "RemoveFromCart-Description";
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.REMOVE_FROM_CART,
-                breinCategoryType,
-                description,
-                false);
+        // invoke activity call
+        invokeActivityCall(breinUser, BreinActivityType.REMOVE_FROM_CART, breinCategoryType, description);
     }
 
     /**
@@ -342,19 +529,11 @@ public class TestApi {
 
         final String description = "Select-Product-Description";
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
 
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.SELECT_PRODUCT,
-                breinCategoryType,
-                description,
-                false);
+        // invoke activity call
+        invokeActivityCall(breinUser, BreinActivityType.SELECT_PRODUCT, breinCategoryType, description);
     }
 
     /**
@@ -373,34 +552,7 @@ public class TestApi {
         /*
          * invoke activity call
          */
-        Breinify.activity(breinUser,
-                BreinActivityType.OTHER,
-                breinCategoryType,
-                description,
-                false);
-    }
-
-    /**
-     * test case how to invoke it with flebile values
-    */
-     @Test
-    public void testFlexibleValues() {
-
-        final String description = "Other-Description";
-
-        /*
-         * set configuration
-         */
-        Breinify.setConfig(breinConfig);
-
-        /*
-         * invoke activity call
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.OTHER,
-                breinCategoryType,
-                description,
-                false);
+        invokeActivityCall(breinUser, BreinActivityType.OTHER, breinCategoryType, description);
     }
 
     /**
@@ -410,9 +562,7 @@ public class TestApi {
     public void testPageVisit() {
 
         // set configuration
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
         Breinify.setConfig(breinConfig);
 
         // user data
@@ -421,7 +571,13 @@ public class TestApi {
                 .setLastName("Recchioni")
                 .setDateOfBirth(11, 20, 1999)
                 .setDeviceId("DD-EEEEE")
-                .setImei("55544455333");
+                .setImei("55544455333")
+                .setSessionId("r3V2kDAvFFL_-RBhuc_-Dg")
+                .setUrl("https://sample.com.au/home")
+                .setReferrer("https://sample.com.au/track")
+                .setIpAddress("10.11.12.130")
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+
 
         final Map<String, Object> tagMap = new HashMap<>();
         tagMap.put("t1", 0.0);
@@ -438,49 +594,71 @@ public class TestApi {
         breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
         breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
-        breinActivity.setSign(false);
-        breinActivity.setTagsMap(tagMap);
-        breinActivity.setIpAddress("11.222.333.444");
-        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://sample.com.au/home");
-        breinActivity.setReferrer("https://sample.com.au/track");
-        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+        breinActivity.setTags(tagMap);
+        breinActivity.setIpAddress("10.11.12.13");
 
         Breinify.activity();
     }
 
 
+    @Test
+    public void testPageVisitWithTimestampAndSecret() {
+
+        final String secret = "lmcoj4k27hbbszzyiqamhg==";
+        final String secretApiKey = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
+
+        // set configuration
+        final BreinConfig breinConfig = new BreinConfig(secretApiKey, secret);
+        Breinify.setConfig(breinConfig);
+
+        // user data
+        final BreinUser breinUser = new BreinUser("User.Name@email.com")
+                .setFirstName("Marco")
+                .setLastName("Recchioni");
+
+
+        final BreinActivity breinActivity = Breinify.getBreinActivity();
+
+        breinActivity.setUnixTimestamp(1480643035);
+        breinActivity.setBreinUser(breinUser);
+        breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
+        breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
+        breinActivity.setDescription("your description");
+
+        Breinify.activity();
+        Breinify.activity();
+        Breinify.activity();
+        Breinify.activity();
+    }
+
     /**
-     * test case containing additional information
+     * test case without having set the BreinUser.
+     * This will lead to an Exception.
      */
     @Test(expected = BreinException.class)
     public void testPageVisitWithException() {
 
         // set configuration
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
         Breinify.setConfig(breinConfig);
 
         // user data
-        final BreinUser breinUser = new BreinUser("User.Name@email.com");
-        breinUser.setFirstName("User");
-        breinUser.setLastName("Name");
-        breinUser.setDateOfBirth(11, 20, 1999);
-        breinUser.setDeviceId("DD-EEEEE");
-        breinUser.setImei("55544455333");
+        final BreinUser breinUser = new BreinUser("User.Name@email.com")
+                .setFirstName("User")
+                .setLastName("Name")
+                .setDateOfBirth(11, 20, 1999)
+                .setDeviceId("DD-EEEEE")
+                .setImei("55544455333")
+                .setSessionId("r3V2kDAvFFL_-RBhuc_-Dg")
+                .setUrl("https://sample.com.au/home")
+                .setReferrer("https://sample.com.au/track")
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         final BreinActivity breinActivity = Breinify.getBreinActivity();
 
         breinActivity.setBreinCategoryType(BreinCategoryType.APPAREL);
         breinActivity.setBreinActivityType(BreinActivityType.PAGEVISIT);
         breinActivity.setDescription("your description");
-        breinActivity.setSign(false);
-        breinActivity.setIpAddress("11.222.333.444");
-        breinActivity.setSessionId("r3V2kDAvFFL_-RBhuc_-Dg");
-        breinActivity.setAdditionalUrl("https://sample.com.au/home");
-        breinActivity.setReferrer("https://sample.com.au/track");
-        breinActivity.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
         // user not set -> exception expected
         Breinify.activity();
@@ -516,25 +694,14 @@ public class TestApi {
     @Test(expected = BreinInvalidConfigurationException.class)
     public void testLoginWithBadUrl() {
 
-        /*
-         * Just to ensure that the right config has been set
-         */
+        // Just to ensure that the right config has been set
         final String badUrl = "www.beeeeeiiiniiify.com";
 
-        final BreinConfig breinConfigWithBadUrl = new BreinConfig(VALID_API_KEY,
-                badUrl,
-                BreinEngineType.UNIREST_ENGINE);
-
+        final BreinConfig breinConfigWithBadUrl = new BreinConfig(VALID_API_KEY).setBaseUrl(badUrl);
         Breinify.setConfig(breinConfigWithBadUrl);
 
-        /*
-         * invoke activity call, will cause an exception
-         */
-        Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.HOME,
-                "Login-Description",
-                false);
+        // invoke activity call, will cause an exception
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Description");
     }
 
     /**
@@ -551,24 +718,19 @@ public class TestApi {
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
-        final boolean sign = false;
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
+        BreinResult response = null;
 
-        /*
-         * invoke lookup
-         */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        try {
+            // invoke lookup
+            response = Breinify.lookup(breinUser, breinDimension);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
-        final Object dataFirstname = response.get("firstname");
-        final Object dataGender = response.get("gender");
-        final Object dataAge = response.get("age");
-        final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootprint");
-        final Object dataImages = response.get("images");
+        showLookupOutput(response);
     }
 
     /**
@@ -577,13 +739,10 @@ public class TestApi {
     @Test
     public void testLoginWithSign() {
 
-        final String secret = "p3rqlab6m7/172pdgiq6ng==";
-        final boolean sign = true;
-
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
-
+        // final String secret = "p3rqlab6m7/172pdgiq6ng==";
+        final String secret = "lmcoj4k27hbbszzyiqamhg==";
+        final String secretApiKey = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
+        final BreinConfig breinConfig = new BreinConfig(secretApiKey, secret);
         // set secret
         breinConfig.setSecret(secret);
 
@@ -591,12 +750,7 @@ public class TestApi {
         Breinify.setConfig(breinConfig);
 
         // invoke activity call
-        Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.HOME,
-                "Login-Description",
-                sign);
-
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Desc");
     }
 
     /**
@@ -606,12 +760,7 @@ public class TestApi {
     public void testLoginWithSignButWrongSecret() {
 
         final String wrongSecret = "ThisIsAWrongSecret";
-        final boolean sign = true;
-
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
-
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, wrongSecret);
         // set secret
         breinConfig.setSecret(wrongSecret);
 
@@ -619,11 +768,7 @@ public class TestApi {
         Breinify.setConfig(breinConfig);
 
         // invoke activity call
-        Breinify.activity(breinUser,
-                BreinActivityType.LOGIN,
-                BreinCategoryType.HOME,
-                "Login-Description",
-                sign);
+        invokeActivityCall(breinUser, BreinActivityType.LOGIN, BreinCategoryType.HOME, "Login-Desc");
     }
 
     /**
@@ -641,31 +786,23 @@ public class TestApi {
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
-        final boolean sign = true;
-
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, secret);
 
         // set secret
         breinConfig.setSecret(secret);
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
 
-        /*
-         * invoke lookup
-         */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        try {
+            //invoke lookup
+            final BreinResult response = Breinify.lookup(breinUser, breinDimension);
+            showLookupOutput(response);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
-        final Object dataFirstname = response.get("firstname");
-        final Object dataGender = response.get("gender");
-        final Object dataAge = response.get("age");
-        final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootprint");
-        final Object dataImages = response.get("images");
+
     }
 
     /**
@@ -683,31 +820,307 @@ public class TestApi {
                 "images"};
 
         final BreinDimension breinDimension = new BreinDimension(dimensions);
-        final boolean sign = true;
-
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, thisIsAWrongSecret);
 
         // set secret
         breinConfig.setSecret(thisIsAWrongSecret);
 
-        /*
-         * set configuration
-         */
+        // set configuration
         Breinify.setConfig(breinConfig);
 
-        /*
-         * invoke lookup
-         */
-        final BreinResult response = Breinify.lookup(breinUser, breinDimension, sign);
+        try {
+            // invoke lookup
+            final BreinResult response = Breinify.lookup(breinUser, breinDimension);
+            showLookupOutput(response);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        final Object dataFirstname = response.get("firstname");
-        final Object dataGender = response.get("gender");
-        final Object dataAge = response.get("age");
-        final Object dataAgeGroup = response.get("agegroup");
-        final Object dataDigitalFootprinting = response.get("digitalfootprint");
-        final Object dataImages = response.get("images");
+    /**
+     * Helper to show output
+     *
+     * @param response contains the response from the request
+     */
+    public void showLookupOutput(final BreinResult response) {
+        if (response != null) {
+            final Object dataFirstname = response.get("firstname");
+            final Object dataGender = response.get("gender");
+            final Object dataAge = response.get("age");
+            final Object dataAgeGroup = response.get("agegroup");
+            final Object dataDigitalFootprinting = response.get("digitalfootprint");
+            final Object dataImages = response.get("images");
+        }
+    }
+
+    /**
+     * test case where an activity is sent without having set
+     * the category type for this particular activity object.
+     * In this case the default category type has to be used.
+     * If this is not set then the call needs to be rejected.
+     */
+    @Test
+    public void testActivityWithoutCategory() {
+
+        // create configuration
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY).setDefaultCategory("DEF-CAT-TYPE");
+        Breinify.setConfig(breinConfig);
+
+        // create user
+        final BreinUser breinUser = new BreinUser()
+                .setSessionId("SESS-ID-IS-THIS");
+
+        // send activity with all fields sets so far
+        Breinify.activity(breinUser, "ACT-TYPE", "CAT-TYPE", "DESC", null);
+
+        // send activity without CAT-TYPE => use default
+        Breinify.activity(breinUser, "ACT-TYPE", "", "DESC", null);
+
+        Breinify.activity(breinUser, "ACT-TYPE", null, "DESC", null);
+
+        // send activity by setting the breinActivity methods
+        final BreinActivity breinActivity = Breinify.getBreinActivity()
+                .setBreinCategoryType(null)
+                .setBreinActivityType("ACTI-TYPE")
+                .setDescription("DESC");
+
+        Breinify.activity();
+    }
+
+    /**
+     * test case how to use the activity api
+     */
+    // @Test
+    public void testLoginWithPauseToCheckWifiIssue() {
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+
+        // additional optional user information
+        breinUser.setFirstName("User");
+        breinUser.setLastName("Name");
+
+
+        final Function<String, Void> errorCallback = s -> {
+            loopIndicator = false;
+            return null;
+        };
+
+        int index = 1;
+
+
+        while (index <= 20) {
+
+            // loopIndicator = true;
+
+            try {
+
+                while (loopIndicator) {
+
+                    // invoke activity call
+                    Breinify.activity(breinUser,
+                            breinActivityType,
+                            breinCategoryType,
+                            "Login-Description",
+                            errorCallback);
+
+                    try {
+                        System.out.println("Waiting: " + Integer.toString(index++));
+                        Thread.sleep(2000);
+
+                    } catch (final Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            } catch (final BreinException e) {
+                System.out.println("Exception is: " + e);
+            }
+        }
+    }
+
+    /**
+     * Tests the lookup functionality
+     */
+    @Test
+    public void testTemporalData() {
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+        BreinResult response = null;
+
+        final BreinUser user = new BreinUser()
+                // important new fields
+                .setIpAddress("74.115.209.58")
+                .setTimezone("America/Los_Angeles")
+                .setLocalDateTime("Sun Dec 25 2016 18:15:48 GMT-0800 (PST)");
+
+        try {
+            // invoke temporaldata
+            response = Breinify.temporalData(user);
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+        // show output
+        showTemporalDataOutput(response);
+    }
+
+
+    @Test
+    public void testTemporalDataWithAdditionalLocation() {
+
+
+        // set configuration
+        Breinify.setConfig(breinConfig);
+
+        final Map<String, Object> locationAdditionalMap = new HashMap<>();
+        final Map<String, Object> locationValueMap = new HashMap<>();
+
+        locationValueMap.put("latitude", Math.random() * 10 + 39 - 5);
+        locationValueMap.put("longitude", Math.random() * 50 - 98 - 25);
+        locationAdditionalMap.put("location", locationValueMap);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setIpAddress("127.0.0.1")
+                .setAdditional(locationAdditionalMap);
+
+        try {
+            // invoke temporaldata
+            for (int i = 0; i < 100; i++) {
+                final BreinResult response = Breinify.temporalData(localBreinUser);
+
+                // show output
+                showTemporalDataOutput(response);
+
+                Thread.sleep(300);
+            }
+
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+
+    }
+
+    private void showTemporalDataOutput(final BreinResult response) {
+        if (response != null) {
+            final Object timeValues = response.get("time");
+            assertTrue(timeValues != null);
+            System.out.println(timeValues);
+
+            final Object holidayValues = response.get("holidays");
+            assertTrue(holidayValues != null);
+            System.out.println(holidayValues);
+
+            final Object loationValues = response.get("location");
+            assertTrue(loationValues != null);
+            System.out.println(loationValues);
+
+            final Object weatherValues = response.get("weather");
+            assertTrue(weatherValues != null);
+            System.out.println(weatherValues);
+        }
+    }
+
+
+    /**
+     * Test case for different kind of tag fields
+     */
+    @Test
+    public void testTag() {
+
+        // set configuration
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY);
+        Breinify.setConfig(breinConfig);
+
+        final Map<String, Object> tags = new HashMap<>();
+
+        tags.put("TAG_PRODUCTS_HANDLED", Collections.singletonList("productBought"));
+
+        tags.put("Test", Collections.singletonList("hi"));
+        tags.put("Test 2", "There");
+
+        tags.put("TAG_TOTAL_PURCHASE_PRICE", 5 * 5 * 10.5);
+        tags.put("TAG_PRODUCTS_HANDLED_ITEM_SKU_ARRAY",
+                Collections.singletonList(String.valueOf(1000 % 5)));
+        tags.put("TAG_PRODUCTS_HANDLED_UNIT_PRICE_ARRAY",
+                new String[]{String.valueOf(45000 % 5 * 10.5)});
+        tags.put("test 3", "test3");
+        tags.put("test 4", new String[]{"test4"});
+        tags.put("test 5", Collections.singletonList("test5"));
+        tags.put("test 6", Collections.singleton("test6"));
+        System.out.println(tags);
+        Breinify.getBreinActivity().setBreinActivityType("checkOut")
+                .setTags(tags)
+                .setBreinUser(new BreinUser("e.mail@me.com"));
+
+        Breinify.activity();
+    }
+
+
+    /**
+     * Test of recommendation
+     */
+    @Test
+    public void testRecommendation() {
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, VALID_SECRET);
+
+        Breinify.setConfig(breinConfig);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("fred.firestone@email.com")
+                .setSessionId("1133AADDDEEE");
+
+        final int numberOfRecommendations = 10;
+        final BreinRecommendation breinRecommendation = new BreinRecommendation(breinUser, numberOfRecommendations);
+        final BreinResult result = Breinify.recommendation(breinRecommendation);
+
+        // result
+        if (result.getStatus() == 200) {
+            System.out.println("Message from BreinRecommendation is: " + result.getMessage());
+
+            final ArrayList arrayList = result.get("result");
+
+            arrayList.forEach((value)->System.out.println("Item : " + value));
+        }
+    }
+
+    /**
+     * Test of recommendation with (optional) recommendationCategory
+     */
+    @Test
+    public void testRecommendationWithCategorie() {
+
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, VALID_SECRET);
+
+        Breinify.setConfig(breinConfig);
+
+        final BreinUser localBreinUser = new BreinUser()
+                .setEmail("toni.maroni@email.com")
+                .setSessionId("1133AADDDEEE");
+
+        final int numberOfRecommendations = 10;
+        final BreinRecommendation breinRecommendation = new BreinRecommendation(breinUser, numberOfRecommendations);
+        breinRecommendation.setCategory("some category");
+        final BreinResult result = Breinify.recommendation(breinRecommendation);
+
+        // result
+        if (result.getStatus() == 200) {
+            System.out.println("Message from BreinRecommendation is: " + result.getMessage());
+
+            final ArrayList arrayList = result.get("result");
+
+            arrayList.forEach((value)->System.out.println("Item : " + value));
+        }
+    }
+
+    @Test
+    public void testForDoc() {
+
     }
 
 }

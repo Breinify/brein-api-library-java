@@ -5,9 +5,7 @@ package com.brein.api;
  */
 public class BreinException extends RuntimeException {
 
-    /*
-     * Error Messages
-     */
+    // Error Messages
     public static final String URL_IS_NULL = "URL in request contains null";
     public static final String URL_IS_MALFORMED = "URL is malformed";
     public static final String REQUEST_FAILED = "Failed request!";
@@ -21,10 +19,7 @@ public class BreinException extends RuntimeException {
     public static final String ACTIVITY_TYPE_NOT_SET = "ActivityType not set.";
     public static final String CATEGORY_TYPE_NOT_SET = "CategoryType not set.";
 
-     /*
-      * Exception methods...
-      *
-      */
+    // Exception methods
     public BreinException(final Throwable e) {
         super(e);
     }

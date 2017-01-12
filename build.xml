@@ -23,4 +23,8 @@
     <target name="04-publish-results" depends="03-wrap-up">
         <publish-jar jarFile="${jarFile}"/>
     </target>
+
+    <target name="05-deploy-to-maven" depends="02-compile-sources">
+        <publish-jar-to-central />
+    </target>
 </project>

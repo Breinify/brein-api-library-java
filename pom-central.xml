@@ -5,10 +5,42 @@
 
     <groupId>com.breinify</groupId>
     <artifactId>brein-api-library-java</artifactId>
-    <version>TRUNK-SNAPSHOT</version>
+    <version>1.3.1</version>
+
     <name>brein-api-library-java</name>
     <description>Brein API Library Java</description>
     <packaging>jar</packaging>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/Breinify/brein-api-library-java</url>
+        <connection>scm:git:git://github.com/Breinify/brein-api-library-java.git</connection>
+        <developerConnection>scm:git:git@github.com:Breinify/brein-api-library-java.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>marco.recchioni</id>
+            <name>Marco Recchioni</name>
+            <email>marco.recchioni@breinify.com</email>
+            <organization>Breinify</organization>
+        </developer>
+        <developer>
+            <id>philipp.meisen</id>
+            <name>Philipp Meisen</name>
+            <email>philipp.meisen@breinify.com</email>
+            <organization>Breinify</organization>
+        </developer>
+    </developers>
+
+    <url>https://www.breinify.com</url>
 
     <properties>
         <slf4jVersion>1.7.21</slf4jVersion>
@@ -19,24 +51,21 @@
     </properties>
 
     <dependencies>
-        <!-- Logger Facade
 
+        <!-- Logger Facade   -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4jVersion}</version>
         </dependency>
-        -->
 
-        <!-- can be activated to see some logging   -->
-        <!-- please add your flf4j binding as needed -->
+        <!-- can be activated to see some logging
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4jVersion}</version>
-            <optional>true</optional>
         </dependency>
-
+         -->
 
         <!-- UNIREST -->
         <dependency>

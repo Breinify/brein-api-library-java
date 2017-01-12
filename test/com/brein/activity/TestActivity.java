@@ -5,7 +5,6 @@ import com.brein.domain.BreinActivityType;
 import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
-import com.brein.engine.BreinEngineType;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -49,11 +48,6 @@ public class TestActivity {
     private final String breinCategoryType = BreinCategoryType.SERVICES;
 
     /**
-     * Sign parameter
-     */
-    private final boolean sign = false;
-
-    /**
      * The Activity itself
      */
     private final BreinActivity breinActivity = new BreinActivity();
@@ -80,11 +74,7 @@ public class TestActivity {
         final Properties props = System.getProperties();
         props.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG");
 
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY,
-                BASE_URL,
-                BreinEngineType.UNIREST_ENGINE);
-
-        breinActivity.setConfig(breinConfig);
+        breinActivity.setConfig(new BreinConfig(VALID_API_KEY));
     }
 
     /**
@@ -123,8 +113,31 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGIN,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
+
+    /**
+     * test case without category type
+     */
+    @Test
+    public void testWithoutCategoryTypeSet() {
+
+        final String description = "Login-Description";
+
+        /*
+         * additional user information
+         */
+        breinUser.setFirstName("Marco");
+        breinUser.setLastName("Recchioni");
+
+        /*
+         * invoke activity call
+         */
+        breinActivity.activity(breinUser,
+                BreinActivityType.LOGIN,
+                null, description);
+    }
+
 
     /**
      * Invoke a test call with 200 logins
@@ -162,17 +175,13 @@ public class TestActivity {
 
         final String description = "Logout-Description";
 
-        /*
-         * additional user information
-         */
+        // additional user information
         breinUser.setDateOfBirth(12, 31, 2008);
 
-        /*
-         * invoke activity call
-         */
+        // invoke activity call
         breinActivity.activity(breinUser,
                 BreinActivityType.LOGOUT,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -183,12 +192,10 @@ public class TestActivity {
 
         final String description = "Search-Description";
 
-        /*
-         * invoke activity call
-         */
+        // invoke activity call
         breinActivity.activity(breinUser,
                 BreinActivityType.SEARCH,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -204,7 +211,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.ADD_TO_CART,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -220,7 +227,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.REMOVE_FROM_CART,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -236,7 +243,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.SELECT_PRODUCT,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -252,7 +259,7 @@ public class TestActivity {
          */
         breinActivity.activity(breinUser,
                 BreinActivityType.OTHER,
-                breinCategoryType, description, sign);
+                breinCategoryType, description);
     }
 
     /**
@@ -263,33 +270,22 @@ public class TestActivity {
     public void testResetAllValues() {
 
         final BreinActivity breinActivity = new BreinActivity();
-        breinActivity.setAdditionalUrl("www.test.com.au");
         breinActivity.setBreinActivityType(BreinActivityType.ADD_TO_CART);
         breinActivity.setBreinCategoryType(BreinCategoryType.EDUCATION);
         breinActivity.setDescription("Description");
-        breinActivity.setIpAddress("10.11.222.333");
-        breinActivity.setReferrer("Referrer");
-        breinActivity.setSessionId("777ABBG");
-        breinActivity.setUserAgent("userAgentValue");
+
         final Map<String, Object> tagMap = new HashMap<>();
         tagMap.put("t1", "0.0");
-        breinActivity.setTagsMap(tagMap);
+        breinActivity.setTags(tagMap);
         breinActivity.setBreinUser(new BreinUser("user.name@email.com"));
-        breinActivity.setConfig(new BreinConfig("KEY",
-                BreinConfig.DEFAULT_BASE_URL,
-                BreinEngineType.UNIREST_ENGINE));
+        breinActivity.setConfig(new BreinConfig("KEY"));
 
         // first check init
         breinActivity.init();
-        assertTrue("addtionalUrl is not empty", breinActivity.getAdditionalUrl().equals(""));
         assertTrue("breinActivityType is not empty", breinActivity.getBreinActivityType().equals(""));
         assertTrue("breinCategoryType is not empty", breinActivity.getBreinCategoryType().equals(""));
         assertTrue("description is not empty", breinActivity.getDescription().equals(""));
-        assertTrue("ipAddress is not empty", breinActivity.getIpAddress().equals(""));
-        assertTrue("referrer is not empty", breinActivity.getReferrer().equals(""));
-        assertTrue("sessionId is not empty", breinActivity.getSessionId().equals(""));
-        assertTrue("userAgent is not empty", breinActivity.getUserAgent().equals(""));
-        assertTrue("tags lib is not null", breinActivity.getTagsMap() == null);
+        assertTrue("tags lib is not null", breinActivity.getTags() == null);
 
         // breinUser and breinConfig should be valid
         assertTrue("breinUser is null!", breinActivity.getBreinUser() != null);
@@ -302,5 +298,4 @@ public class TestActivity {
         assertTrue("breinUser is not null!", breinActivity.getBreinUser() == null);
         assertTrue("breinConfig is not null!", breinActivity.getConfig() == null);
     }
-
 }

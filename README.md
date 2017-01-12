@@ -18,7 +18,7 @@ Thanks to **Breinify's DigitalDNA** you are now able to adapt your online presen
 
 #### Step 1: Download the Library
 
-Download the Library from Maven Repository <<more details to come>>
+Download the Library from [Maven Central Repository] (http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22brein-api-library-java%22)
 
 
 #### Step 2: Integrate the library
@@ -36,16 +36,8 @@ In order to use the library you need a valid API-key, which you can get for free
 // this is the valid api-key
 final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
 
-// this is the URL of the Breinify service
-final String serviceEndpoint = "https://api.breinify.com";
-
-// this is one rest engine that can be used internally
-final BreinEngineType engineType = BreinEngineType.UNIREST_ENGINE;
-
 // create the configuration object
-final BreinConfig breinConfig = new BreinConfig(apiKey,
-          serviceEndpoint,
-          engineType);
+final BreinConfig breinConfig = new BreinConfig(apiKey);
 
 // set the configuration for later usage
 Breinify.setConfig(breinConfig);
@@ -63,29 +55,20 @@ The engine powering the DigitalDNA API provides two endpoints. The first endpoin
 The engine is informed of an activity by executing *Breinify.activity(...)*. 
 
 ```Java
-// create a user you are interested in with his email (mandatory field)
+// create a user you are interested in 
 final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
-                .setFirstName("User")
-                .setLastName("Anyhere");
+         .setFirstName("User")
+         .setLastName("Anyhere");
                
-// configure a predefined BreinActivityType 
-final BreinActivityType breinActivityType = 
-       new BreinActivityType(BreinActivityType.LOGIN);      
-
-// configure a predefined BreinCategory       
-final BreinCategoryType breinCategoryType = 
-       new BreinCategoryType(BreinCategoryType.HOME);           
-                
-// invoke an activity noting that the user has logged in
+// invoke an activity request
 Breinify.activity(breinUser, 
-         breinActivityType,
-         breinCategoryType, 
-         "Login-Description", 
-         false);
+         BreinActivityType.LOGIN,
+         BreinCategoryType.HOME, 
+         "Login-Description");
 
 ```
 
-That's it! The call will be run asynchronously in the background.
+That's it! The call will run asynchronously in the background.
 
 
 ##### Placing look-up triggers
@@ -105,7 +88,7 @@ final String[] dimensions = {"firstname",
 final BreinDimension breinDimension = new BreinDimension(dimensions);
 
 // invoke the lookup
-final BreinResult result = Breinify.lookup(breinUser, breinDimension, false);
+final BreinResult result = Breinify.lookup(breinUser, breinDimension);
 
 // retrieve the values of interest
 final Object dataFirstname = result.get("firstname");
@@ -116,6 +99,34 @@ final Object dataDigitalFootprinting = result.get("digitalfootprint");
 final Object dataImages = result.get("images");
 
 ```
+
+##### Placing temporalData triggers
+
+Temporal Intelligence API provides temporal triggers and visualizes patterns
+enabling you to predict a visitor’s dynamic activities. Currently this will
+cover:
+* Current Weather
+* Upcoming Holidays
+* Time Zone
+* Regional Events
+
+They can be requested like this:
+
+```Java
+// create a user you are interested in 
+final BreinUser breinUser = new BreinUser()
+         .setTimezone("America/Los_Angeles")
+         .setLocalDateTime("Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)");
+               
+// invoke the temporal request 
+final BreinResult result = Breinify.temporalData(breinUser);
+final Object timeValues = result.get("time");
+final Object weatherValues = result.get("weather");
+final Object locationValues = result.get("location");
+final Object holidayValues = result.get("holiday");
+
+```
+
 #### Step 5: Teardown of the Library Services
 
 Depending of the rest engine (e.g. UNIREST) some threads needs to be stopped. This will be done by invoking the following statement:

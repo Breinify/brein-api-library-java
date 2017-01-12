@@ -9,20 +9,37 @@ import com.brein.util.BreinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.Stream;
+
 /**
- * Contains Breinify Endpoint configuration
+ * Provides the configuration of the library for the properties supplied.
  */
 public class BreinConfig {
 
     /**
-     * default endpoint of activity
+     * Logger instance
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
+
+    /**
+     * default endpoint for activity
      */
     public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
 
     /**
-     * default endpoint of lookup
+     * default endpoint for lookup
      */
     public static final String DEFAULT_LOOKUP_ENDPOINT = "/lookup";
+
+    /**
+     * default endpoint for temporalData
+     */
+    public static final String DEFAULT_TEMPORALDATA_ENDPOINT = "/temporaldata";
+
+    /**
+     * default endpoint for recommendation
+     */
+    public static final String DEFAULT_RECOMMENDATION_ENDPOINT = "/recommendation";
 
     /**
      * default connection timeout
@@ -35,19 +52,14 @@ public class BreinConfig {
     public static final long DEFAULT_SOCKET_TIMEOUT = 6000;
 
     /**
-     * default breinify base url
+     * default Breinify base url
      */
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
 
     /**
-     * Logger instance
+     * default {@code BreinEngineType}
      */
-    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
-
-    /**
-     * default validation
-     */
-    public static boolean DEFAULT_VALIDATE = true;
+    public static final BreinEngineType DEFAULT_ENGINE_TYPE = BreinEngineType.AUTO_DETECT;
 
     /**
      * BASE URL
@@ -60,9 +72,9 @@ public class BreinConfig {
     private String apiKey;
 
     /**
-     * Default REST client
+     * Default REST client configuration
      */
-    private BreinEngineType restEngineType = BreinEngineType.UNIREST_ENGINE;
+    private BreinEngineType restEngineType = DEFAULT_ENGINE_TYPE;
 
     /**
      * contains the activity endpoint (default = ACTIVITY_ENDPOINT)
@@ -73,6 +85,16 @@ public class BreinConfig {
      * contains the lookup endpoint (default = LOOKUP_ENDPOINT)
      */
     private String lookupEndpoint = DEFAULT_LOOKUP_ENDPOINT;
+
+    /**
+     * contains the temporalData endpoint (default = DEFAULT_TEMPORALDATA_ENDPOINT)
+     */
+    private String temporalDataEndpoint = DEFAULT_TEMPORALDATA_ENDPOINT;
+
+    /**
+     * contains the recommendation endpoint (default = DEFAULT_RECOMMENDATION_ENDPOINT)
+     */
+    private String recommendationEndpoint = DEFAULT_RECOMMENDATION_ENDPOINT;
 
     /**
      * connection timeout
@@ -90,50 +112,61 @@ public class BreinConfig {
     private long socketTimeout = DEFAULT_SOCKET_TIMEOUT;
 
     /**
+     * default category
+     */
+    private String defaultCategory = "";
+
+    /**
      * contains the secret that will be used for the signature
      */
     private String secret;
 
     /**
-     * @param apiKey  contains the Breinify api key
-     * @param baseUrl contains the base url
+     * @param apiKey contains the Breinify api key
      */
-    public BreinConfig(final String apiKey,
-                       final String baseUrl) {
-
+    public BreinConfig(final String apiKey) {
+        this();
         setApiKey(apiKey);
-        setBaseUrl(baseUrl);
-        setRestEngineType(BreinEngineType.NO_ENGINE);
     }
 
     /**
-     * Configuration object
-     *
-     * @param apiKey          contains the Breinify api-key
-     * @param baseUrl         contains the base url
-     * @param breinEngineType selected engine
+     * @param apiKey contains the Breinify api key
+     * @param secret contains the secret
      */
     public BreinConfig(final String apiKey,
-                       final String baseUrl,
-                       final BreinEngineType breinEngineType) {
+                       final String secret) {
+        this(apiKey);
+        setSecret(secret);
+    }
 
-        setApiKey(apiKey);
-        setBaseUrl(baseUrl);
-        setRestEngineType(breinEngineType);
+    /**
+     * Base Constructor - will be invoked in any case to initialize the
+     * Rest Engine.
+     */
+    public BreinConfig() {
         initEngine();
     }
 
     /**
-     * Empty Ctor - necessary
-     */
-    public BreinConfig() {
-    }
-
-    /**
      * initializes the rest client
+     * @return self
      */
-    public void initEngine() {
-        breinEngine = new BreinEngine(getRestEngineType());
+    public BreinConfig initEngine() {
+        BreinEngineType engine = getRestEngineType();
+
+        if (BreinEngineType.AUTO_DETECT.equals(engine)) {
+            engine = Stream.of(BreinEngineType.values())
+                    .filter(BreinEngineType::isSupported)
+                    .findFirst()
+                    .orElse(BreinEngineType.AUTO_DETECT);
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Selected '" + engine + "' through auto-detection.");
+            }
+        }
+
+        breinEngine = new BreinEngine(engine);
+        return this;
     }
 
     /**
@@ -207,8 +240,9 @@ public class BreinConfig {
      * @param restEngineType of the rest impl
      * @return the config object itself
      */
-    public BreinConfig setRestEngineType(final BreinEngineType restEngineType) {
+    public BreinConfig setAndInitRestEngine(final BreinEngineType restEngineType) {
         this.restEngineType = restEngineType;
+        initEngine();
         return this;
     }
 
@@ -266,6 +300,7 @@ public class BreinConfig {
      * set the connection timeout
      *
      * @param connectionTimeout value
+     * @return self
      */
     public BreinConfig setConnectionTimeout(final long connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
@@ -285,6 +320,7 @@ public class BreinConfig {
      * set the socket timeout
      *
      * @param socketTimeout value
+     * @return self
      */
     public BreinConfig setSocketTimeout(final long socketTimeout) {
         this.socketTimeout = socketTimeout;
@@ -332,6 +368,44 @@ public class BreinConfig {
     }
 
     /**
+     * retrieves the temporaldata endpoint
+     *
+     * @return temporaldata endpoint
+     */
+    public String getTemporalDataEndpoint() {
+        return temporalDataEndpoint;
+    }
+
+    /**
+     * sets the temporaldata endpoint
+     *
+     * @param temporalDataEndpoint endpoint
+     */
+    public void setTemporalDataEndpoint(final String temporalDataEndpoint) {
+        this.temporalDataEndpoint = temporalDataEndpoint;
+    }
+
+    /**
+     * returns the recommendation endpoint
+     *
+     * @return the recommendation endpoint
+     */
+    public String getRecommendationEndpoint() {
+        return recommendationEndpoint;
+    }
+
+    /**
+     * sets the recommendation endpoint
+     *
+     * @param recommendationEndpoint contains the endpoint
+     * @return self
+     */
+    public BreinConfig setRecommendationEndpoint(final String recommendationEndpoint) {
+        this.recommendationEndpoint = recommendationEndpoint;
+        return this;
+    }
+
+    /**
      * returns the configured secret
      *
      * @return raw secret
@@ -344,9 +418,30 @@ public class BreinConfig {
      * set the secret
      *
      * @param secret raw secret
+     * @return self
      */
     public BreinConfig setSecret(final String secret) {
         this.secret = secret;
+        return this;
+    }
+
+    /**
+     * returns the default category (if set)
+     *
+     * @return default category
+     */
+    public String getDefaultCategory() {
+        return defaultCategory;
+    }
+
+    /**
+     * sets the default category
+     *
+     * @param defaultCategory default to set
+     * @return self
+     */
+    public BreinConfig setDefaultCategory(final String defaultCategory) {
+        this.defaultCategory = defaultCategory;
         return this;
     }
 
@@ -379,6 +474,4 @@ public class BreinConfig {
     public boolean isUrlValid(final String url) {
         return IRestEngine.isUrlValid(url);
     }
-
-
 }
