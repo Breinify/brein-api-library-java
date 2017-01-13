@@ -3,13 +3,14 @@ node() {
     stage 'Checkout'
 
     // checkout workspace
-    dir('../brein-workspace') {
-       git url: 'ssh://github.com/Breinify/brein-workspace.git'
+    dir('brein-workspace') {
+
+       git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
 
     }
 
     // checkout
-    dir ('brein-api-library-java') {
+    dir ('brein-api-library/brein-api-library-java') {
         git url: 'https://github.com/Breinify/brein-api-library-java.git'
     }
 
