@@ -1,26 +1,32 @@
-node() {
+node('docker') {
 
-    stage 'Checkout'
+    stage("Main Build") {
 
-    // checkout workspace
-    dir('brein-workspace') {
+    def environment  = docker.image 'compileserver'
 
-       git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
+        environment.inside {
 
+            stage 'Checkout'
+            // checkout workspace
+            dir('brein-workspace') {
+
+               git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
+
+            }
+
+            // checkout
+            dir ('brein-api-library/brein-api-library-java') {
+                git url: 'https://github.com/Breinify/brein-api-library-java.git'
+            }
+
+            stage 'Build'
+
+            // compile
+            sh('ant 03-wrap-up')
+
+            stage 'Test'
+
+            stage 'Upload'
+        }
     }
-
-    // checkout
-    dir ('brein-api-library/brein-api-library-java') {
-        git url: 'https://github.com/Breinify/brein-api-library-java.git'
-    }
-
-    stage 'Build'
-
-    // compile
-    sh('ant 03-wrap-up')
-
-    stage 'Test'
-
-    stage 'Upload'
-
 }
