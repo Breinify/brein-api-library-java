@@ -4,7 +4,7 @@ node() {
 
     // checkout workspace
     dir('../brein-workspace') {
-       git url: 'https://github.com/Breinify/brein-workspace.git'
+       git url: 'ssh://github.com/Breinify/brein-workspace.git'
 
     }
 
