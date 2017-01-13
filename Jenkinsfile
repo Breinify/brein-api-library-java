@@ -1,8 +1,8 @@
-node {
+node('docker') {
     stage 'Checkout'
     /* Checkout the code we are currently running against */
     checkout scm
-    def app = docker.build "compileserver"
+    def app = docker.image('compileserver')
 
     app.inside {
         dir('brein-workspace') {
