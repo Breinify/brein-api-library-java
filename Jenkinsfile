@@ -2,7 +2,7 @@ node('master') {
     stage 'Checkout'
     /* Checkout the code we are currently running against */
 
-    checkout scm
+    /* checkout scm */
     def app = docker.image('compilecontainer')
 
     app.inside {
