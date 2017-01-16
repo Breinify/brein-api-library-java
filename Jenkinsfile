@@ -6,7 +6,7 @@ node('master') {
     def app = docker.image('compilecontainer')
 
     app.inside {
-        dir('../brein-workspace') {
+        dir('brein-workspace') {
             git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
         }
 
