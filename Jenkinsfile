@@ -13,18 +13,18 @@ node('master') {
         // checkout
         dir ('brein-api-library/brein-api-library-java') {
             git url: 'https://github.com/Breinify/brein-api-library-java.git'
-            sh 'ant 03-wrap-up'
         }
     }
 
     stage 'Build'
-    /* Build the Docker image with a Dockerfile, tagging it with the build number
+    /* Build the Docker image with a Dockerfile, tagging it with the build number */
     app.inside {
-    dir ('brein-api-library/brein-api-library-java') {
+        dir ('brein-api-library/brein-api-library-java') {
+          echo 'current pwd is'
+          echo pwd()
           sh 'ant 03-wrap-up'
         }
     }
-    */
 
     stage 'Test'
     /* We can run tests inside our new image */
