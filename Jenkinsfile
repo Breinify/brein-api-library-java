@@ -1,8 +1,9 @@
-node('docker') {
+node('master') {
     stage 'Checkout'
     /* Checkout the code we are currently running against */
+
     checkout scm
-    def app = docker.image('compileserver')
+    def app = docker.image('compilecontainer')
 
     app.inside {
         dir('brein-workspace') {
@@ -19,6 +20,9 @@ node('docker') {
 
     stage 'Build'
     /* Build the Docker image with a Dockerfile, tagging it with the build number */
+    app.inside {
+          sh 'ant 03-wrap-up'
+        }
 
     stage 'Test'
     /* We can run tests inside our new image */
