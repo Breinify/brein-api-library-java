@@ -19,10 +19,9 @@ node('master') {
 
     stage ('Build') {
         app.inside {
-            dir ('brein-api-library/brein-api-library-java')
-            echo 'current pwd is'
-            echo pwd()
-            sh 'ant 03-wrap-up'
+            dir ('brein-api-library/brein-api-library-java') {
+                sh 'ant 03-wrap-up'
+            }
         }
     }
 
