@@ -1,34 +1,34 @@
 node('master') {
-    stage 'Checkout'
-    /* Checkout the code we are currently running against */
 
-    /* checkout scm */
+
     def app = docker.image('compilecontainer')
 
-    app.inside {
-        dir('brein-workspace') {
-            git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
-        }
+    stage ('Checkout') {
+        /* checkout scm */
 
-        // checkout
-        dir ('brein-api-library/brein-api-library-java') {
-            git url: 'https://github.com/Breinify/brein-api-library-java.git'
-        }
-    }
+        app.inside {
+            dir('brein-workspace') {
+                git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
+            }
 
-    stage 'Build'
-    /* Build the Docker image with a Dockerfile, tagging it with the build number */
-    app.inside {
-        dir ('brein-api-library/brein-api-library-java') {
-          echo 'current pwd is'
-          echo pwd()
-          sh 'ant 03-wrap-up'
+           dir ('brein-api-library/brein-api-library-java') {
+                git url: 'https://github.com/Breinify/brein-api-library-java.git'
+            }
         }
     }
 
-    stage 'Test'
-    /* We can run tests inside our new image */
+    stage ('Build') {
+        app.inside {
+            dir ('brein-api-library/brein-api-library-java') {
+            echo 'current pwd is'
+            echo pwd()
+            sh 'ant 03-wrap-up'
+            }
+        }
+    }
 
-    stage 'Publish'
+    /* stage ('Test') {} */
+
+    /* stage ('Publish') {} */
 
 }
