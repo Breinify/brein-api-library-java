@@ -19,8 +19,10 @@ node('master') {
     stage 'Build'
     /* Build the Docker image with a Dockerfile, tagging it with the build number */
     app.inside {
+    dir ('brein-api-library/brein-api-library-java') {
           sh 'ant 03-wrap-up'
         }
+    }
 
     stage 'Test'
     /* We can run tests inside our new image */
