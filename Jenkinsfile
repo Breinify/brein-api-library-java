@@ -18,8 +18,8 @@ node('master') {
     }
 
     stage ('Build') {
+    dir ('brein-api-library/brein-api-library-java') {
         app.inside {
-            dir ('/var/lib/jenkins/workspace/Brein-Api-Library-Java/brein-api-library/brein-api-library-java') {
                 sh 'ant 03-wrap-up'
             }
         }
