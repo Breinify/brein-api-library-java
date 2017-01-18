@@ -25,6 +25,7 @@ node('master') {
     /*    } */
     }
 
+
     /* stage ('Test') {} */
 
     /* stage ('Publish') {} */
