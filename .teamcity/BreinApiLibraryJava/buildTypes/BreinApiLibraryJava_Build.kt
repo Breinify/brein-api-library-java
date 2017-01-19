@@ -30,4 +30,11 @@ object BreinApiLibraryJava_Build : BuildType({
         vcs {
         }
     }
+
+    dependencies {
+        dependency("BreinWorkspace_BuildWorkspace") {
+            snapshot {
+            }
+        }
+    }
 })
