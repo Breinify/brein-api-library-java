@@ -24,7 +24,8 @@ public class BreinConfig {
     /**
      * default endpoint for activity
      */
-    public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
+    public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";;
+
 
     /**
      * default endpoint for lookup
