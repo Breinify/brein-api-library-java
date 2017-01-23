@@ -1,16 +1,12 @@
+
+// #!/usr/bin/groovy
+
+
+
 node('master') {
 
-    // we need the new versions, test
-    stage ('Checkout') {
-        dir('brein-workspace') {
-            git credentialsId: 'BREIN-STAGE-ACCESS', url: 'ssh://git@github.com/Breinify/brein-workspace.git'
-        }
-
-        dir ('brein-api-library/brein-api-library-java') {
-            git url: 'https://github.com/Breinify/brein-api-library-java.git'
-        }
-    }
-
+    def master = load '../../brein-workspace/brein-intellij-workspace/common-libs/jenkins/jenkins.master.groovy'
+    master.checkOutBreinRepo()
 
     // it is enough to run the test, it will resolve, build and test
     stage ('Test & Build') {
