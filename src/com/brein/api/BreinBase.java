@@ -60,7 +60,7 @@ public class BreinBase implements ISecretStrategy {
     /**
      * Builder for json creation
      */
-    final Gson gson = new GsonBuilder()
+    static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .serializeNulls()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)

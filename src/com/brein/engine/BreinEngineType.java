@@ -7,6 +7,7 @@ public enum BreinEngineType {
 
     UNIREST_ENGINE("com.mashape.unirest.http.Unirest"),
     JERSEY_ENGINE("com.sun.jersey.api.client.Client"),
+    DUMMY_ENGINE("com.brein.engine.DummyEngine"),
     AUTO_DETECT(null),
     NO_ENGINE(null);
 

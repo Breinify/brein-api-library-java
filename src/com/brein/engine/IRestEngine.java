@@ -121,6 +121,9 @@ public interface IRestEngine {
             case JERSEY_ENGINE:
                 return new JerseyRestEngine();
 
+            case DUMMY_ENGINE:
+                return new DummyRestEngine();
+
             case AUTO_DETECT:
                 throw new BreinException("unable to detect any engine from class-path!");
 
