@@ -1,7 +1,6 @@
 node('master') {
 
     stage ('Checkout') {
-        /* checkout scm */
         dir('brein-workspace') {
             git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
         }
@@ -11,14 +10,37 @@ node('master') {
         }
     }
 
+    stage ('Resolve Dependencies') {
+        try {
+            dir ('brein-api-library/brein-api-library-java') {
+                sh '01-resolve-dependencies'
+            }
+        } catch (err) {
+            emailextrecipients([[$class: 'CulpritsRecipientProvider']])
+        }
+    }
+
     stage ('Build') {
-    dir ('brein-api-library/brein-api-library-java') {
-        sh 'ant 03-wrap-up'
+        try {
+            dir ('brein-api-library/brein-api-library-java') {
+                sh 'ant 03-wrap-up'
+            }
+        } catch (err) {
+            emailextrecipients([[$class: 'CulpritsRecipientProvider']])
+        }
+    }
+
+    stage ('TestSuite') {
+        try {
+            dir ('brein-api-library/brein-api-library-java') {
+                // activate when available
+                // sh 'ant 06-run-test-suite'
+            }
+        } catch (err) {
+            emailextrecipients([[$class: 'CulpritsRecipientProvider']])
         }
     }
 
     /* stage ('Test') {} */
-
     /* stage ('Publish') {} */
-
 }
