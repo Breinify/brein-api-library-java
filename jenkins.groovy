@@ -18,7 +18,7 @@ node('master') {
                 sh 'ant 06-run-test-suite'
             }
         } catch (err) {
-            emailextrecipients([[$class: 'CulpritsRecipientProvider']])
+            emailext body: 'Failure in step: Test & Build', recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: 'Jenkins Error'
             throw err
         }
     }
@@ -30,6 +30,7 @@ node('master') {
                 sh 'ant 04-publish-results'
             }
         } catch (err) {
+            emailext body: 'Failure in step: Deploy', recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: 'Jenkins Error'
             emailextrecipients([[$class: 'CulpritsRecipientProvider']])
             throw err
         }
