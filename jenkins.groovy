@@ -1,6 +1,6 @@
 node('master') {
 
-    // we need the new versions
+    // we need the new versions, test
     stage ('Checkout') {
         dir('brein-workspace') {
             git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
