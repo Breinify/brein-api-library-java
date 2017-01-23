@@ -5,7 +5,7 @@
 
 node('master') {
 
-    def master = load '../../brein-workspace/brein-intellij-workspace/common-libs/jenkins/jenkins.master.groovy'
+    def master = load '../brein-workspace/brein-intellij-workspace/common-libs/jenkins/jenkins.master.groovy'
     master.checkOutBreinRepo()
 
     // it is enough to run the test, it will resolve, build and test
