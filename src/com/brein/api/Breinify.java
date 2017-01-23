@@ -21,7 +21,7 @@ public class Breinify {
     /**
      * contains the activity object
      */
-    private static final BreinActivity breinActivity = new BreinActivity();
+    private static final BreinActivity breinActivity = new BreinActivity()
 
     /**
      * contains the lookup object
