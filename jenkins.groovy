@@ -7,6 +7,7 @@ node('master') {
 
     def master = load '../brein-workspace/brein-intellij-workspace/common-libs/jenkins/jenkins.master.groovy'
     master.checkOutBreinRepo()
+    master.mailTest()
 
     // it is enough to run the test, it will resolve, build and test
     stage ('Test & Build') {
