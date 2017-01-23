@@ -19,7 +19,15 @@ node('master') {
                 sh 'ant 06-run-test-suite'
             }
         } catch (err) {
-            emailext body: 'Failure in step: Test & Build', recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: 'Jenkins Error'
+
+            emailext (
+                    to: 'marco@breinify.com',
+                    subject: "${env.JOB_NAME} #${env.BUILD_NUMBER} [${currentBuild.result}]",
+                    body: "Build URL: ${env.BUILD_URL} failed.\n\n",
+                    attachLog: true,
+            )
+
+            // emailext body: 'Failure in step: Test & Build', recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: 'Jenkins Error'
             throw err
         }
     }
