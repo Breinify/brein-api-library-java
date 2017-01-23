@@ -11,6 +11,7 @@ node('master') {
         }
     }
 
+
     // it is enough to run the test, it will resolve, build and test
     stage ('Test & Build') {
         try {
