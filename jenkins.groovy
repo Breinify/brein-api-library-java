@@ -1,5 +1,6 @@
 node('master') {
 
+    // we need the new versions
     stage ('Checkout') {
         dir('brein-workspace') {
             git url: 'ssh://git@github.com/Breinify/brein-workspace.git'
@@ -10,37 +11,27 @@ node('master') {
         }
     }
 
-    stage ('Resolve Dependencies') {
+    // it is enough to run the test, it will resolve, build and test
+    stage ('Test & Build') {
         try {
             dir ('brein-api-library/brein-api-library-java') {
-                sh '01-resolve-dependencies'
+                sh 'ant 06-run-test-suite'
             }
         } catch (err) {
             emailextrecipients([[$class: 'CulpritsRecipientProvider']])
+            throw err
         }
     }
 
-    stage ('Build') {
+    // now we should just publish the new version, it made it through the test
+    stage ('Deploy') {
         try {
             dir ('brein-api-library/brein-api-library-java') {
-                sh 'ant 03-wrap-up'
+                sh 'ant 04-publish-results'
             }
         } catch (err) {
             emailextrecipients([[$class: 'CulpritsRecipientProvider']])
+            throw err
         }
     }
-
-    stage ('TestSuite') {
-        try {
-            dir ('brein-api-library/brein-api-library-java') {
-                // activate when available
-                // sh 'ant 06-run-test-suite'
-            }
-        } catch (err) {
-            emailextrecipients([[$class: 'CulpritsRecipientProvider']])
-        }
-    }
-
-    /* stage ('Test') {} */
-    /* stage ('Publish') {} */
 }
