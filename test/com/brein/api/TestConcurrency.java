@@ -1,17 +1,27 @@
 package com.brein.api;
 
-
-import com.brein.domain.*;
+import com.brein.domain.BreinActivityType;
+import com.brein.domain.BreinCategoryType;
+import com.brein.domain.BreinConfig;
+import com.brein.domain.BreinResult;
+import com.brein.domain.BreinUser;
 import com.brein.engine.BreinEngineType;
-import com.brein.test.TestHelper;
 import org.junit.Test;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.function.Supplier;
 
+import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("Duplicates")
 public class TestConcurrency {
 
     private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
@@ -24,7 +34,7 @@ public class TestConcurrency {
 
         Breinify.setConfig(breinConfig);
 
-        TestHelper.threadTesting(100, () -> {
+        threadTesting(100, () -> {
             for (int ct = 0; ct < 1000; ct++) {
 
                 System.out.println("Invoking Thread: " + ct);
@@ -67,7 +77,7 @@ public class TestConcurrency {
 
         Breinify.setConfig(breinConfig);
 
-        TestHelper.threadTesting(100, () -> {
+        threadTesting(100, () -> {
             for (int ct = 0; ct < 1000; ct++) {
 
                 System.out.println("Invoking Thread: " + ct);
@@ -83,7 +93,8 @@ public class TestConcurrency {
                         .setUrl("https://sample.com.au/home")
                         .setReferrer("https://sample.com.au/track")
                         .setIpAddress("10.11.12.130")
-                        .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
+                        .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like " +
+                                "Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
                 final Map<String, Object> tagMap = new HashMap<>();
                 tagMap.put("t1", 0.0);
@@ -121,7 +132,7 @@ public class TestConcurrency {
 
         Breinify.setConfig(breinConfig);
 
-        TestHelper.threadTesting(100, () -> {
+        threadTesting(100, () -> {
             for (int ct = 0; ct < 1000; ct++) {
 
                 System.out.println("Invoking Thread: " + ct);
@@ -131,20 +142,69 @@ public class TestConcurrency {
                         .setSessionId("1133AADDDEEE");
 
                 final int numberOfRecommendations = 10;
-                final BreinRecommendation breinRecommendation = new BreinRecommendation(localBreinUser, numberOfRecommendations);
+                final BreinRecommendation breinRecommendation = new BreinRecommendation(localBreinUser,
+                        numberOfRecommendations);
                 final BreinResult result = Breinify.recommendation(breinRecommendation);
 
                 // result
                 if (result.getStatus() == 200) {
                     System.out.println("Message from BreinRecommendation is: " + result.getMessage());
 
-                    final ArrayList arrayList = result.get("result");
-
-                    arrayList.forEach((value)->System.out.println("Item : " + value));
+                    final ArrayList<Object> arrayList = result.get("result");
+                    arrayList.forEach((value) -> System.out.println("Item : " + value));
                 }
             }
         });
 
     }
 
+    @FunctionalInterface
+    public interface Command extends Supplier<Void> {
+
+        @Override
+        default Void get() {
+            try {
+                execute();
+            } catch (final Throwable t) {
+                handle(t);
+            }
+            return null;
+        }
+
+        void execute() throws Exception;
+    }
+
+    public static void threadTesting(final int nrOfThreadsPerSupplier, final Command... commands) {
+        final int nrOfThreads = nrOfThreadsPerSupplier * commands.length;
+        final ExecutorService executor = Executors.newFixedThreadPool(nrOfThreads);
+
+        final List<Future<Void>> futures = new ArrayList<>(nrOfThreads);
+        for (final Command command : commands) {
+            for (int i = 0; i < nrOfThreadsPerSupplier; i++) {
+                futures.add(executor.submit(command::get));
+            }
+        }
+
+        for (final Future<Void> future : futures) {
+            try {
+                future.get();
+            } catch (final ExecutionException e) {
+                handle(e.getCause());
+            } catch (final InterruptedException e) {
+                assertTrue(e.getMessage(), false);
+            }
+        }
+
+        executor.shutdown();
+    }
+
+    public static void handle(final Throwable t) {
+        if (t instanceof AssertionError) {
+            throw (AssertionError) t;
+        } else if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        } else {
+            throw new RuntimeException(t);
+        }
+    }
 }

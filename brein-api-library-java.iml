@@ -36,6 +36,5 @@
         <jarDirectory url="file://$MODULE_DIR$/testLib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="brein-test" scope="TEST" />
   </component>
 </module>

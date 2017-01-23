@@ -32,5 +32,4 @@
     <target name="06-run-test-suite" depends="02-compile-sources">
         <do-run-test-suite testSuite="${testSuite}"/>
     </target>
-
 </project>
