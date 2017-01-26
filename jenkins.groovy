@@ -1,12 +1,6 @@
-node('master') {
-
-    def master = load '../brein-workspace/brein-intellij-workspace/common-libs/jenkins/jenkins.master.groovy'
-
-    master.checkOutBuildTestAndDeploy('brein-api-library/brein-api-library-java')
-    
-    /*
-    master.checkOutBreinRepo()
-    master.buildAndTest('brein-api-library/brein-api-library-java')
-    master.deploy('brein-api-library/brein-api-library-java')
-    */
+def execute(String moduleDir, Object master) {
+    master.defaultJavaPipeline(moduleDir)
 }
+
+// do not forget this line, otherwise the script cannot be executed
+return this
