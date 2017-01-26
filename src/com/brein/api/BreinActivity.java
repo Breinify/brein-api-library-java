@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class BreinActivity extends BreinBase {
 
+
     /**
      * ActivityType of the activity
      */
