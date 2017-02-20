@@ -31,8 +31,7 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * Lookup implementation. For a given user (BreinUser) a lookup will be performed with the requested dimensions
-     * (BreinDimension)
+     * TemporalData implementation. For a given user (BreinUser) a temporalData request will be performed.
      *
      * @param breinUser contains the breinify user
      * @return response from request or null if no data can be retrieved
