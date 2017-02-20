@@ -96,6 +96,9 @@ public class BreinUser {
         setEmail(email);
     }
 
+    /**
+     * empty ctor to create user without email property
+     */
     public BreinUser() {
     }
 
@@ -279,17 +282,17 @@ public class BreinUser {
      */
     public BreinUser setDateOfBirth(final int month, final int day, final int year) {
 
-        if (month >= 1 && month <= 12) {
-            if (day >= 1 && day <= 31) {
-                if (year >= 1900 && year <= 2100) {
+        if ((month >= 1 && month <= 12) &&
+            (day >= 1 && day <= 31)  &&
+                (year >= 1900 && year <= 2100)) {
                     this.dateOfBirth = Integer.toString(month)
                             + "/"
                             + Integer.toString(day)
                             + "/"
                             + Integer.toString(year);
                 }
-            }
-        }
+
+
         return this;
     }
 
