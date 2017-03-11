@@ -25,14 +25,16 @@ public class TestApi {
     private static final String BASE_URL = "https://api.breinify.com";
 
     /**
-     * This has to be a valid api key
+     * Valid api keys
      */
-    private static final String VALID_API_KEY = "-HAS TO BE A VALID KEY-";
+    private static final String VALID_API_KEY = "41B2-F48C-156A-409A-B465-317F-A0B4-E0E8";
+
+    private static final String VALID_API_KEY_FOR_SECRET = "CA8A-8D28-3408-45A8-8E20-8474-06C0-8548";
 
     /**
      * This has to be a valid secret
      */
-    private static final String VALID_SECRET = "-HAS TO BE A VALID SECRET";
+    private static final String VALID_SECRET = "lmcoj4k27hbbszzyiqamhg==";
 
    /**
      * Contains the Breinify User
@@ -968,6 +970,76 @@ public class TestApi {
     }
 
 
+    /**
+     * Tests the lookup functionality
+     */
+    @Test
+    public void testTemporalTestLikeOniOSData() {
+
+        // set configuration
+        final BreinConfig newBreinConfig = new BreinConfig(VALID_API_KEY_FOR_SECRET, VALID_SECRET)
+                .setAndInitRestEngine(BreinEngineType.JERSEY_ENGINE);
+
+        Breinify.setConfig(newBreinConfig);
+        BreinResult response = null;
+
+        final BreinUser user = new BreinUser()
+                // important new fields
+                .setTimezone("Europe/Berlin")
+                .setLocalDateTime("2017-02-16 10:05:49 GMT+01:00 (MEZ)");
+
+        try {
+            // invoke temporaldata
+            BreinTemporalData breinTemporalData = Breinify.getBreinTemporalData();
+            breinTemporalData.setUnixTimestamp(1487235949);
+
+            response = Breinify.temporalData(breinTemporalData, user);
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+        // show output
+        showTemporalDataOutput(response);
+    }
+
+
+    /**
+     * Tests the lookup functionality
+     */
+    @Test
+    public void testActivityTestLikeOniOSData() {
+
+        // set configuration
+        final BreinConfig newBreinConfig = new BreinConfig(VALID_API_KEY_FOR_SECRET, VALID_SECRET)
+                .setAndInitRestEngine(BreinEngineType.JERSEY_ENGINE);
+
+        Breinify.setConfig(newBreinConfig);
+        BreinResult response = null;
+
+        final BreinUser user = new BreinUser()
+                // important new fields
+                .setTimezone("Europe/Berlin")
+                .setLocalDateTime("2017-02-16 10:05:49 GMT+01:00 (MEZ)");
+
+        try {
+            // invoke temporaldata
+            BreinActivity breinActivity = Breinify.getBreinActivity();
+            breinActivity.setUnixTimestamp(1487235949);
+            breinActivity.setBreinUser(user);
+            breinActivity.setBreinActivityType("paginaUno");
+            breinActivity.setBreinCategoryType("home");
+
+            Breinify.activity(breinActivity);
+        } catch (final Exception e) {
+            fail("REST exception is: " + e);
+        }
+
+        // show output
+        showTemporalDataOutput(response);
+    }
+
+
+
     @Test
     public void testTemporalDataWithAdditionalLocation() {
 
@@ -1020,8 +1092,8 @@ public class TestApi {
             System.out.println(loationValues);
 
             final Object weatherValues = response.get("weather");
-            assertTrue(weatherValues != null);
-            System.out.println(weatherValues);
+            // assertTrue(weatherValues != null);
+            // System.out.println(weatherValues);
         }
     }
 
@@ -1092,10 +1164,10 @@ public class TestApi {
     /**
      * Test of recommendation with (optional) recommendationCategory
      */
-    @Test
+    // @Test
     public void testRecommendationWithCategorie() {
 
-        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY, VALID_SECRET);
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY_FOR_SECRET, VALID_SECRET);
 
         Breinify.setConfig(breinConfig);
 

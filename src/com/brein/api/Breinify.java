@@ -202,6 +202,42 @@ public class Breinify {
     }
 
     /**
+     * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
+     * important that a valid API-key is configured prior to using this function.
+     * <p>
+     * This request is asynchronous.
+     *
+     * @param aBreinActivity         a plain object specifying the brein activity information
+     */
+    public static void activity(final BreinActivity aBreinActivity) {
+
+        if (aBreinActivity.getBreinUser() == null) {
+            throw new BreinException(BreinException.USER_NOT_SET);
+        }
+
+        if (aBreinActivity.getBreinActivityType() == null) {
+            throw new BreinException(BreinException.ACTIVITY_TYPE_NOT_SET);
+        }
+
+        if (aBreinActivity.getBreinCategoryType() == null) {
+            // check if there is an default category set
+            final String defaultCategory = getConfig().getDefaultCategory();
+            if (BreinUtil.containsValue(defaultCategory)) {
+                aBreinActivity.setBreinCategoryType(defaultCategory);
+            }
+        }
+
+        if (aBreinActivity.getBreinEngine() == null) {
+            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        }
+
+        // create a clone in order to prevent concurrency issues
+        final BreinActivity newActivity = BreinActivity.clone(aBreinActivity);
+
+        aBreinActivity.getBreinEngine().sendActivity(newActivity);
+    }
+
+    /**
      * Retrieves a lookup result from the engine. The function needs a valid API-key to be configured to succeed.
      * <p>
      * This request is synchronous.

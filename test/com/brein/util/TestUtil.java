@@ -21,4 +21,16 @@ public class TestUtil {
             BreinUtil.generateSignature(BreinUtil.randomString(), secret);
         }
     }
+
+    @Test
+    public void testIOSSignature() {
+
+        final String iOSMessage = "1486992560-2017-02-13 14:30:37 GMT+01:00 (MEZ)-Europe/Berlin";
+        final String iOSSecret = "lmcoj4k27hbbszzyiqamhg==";
+        final String iOSSignature = "oZxTFc1ZPpelBCoGVhRk0/3IMm9tEtwJd9LNDFrgtM0=";
+
+        final String javaSignature = BreinUtil.generateSignature(iOSMessage, iOSSecret);
+        System.out.println(javaSignature);
+        assertEquals(iOSSignature, javaSignature);
+    }
 }

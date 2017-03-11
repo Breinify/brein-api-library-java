@@ -315,6 +315,4 @@ public class BreinBase implements ISecretStrategy {
     public String createSignature() {
         return null;
     }
-
-
 }
