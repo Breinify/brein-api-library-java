@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/logo.png" alt="Breinify API Java Library" width="250">
+  <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify: Leading Temporal AI Engine" width="250">
 </p>
 
-<p align="center">
-Breinify's DigitalDNA API puts dynamic behavior-based, people-driven data right at your fingertips.
-</p>
+# Time-Utilities 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java) 
+<sup>Features: **Analytics and Insights**, **React Intelligent**, Endpoint: **TemporalData**, Endpoint: **Activity**</sup>
 
 ### Step By Step Introduction
 
