@@ -2,7 +2,7 @@
   <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify: Leading Temporal AI Engine" width="250">
 </p>
 
-# Time-Utilities 
+# API-Library (JAVA) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java) 
 <sup>Features: **Analytics and Insights**, **React Intelligent**, Endpoint: **TemporalData**, Endpoint: **Activity**</sup>
 
