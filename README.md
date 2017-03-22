@@ -18,7 +18,7 @@ Thanks to **Breinify's DigitalDNA** you are now able to adapt your online presen
 
 #### Step 1: Download the Library
 
-Download the Library from [Maven Central Repository] (http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22brein-api-library-java%22)
+Download the Library from [Maven Central Repository](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22brein-api-library-java%22)
 
 ```pom
 <dependency>
