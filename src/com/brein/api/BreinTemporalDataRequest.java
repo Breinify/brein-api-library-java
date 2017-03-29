@@ -33,18 +33,12 @@ public class BreinTemporalDataRequest extends BreinBase implements ISecretStrate
     /**
      * TemporalData implementation. For a given user (BreinUser) a temporalData request will be performed.
      *
-     * @param breinUser contains the breinify user
-     *
      * @return response from request or null if no data can be retrieved
      */
-    public BreinTemporalDataResult execute(final BreinUser breinUser) {
-
+    public BreinTemporalDataResult execute() {
         if (getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
-
-        setBreinUser(breinUser);
-
         return new BreinTemporalDataResult(getBreinEngine().performTemporalDataRequest(this));
     }
 
