@@ -29,11 +29,6 @@ public class Breinify {
     private static final BreinLookup breinLookup = new BreinLookup();
 
     /**
-     * contains the temporaldata object
-     */
-    private static final BreinTemporalDataRequest BREIN_TEMPORAL_DATA_REQUEST = new BreinTemporalDataRequest();
-
-    /**
      * contains the recommendation object
      */
     private static final BreinRecommendation breinRecommendation = new BreinRecommendation();
@@ -47,7 +42,6 @@ public class Breinify {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
-        BREIN_TEMPORAL_DATA_REQUEST.setConfig(breinConfig);
         breinRecommendation.setConfig(breinConfig);
     }
 
@@ -78,7 +72,9 @@ public class Breinify {
      * @return temporaldata instance
      */
     public static BreinTemporalDataRequest getBreinTemporalDataRequest() {
-        return BREIN_TEMPORAL_DATA_REQUEST;
+        final BreinTemporalDataRequest req = new BreinTemporalDataRequest();
+        req.setConfig(config);
+        return req;
     }
 
     /**
@@ -98,8 +94,8 @@ public class Breinify {
      * @param activityType  the type of the activity collected, i.e., one of search, login, logout, addToCart,
      *                      removeFromCart, checkOut, selectProduct, or other. if not specified, the default other will
      *                      be used
-     * @param categoryType  the category of the platform/service/products, i.e., one of apparel, home, education, family,
-     *                      food, health, job, services, or other
+     * @param categoryType  the category of the platform/service/products, i.e., one of apparel, home, education,
+     *                      family, food, health, job, services, or other
      * @param description   a string with further information about the activity performed
      * @param errorCallback a callback function that is invoked in case of an error (can be null)
      */
@@ -154,19 +150,16 @@ public class Breinify {
 
     /**
      * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is
-     * important that a valid API-key is configured prior to using this function.
-     * Furthermore it uses the internal instance of BreinActivity. In order to use this method correctly you have
-     * to do the following:
+     * important that a valid API-key is configured prior to using this function. Furthermore it uses the internal
+     * instance of BreinActivity. In order to use this method correctly you have to do the following:
      * <p>
-     * // retrieve BreinActivity instance from Breinify class
-     * BreinActivity breinActivity = Breinify.getBreinActivity();
+     * // retrieve BreinActivity instance from Breinify class BreinActivity breinActivity =
+     * Breinify.getBreinActivity();
      * <p>
-     * // set methods as desired to breinActivity (for instance)
-     * breinActivity.setBreinUser(new BreinUser("user.name@email.com");
-     * ...
+     * // set methods as desired to breinActivity (for instance) breinActivity.setBreinUser(new
+     * BreinUser("user.name@email.com"); ...
      * <p>
-     * // invoke this method
-     * Breinify.activity();
+     * // invoke this method Breinify.activity();
      * <p>
      * This request is asynchronous.
      */
@@ -207,7 +200,7 @@ public class Breinify {
      * <p>
      * This request is asynchronous.
      *
-     * @param aBreinActivity         a plain object specifying the brein activity information
+     * @param aBreinActivity a plain object specifying the brein activity information
      */
     public static void activity(final BreinActivity aBreinActivity) {
 
@@ -244,6 +237,7 @@ public class Breinify {
      *
      * @param user      a plain object specifying information about the user to retrieve data for.
      * @param dimension an object (with an array) containing the names of the dimensions to lookup.
+     *
      * @return response from request wrapped in an object called BreinResponse
      */
     public static BreinResult lookup(final BreinUser user,
@@ -259,6 +253,7 @@ public class Breinify {
      * @param breinLookup a plain object specifying the lookup information.
      * @param user        a plain object specifying information about the user to retrieve data for.
      * @param dimension   an object (with an array) containing the names of the dimensions to lookup.
+     *
      * @return response from request wrapped in an object called BreinResponse
      */
     public static BreinResult lookup(final BreinLookup breinLookup,
@@ -295,6 +290,7 @@ public class Breinify {
      * Furthermore it uses the internal instance of BreinTemporalDataRequest.
      *
      * @param user a plain object specifying information about the user to retrieve data for.
+     *
      * @return result from the Breinify engine
      */
     public static BreinResult temporalData(final BreinUser user) {
@@ -311,7 +307,8 @@ public class Breinify {
      * important that a valid API-key is configured prior to using this function.
      *
      * @param breinTemporalDataRequest a plain object specifying the information of the temporaldata.
-     * @param user              a plain object specifying information about the user to retrieve data for.
+     * @param user                     a plain object specifying information about the user to retrieve data for.
+     *
      * @return result from the Breinify engine
      */
     public static BreinResult temporalData(final BreinTemporalDataRequest breinTemporalDataRequest,
@@ -339,10 +336,11 @@ public class Breinify {
     }
 
     /**
-     * Sends a recommendation request to the engine utilizing the API. The call is done synchronously as a POST request. It is
-     * important that a valid API-key is configured prior to using this function.
+     * Sends a recommendation request to the engine utilizing the API. The call is done synchronously as a POST request.
+     * It is important that a valid API-key is configured prior to using this function.
      *
      * @param breinRecommendationPara contains the brein recommendation object
+     *
      * @return BreinResult object
      */
     public static BreinResult recommendation(final BreinRecommendation breinRecommendationPara) {
