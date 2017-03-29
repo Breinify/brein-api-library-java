@@ -25,4 +25,9 @@ public class BreinTemporalDataResult extends BreinResult {
         //noinspection unchecked
         return new BreinWeatherResult((Map<String, Object>) getMap().get(WEATHER_KEY));
     }
+
+    @Override
+    public String toString() {
+        return "Temporal results with " + (hasWeather() ? getWeather() : "no weather info");
+    }
 }

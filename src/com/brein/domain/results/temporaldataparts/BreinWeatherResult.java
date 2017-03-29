@@ -129,4 +129,10 @@ public class BreinWeatherResult {
     public Point2D.Double getMeasuredAt() {
         return new Point2D.Double(lat, lon);
     }
+
+    @Override
+    public String toString() {
+        return "weather of " + getDescription() + " and a current temperature of " + getTemperatureCelsius() + " with" +
+                " precipitation of " + getPrecipitation();
+    }
 }
