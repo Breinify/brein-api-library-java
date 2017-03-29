@@ -1,11 +1,13 @@
 package com.brein.domain.results.temporaldataparts;
 
+import com.brein.util.JsonHelpers;
+
 import java.awt.geom.Point2D;
 import java.util.Map;
 
-import static com.brein.domain.results.CommonConstants.UNKNOWN_DOUBLE;
-import static com.brein.domain.results.CommonConstants.UNKNOWN_LONG;
-import static com.brein.domain.results.CommonConstants.UNKNOWN_STRING;
+import static com.brein.domain.results.CommonResultConstants.UNKNOWN_DOUBLE;
+import static com.brein.domain.results.CommonResultConstants.UNKNOWN_LONG;
+import static com.brein.domain.results.CommonResultConstants.UNKNOWN_STRING;
 
 public class BreinWeatherResult {
     private static final String DESCRIPTION_KEY = "description";
@@ -42,17 +44,17 @@ public class BreinWeatherResult {
             lat = UNKNOWN_DOUBLE;
             lon = UNKNOWN_DOUBLE;
         } else {
-            description = getOr(theJson, DESCRIPTION_KEY, UNKNOWN_STRING);
-            temperature = getOr(theJson, TEMPERATURE_KEY, UNKNOWN_DOUBLE);
-            windStrength = getOr(theJson, WIND_STRENGTH_KEY, UNKNOWN_DOUBLE);
-            lastMeasured = getOrLong(theJson, LAST_MEASURED_KEY);
-            cloudCover = getOr(theJson, CLOUD_COVER_KEY, UNKNOWN_DOUBLE);
+            description = JsonHelpers.getOr(theJson, DESCRIPTION_KEY, UNKNOWN_STRING);
+            temperature = JsonHelpers.getOr(theJson, TEMPERATURE_KEY, UNKNOWN_DOUBLE);
+            windStrength = JsonHelpers.getOr(theJson, WIND_STRENGTH_KEY, UNKNOWN_DOUBLE);
+            lastMeasured = JsonHelpers.getOrLong(theJson, LAST_MEASURED_KEY);
+            cloudCover = JsonHelpers.getOr(theJson, CLOUD_COVER_KEY, UNKNOWN_DOUBLE);
 
             if (theJson.containsKey(MEASURED_LOCATION_KEY)) {
                 //noinspection unchecked
                 final Map<String, Object> measuredJson = (Map<String, Object>) theJson.get(MEASURED_LOCATION_KEY);
-                lat = getOr(measuredJson, LATITUDE_KEY, UNKNOWN_DOUBLE);
-                lon = getOr(measuredJson, LONGITUDE_KEY, UNKNOWN_DOUBLE);
+                lat = JsonHelpers.getOr(measuredJson, LATITUDE_KEY, UNKNOWN_DOUBLE);
+                lon = JsonHelpers.getOr(measuredJson, LONGITUDE_KEY, UNKNOWN_DOUBLE);
             } else {
                 lat = UNKNOWN_DOUBLE;
                 lon = UNKNOWN_DOUBLE;
@@ -80,32 +82,11 @@ public class BreinWeatherResult {
                     precipitation = PrecipitationType.UNKNOWN;
                 }
 
-                precipitationAmount = getOr(precipitationJson, PRECIPITATION_AMOUNT_KEY, UNKNOWN_DOUBLE);
+                precipitationAmount = JsonHelpers.getOr(precipitationJson, PRECIPITATION_AMOUNT_KEY, UNKNOWN_DOUBLE);
             } else {
                 precipitation = PrecipitationType.UNKNOWN;
                 precipitationAmount = UNKNOWN_DOUBLE;
             }
-        }
-    }
-
-    protected <T> T getOr(final Map<String, Object> json, final String key, final T defaultValue) {
-        if (json.containsKey(key)) {
-            //noinspection unchecked
-            return (T) json.get(key);
-        } else {
-            return defaultValue;
-        }
-    }
-
-    /**
-     * There isn't a clear difference between doubles and longs in jsons, so we have to specifically cast longs
-     */
-    protected Long getOrLong(final Map<String, Object> json, final String key) {
-        if (json.containsKey(key)) {
-            //noinspection unchecked
-            return ((Double) json.get(key)).longValue();
-        } else {
-            return UNKNOWN_LONG;
         }
     }
 

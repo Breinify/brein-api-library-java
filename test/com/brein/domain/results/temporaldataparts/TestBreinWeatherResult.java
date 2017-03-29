@@ -2,7 +2,7 @@ package com.brein.domain.results.temporaldataparts;
 
 import com.brein.domain.BreinResult;
 import com.brein.domain.results.BreinTemporalDataResult;
-import com.brein.domain.results.CommonConstants;
+import com.brein.domain.results.CommonResultConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,18 +11,18 @@ public class TestBreinWeatherResult {
     public void testNull() {
         final BreinWeatherResult res = new BreinWeatherResult(null);
 
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getCloudCover(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getWindStrength(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getCloudCover(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getWindStrength(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
 
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
 
-        Assert.assertEquals(CommonConstants.UNKNOWN_STRING, res.getDescription());
-        Assert.assertEquals(CommonConstants.UNKNOWN_LONG, res.getLastMeasured(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_STRING, res.getDescription());
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_LONG, res.getLastMeasured(), 0.001);
         Assert.assertEquals(PrecipitationType.UNKNOWN, res.getPrecipitation());
     }
 
@@ -80,14 +80,14 @@ public class TestBreinWeatherResult {
         final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
 
         Assert.assertEquals(40.0, res.getCloudCover(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
         Assert.assertEquals(1.5, res.getWindStrength(), 0.001);
         Assert.assertEquals(2.5, res.getPrecipitationAmount(), 0.001);
 
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
 
         Assert.assertEquals("scattered clouds", res.getDescription());
         Assert.assertEquals(1490740500, res.getLastMeasured(), 0.001);
@@ -125,18 +125,18 @@ public class TestBreinWeatherResult {
 
                 final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
 
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getCloudCover(), 0.001);
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getWindStrength(), 0.001);
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getCloudCover(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getWindStrength(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
 
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
-                Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
 
-                Assert.assertEquals(CommonConstants.UNKNOWN_STRING, res.getDescription());
-                Assert.assertEquals(CommonConstants.UNKNOWN_LONG, res.getLastMeasured(), 0.001);
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_STRING, res.getDescription());
+                Assert.assertEquals(CommonResultConstants.UNKNOWN_LONG, res.getLastMeasured(), 0.001);
 
                 Assert.assertEquals(type, res.getPrecipitation());
             }
@@ -165,7 +165,7 @@ public class TestBreinWeatherResult {
         Assert.assertEquals(72.5, res.getTemperatureFahrenheit(), 0.001);
         Assert.assertEquals(295.65, res.getTemperatureKelvin(), 0.001);
         Assert.assertEquals(1.5, res.getWindStrength(), 0.001);
-        Assert.assertEquals(CommonConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
+        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
 
         Assert.assertEquals(-122.4195, res.getMeasuredAt().getY(), 0.001);
         Assert.assertEquals(37.7749, res.getMeasuredAt().getX(), 0.001);
