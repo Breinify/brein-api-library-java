@@ -31,7 +31,7 @@ public class Breinify {
     /**
      * contains the temporaldata object
      */
-    private static final BreinTemporalData breinTemporalData = new BreinTemporalData();
+    private static final BreinTemporalDataRequest BREIN_TEMPORAL_DATA_REQUEST = new BreinTemporalDataRequest();
 
     /**
      * contains the recommendation object
@@ -47,7 +47,7 @@ public class Breinify {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
-        breinTemporalData.setConfig(breinConfig);
+        BREIN_TEMPORAL_DATA_REQUEST.setConfig(breinConfig);
         breinRecommendation.setConfig(breinConfig);
     }
 
@@ -77,8 +77,8 @@ public class Breinify {
     /**
      * @return temporaldata instance
      */
-    public static BreinTemporalData getBreinTemporalData() {
-        return breinTemporalData;
+    public static BreinTemporalDataRequest getBreinTemporalDataRequest() {
+        return BREIN_TEMPORAL_DATA_REQUEST;
     }
 
     /**
@@ -292,7 +292,7 @@ public class Breinify {
      * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      * <p>
-     * Furthermore it uses the internal instance of BreinTemporalData.
+     * Furthermore it uses the internal instance of BreinTemporalDataRequest.
      *
      * @param user a plain object specifying information about the user to retrieve data for.
      * @return result from the Breinify engine
@@ -300,39 +300,39 @@ public class Breinify {
     public static BreinResult temporalData(final BreinUser user) {
 
         // create a working temporal data object
-        final BreinTemporalData newBreinTemporalData = new BreinTemporalData();
-        newBreinTemporalData.setConfig(getBreinTemporalData().getConfig());
+        final BreinTemporalDataRequest newBreinTemporalDataRequest = new BreinTemporalDataRequest();
+        newBreinTemporalDataRequest.setConfig(getBreinTemporalDataRequest().getConfig());
 
-        return temporalData(newBreinTemporalData, user);
+        return temporalData(newBreinTemporalDataRequest, user);
     }
 
     /**
      * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      *
-     * @param breinTemporalData a plain object specifying the information of the temporaldata.
+     * @param breinTemporalDataRequest a plain object specifying the information of the temporaldata.
      * @param user              a plain object specifying information about the user to retrieve data for.
      * @return result from the Breinify engine
      */
-    public static BreinResult temporalData(final BreinTemporalData breinTemporalData,
+    public static BreinResult temporalData(final BreinTemporalDataRequest breinTemporalDataRequest,
                                            final BreinUser user) {
 
         if (user == null) {
             throw new BreinException(BreinException.USER_NOT_SET);
         }
 
-        if (breinTemporalData == null) {
-            throw new BreinException("BreinTemporalData object not set");
+        if (breinTemporalDataRequest == null) {
+            throw new BreinException("BreinTemporalDataRequest object not set");
         }
 
-        if (breinTemporalData.getBreinEngine() == null) {
+        if (breinTemporalDataRequest.getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
         }
 
-        breinTemporalData.setBreinUser(user);
+        breinTemporalDataRequest.setBreinUser(user);
 
         // clone temporaldata
-        final BreinTemporalData clonedTemporalData = BreinTemporalData.clone(breinTemporalData);
+        final BreinTemporalDataRequest clonedTemporalData = BreinTemporalDataRequest.clone(breinTemporalDataRequest);
 
         // invoke the temporaldata request
         return clonedTemporalData.getBreinEngine().performTemporalDataRequest(clonedTemporalData);

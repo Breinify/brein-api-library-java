@@ -217,11 +217,11 @@ public interface IRestEngine {
     /**
      * performs a temporalData request
      *
-     * @param breinTemporalData contains the request data
+     * @param breinTemporalDataRequest contains the request data
      * @return result from request
      * @throws BreinException exception that will be thrown
      */
-    BreinResult doTemporalDataRequest(BreinTemporalData breinTemporalData) throws BreinException;
+    BreinResult doTemporalDataRequest(BreinTemporalDataRequest breinTemporalDataRequest) throws BreinException;
 
 
     /**

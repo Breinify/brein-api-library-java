@@ -136,17 +136,17 @@ public class UniRestEngine implements IRestEngine {
     /**
      * performs a temporalData request
      *
-     * @param breinTemporalData contains the request data
+     * @param breinTemporalDataRequest contains the request data
      * @return result from request
      * @throws BreinException exception will be thrown
      */
     @Override
-    public BreinResult doTemporalDataRequest(final BreinTemporalData breinTemporalData) throws BreinException {
+    public BreinResult doTemporalDataRequest(final BreinTemporalDataRequest breinTemporalDataRequest) throws BreinException {
 
         // validate the input objects
-        validate(breinTemporalData);
+        validate(breinTemporalDataRequest);
 
-        return invokeRequest(breinTemporalData);
+        return invokeRequest(breinTemporalDataRequest);
     }
 
     /**

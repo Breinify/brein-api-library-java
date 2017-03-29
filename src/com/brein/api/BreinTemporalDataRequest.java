@@ -1,7 +1,7 @@
 package com.brein.api;
 
-import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
+import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.util.BreinUtil;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Provides the lookup functionality
  */
-public class BreinTemporalData extends BreinBase implements ISecretStrategy {
+public class BreinTemporalDataRequest extends BreinBase implements ISecretStrategy {
 
     /**
      * initializes the values of this instance
@@ -19,8 +19,8 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * resets all values of this class and base class to initial values.
-     * This will lead to empty strings or null objects
+     * resets all values of this class and base class to initial values. This will lead to empty strings or null
+     * objects
      */
     public void resetAllValues() {
         // reset base values (User & Config)
@@ -34,9 +34,10 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
      * TemporalData implementation. For a given user (BreinUser) a temporalData request will be performed.
      *
      * @param breinUser contains the breinify user
+     *
      * @return response from request or null if no data can be retrieved
      */
-    public BreinResult temporalData(final BreinUser breinUser) {
+    public BreinTemporalDataResult execute(final BreinUser breinUser) {
 
         if (getBreinEngine() == null) {
             throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
@@ -44,7 +45,7 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
 
         setBreinUser(breinUser);
 
-        return getBreinEngine().performTemporalDataRequest(this);
+        return new BreinTemporalDataResult(getBreinEngine().performTemporalDataRequest(this));
     }
 
     /**
@@ -72,16 +73,16 @@ public class BreinTemporalData extends BreinBase implements ISecretStrategy {
     }
 
     /**
-     * Used to create a clone of a temporal data object. This is important in order to prevent
-     * concurrency issues.
+     * Used to create a clone of a temporal data object. This is important in order to prevent concurrency issues.
      *
      * @param source contains the original temporaldata object
+     *
      * @return the clone of the temporaldata object
      */
-    public static BreinTemporalData clone(final BreinTemporalData source) {
+    public static BreinTemporalDataRequest clone(final BreinTemporalDataRequest source) {
 
         // create a new activity object
-        final BreinTemporalData temporalData = new BreinTemporalData();
+        final BreinTemporalDataRequest temporalData = new BreinTemporalDataRequest();
 
         // clone from base class
         temporalData.cloneBase(source);

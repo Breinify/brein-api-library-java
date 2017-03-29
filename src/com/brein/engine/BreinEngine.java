@@ -3,7 +3,7 @@ package com.brein.engine;
 import com.brein.api.BreinActivity;
 import com.brein.api.BreinLookup;
 import com.brein.api.BreinRecommendation;
-import com.brein.api.BreinTemporalData;
+import com.brein.api.BreinTemporalDataRequest;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 
@@ -91,13 +91,13 @@ public class BreinEngine {
     /**
      * performs a temporalData request
      *
-     * @param breinTemporalData contains the appropriate data in order to perform the request
+     * @param breinTemporalDataRequest contains the appropriate data in order to perform the request
      * @return result from Breinify engine
      */
-    public BreinResult performTemporalDataRequest(final BreinTemporalData breinTemporalData) {
+    public BreinResult performTemporalDataRequest(final BreinTemporalDataRequest breinTemporalDataRequest) {
 
-        if (breinTemporalData != null) {
-            return restEngine.doTemporalDataRequest(breinTemporalData);
+        if (breinTemporalDataRequest != null) {
+            return restEngine.doTemporalDataRequest(breinTemporalDataRequest);
         }
 
         return null;

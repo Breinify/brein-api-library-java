@@ -2,6 +2,8 @@ package com.brein;
 
 import com.brein.config.TestConfig;
 import com.brein.domain.TestDomain;
+import com.brein.domain.results.TestBreinTemporalDataResult;
+import com.brein.domain.results.temporaldataparts.TestBreinWeatherResult;
 import com.brein.util.TestBreinMapUtil;
 import com.brein.util.TestUtil;
 import org.junit.runner.RunWith;
@@ -15,7 +17,9 @@ import org.junit.runners.Suite;
         TestConfig.class,
         TestDomain.class,
         TestUtil.class,
-        TestBreinMapUtil.class
+        TestBreinMapUtil.class,
+        TestBreinTemporalDataResult.class,
+        TestBreinWeatherResult.class
 })
 public class TestSuite {
 }

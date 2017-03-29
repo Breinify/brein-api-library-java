@@ -23,7 +23,7 @@ public class BreinifyExecutor {
     /**
      * contains the temporalData object
      */
-    private final BreinTemporalData breinTemporalData = new BreinTemporalData();
+    private final BreinTemporalDataRequest breinTemporalDataRequest = new BreinTemporalDataRequest();
 
     /**
      * contains the configuration
@@ -48,7 +48,7 @@ public class BreinifyExecutor {
         config = breinConfig;
         breinActivity.setConfig(breinConfig);
         breinLookup.setConfig(breinConfig);
-        breinTemporalData.setConfig(breinConfig);
+        breinTemporalDataRequest.setConfig(breinConfig);
     }
 
     /**
@@ -136,7 +136,7 @@ public class BreinifyExecutor {
      * calls within class Breinify.
      */
     public void applyTemporalDataConfiguration() {
-        Breinify.getBreinTemporalData().setConfig(getConfig());
+        Breinify.getBreinTemporalDataRequest().setConfig(getConfig());
     }
 
     /**
@@ -201,7 +201,7 @@ public class BreinifyExecutor {
      * Sends a temporalData to the engine utilizing the API. The call is done synchronously as a POST request. It is
      * important that a valid API-key is configured prior to using this function.
      * <p>
-     * Furthermore it uses the internal instance of BreinTemporalData.
+     * Furthermore it uses the internal instance of BreinTemporalDataRequest.
      *
      * @param breinUser a plain object specifying information about the user to retrieve data for.
      * @return result from the Breinify engine

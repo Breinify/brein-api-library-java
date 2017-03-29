@@ -990,10 +990,10 @@ public class TestApi {
 
         try {
             // invoke temporaldata
-            BreinTemporalData breinTemporalData = Breinify.getBreinTemporalData();
-            breinTemporalData.setUnixTimestamp(1487235949);
+            BreinTemporalDataRequest breinTemporalDataRequest = Breinify.getBreinTemporalDataRequest();
+            breinTemporalDataRequest.setUnixTimestamp(1487235949);
 
-            response = Breinify.temporalData(breinTemporalData, user);
+            response = Breinify.temporalData(breinTemporalDataRequest, user);
         } catch (final Exception e) {
             fail("REST exception is: " + e);
         }

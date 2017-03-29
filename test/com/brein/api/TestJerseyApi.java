@@ -862,7 +862,7 @@ public class TestJerseyApi {
         Breinify.setConfig(breinConfig);
         BreinResult breinResult = null;
 
-        final BreinTemporalData breinTemporalData = Breinify.getBreinTemporalData();
+        final BreinTemporalDataRequest breinTemporalDataRequest = Breinify.getBreinTemporalDataRequest();
 
         // important new fields
         final BreinUser user = new BreinUser()

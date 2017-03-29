@@ -32,6 +32,10 @@ public class BreinResult {
         this.status = status;
     }
 
+    public BreinResult(final Map<String, Object> json){
+        map = json;
+    }
+
     /**
      * retrieves the object according to the requested key
      *
