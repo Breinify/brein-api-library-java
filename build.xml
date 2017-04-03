@@ -9,9 +9,6 @@
     <property name="jarFile" value="brein-api-library-java-TRUNK-SNAPSHOT.jar" />
     <property name="testSuite" value="com.brein.TestSuite" />
 
-    <property name="sonar.projectName" value="Brein-Api-Library" />
-    <property name="sonar.projectVersion" value="1.3.1" />
-
     <target name="03-wrap-up" depends="02-compile-sources">
         <build-jar jarFile="${jarFile}"/>
     </target>
@@ -37,6 +34,6 @@
     </target>
 
     <target name="07-run-sonarqube" depends="02-compile-sources">
-        <do-run-sonarqube projectName="${sonar.projectName}"/>
+        <do-run-qa-suite />
     </target>
 </project>
