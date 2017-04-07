@@ -1,6 +1,7 @@
 package com.brein.domain.results;
 
 import com.brein.domain.BreinResult;
+import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import com.brein.domain.results.temporaldataparts.BreinWeatherResult;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class BreinTemporalDataResult extends BreinResult {
     private static final String TIME_KEY = "time";
     private static final String LOCAL_TIME_KEY = "localFormatIso8601";
     private static final String EPOCH_TIME_KEY = "epochFormatIso8601";
+    private static final String LOCATION_KEY = "location";
 
     public BreinTemporalDataResult(final Map<String, Object> json) {
         super(json == null ? Collections.emptyMap() : json);
@@ -55,8 +57,17 @@ public class BreinTemporalDataResult extends BreinResult {
                 DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
+    public boolean hasLocation() {
+        return getMap().containsKey(LOCATION_KEY);
+    }
+
+    public BreinLocationResult getLocation() {
+        return new BreinLocationResult((Map<String, Object>) getMap().get(LOCATION_KEY));
+    }
+
     @Override
     public String toString() {
         return "Temporal results with " + (hasWeather() ? getWeather() : "no weather info");
     }
+
 }
