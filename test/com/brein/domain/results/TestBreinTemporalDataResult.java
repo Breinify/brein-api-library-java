@@ -1,6 +1,9 @@
 package com.brein.domain.results;
 
 import com.brein.domain.BreinResult;
+import com.brein.domain.results.temporaldataparts.BreinHolidayResult;
+import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidaySource;
+import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidayType;
 import com.brein.domain.results.temporaldataparts.PrecipitationType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,6 +11,7 @@ import org.junit.Test;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 public class TestBreinTemporalDataResult {
     @Test
@@ -67,5 +71,23 @@ public class TestBreinTemporalDataResult {
         Assert.assertEquals(17, time.getHour());
         Assert.assertEquals(2, time.getMinute());
         Assert.assertEquals(46, time.getSecond());
+    }
+
+    @Test
+    public void testHoliday() {
+        final String json = "{ \"holidays\": [{\"types\": [\"HALLMARK\"], \"source\":\"UNITED_NATIONS\"," +
+                " \"holiday\": \"aaa\"}]}";
+
+        Assert.assertFalse(new BreinTemporalDataResult(Collections.emptyMap()).hasHolidays());
+
+        final BreinTemporalDataResult withHoliday = new BreinTemporalDataResult(new BreinResult(json));
+        Assert.assertTrue(withHoliday.hasHolidays());
+        final List<BreinHolidayResult> holidays = withHoliday.getHolidays();
+
+        Assert.assertEquals(1, holidays.size());
+        Assert.assertEquals(1, holidays.get(0).getTypes().size());
+        Assert.assertEquals(HolidayType.HALLMARK, holidays.get(0).getTypes().get(0));
+        Assert.assertEquals(HolidaySource.UNITED_NATIONS, holidays.get(0).getSource());
+        Assert.assertEquals("aaa", holidays.get(0).getName());
     }
 }

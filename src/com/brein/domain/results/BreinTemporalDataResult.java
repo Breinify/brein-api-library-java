@@ -1,13 +1,16 @@
 package com.brein.domain.results;
 
 import com.brein.domain.BreinResult;
+import com.brein.domain.results.temporaldataparts.BreinHolidayResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import com.brein.domain.results.temporaldataparts.BreinWeatherResult;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BreinTemporalDataResult extends BreinResult {
     private static final String WEATHER_KEY = "weather";
@@ -15,6 +18,7 @@ public class BreinTemporalDataResult extends BreinResult {
     private static final String LOCAL_TIME_KEY = "localFormatIso8601";
     private static final String EPOCH_TIME_KEY = "epochFormatIso8601";
     private static final String LOCATION_KEY = "location";
+    private static final String HOLIDAY_LIST_KEY = "holidays";
 
     public BreinTemporalDataResult(final Map<String, Object> json) {
         super(json == null ? Collections.emptyMap() : json);
@@ -62,7 +66,19 @@ public class BreinTemporalDataResult extends BreinResult {
     }
 
     public BreinLocationResult getLocation() {
+        //noinspection unchecked
         return new BreinLocationResult((Map<String, Object>) getMap().get(LOCATION_KEY));
+    }
+
+    public boolean hasHolidays() {
+        return getMap().containsKey(HOLIDAY_LIST_KEY);
+    }
+
+    public List<BreinHolidayResult> getHolidays() {
+        //noinspection unchecked
+        return ((List<Map<String, Object>>) getMap().get(HOLIDAY_LIST_KEY)).stream()
+                .map(BreinHolidayResult::new)
+                .collect(Collectors.toList());
     }
 
     @Override
