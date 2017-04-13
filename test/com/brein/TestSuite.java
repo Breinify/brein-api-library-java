@@ -4,6 +4,7 @@ import com.brein.api.TestBreinTemporalDataRequest;
 import com.brein.config.TestConfig;
 import com.brein.domain.TestDomain;
 import com.brein.domain.results.TestBreinTemporalDataResult;
+import com.brein.domain.results.temporaldataparts.TestBreinEventResult;
 import com.brein.domain.results.temporaldataparts.TestBreinHolidayResult;
 import com.brein.domain.results.temporaldataparts.TestBreinLocationResult;
 import com.brein.domain.results.temporaldataparts.TestBreinWeatherResult;
@@ -27,7 +28,8 @@ import org.junit.runners.Suite;
         TestBreinTemporalDataResult.class,
         TestBreinWeatherResult.class,
         TestBreinLocationResult.class,
-        TestBreinHolidayResult.class
+        TestBreinHolidayResult.class,
+        TestBreinEventResult.class
 })
 public class TestSuite {
 }

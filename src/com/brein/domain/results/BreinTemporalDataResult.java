@@ -1,6 +1,7 @@
 package com.brein.domain.results;
 
 import com.brein.domain.BreinResult;
+import com.brein.domain.results.temporaldataparts.BreinEventResult;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult;
 import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import com.brein.domain.results.temporaldataparts.BreinWeatherResult;
@@ -19,6 +20,7 @@ public class BreinTemporalDataResult extends BreinResult {
     private static final String EPOCH_TIME_KEY = "epochFormatIso8601";
     private static final String LOCATION_KEY = "location";
     private static final String HOLIDAY_LIST_KEY = "holidays";
+    private static final String EVENT_LIST_KEY = "events";
 
     public BreinTemporalDataResult(final Map<String, Object> json) {
         super(json == null ? Collections.emptyMap() : json);
@@ -81,6 +83,21 @@ public class BreinTemporalDataResult extends BreinResult {
         } else {
             return value.stream()
                     .map(BreinHolidayResult::new)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public boolean hasEvents() {
+        return getValue(EVENT_LIST_KEY) != null;
+    }
+
+    public List<BreinEventResult> getEvents() {
+        final List<Map<String, Object>> value = getValue(EVENT_LIST_KEY);
+        if (value == null) {
+            return null;
+        } else {
+            return value.stream()
+                    .map(BreinEventResult::new)
                     .collect(Collectors.toList());
         }
     }
