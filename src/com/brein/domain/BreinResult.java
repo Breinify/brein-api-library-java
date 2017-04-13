@@ -32,7 +32,7 @@ public class BreinResult {
         this.status = status;
     }
 
-    public BreinResult(final Map<String, Object> json){
+    public BreinResult(final Map<String, Object> json) {
         map = json;
     }
 
@@ -41,6 +41,7 @@ public class BreinResult {
      *
      * @param key to look for
      * @param <T> Object
+     *
      * @return Object retrieved
      */
     @SuppressWarnings("unchecked")
@@ -52,6 +53,7 @@ public class BreinResult {
      * checks if key exists in map
      *
      * @param key to check
+     *
      * @return true or false
      */
     public boolean has(final String key) {
@@ -67,6 +69,70 @@ public class BreinResult {
         return map;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getValue(final String key) {
+        return map == null ? null : (T) map.get(key);
+    }
+
+    public boolean hasValue(final String key) {
+        return map != null && map.containsKey(key);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getNestedValue(final String... key) {
+        if (map == null) {
+            return null;
+        }
+
+        Map<String, Object> currentMap = map;
+
+        Object value = null;
+        int i = 0;
+        for (; i < key.length; i++) {
+            final String k = key[i];
+
+            value = currentMap.get(k);
+            if (value == null) {
+                break;
+            } else if (Map.class.isInstance(value)) {
+                currentMap = Map.class.cast(value);
+            } else if (i < key.length - 1) {
+                break;
+            }
+        }
+
+        if (i == key.length) {
+            return (T) value;
+        } else {
+            return null;
+        }
+    }
+
+    public boolean hasNestedValue(final String... key) {
+        if (map == null) {
+            return false;
+        }
+
+        Map<String, Object> currentMap = map;
+
+        int i = 0;
+        for (; i < key.length; i++) {
+            final String k = key[i];
+
+            final Object value = currentMap.get(k);
+            if (value == null) {
+                break;
+            } else if (Map.class.isInstance(value)) {
+                //noinspection unchecked
+                currentMap = Map.class.cast(value);
+            } else if (i < key.length - 1) {
+                break;
+            }
+        }
+
+        return i == key.length;
+    }
+
     public String getMessage() {
 
         if (has("message")) {
@@ -78,6 +144,7 @@ public class BreinResult {
 
     /**
      * returns the http request status
+     *
      * @return valus like 200, 403...
      */
     public int getStatus() {
@@ -86,6 +153,7 @@ public class BreinResult {
 
     /**
      * sets the http request status
+     *
      * @param status contains the value
      */
     public void setStatus(final int status) {

@@ -25,8 +25,6 @@ public class BreinHolidayResult {
         RELIGIOUS
     }
 
-    public static final String UNKNOWN = "UNKNOWN";
-
     private static final String HOLIDAY_TYPE_KEY = "types";
     private static final String HOLIDAY_SOURCE_KEY = "source";
     private static final String HOLIDAY_NAME_KEY = "holiday";
@@ -35,20 +33,21 @@ public class BreinHolidayResult {
     private final HolidaySource source;
     private final String name;
 
-    public BreinHolidayResult(final Map<String, Object> theJson) {
-        if (theJson == null || theJson.isEmpty()) {
+    public BreinHolidayResult(final Map<String, Object> result) {
+
+        if (result == null || result.isEmpty()) {
             types = Collections.emptyList();
             source = HolidaySource.UNKNOWN;
-            name = UNKNOWN;
+            name = null;
         } else {
-            if (theJson.containsKey(HOLIDAY_NAME_KEY)) {
-                name = theJson.get(HOLIDAY_NAME_KEY).toString();
+            if (result.containsKey(HOLIDAY_NAME_KEY)) {
+                name = result.get(HOLIDAY_NAME_KEY).toString();
             } else {
-                name = UNKNOWN;
+                name = null;
             }
 
-            if (theJson.containsKey(HOLIDAY_SOURCE_KEY)) {
-                source = HolidaySource.valueOf(theJson.get(HOLIDAY_SOURCE_KEY)
+            if (result.containsKey(HOLIDAY_SOURCE_KEY)) {
+                source = HolidaySource.valueOf(result.get(HOLIDAY_SOURCE_KEY)
                         .toString()
                         .replace(' ', '_')
                         .toUpperCase());
@@ -56,9 +55,9 @@ public class BreinHolidayResult {
                 source = HolidaySource.UNKNOWN;
             }
 
-            if (theJson.containsKey(HOLIDAY_TYPE_KEY)) {
+            if (result.containsKey(HOLIDAY_TYPE_KEY)) {
                 //noinspection unchecked
-                types = ((List<String>) theJson.get(HOLIDAY_TYPE_KEY)).stream()
+                types = ((List<String>) result.get(HOLIDAY_TYPE_KEY)).stream()
                         .map(String::toString)
                         .map(HolidayType::valueOf)
                         .collect(Collectors.toList());

@@ -1,6 +1,8 @@
 package com.brein.engine;
 
-import com.brein.api.*;
+import com.brein.api.BreinActivity;
+import com.brein.api.BreinBase;
+import com.brein.api.BreinException;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.mashape.unirest.http.HttpResponse;
@@ -103,23 +105,6 @@ public class UniRestEngine implements IRestEngine {
     }
 
     /**
-     * performs a lookup  and provides details
-     *
-     * @param breinLookup contains request data
-     * @return response from Breinify
-     * @throws BreinException in case of an error
-     */
-    @Override
-    public BreinResult doLookup(final BreinLookup breinLookup) throws BreinException {
-
-        // validate the input objects
-        validate(breinLookup);
-
-        return invokeRequest(breinLookup);
-
-    }
-
-    /**
      * used to stop the UNIREST threads
      */
     @Override
@@ -133,53 +118,15 @@ public class UniRestEngine implements IRestEngine {
         }
     }
 
-    /**
-     * performs a temporalData request
-     *
-     * @param breinTemporalDataRequest contains the request data
-     * @return result from request
-     * @throws BreinException exception will be thrown
-     */
     @Override
-    public BreinResult doTemporalDataRequest(final BreinTemporalDataRequest breinTemporalDataRequest) throws BreinException {
-
-        // validate the input objects
-        validate(breinTemporalDataRequest);
-
-        return invokeRequest(breinTemporalDataRequest);
-    }
-
-    /**
-     * invokes a recommendation request
-     *
-     * @param breinRecommendation contains the request data
-     * @return result from the request
-     * @throws BreinException exception
-     */
-    @Override
-    public BreinResult doRecommendation(final BreinRecommendation breinRecommendation) throws BreinException {
-
-        // validate the input objects
-        validate(breinRecommendation);
-
-        return invokeRequest(breinRecommendation);
-    }
-
-    /**
-     * invokes the request
-     *
-     * @param breinRequestObject contains the request data
-     * @return result from the Breinify engine
-     */
     public BreinResult invokeRequest(final BreinBase breinRequestObject) {
         final HttpResponse<JsonNode> jsonResponse;
         try {
             final String requestBody = getRequestBody(breinRequestObject);
-            jsonResponse =
-                    Unirest.post(getFullyQualifiedUrl(breinRequestObject))
-                            .header(HEADER_ACCESS, HEADER_APP_JSON)
-                            .body(requestBody)
-                            .asJson();
+            jsonResponse = Unirest.post(getFullyQualifiedUrl(breinRequestObject))
+                    .header(HEADER_ACCESS, HEADER_APP_JSON)
+                    .body(requestBody)
+                    .asJson();
 
             if (jsonResponse.getStatus() == 200) {
                 return new BreinResult(jsonResponse.getBody().toString(), jsonResponse.getStatus());

@@ -207,10 +207,6 @@ public class BreinifyExecutor {
      * @return result from the Breinify engine
      */
     public BreinResult temporalData(final BreinUser breinUser) {
-
-        // set the appropriate configuration
-        applyTemporalDataConfiguration();
-
         return Breinify.temporalData(breinUser);
     }
 
@@ -222,7 +218,7 @@ public class BreinifyExecutor {
      * @param numberOfRecommendations number of recommendations
      * @return result from the Breinify engine
      */
-    public BreinResult recommendation(final BreinUser user, int numberOfRecommendations) {
+    public BreinResult recommendation(final BreinUser user, final int numberOfRecommendations) {
 
         applyRecommendationConfiguration();
 

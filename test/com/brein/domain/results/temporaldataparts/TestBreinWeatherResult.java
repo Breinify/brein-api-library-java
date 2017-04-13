@@ -2,27 +2,27 @@ package com.brein.domain.results.temporaldataparts;
 
 import com.brein.domain.BreinResult;
 import com.brein.domain.results.BreinTemporalDataResult;
-import com.brein.domain.results.CommonResultConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class TestBreinWeatherResult {
+
     @Test
     public void testNull() {
         final BreinWeatherResult res = new BreinWeatherResult(null);
 
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getCloudCover(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getWindStrength(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
+        Assert.assertNull(res.getCloudCover());
+        Assert.assertNull(res.getTemperatureCelsius());
+        Assert.assertNull(res.getTemperatureFahrenheit());
+        Assert.assertNull(res.getTemperatureKelvin());
+        Assert.assertNull(res.getWindStrength());
+        Assert.assertNull(res.getPrecipitationAmount());
 
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
+        Assert.assertNull(res.getMeasuredAt());
 
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_STRING, res.getDescription());
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_LONG, res.getLastMeasured(), 0.001);
+        Assert.assertNull(res.getDescription());
+        Assert.assertNull(res.getLastMeasured());
+
         Assert.assertEquals(PrecipitationType.UNKNOWN, res.getPrecipitation());
     }
 
@@ -54,8 +54,8 @@ public class TestBreinWeatherResult {
         Assert.assertEquals(1.5, res.getWindStrength(), 0.001);
         Assert.assertEquals(0, res.getPrecipitationAmount(), 0.001);
 
-        Assert.assertEquals(-122.4195, res.getMeasuredAt().getY(), 0.001);
-        Assert.assertEquals(37.7749, res.getMeasuredAt().getX(), 0.001);
+        Assert.assertEquals(-122.4195, res.getMeasuredAt().getLongitude(), 0.001);
+        Assert.assertEquals(37.7749, res.getMeasuredAt().getLatitude(), 0.001);
 
         Assert.assertEquals("scattered clouds", res.getDescription());
         Assert.assertEquals(1490740500, res.getLastMeasured(), 0.001);
@@ -80,14 +80,13 @@ public class TestBreinWeatherResult {
         final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
 
         Assert.assertEquals(40.0, res.getCloudCover(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
+        Assert.assertNull(res.getTemperatureCelsius());
+        Assert.assertNull(res.getTemperatureKelvin());
+        Assert.assertNull(res.getTemperatureFahrenheit());
         Assert.assertEquals(1.5, res.getWindStrength(), 0.001);
         Assert.assertEquals(2.5, res.getPrecipitationAmount(), 0.001);
 
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
+        Assert.assertNull(res.getMeasuredAt());
 
         Assert.assertEquals("scattered clouds", res.getDescription());
         Assert.assertEquals(1490740500, res.getLastMeasured(), 0.001);
@@ -125,18 +124,16 @@ public class TestBreinWeatherResult {
 
                 final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
 
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getCloudCover(), 0.001);
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureCelsius(), 0.001);
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureFahrenheit(), 0.001);
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getTemperatureKelvin(), 0.001);
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getWindStrength(), 0.001);
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
+                Assert.assertNull(res.getCloudCover());
+                Assert.assertNull(res.getTemperatureCelsius());
+                Assert.assertNull(res.getTemperatureKelvin());
+                Assert.assertNull(res.getWindStrength());
+                Assert.assertNull(res.getPrecipitationAmount());
 
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getX(), 0.001);
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getMeasuredAt().getY(), 0.001);
+                Assert.assertNull(res.getMeasuredAt());
 
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_STRING, res.getDescription());
-                Assert.assertEquals(CommonResultConstants.UNKNOWN_LONG, res.getLastMeasured(), 0.001);
+                Assert.assertNull(res.getDescription());
+                Assert.assertNull(res.getLastMeasured());
 
                 Assert.assertEquals(type, res.getPrecipitation());
             }
@@ -165,10 +162,10 @@ public class TestBreinWeatherResult {
         Assert.assertEquals(72.5, res.getTemperatureFahrenheit(), 0.001);
         Assert.assertEquals(295.65, res.getTemperatureKelvin(), 0.001);
         Assert.assertEquals(1.5, res.getWindStrength(), 0.001);
-        Assert.assertEquals(CommonResultConstants.UNKNOWN_DOUBLE, res.getPrecipitationAmount(), 0.001);
+        Assert.assertNull(res.getPrecipitationAmount());
 
-        Assert.assertEquals(-122.4195, res.getMeasuredAt().getY(), 0.001);
-        Assert.assertEquals(37.7749, res.getMeasuredAt().getX(), 0.001);
+        Assert.assertEquals(-122.4195, res.getMeasuredAt().getLongitude(), 0.001);
+        Assert.assertEquals(37.7749, res.getMeasuredAt().getLatitude(), 0.001);
 
         Assert.assertEquals("scattered clouds", res.getDescription());
         Assert.assertEquals(1490740500, res.getLastMeasured(), 0.001);

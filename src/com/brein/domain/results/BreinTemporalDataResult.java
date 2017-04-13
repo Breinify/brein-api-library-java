@@ -29,56 +29,60 @@ public class BreinTemporalDataResult extends BreinResult {
     }
 
     public boolean hasWeather() {
-        return getMap().containsKey(WEATHER_KEY);
+        return getValue(WEATHER_KEY) != null;
     }
 
     public BreinWeatherResult getWeather() {
-        //noinspection unchecked
-        return new BreinWeatherResult((Map<String, Object>) getMap().get(WEATHER_KEY));
+        return new BreinWeatherResult(getValue(WEATHER_KEY));
     }
 
     public boolean hasLocalDateTime() {
-        //noinspection unchecked
-        return getMap().containsKey(TIME_KEY) &&
-                ((Map<String, Object>) getMap().get(TIME_KEY)).containsKey(LOCAL_TIME_KEY);
+        return getNestedValue(TIME_KEY, LOCAL_TIME_KEY) != null;
     }
 
     public LocalDateTime getLocalDateTime() {
-        //noinspection unchecked
-        return LocalDateTime.parse(((Map<String, Object>) getMap().get(TIME_KEY)).get(LOCAL_TIME_KEY).toString(),
-                DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        final String value = getNestedValue(TIME_KEY, LOCAL_TIME_KEY);
+        if (value == null) {
+            return null;
+        } else {
+            return LocalDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        }
     }
 
     public boolean hasEpochDateTime() {
-        //noinspection unchecked
-        return getMap().containsKey(TIME_KEY) &&
-                ((Map<String, Object>) getMap().get(TIME_KEY)).containsKey(EPOCH_TIME_KEY);
+        return getNestedValue(TIME_KEY, EPOCH_TIME_KEY) != null;
     }
 
     public LocalDateTime getEpochDateTime() {
-        //noinspection unchecked
-        return LocalDateTime.parse(((Map<String, Object>) getMap().get(TIME_KEY)).get(EPOCH_TIME_KEY).toString(),
-                DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        final String value = getNestedValue(TIME_KEY, EPOCH_TIME_KEY);
+        if (value == null) {
+            return null;
+        } else {
+            return LocalDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        }
     }
 
     public boolean hasLocation() {
-        return getMap().containsKey(LOCATION_KEY);
+        return getValue(LOCATION_KEY) != null;
     }
 
     public BreinLocationResult getLocation() {
-        //noinspection unchecked
-        return new BreinLocationResult((Map<String, Object>) getMap().get(LOCATION_KEY));
+        return new BreinLocationResult(getValue(LOCATION_KEY));
     }
 
     public boolean hasHolidays() {
-        return getMap().containsKey(HOLIDAY_LIST_KEY);
+        return getValue(HOLIDAY_LIST_KEY) != null;
     }
 
     public List<BreinHolidayResult> getHolidays() {
-        //noinspection unchecked
-        return ((List<Map<String, Object>>) getMap().get(HOLIDAY_LIST_KEY)).stream()
-                .map(BreinHolidayResult::new)
-                .collect(Collectors.toList());
+        final List<Map<String, Object>> value = getValue(HOLIDAY_LIST_KEY);
+        if (value == null) {
+            return null;
+        } else {
+            return value.stream()
+                    .map(BreinHolidayResult::new)
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override

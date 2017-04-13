@@ -2,12 +2,7 @@ package com.brein.domain.results.temporaldataparts;
 
 import com.brein.util.JsonHelpers;
 
-import java.awt.geom.Point2D;
 import java.util.Map;
-
-import static com.brein.domain.results.CommonResultConstants.UNKNOWN_DOUBLE;
-import static com.brein.domain.results.CommonResultConstants.UNKNOWN_LONG;
-import static com.brein.domain.results.CommonResultConstants.UNKNOWN_STRING;
 
 public class BreinWeatherResult {
     private static final String DESCRIPTION_KEY = "description";
@@ -23,70 +18,57 @@ public class BreinWeatherResult {
     private static final String LONGITUDE_KEY = "lon";
 
     private final String description;
-    private final double temperature;
+    private final Double temperature;
     private final PrecipitationType precipitation;
-    private final double precipitationAmount;
-    private final double windStrength;
-    private final long lastMeasured;
-    private final double cloudCover;
-    private final double lat;
-    private final double lon;
+    private final Double precipitationAmount;
+    private final Double windStrength;
+    private final Long lastMeasured;
+    private final Double cloudCover;
+    private final Double lat;
+    private final Double lon;
 
-    public BreinWeatherResult(final Map<String, Object> theJson) {
-        if (theJson == null) {
-            description = UNKNOWN_STRING;
-            temperature = UNKNOWN_DOUBLE;
-            precipitation = PrecipitationType.UNKNOWN;
-            precipitationAmount = UNKNOWN_DOUBLE;
-            windStrength = UNKNOWN_DOUBLE;
-            lastMeasured = UNKNOWN_LONG;
-            cloudCover = UNKNOWN_DOUBLE;
-            lat = UNKNOWN_DOUBLE;
-            lon = UNKNOWN_DOUBLE;
+    public BreinWeatherResult(final Map<String, Object> result) {
+        description = JsonHelpers.getOr(result, DESCRIPTION_KEY, null);
+        temperature = JsonHelpers.getOr(result, TEMPERATURE_KEY, null);
+        windStrength = JsonHelpers.getOr(result, WIND_STRENGTH_KEY, null);
+        lastMeasured = JsonHelpers.getOrLong(result, LAST_MEASURED_KEY);
+        cloudCover = JsonHelpers.getOr(result, CLOUD_COVER_KEY, null);
+
+        //noinspection unchecked
+        final Map<String, Object> measuredJson = JsonHelpers.getOr(result, MEASURED_LOCATION_KEY, null);
+        if (measuredJson == null) {
+            lat = null;
+            lon = null;
         } else {
-            description = JsonHelpers.getOr(theJson, DESCRIPTION_KEY, UNKNOWN_STRING);
-            temperature = JsonHelpers.getOr(theJson, TEMPERATURE_KEY, UNKNOWN_DOUBLE);
-            windStrength = JsonHelpers.getOr(theJson, WIND_STRENGTH_KEY, UNKNOWN_DOUBLE);
-            lastMeasured = JsonHelpers.getOrLong(theJson, LAST_MEASURED_KEY);
-            cloudCover = JsonHelpers.getOr(theJson, CLOUD_COVER_KEY, UNKNOWN_DOUBLE);
+            lat = JsonHelpers.getOr(measuredJson, LATITUDE_KEY, null);
+            lon = JsonHelpers.getOr(measuredJson, LONGITUDE_KEY, null);
+        }
 
-            if (theJson.containsKey(MEASURED_LOCATION_KEY)) {
-                //noinspection unchecked
-                final Map<String, Object> measuredJson = (Map<String, Object>) theJson.get(MEASURED_LOCATION_KEY);
-                lat = JsonHelpers.getOr(measuredJson, LATITUDE_KEY, UNKNOWN_DOUBLE);
-                lon = JsonHelpers.getOr(measuredJson, LONGITUDE_KEY, UNKNOWN_DOUBLE);
+        final Map<String, Object> precipitation = JsonHelpers.getOr(result, PRECIPITATION_KEY, null);
+        if (precipitation == null) {
+            this.precipitation = PrecipitationType.UNKNOWN;
+            precipitationAmount = null;
+        } else {
+            final String type = JsonHelpers.getOr(precipitation, PRECIPITATION_TYPE_KEY, null);
+            if (type == null) {
+                this.precipitation = PrecipitationType.UNKNOWN;
             } else {
-                lat = UNKNOWN_DOUBLE;
-                lon = UNKNOWN_DOUBLE;
-            }
-
-            if (theJson.containsKey(PRECIPITATION_KEY)) {
-                //noinspection unchecked
-                final Map<String, Object> precipitationJson = (Map<String, Object>) theJson.get(PRECIPITATION_KEY);
-
-                if (precipitationJson.containsKey(PRECIPITATION_TYPE_KEY)) {
-                    switch (((String) precipitationJson.get(PRECIPITATION_TYPE_KEY)).toLowerCase()) {
-                        case "rain":
-                            precipitation = PrecipitationType.RAIN;
-                            break;
-                        case "snow":
-                            precipitation = PrecipitationType.SNOW;
-                            break;
-                        case "none":
-                            precipitation = PrecipitationType.NONE;
-                            break;
-                        default:
-                            precipitation = PrecipitationType.UNKNOWN;
-                    }
-                } else {
-                    precipitation = PrecipitationType.UNKNOWN;
+                switch (type.toLowerCase()) {
+                    case "rain":
+                        this.precipitation = PrecipitationType.RAIN;
+                        break;
+                    case "snow":
+                        this.precipitation = PrecipitationType.SNOW;
+                        break;
+                    case "none":
+                        this.precipitation = PrecipitationType.NONE;
+                        break;
+                    default:
+                        this.precipitation = PrecipitationType.UNKNOWN;
                 }
-
-                precipitationAmount = JsonHelpers.getOr(precipitationJson, PRECIPITATION_AMOUNT_KEY, UNKNOWN_DOUBLE);
-            } else {
-                precipitation = PrecipitationType.UNKNOWN;
-                precipitationAmount = UNKNOWN_DOUBLE;
             }
+
+            precipitationAmount = JsonHelpers.getOr(precipitation, PRECIPITATION_AMOUNT_KEY, null);
         }
     }
 
@@ -94,40 +76,54 @@ public class BreinWeatherResult {
         return description;
     }
 
-    public double getTemperatureCelsius() {
+    public Double getTemperatureCelsius() {
         return temperature;
     }
 
-    public double getTemperatureFahrenheit() {
-        return getTemperatureCelsius() * 9 / 5 + 32;
+    public Double getTemperatureFahrenheit() {
+        final Double celsius = getTemperatureCelsius();
+        if (celsius == null) {
+            return null;
+        }
+
+        return celsius * 9 / 5 + 32;
     }
 
-    public double getTemperatureKelvin() {
-        return getTemperatureCelsius() + 273.15;
+    public Double getTemperatureKelvin() {
+        final Double celsius = getTemperatureCelsius();
+        if (celsius == null) {
+            return null;
+        }
+
+        return celsius + 273.15;
     }
 
     public PrecipitationType getPrecipitation() {
         return precipitation;
     }
 
-    public double getPrecipitationAmount() {
+    public Double getPrecipitationAmount() {
         return precipitationAmount;
     }
 
-    public double getWindStrength() {
+    public Double getWindStrength() {
         return windStrength;
     }
 
-    public long getLastMeasured() {
+    public Long getLastMeasured() {
         return lastMeasured;
     }
 
-    public double getCloudCover() {
+    public Double getCloudCover() {
         return cloudCover;
     }
 
-    public Point2D.Double getMeasuredAt() {
-        return new Point2D.Double(lat, lon);
+    public GeoCoordinates getMeasuredAt() {
+        if (lat == null && lon == null) {
+            return null;
+        } else {
+            return new GeoCoordinates(lat, lon);
+        }
     }
 
     @Override

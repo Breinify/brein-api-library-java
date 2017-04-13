@@ -1,8 +1,14 @@
 package com.brein.engine;
 
-import com.brein.api.*;
+import com.brein.api.BreinActivity;
+import com.brein.api.BreinBase;
+import com.brein.api.BreinException;
+import com.brein.api.BreinLookup;
+import com.brein.api.BreinRecommendation;
+import com.brein.api.BreinTemporalDataRequest;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
+import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.util.BreinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +17,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.function.Function;
-
 
 /**
  * Interface for all possible rest  engines
@@ -43,14 +48,6 @@ public interface IRestEngine {
                    final Function<String, Void> errorCallback) throws BreinException;
 
     /**
-     * performs a lookup and provides details
-     *
-     * @param breinLookup contains request data
-     * @return response from Breinify
-     */
-    BreinResult doLookup(final BreinLookup breinLookup) throws BreinException;
-
-    /**
      * terminates the rest engine
      */
     void terminate();
@@ -59,6 +56,7 @@ public interface IRestEngine {
      * Validates if the URL is correct.
      *
      * @param url to check
+     *
      * @return true if ok otherwise false
      */
     static boolean isUrlValid(final String url) {
@@ -68,7 +66,8 @@ public interface IRestEngine {
             final HttpURLConnection huc = (HttpURLConnection) u.openConnection();
             huc.setRequestMethod("POST");
             huc.setRequestProperty("User-Agent",
-                    "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
+                    "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET " +
+                            "CLR 3.5.30729)");
 
             // int responseCode = huc.getResponseCode();
 
@@ -111,6 +110,7 @@ public interface IRestEngine {
      * Creates the requested Rest Engine.
      *
      * @param engine type of engine
+     *
      * @return created Rest-Engine
      */
     static IRestEngine getRestEngine(final BreinEngineType engine) {
@@ -166,6 +166,7 @@ public interface IRestEngine {
      * retrieves the fully qualified url (base + endpoint)
      *
      * @param breinBase activity or lookup object
+     *
      * @return full url
      */
     default String getFullyQualifiedUrl(final BreinBase breinBase) {
@@ -188,6 +189,7 @@ public interface IRestEngine {
      * retrieves the request body depending of the object
      *
      * @param breinBase object to use
+     *
      * @return request as json string
      */
     default String getRequestBody(final BreinBase breinBase) {
@@ -215,21 +217,60 @@ public interface IRestEngine {
     }
 
     /**
+     * performs a lookup and provides details
+     *
+     * @param breinLookup contains request data
+     *
+     * @return response from Breinify
+     */
+    default BreinResult doLookup(final BreinLookup breinLookup) {
+
+        // validate the input objects
+        validate(breinLookup);
+
+        return invokeRequest(breinLookup);
+    }
+
+    /**
      * performs a temporalData request
      *
      * @param breinTemporalDataRequest contains the request data
+     *
      * @return result from request
-     * @throws BreinException exception that will be thrown
+     *
+     * @throws BreinException exception will be thrown
      */
-    BreinResult doTemporalDataRequest(BreinTemporalDataRequest breinTemporalDataRequest) throws BreinException;
+    default BreinTemporalDataResult doTemporalDataRequest(final BreinTemporalDataRequest breinTemporalDataRequest)
+            throws BreinException {
 
+        // validate the input objects
+        validate(breinTemporalDataRequest);
+
+        final BreinResult result = invokeRequest(breinTemporalDataRequest);
+        return new BreinTemporalDataResult(result.getMap());
+    }
 
     /**
-     * performs a recommendation request
+     * invokes a recommendation request
      *
      * @param breinRecommendation contains the request data
-     * @return result from request
-     * @throws BreinException exception that will be thrown
+     *
+     * @return result from the request
+     *
+     * @throws BreinException exception
      */
-    BreinResult doRecommendation(BreinRecommendation breinRecommendation) throws BreinException;
+    default BreinResult doRecommendation(final BreinRecommendation breinRecommendation) throws BreinException {
+
+        validate(breinRecommendation);
+        return invokeRequest(breinRecommendation);
+    }
+
+    /**
+     * invokes the request
+     *
+     * @param breinRequestObject contains the request data
+     *
+     * @return result from the Breinify engine
+     */
+    BreinResult invokeRequest(final BreinBase breinRequestObject);
 }

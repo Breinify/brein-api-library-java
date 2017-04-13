@@ -41,7 +41,7 @@ public class TestBreinHolidayResult {
         Assert.assertEquals(HolidayType.NATIONAL_FEDERAL, halloween.getTypes().get(0));
 
         final BreinHolidayResult empty = results.get(1);
-        Assert.assertEquals(BreinHolidayResult.UNKNOWN, empty.getName());
+        Assert.assertNull(empty.getName());
         Assert.assertEquals(HolidaySource.UNKNOWN, empty.getSource());
         Assert.assertEquals(0, empty.getTypes().size());
 
