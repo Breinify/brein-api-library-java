@@ -2,7 +2,6 @@ package com.brein.domain.results.temporaldataparts;
 
 import com.brein.domain.BreinResult;
 import com.brein.domain.results.BreinTemporalDataResult;
-import com.brein.domain.results.CommonResultConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
