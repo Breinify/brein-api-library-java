@@ -11,6 +11,7 @@ import java.util.Map;
  * Provides the lookup functionality
  */
 public class BreinTemporalDataRequest extends BreinBase implements ISecretStrategy {
+    protected final Map<String, Object> location = new HashMap<>();
 
     /**
      * initializes the values of this instance
@@ -60,10 +61,72 @@ public class BreinTemporalDataRequest extends BreinBase implements ISecretStrate
             breinUser.prepareUserRequestData(requestData, breinUser);
         }
 
+        //if the location object has info
+        if (!location.isEmpty()) {
+            //add it to the correct place
+            final Map<String, Object> userMap;
+            if (requestData.get("user") != null) {
+                //noinspection unchecked
+                userMap = (Map<String, Object>) requestData.get("user");
+            } else {
+                userMap = new HashMap<>();
+            }
+
+            requestData.put("user", userMap);
+
+            final Map<String, Object> userAdditional;
+            if (userMap.get("additional") != null) {
+                //noinspection unchecked
+                userAdditional = (Map<String, Object>) userMap.get("additional");
+            } else {
+                userAdditional = new HashMap<>();
+            }
+            userMap.put("additional", userAdditional);
+
+            final Map<String, Object> locationMap;
+            if (userAdditional.get("location") != null) {
+                //noinspection unchecked
+                locationMap = (Map<String, Object>) userAdditional.get("location");
+                locationMap.putAll(location);
+            } else {
+                locationMap = location;
+            }
+            userAdditional.put("location", locationMap);
+        }
+
         // base level data...
         prepareBaseRequestData(this, requestData);
 
         return getGson().toJson(requestData);
+    }
+
+    public BreinTemporalDataRequest setLocation(final String freeText) {
+        location.clear();
+        location.put("text", freeText);
+        return this;
+    }
+
+    public BreinTemporalDataRequest setLocation(final double lat, final double lon) {
+        location.clear();
+        location.put("latitude", lat);
+        location.put("longitude", lon);
+        return this;
+    }
+
+    public BreinTemporalDataRequest setLocation(final String city, final String state, final String country) {
+        location.clear();
+
+        if (city != null) {
+            location.put("city", city);
+        }
+        if (state != null) {
+            location.put("state", state);
+        }
+        if (country != null) {
+            location.put("country", country);
+        }
+
+        return this;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.brein;
 
+import com.brein.api.TestBreinTemporalDataRequest;
 import com.brein.config.TestConfig;
 import com.brein.domain.TestDomain;
 import com.brein.domain.results.TestBreinTemporalDataResult;
@@ -22,6 +23,7 @@ import org.junit.runners.Suite;
         TestUtil.class,
         TestJsonHelpers.class,
         TestBreinMapUtil.class,
+        TestBreinTemporalDataRequest.class,
         TestBreinTemporalDataResult.class,
         TestBreinWeatherResult.class,
         TestBreinLocationResult.class,

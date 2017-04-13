@@ -238,7 +238,7 @@ public class BreinBase implements ISecretStrategy {
         }
 
         final BreinUser user = breinBase.getBreinUser();
-        if (BreinUtil.containsValue(user.getIpAddress())) {
+        if (user != null && BreinUtil.containsValue(user.getIpAddress())) {
             requestData.put("ipAddress", user.getIpAddress());
         }
 
