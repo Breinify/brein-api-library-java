@@ -34,6 +34,10 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
     public final static String SHAPE_TYPES_FIELD = "shapeTypes";
     public final static String TEXT_FIELD = "text";
 
+    public final static String CITY_TEXT_FIELD = "text";
+    public final static String STATE_TEXT_FIELD = "text";
+    public final static String COUNTRY_TEXT_FIELD = "text";
+
     @Override
     public String getEndPoint(final BreinConfig config) {
         return config.getTemporalDataEndpoint();
@@ -70,6 +74,18 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
 
     public BreinTemporalData setShapeTypes(final String... shapeTypes) {
         setLocation(SHAPE_TYPES_FIELD, new ArrayList<>(Arrays.asList(shapeTypes)));
+        return this;
+    }
+
+    public BreinTemporalData setLocation(final String freeText) {
+        setLocation(TEXT_FIELD, freeText);
+        return this;
+    }
+
+    public BreinTemporalData setLocation(final String city, final String state, final String country) {
+        setLocation(CITY_TEXT_FIELD, city);
+        setLocation(STATE_TEXT_FIELD, state);
+        setLocation(COUNTRY_TEXT_FIELD, country);
         return this;
     }
 
