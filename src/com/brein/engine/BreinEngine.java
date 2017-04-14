@@ -4,8 +4,8 @@ import com.brein.api.BreinBase;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public class BreinEngine {
 
-    private final Map<BreinEngineType, IRestEngine> engines = new HashMap<>();
+    private final Map<BreinEngineType, IRestEngine> engines = new ConcurrentHashMap<>();
     private final Lock enginesLock = new ReentrantLock();
 
     public BreinResult invoke(final BreinConfig config, final BreinBase data) {
@@ -54,7 +54,6 @@ public class BreinEngine {
         enginesLock.lock();
         try {
             this.engines.forEach((key, engine) -> engine.terminate());
-            this.engines.clear();
         } finally {
             enginesLock.unlock();
         }

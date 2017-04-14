@@ -48,6 +48,9 @@ public class UniRestEngine implements IRestEngine {
         if (connectionTimeout != 0 && socketTimeout != 0) {
             Options.refresh();
             Unirest.setTimeouts(connectionTimeout, socketTimeout);
+
+            // we need to warm-up Unirest, see https://github.com/Mashape/unirest-java/issues/92
+            Unirest.get("https://www.breinify.com");
         }
     }
 
@@ -62,7 +65,6 @@ public class UniRestEngine implements IRestEngine {
         /*
          * invoke the request
          */
-
         Unirest.post(getFullyQualifiedUrl(config, data))
                 .header(HEADER_ACCESS, HEADER_APP_JSON)
                 .body(getRequestBody(config, data))
