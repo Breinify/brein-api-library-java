@@ -148,7 +148,12 @@ public class UniRestEngine implements IRestEngine {
                 final Map<String, Object> mapResponse = parseJson(strResponse.getBody());
                 return new BreinResult(mapResponse);
             } else {
-                throw new BreinException("invoke request exception. Status is: " + strResponse.getStatus());
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Request failed  with status '" + strResponse.getStatus() + "' and content " +
+                            strResponse.getBody());
+                }
+
+                throw new BreinException("Request failed with status '" + strResponse.getStatus() + "'.");
             }
         } catch (final UnirestException e) {
             if (LOG.isDebugEnabled()) {
