@@ -18,7 +18,7 @@ import org.junit.runners.Suite;
         TestActivityApiWithUnirest.class,
         TestActivityApiWithJersey.class,
         TestActivityApiWithSecret.class,
-        TestTemporalDataApiWithUnirest.class,
+        //TestTemporalDataApiWithUnirest.class,
         TestLookupApi.class,
         TestEngine.class,
         TestStressTests.class,

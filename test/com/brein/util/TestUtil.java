@@ -32,7 +32,6 @@ public class TestUtil {
         final String iOSSignature = "oZxTFc1ZPpelBCoGVhRk0/3IMm9tEtwJd9LNDFrgtM0=";
 
         final String javaSignature = BreinUtil.generateSignature(iOSMessage, iOSSecret);
-        System.out.println(javaSignature);
         assertEquals(iOSSignature, javaSignature);
     }
 

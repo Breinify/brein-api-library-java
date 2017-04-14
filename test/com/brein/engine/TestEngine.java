@@ -25,7 +25,7 @@ public class TestEngine extends ApiTestBase {
 
         final BreinActivity activity = new BreinActivity()
                 .setUser(user)
-                .setActivityType(BreinActivityType.LOGIN)
+                .setActivityType("testBreinAsyncCallback")
                 .setDescription("Super-Description")
                 .setCategory(BreinCategoryType.EDUCATION);
 

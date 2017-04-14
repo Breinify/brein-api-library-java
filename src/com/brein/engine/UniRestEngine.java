@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 /**
@@ -50,7 +51,12 @@ public class UniRestEngine implements IRestEngine {
             Unirest.setTimeouts(connectionTimeout, socketTimeout);
 
             // we need to warm-up Unirest, see https://github.com/Mashape/unirest-java/issues/92
-            Unirest.get("https://www.breinify.com");
+            final Future<HttpResponse<String>> future = Unirest
+                    .get("https://www.breinify.com").asStringAsync();
+
+            while (!future.isDone()) {
+                // wait for the request to return
+            }
         }
     }
 

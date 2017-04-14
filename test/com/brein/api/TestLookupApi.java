@@ -4,6 +4,8 @@ import com.brein.domain.BreinDimension;
 import com.brein.domain.BreinResult;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Test cases for lookup functionality
  */
@@ -29,6 +31,6 @@ public class TestLookupApi extends ApiTestBase {
                 .setBreinDimension(new BreinDimension(dimensions));
 
         final BreinResult response = Breinify.lookUp(data);
-        System.out.println(response);
+        assertEquals(200, response.getStatus());
     }
 }

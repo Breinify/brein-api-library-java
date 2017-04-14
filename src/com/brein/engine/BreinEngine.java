@@ -15,8 +15,8 @@ import java.util.function.Consumer;
  */
 public class BreinEngine {
 
-    private final Map<BreinEngineType, IRestEngine> engines = new ConcurrentHashMap<>();
-    private final Lock enginesLock = new ReentrantLock();
+    private static final Map<BreinEngineType, IRestEngine> ENGINES = new ConcurrentHashMap<>();
+    private static final Lock ENGINES_LOCK = new ReentrantLock();
 
     public BreinResult invoke(final BreinConfig config, final BreinBase data) {
         return getEngine(config).invokeRequest(config, data);
@@ -27,23 +27,23 @@ public class BreinEngine {
     }
 
     protected IRestEngine getEngine(final BreinConfig config) {
-        final BreinEngineType engineType = config.getRestEngineType();
+        final BreinEngineType engineType = IRestEngine.getRestEngineType(config.getRestEngineType());
+        IRestEngine engine = ENGINES.get(engineType);
 
-        IRestEngine engine = this.engines.get(engineType);
         if (engine == null) {
 
-            enginesLock.lock();
+            ENGINES_LOCK.lock();
             try {
-                engine = this.engines.get(engineType);
+                engine = ENGINES.get(engineType);
 
                 if (engine == null) {
-                    engine = IRestEngine.getRestEngine(config.getRestEngineType());
+                    engine = IRestEngine.getRestEngine(engineType);
                     engine.configure(config);
 
-                    this.engines.put(engineType, engine);
+                    ENGINES.put(engineType, engine);
                 }
             } finally {
-                enginesLock.unlock();
+                ENGINES_LOCK.unlock();
             }
         }
 
@@ -51,11 +51,12 @@ public class BreinEngine {
     }
 
     public void terminate() {
-        enginesLock.lock();
+        ENGINES_LOCK.lock();
         try {
-            this.engines.forEach((key, engine) -> engine.terminate());
+            ENGINES.forEach((key, engine) -> engine.terminate());
+            ENGINES.clear();
         } finally {
-            enginesLock.unlock();
+            ENGINES_LOCK.unlock();
         }
     }
 }

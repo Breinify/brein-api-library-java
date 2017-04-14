@@ -45,6 +45,30 @@ public interface IRestEngine {
         }
     }
 
+    static BreinEngineType getRestEngineType(final BreinEngineType engine) {
+        switch (engine) {
+            case UNIREST_ENGINE:
+            case JERSEY_ENGINE:
+            case DUMMY_ENGINE:
+                return engine;
+
+            case AUTO_DETECT:
+                final BreinEngineType autoDetectedEngine = Stream.of(BreinEngineType.values())
+                        .filter(BreinEngineType::isSupported)
+                        .findFirst()
+                        .orElse(null);
+
+                if (autoDetectedEngine == null) {
+                    throw new BreinException("Auto detection did not find any valid engine!");
+                } else {
+                    return autoDetectedEngine;
+                }
+
+            default:
+                throw new BreinException("No valid engine specified!");
+        }
+    }
+
     /**
      * Creates the requested Rest Engine.
      *
@@ -63,14 +87,8 @@ public interface IRestEngine {
             case DUMMY_ENGINE:
                 return new DummyRestEngine();
 
-            case AUTO_DETECT:
-                return getRestEngine(Stream.of(BreinEngineType.values())
-                        .filter(BreinEngineType::isSupported)
-                        .findFirst()
-                        .orElse(BreinEngineType.AUTO_DETECT));
-
             default:
-                throw new BreinException("no rest engine specified!");
+                throw new BreinException("Please specify a concret engine (auto-detection not supported)!");
         }
     }
 

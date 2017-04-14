@@ -4,6 +4,7 @@ import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
+import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.engine.BreinEngineType;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,14 +37,14 @@ public class TestConcurrencyWithUniRest extends ApiTestBase {
             for (int ct = 0; ct < 100; ct++) {
 
                 // invoke temporalData
-                final BreinResult response = Breinify.temporalData(new BreinTemporalData()
+                final BreinTemporalDataResult result = Breinify.temporalData(new BreinTemporalData()
                         .setUser("email", "fred.firestone@email.com")
                         .setClientIpAddress("74.115.209.58")
                         .setLongitude(Math.random() * 50 - 98 - 25)
                         .setLatitude(Math.random() * 10 + 39 - 5));
 
-                Assert.assertEquals(200, response.getStatus());
-                System.out.println(response);
+                Assert.assertEquals(200, result.getStatus());
+                Assert.assertNotNull(result);
             }
         });
     }
@@ -82,7 +83,6 @@ public class TestConcurrencyWithUniRest extends ApiTestBase {
                 }), 2000);
             }
         });
-
     }
 
     /**
