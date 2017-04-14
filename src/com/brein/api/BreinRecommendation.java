@@ -1,14 +1,14 @@
 package com.brein.api;
 
 import com.brein.domain.BreinConfig;
-import com.brein.domain.BreinUser;
+import com.brein.domain.BreinResult;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BreinRecommendation extends BreinBase<BreinRecommendation> {
+public class BreinRecommendation extends BreinBase<BreinRecommendation> implements IExecutable<BreinResult> {
 
     /**
      * contains the number of recommendations - default is 3
@@ -68,7 +68,7 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> {
     }
 
     @Override
-    public  void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData) {
+    public void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData) {
 
         // recommendation data
         final Map<String, Object> recommendationData = new HashMap<>();
@@ -96,4 +96,8 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> {
         return BreinUtil.generateSignature(message, config.getSecret());
     }
 
+    @Override
+    public BreinResult execute() {
+        return Breinify.recommendation(this);
+    }
 }

@@ -71,7 +71,7 @@ public class JerseyRestEngine implements IRestEngine {
         } catch (final UniformInterfaceException | ClientHandlerException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Exception", e);
-                throw new BreinException("jersey rest call exception");
+                throw new BreinException("Jersey rest call exception");
             }
         }
 

@@ -2,7 +2,7 @@ package com.brein.api;
 
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinDimension;
-import com.brein.domain.BreinUser;
+import com.brein.domain.BreinResult;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Provides the lookup functionality
  */
-public class BreinLookup extends BreinBase<BreinLookup> {
+public class BreinLookup extends BreinBase<BreinLookup> implements IExecutable<BreinResult> {
 
     /**
      * used for lookup request
@@ -81,5 +81,10 @@ public class BreinLookup extends BreinBase<BreinLookup> {
 
         final String message = String.format("%s%d%d", paraDimensions, unixTimestamp, paraDimensionsLength);
         return BreinUtil.generateSignature(message, config.getSecret());
+    }
+
+    @Override
+    public BreinResult execute() {
+        return Breinify.lookUp(this);
     }
 }

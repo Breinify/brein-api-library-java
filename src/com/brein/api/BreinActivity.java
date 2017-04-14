@@ -1,18 +1,19 @@
 package com.brein.api;
 
 import com.brein.domain.BreinConfig;
-import com.brein.domain.BreinUser;
+import com.brein.domain.BreinResult;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is important
  * that a valid API-key is configured prior to using this function.
  */
-public class BreinActivity extends BreinBase<BreinActivity> {
+public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExecutable<BreinResult> {
     public final static String ACTIVITY_FIELD = "activity";
     public final static String TAGS_FIELD = "activity";
 
@@ -183,6 +184,11 @@ public class BreinActivity extends BreinBase<BreinActivity> {
 
         this.tagsMap.put(key, value);
         return this;
+    }
+
+    @Override
+    public void execute(final Consumer<BreinResult> callback) {
+        Breinify.activity(this, callback);
     }
 
     @SuppressWarnings("unchecked")

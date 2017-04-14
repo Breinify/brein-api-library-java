@@ -10,6 +10,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.http.options.Options;
+import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -136,23 +137,24 @@ public class UniRestEngine implements IRestEngine {
     public BreinResult invokeRequest(final BreinConfig config, final BreinBase data) {
         try {
             final String requestBody = getRequestBody(config, data);
-            final HttpResponse<JsonNode> response = Unirest.post(getFullyQualifiedUrl(config, data))
+            final RequestBodyEntity entity = Unirest.post(getFullyQualifiedUrl
+                    (config, data))
                     .header(HEADER_ACCESS, HEADER_APP_JSON)
-                    .body(requestBody)
-                    .asJson();
+                    .body(requestBody);
 
-            if (response.getStatus() == 200) {
-                final String strResponse = response.getBody().toString();
-                final Map<String, Object> mapResponse = parseJson(strResponse);
+            final HttpResponse<String> strResponse = entity.asString();
+
+            if (strResponse.getStatus() == 200) {
+                final Map<String, Object> mapResponse = parseJson(strResponse.getBody());
                 return new BreinResult(mapResponse);
             } else {
-                throw new BreinException("invoke request exception. Status is: " + response.getStatus());
+                throw new BreinException("invoke request exception. Status is: " + strResponse.getStatus());
             }
         } catch (final UnirestException e) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("within invokeRequest - exception has occurred. " + e);
+                LOG.debug("within invokeRequest - exception has occurred. ", e);
             }
-            throw new BreinException("invoke request exception " + e);
+            throw new BreinException("Invoke request exception.", e);
         }
     }
 }

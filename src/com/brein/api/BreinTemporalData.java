@@ -2,6 +2,7 @@ package com.brein.api;
 
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
+import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
@@ -15,7 +16,7 @@ import java.util.TimeZone;
 /**
  * Provides the lookup functionality
  */
-public class BreinTemporalData extends BreinBase<BreinTemporalData> {
+public class BreinTemporalData extends BreinBase<BreinTemporalData> implements IExecutable<BreinTemporalDataResult> {
 
     /*
      * The following fields are used within the additional
@@ -121,5 +122,10 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> {
         final String message = String.format("%d-%s-%s", unixTimestamp, paraLocalDateTime, paraTimezone);
 
         return BreinUtil.generateSignature(message, config.getSecret());
+    }
+
+    @Override
+    public BreinTemporalDataResult execute() {
+        return Breinify.temporalData(this);
     }
 }
