@@ -112,15 +112,18 @@ public class TestBreinTemporalDataResult {
 
     @Test
     public void testEvent() {
-        final String json = "{\"events\": [{\"displayName\": \"Full Event\",\"startTime\": 123,\"location\": " +
+        final String strJson = "{\"events\": [{\"displayName\": \"Full Event\",\"startTime\": 123,\"location\": " +
                 "{\"country\": \"US\",\"zipCode\": \"94109\",\"city\": \"San Francisco\",\"granularity\": \"city\"," +
                 "\"state\": \"CA\"}}]}";
 
         Assert.assertFalse(new BreinTemporalDataResult(Collections.emptyMap()).hasEvents());
 
-        final BreinTemporalDataResult withEvents = new BreinTemporalDataResult(new BreinResult(json));
-        Assert.assertTrue(withEvents.hasEvents());
-        final List<BreinEventResult> events = withEvents.getEvents();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinTemporalDataResult result = new BreinTemporalDataResult(json);
+
+        Assert.assertTrue(result.hasEvents());
+        final List<BreinEventResult> events = result.getEvents();
 
         Assert.assertEquals(1, events.size());
         Assert.assertEquals("Full Event", events.get(0).getName());

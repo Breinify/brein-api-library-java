@@ -1,17 +1,18 @@
 package com.brein.domain.results.temporaldataparts;
 
-import com.brein.domain.BreinResult;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinEventResult.EventCategory;
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public class TestBreinEventResult {
     @Test
     public void testEvents() {
-        final String json = "{\n" +
+        final String strJson = "{\n" +
                 " \"events\": [{\n" +
                 "   \"displayName\": \"Full Event\",\n" +
                 "   \"startTime\": 123,\n" +
@@ -56,7 +57,11 @@ public class TestBreinEventResult {
                 " ]\n" +
                 "}";
 
-        final List<BreinEventResult> results = new BreinTemporalDataResult(new BreinResult(json)).getEvents();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinTemporalDataResult result = new BreinTemporalDataResult(json);
+
+        final List<BreinEventResult> results = result.getEvents();
         Assert.assertEquals(results.size(), 4);
 
         final BreinEventResult full = results.get(0);
