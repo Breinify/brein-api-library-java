@@ -1,6 +1,7 @@
 package com.brein.domain.results;
 
 import com.brein.domain.BreinResult;
+import com.brein.domain.results.temporaldataparts.BreinEventResult;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidaySource;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidayType;
@@ -107,5 +108,21 @@ public class TestBreinTemporalDataResult {
         Assert.assertEquals(HolidayType.HALLMARK, holidays.get(0).getTypes().get(0));
         Assert.assertEquals(HolidaySource.UNITED_NATIONS, holidays.get(0).getSource());
         Assert.assertEquals("aaa", holidays.get(0).getName());
+    }
+
+    @Test
+    public void testEvent() {
+        final String json = "{\"events\": [{\"displayName\": \"Full Event\",\"startTime\": 123,\"location\": " +
+                "{\"country\": \"US\",\"zipCode\": \"94109\",\"city\": \"San Francisco\",\"granularity\": \"city\"," +
+                "\"state\": \"CA\"}}]}";
+
+        Assert.assertFalse(new BreinTemporalDataResult(Collections.emptyMap()).hasEvents());
+
+        final BreinTemporalDataResult withEvents = new BreinTemporalDataResult(new BreinResult(json));
+        Assert.assertTrue(withEvents.hasEvents());
+        final List<BreinEventResult> events = withEvents.getEvents();
+
+        Assert.assertEquals(1, events.size());
+        Assert.assertEquals("Full Event", events.get(0).getName());
     }
 }
