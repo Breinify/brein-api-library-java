@@ -1,10 +1,10 @@
 package com.brein.api;
 
+import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,23 +12,33 @@ import java.util.Map;
  * Sends an activity to the engine utilizing the API. The call is done asynchronously as a POST request. It is important
  * that a valid API-key is configured prior to using this function.
  */
-public class BreinActivity extends BreinBase {
-
-
-    /**
-     * ActivityType of the activity
-     */
-    private String breinActivityType;
+public class BreinActivity extends BreinBase<BreinActivity> {
+    public final static String ACTIVITY_FIELD = "activity";
+    public final static String TAGS_FIELD = "activity";
 
     /**
-     * Category of the activity
+     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
+     * API documentation.
      */
-    private String breinCategoryType;
+    public enum ActivityField {
+        TYPE("type"),
+        DESCRIPTION("description"),
+        CATEGORY("category");
 
-    /**
-     * Description of the activity
-     */
-    private String description;
+        final String name;
+
+        ActivityField(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void set(final BreinActivity activity, final Object value) {
+            activity.set(getName(), value);
+        }
+    }
 
     /**
      * contains the tagsMap map
@@ -45,18 +55,19 @@ public class BreinActivity extends BreinBase {
      *
      * @return activity type
      */
-    public String getBreinActivityType() {
-        return breinActivityType;
+    public String getActivityType() {
+        return getActivityField(ActivityField.TYPE);
     }
 
     /**
      * Sets activity type
      *
-     * @param breinActivityType to set
+     * @param type to set
+     *
      * @return self
      */
-    public BreinActivity setBreinActivityType(final String breinActivityType) {
-        this.breinActivityType = breinActivityType;
+    public BreinActivity setActivityType(final String type) {
+        ActivityField.TYPE.set(this, type);
         return this;
     }
 
@@ -66,22 +77,24 @@ public class BreinActivity extends BreinBase {
      *
      * @return category object
      */
-    public String getBreinCategoryType() {
-        if (!BreinUtil.containsValue(breinCategoryType)) {
-            // try default category
-            return getConfig().getDefaultCategory();
+    public String getCategory(final BreinConfig config) {
+        final String category = getActivityField(ActivityField.CATEGORY);
+        if (BreinUtil.containsValue(category)) {
+            return category;
+        } else {
+            return config.getDefaultCategory();
         }
-        return breinCategoryType;
     }
 
     /**
      * sets brein category
      *
-     * @param breinCategoryType object
+     * @param category object
+     *
      * @return self
      */
-    public BreinActivity setBreinCategoryType(final String breinCategoryType) {
-        this.breinCategoryType = breinCategoryType;
+    public BreinActivity setCategory(final String category) {
+        ActivityField.CATEGORY.set(this, category);
         return this;
     }
 
@@ -91,238 +104,47 @@ public class BreinActivity extends BreinBase {
      * @return description
      */
     public String getDescription() {
-        return description;
+        return getActivityField(ActivityField.DESCRIPTION);
     }
 
     /**
      * sets the description
      *
      * @param description string to set as description
+     *
      * @return self
      */
     public BreinActivity setDescription(final String description) {
-        this.description = description;
+        ActivityField.DESCRIPTION.set(this, description);
         return this;
     }
 
-    /**
-     * retrieves the configured activity endpoint (e.g. \activity)
-     *
-     * @return endpoint
-     */
     @Override
-    public String getEndPoint() {
-        return getConfig().getActivityEndpoint();
+    public String getEndPoint(final BreinConfig config) {
+        return config.getActivityEndpoint();
     }
 
-    /**
-     * retrieves the tagMap
-     *
-     * @return value
-     */
-    public Map<String, Object> getTags() {
-        return tagsMap;
-    }
-
-    /**
-     * sets the tagsMap
-     *
-     * @param tagsMap created map (e.g. HashMap)
-     * @return self
-     */
-    public BreinActivity setTags(final Map<String, Object> tagsMap) {
-        this.tagsMap = tagsMap;
-        return this;
-    }
-
-    /**
-     * sets the activity map
-     *
-     * @param dataActivityMap containing additional values
-     * @return self
-     */
-    public BreinActivity set(final Map<String, Object> dataActivityMap) {
-        if (dataActivityMap == null) {
-            return this;
-        }
-
-        if (this.activityMap == null) {
-            this.activityMap = new HashMap<>();
-        }
-
-        this.activityMap.putAll(dataActivityMap);
-        return this;
-    }
-
-    /**
-     * sets the activity map
-     *
-     * @param key contains the key
-     * @param dataActivityMap containing additional values
-     * @return self
-     */
-    public BreinActivity set(final String key, final Map<String, Object> dataActivityMap) {
-
-        if (dataActivityMap == null) {
-            return this;
-        }
-
-        return set(Collections.singletonMap(key, dataActivityMap));
-    }
-
-    /**
-     * returns the activity map
-     *
-     * @return the activity map
-     */
-    public Map<String, Object> get() {
-        return activityMap;
-    }
-
-    /**
-     * initializes the values of this instance
-     */
     @Override
-    public void init() {
-        breinActivityType = "";
-        breinCategoryType = "";
-        description = "";
-        tagsMap = null;
-        activityMap = null;
-    }
+    public void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData) {
+        final Map<String, Object> activityRequestData = new HashMap<>();
+        requestData.put(ACTIVITY_FIELD, activityRequestData);
 
-    /**
-     * resets all values of this class and base class to initial values.
-     * This will lead to empty strings or null objects
-     */
-    public void resetAllValues() {
-        // reset base values (User & Config)
-        super.init();
-
-        // reset init values
-        init();
-    }
-
-    /**
-     * Sends an activity to the Breinify server.
-     *
-     * @param breinUser         the user-information
-     * @param breinActivityType the type of activity
-     * @param breinCategoryType the category (can be null or undefined)
-     * @param description       the description for the activity
-     */
-    public void activity(final BreinUser breinUser,
-                         final String breinActivityType,
-                         final String breinCategoryType,
-                         final String description) {
-
-        // set the values for further usage
-        setBreinUser(breinUser);
-        setBreinActivityType(breinActivityType);
-        setBreinCategoryType(breinCategoryType);
-        setDescription(description);
-
-        // invoke the request, "this" has all necessary information
-        if (null == getBreinEngine()) {
-            throw new BreinException(BreinException.ENGINE_NOT_INITIALIZED);
+        // add the user-data, if there is any
+        if (this.activityMap != null) {
+            this.activityMap.forEach((key, value) -> {
+                if (BreinUtil.containsValue(value)) {
+                    activityRequestData.put(key, value);
+                }
+            });
         }
 
-        getBreinEngine().sendActivity(this);
-    }
-
-    /**
-     * creates the json request based on the necessary data
-     *
-     * @return json string
-     */
-    @Override
-    public String prepareJsonRequest() {
-
-        final Map<String, Object> requestData = new HashMap<>();
-
-        // call base class for base data
-        super.prepareJsonRequest();
-
-        // user data level and additional
-        final BreinUser breinUser = getBreinUser();
-        if (null != breinUser) {
-            breinUser.prepareUserRequestData(requestData, breinUser);
-        }
-
-        // activity data
-        final Map<String, Object> activityData = new HashMap<>();
-        prepareActivityRequestData(activityData);
-        if (activityData.size() > 0) {
-            requestData.put("activity", activityData);
-        }
-
-        // base level data...
-        prepareBaseRequestData(this, requestData);
-
-        return getGson().toJson(requestData);
-    }
-
-    /**
-     * Prepares the activity json structure
-     *
-     * @param activityData contains the created data structure
-     */
-    public void prepareActivityRequestData(final Map<String, Object> activityData) {
-
-        // activity fields...
-        if (BreinUtil.containsValue(getBreinActivityType())) {
-            activityData.put("type", getBreinActivityType());
-        }
-
-        if (BreinUtil.containsValue(getDescription())) {
-            activityData.put("description", getDescription());
-        }
-
-        if (BreinUtil.containsValue(getBreinCategoryType())) {
-            activityData.put("category", getBreinCategoryType());
-        }
+        // we have to set the category again, because it may be set to default
+        activityRequestData.put(ActivityField.CATEGORY.getName(), getCategory(config));
 
         // add tagsMap map if configured
-        if (tagsMap != null && tagsMap.size() > 0) {
-            final Map<String, Object> tagsData = new HashMap<>();
-            tagsData.putAll(tagsMap);
-            activityData.put("tags", tagsData);
+        if (this.tagsMap != null && !this.tagsMap.isEmpty()) {
+            activityRequestData.put(TAGS_FIELD, BreinMapUtil.copyMap(this.tagsMap));
         }
-
-        // check if there are further maps to add on base level
-        if (activityMap != null && activityMap.size() > 0) {
-            activityData.putAll(activityMap);
-        }
-    }
-
-    /**
-     * Used to create a clone of an activity. This is important in order to prevent
-     * concurrency issues.
-     *
-     * @param sourceActivity contains the original activity object
-     * @return the clone of the activity object
-     */
-    public static BreinActivity clone(final BreinActivity sourceActivity) {
-
-        // create a new activity object
-        final BreinActivity activity = new BreinActivity()
-                .setBreinActivityType(sourceActivity.getBreinActivityType())
-                .setBreinCategoryType(sourceActivity.getBreinCategoryType())
-                .setDescription(sourceActivity.getDescription());
-
-        // clone maps
-        final Map<String, Object> activityMap = BreinMapUtil
-                .copyMap(sourceActivity.get());
-        activity.set(activityMap);
-
-        final Map<String, Object> tagsMapCopy = BreinMapUtil
-                .copyMap(sourceActivity.getTags());
-        activity.setTags(tagsMapCopy);
-
-        // clone from base class
-        activity.cloneBase(sourceActivity);
-
-        return activity;
     }
 
     /**
@@ -331,14 +153,45 @@ public class BreinActivity extends BreinBase {
      * @return full signature
      */
     @Override
-    public String createSignature() {
+    public String createSignature(final BreinConfig config, final Map<String, Object> requestData) {
 
-        final String message = String.format("%s%d%d",
-                getBreinActivityType() == null ? "" : getBreinActivityType(),
-                getUnixTimestamp(), 1);
+        final String type = BreinMapUtil.getNestedValue(requestData, ACTIVITY_FIELD, ActivityField.TYPE.getName());
+        final String paraType = type == null ? "" : type;
 
-        return BreinUtil.generateSignature(message, getConfig().getSecret());
+        final long unixTimestamp = BreinMapUtil.getNestedValue(requestData, UNIX_TIMESTAMP_FIELD);
+
+        final String message = String.format("%s%d%d", paraType, unixTimestamp, 1);
+        return BreinUtil.generateSignature(message, config.getSecret());
     }
 
+    public BreinActivity set(final String key, final Object value) {
+        if (TAGS_FIELD.equalsIgnoreCase(key)) {
+            throw new BreinException("The field '" + TAGS_FIELD + "' cannot be set, " +
+                    "use the setTag method to do so.");
+        } else if (this.activityMap == null) {
+            this.activityMap = new HashMap<>();
+        }
+
+        this.activityMap.put(key, value);
+        return this;
+    }
+
+    public BreinActivity setTag(final String key, final Object value) {
+        if (this.tagsMap == null) {
+            this.tagsMap = new HashMap<>();
+        }
+
+        this.tagsMap.put(key, value);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T get(final String key) {
+        return this.activityMap == null ? null : (T) this.activityMap.get(key);
+    }
+
+    protected <T> T getActivityField(final ActivityField field) {
+        return get(field.getName());
+    }
 }
 

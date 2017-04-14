@@ -3,6 +3,8 @@ package com.brein.util;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestUtil {
 
@@ -32,5 +34,37 @@ public class TestUtil {
         final String javaSignature = BreinUtil.generateSignature(iOSMessage, iOSSecret);
         System.out.println(javaSignature);
         assertEquals(iOSSignature, javaSignature);
+    }
+
+    /**
+     * Test a config with a wrong url
+     */
+    @Test
+    public void testConfigWithWrongUrl() {
+        final String wrongUrl = "https://breeeeeinify.com";
+        assertFalse(BreinUtil.isValidUrl(wrongUrl));
+    }
+
+    /**
+     * Test a config with a correct url
+     */
+    @Test
+    public void testConfigWithCorrectUrl() {
+        final String correctUrl = "http://google.com";
+        assertTrue(BreinUtil.isValidUrl(correctUrl));
+    }
+
+    /**
+     * Tests if both Breinify URL's are reachable:
+     * https://api.breinify.com
+     * http://api.breinify.com
+     */
+    @Test
+    public void testBreinifyUrls() {
+        final String httpsUrl = "https://api.breinify.com";
+        final String httpUrl = "http://api.breinify.com";
+
+        assertTrue(BreinUtil.isValidUrl(httpsUrl));
+        assertTrue(BreinUtil.isValidUrl(httpUrl));
     }
 }

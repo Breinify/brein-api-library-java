@@ -1,31 +1,22 @@
 package com.brein.engine;
 
-import com.brein.api.BreinActivity;
 import com.brein.api.BreinBase;
 import com.brein.api.BreinException;
-import com.brein.api.BreinLookup;
-import com.brein.api.BreinRecommendation;
-import com.brein.api.BreinTemporalDataRequest;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
-import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.util.BreinUtil;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * Interface for all possible rest  engines
  */
 public interface IRestEngine {
-
-    /**
-     * Logger instance
-     */
     Logger LOG = LoggerFactory.getLogger(IRestEngine.class);
 
     String HEADER_ACCESS = "accept";
@@ -39,55 +30,9 @@ public interface IRestEngine {
     void configure(final BreinConfig breinConfig);
 
     /**
-     * invokes the post request
-     *
-     * @param breinActivity data
-     * @param errorCallback will be invoked in case of an error
-     */
-    void doRequest(final BreinActivity breinActivity,
-                   final Function<String, Void> errorCallback) throws BreinException;
-
-    /**
      * terminates the rest engine
      */
     void terminate();
-
-    /**
-     * Validates if the URL is correct.
-     *
-     * @param url to check
-     *
-     * @return true if ok otherwise false
-     */
-    static boolean isUrlValid(final String url) {
-
-        try {
-            final URL u = new URL(url);
-            final HttpURLConnection huc = (HttpURLConnection) u.openConnection();
-            huc.setRequestMethod("POST");
-            huc.setRequestProperty("User-Agent",
-                    "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET " +
-                            "CLR 3.5.30729)");
-
-            // int responseCode = huc.getResponseCode();
-
-            huc.connect();
-
-            //if (LOG.isDebugEnabled()) {
-            //    LOG.debug("response for URL (" + url + ") is: " + huc.getResponseCode());
-            //}
-
-            return true;
-
-        } catch (final IOException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("isUrlValid throws exception: ", e);
-
-            }
-            // this must be an error case!
-            return false;
-        }
-    }
 
     /**
      * checks if the url is valid. If not an exception will be thrown
@@ -95,14 +40,8 @@ public interface IRestEngine {
      * @param fullyQualifiedUrl url with endpoint
      */
     default void validateUrl(final String fullyQualifiedUrl) throws BreinException {
-
-        final boolean validUrl = isUrlValid(fullyQualifiedUrl);
-        if (!validUrl) {
-            final String msg = "URL: " + fullyQualifiedUrl + " is not valid!";
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(msg);
-            }
-            throw new BreinException(msg);
+        if (!BreinUtil.isValidUrl(fullyQualifiedUrl)) {
+            throw new BreinException("URL: " + fullyQualifiedUrl + " is not valid!");
         }
     }
 
@@ -125,7 +64,10 @@ public interface IRestEngine {
                 return new DummyRestEngine();
 
             case AUTO_DETECT:
-                throw new BreinException("unable to detect any engine from class-path!");
+                return getRestEngine(Stream.of(BreinEngineType.values())
+                        .filter(BreinEngineType::isSupported)
+                        .findFirst()
+                        .orElse(BreinEngineType.AUTO_DETECT));
 
             default:
                 throw new BreinException("no rest engine specified!");
@@ -138,10 +80,11 @@ public interface IRestEngine {
      * @param breinBase object to validate
      */
     default void validateBreinBase(final BreinBase breinBase) {
-        if (null == breinBase) {
+        if (breinBase == null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Object is null");
             }
+
             throw new BreinException(BreinException.BREIN_BASE_VALIDATION_FAILED);
         }
     }
@@ -149,29 +92,19 @@ public interface IRestEngine {
     /**
      * validates the configuration object
      *
-     * @param breinBase activity or lookup object
+     * @param breinConfig activity or lookup object
      */
-    default void validateConfig(final BreinBase breinBase) {
-
-        final BreinConfig breinConfig = breinBase.getConfig();
-        if (null == breinConfig) {
+    default void validateConfig(final BreinConfig breinConfig) {
+        if (breinConfig == null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("within doRequestAsynch - breinConfig is null");
             }
+
             throw new BreinException(BreinException.CONFIG_VALIDATION_FAILED);
         }
     }
 
-    /**
-     * retrieves the fully qualified url (base + endpoint)
-     *
-     * @param breinBase activity or lookup object
-     *
-     * @return full url
-     */
-    default String getFullyQualifiedUrl(final BreinBase breinBase) {
-        final BreinConfig breinConfig = breinBase.getConfig();
-
+    default String getFullyQualifiedUrl(final BreinConfig breinConfig, final BreinBase breinBase) {
         final String url = breinConfig.getUrl();
         if (null == url) {
             if (LOG.isDebugEnabled()) {
@@ -180,21 +113,14 @@ public interface IRestEngine {
             throw new BreinException(BreinException.URL_IS_NULL);
         }
 
-        final String endPoint = breinBase.getEndPoint();
+        final String endPoint = breinBase.getEndPoint(breinConfig);
 
         return url + endPoint;
     }
 
-    /**
-     * retrieves the request body depending of the object
-     *
-     * @param breinBase object to use
-     *
-     * @return request as json string
-     */
-    default String getRequestBody(final BreinBase breinBase) {
+    default String getRequestBody(final BreinConfig breinConfig, final BreinBase breinBase) {
 
-        final String requestBody = breinBase.prepareJsonRequest();
+        final String requestBody = breinBase.prepareRequestData(breinConfig);
         if (!BreinUtil.containsValue(requestBody)) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("url is null");
@@ -204,73 +130,21 @@ public interface IRestEngine {
         return requestBody;
     }
 
-    /**
-     * Invokes validation of BreinBase object, configuration and url.
-     *
-     * @param breinBase activity or lookup object
-     */
-    default void validate(final BreinBase breinBase) {
+    default void validate(final BreinConfig breinConfig, final BreinBase breinBase) {
 
         // validation of activity and config
         validateBreinBase(breinBase);
-        validateConfig(breinBase);
+        validateConfig(breinConfig);
     }
 
-    /**
-     * performs a lookup and provides details
-     *
-     * @param breinLookup contains request data
-     *
-     * @return response from Breinify
-     */
-    default BreinResult doLookup(final BreinLookup breinLookup) {
-
-        // validate the input objects
-        validate(breinLookup);
-
-        return invokeRequest(breinLookup);
+    @SuppressWarnings("unchecked")
+    default Map<String, Object> parseJson(final String jsonResponse) {
+        return new Gson().fromJson(jsonResponse, Map.class);
     }
 
-    /**
-     * performs a temporalData request
-     *
-     * @param breinTemporalDataRequest contains the request data
-     *
-     * @return result from request
-     *
-     * @throws BreinException exception will be thrown
-     */
-    default BreinTemporalDataResult doTemporalDataRequest(final BreinTemporalDataRequest breinTemporalDataRequest)
-            throws BreinException {
+    void invokeAsyncRequest(final BreinConfig config,
+                            final BreinBase data,
+                            final Consumer<BreinResult> callback);
 
-        // validate the input objects
-        validate(breinTemporalDataRequest);
-
-        final BreinResult result = invokeRequest(breinTemporalDataRequest);
-        return new BreinTemporalDataResult(result.getMap());
-    }
-
-    /**
-     * invokes a recommendation request
-     *
-     * @param breinRecommendation contains the request data
-     *
-     * @return result from the request
-     *
-     * @throws BreinException exception
-     */
-    default BreinResult doRecommendation(final BreinRecommendation breinRecommendation) throws BreinException {
-
-        validate(breinRecommendation);
-        return invokeRequest(breinRecommendation);
-    }
-
-    /**
-     * invokes the request
-     *
-     * @param breinRequestObject contains the request data
-     *
-     * @return result from the Breinify engine
-     */
-    BreinResult invokeRequest(final BreinBase breinRequestObject);
+    BreinResult invokeRequest(final BreinConfig breinConfig, final BreinBase data);
 }

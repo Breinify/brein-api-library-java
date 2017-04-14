@@ -1,31 +1,22 @@
 package com.brein.engine;
 
-import com.brein.api.BreinActivity;
 import com.brein.api.BreinBase;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 
-import java.util.function.Function;
+import java.util.Collections;
+import java.util.function.Consumer;
 
 /**
  * could be the jersey rest engine implementation
  */
 public class DummyRestEngine implements IRestEngine {
 
-    /**
-     * invokes the post request
-     *
-     * @param breinActivity data
-     * @param errorCallback will be invoked in case of an error
-     */
     @Override
-    public void doRequest(final BreinActivity breinActivity,
-                          final Function<String, Void> errorCallback) {
-
-        // validate the input objects
-        validate(breinActivity);
-
-        getFullyQualifiedUrl(breinActivity);
+    public void invokeAsyncRequest(final BreinConfig config,
+                                   final BreinBase data,
+                                   final Consumer<BreinResult> callback) {
+        callback.accept(invokeRequest(config, data));
     }
 
     /**
@@ -36,11 +27,12 @@ public class DummyRestEngine implements IRestEngine {
     }
 
     @Override
-    public BreinResult invokeRequest(final BreinBase breinRequestObject) {
+    public BreinResult invokeRequest(final BreinConfig config,
+                                     final BreinBase data) {
+        validate(config, data);
+        getFullyQualifiedUrl(config, data);
 
-        getFullyQualifiedUrl(breinRequestObject);
-
-        return new BreinResult("");
+        return new BreinResult(Collections.emptyMap());
     }
 
     /**

@@ -1,12 +1,14 @@
 package com.brein.api;
 
+import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
+import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BreinRecommendation extends BreinBase {
+public class BreinRecommendation extends BreinBase<BreinRecommendation> {
 
     /**
      * contains the number of recommendations - default is 3
@@ -17,30 +19,6 @@ public class BreinRecommendation extends BreinBase {
      * contains the category for the recommendation
      */
     private String category;
-
-    /**
-     * empty ctor
-     */
-    BreinRecommendation() {
-    }
-
-    /**
-     * Ctor with brein user
-     * @param breinUser contains the brein user
-     */
-    BreinRecommendation(final BreinUser breinUser) {
-        setBreinUser(breinUser);
-    }
-
-    /**
-     * Ctor with full configuration
-     * @param breinUser contains the brein user
-     * @param numberOfRecommendations the number of recommendations
-     */
-    public BreinRecommendation(final BreinUser breinUser, final int numberOfRecommendations) {
-        this(breinUser);
-        this.numberOfRecommendations = numberOfRecommendations;
-    }
 
     /**
      * get the number of recommendations
@@ -55,6 +33,7 @@ public class BreinRecommendation extends BreinBase {
      * set the number of recommendations
      *
      * @param numberOfRecommendations number of recommendations
+     *
      * @return self
      */
     public BreinRecommendation setNumberOfRecommendations(final int numberOfRecommendations) {
@@ -64,6 +43,7 @@ public class BreinRecommendation extends BreinBase {
 
     /**
      * get the recommendation category
+     *
      * @return category
      */
     public String getCategory() {
@@ -72,7 +52,9 @@ public class BreinRecommendation extends BreinBase {
 
     /**
      * set the recommendation category
+     *
      * @param category contains the category
+     *
      * @return self
      */
     public BreinRecommendation setCategory(final String category) {
@@ -80,33 +62,13 @@ public class BreinRecommendation extends BreinBase {
         return this;
     }
 
-    /**
-     * retrieves the configured activity endpoint (e.g. \activity)
-     *
-     * @return endpoint
-     */
     @Override
-    public String getEndPoint() {
-        return getConfig().getRecommendationEndpoint();
+    public String getEndPoint(final BreinConfig config) {
+        return config.getRecommendationEndpoint();
     }
 
-    /**
-     * prepares the json request
-     * @return json string
-     */
     @Override
-    public String prepareJsonRequest() {
-
-        final Map<String, Object> requestData = new HashMap<>();
-
-        // call base class for base data
-        super.prepareJsonRequest();
-
-        // user data level and additional
-        final BreinUser breinUser = getBreinUser();
-        if (null != breinUser) {
-            breinUser.prepareUserRequestData(requestData, breinUser);
-        }
+    public  void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData) {
 
         // recommendation data
         final Map<String, Object> recommendationData = new HashMap<>();
@@ -119,29 +81,6 @@ public class BreinRecommendation extends BreinBase {
         // mandatory field
         recommendationData.put("numRecommendations", getNumberOfRecommendations());
         requestData.put("recommendation", recommendationData);
-
-        // base level data...
-        prepareBaseRequestData(this, requestData);
-
-        return getGson().toJson(requestData);
-    }
-
-    /**
-     * Used to create a clone of a recommendation. This is important in order to prevent
-     * concurrency issues.
-     *
-     * @param sourceRecommendation contains the original recommendation object
-     * @return the clone of the recommendation object
-     */
-    public static BreinRecommendation clone(final BreinRecommendation sourceRecommendation) {
-
-        // create a new activity object
-        final BreinRecommendation recommendation = new BreinRecommendation();
-        recommendation.setNumberOfRecommendations(sourceRecommendation.getNumberOfRecommendations());
-        recommendation.setCategory(sourceRecommendation.getCategory());
-
-        recommendation.cloneBase(sourceRecommendation);
-        return recommendation;
     }
 
     /**
@@ -150,11 +89,11 @@ public class BreinRecommendation extends BreinBase {
      * @return full signature
      */
     @Override
-    public String createSignature() {
+    public String createSignature(final BreinConfig config, final Map<String, Object> requestData) {
+        final long unixTimestamp = BreinMapUtil.getNestedValue(requestData, UNIX_TIMESTAMP_FIELD);
 
-        final String message = String.format("%d", getUnixTimestamp());
-        return BreinUtil.generateSignature(message, getConfig().getSecret());
+        final String message = String.format("%d", unixTimestamp);
+        return BreinUtil.generateSignature(message, config.getSecret());
     }
-
 
 }

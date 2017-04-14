@@ -1,7 +1,8 @@
 package com.brein.domain;
 
-import com.google.gson.Gson;
+import com.brein.util.BreinMapUtil;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -17,23 +18,24 @@ public class BreinResult {
      */
     private final Map<String, Object> map;
 
-    /**
-     * creates a brein result object
-     *
-     * @param jsonResponse as json string
-     */
-    @SuppressWarnings("unchecked")
-    public BreinResult(final String jsonResponse) {
-        map = new Gson().fromJson(jsonResponse, Map.class);
+    public BreinResult(final String errorMsg, final int status) {
+        this.map = Collections.singletonMap("errorMsg", errorMsg);
+        this.status = status == 200 ? 500 : status;
     }
 
-    public BreinResult(final String jsonResponse, final int status) {
-        this(jsonResponse);
-        this.status = status;
+    public BreinResult(final Exception e, final int status) {
+        this.map = Collections.singletonMap("error", e);
+        this.status = status == 200 ? 500 : status;
+    }
+
+    public BreinResult(final Map<String, Object> error, final int status) {
+        this.map = error;
+        this.status = status == 200 ? 500 : status;
     }
 
     public BreinResult(final Map<String, Object> json) {
-        map = json;
+        this.map = json;
+        this.status = 200;
     }
 
     /**
@@ -78,63 +80,15 @@ public class BreinResult {
         return map != null && map.containsKey(key);
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T getNestedValue(final String... key) {
-        if (map == null) {
-            return null;
-        }
-
-        Map<String, Object> currentMap = map;
-
-        Object value = null;
-        int i = 0;
-        for (; i < key.length; i++) {
-            final String k = key[i];
-
-            value = currentMap.get(k);
-            if (value == null) {
-                break;
-            } else if (Map.class.isInstance(value)) {
-                currentMap = Map.class.cast(value);
-            } else if (i < key.length - 1) {
-                break;
-            }
-        }
-
-        if (i == key.length) {
-            return (T) value;
-        } else {
-            return null;
-        }
+    public <T> T getNestedValue(final String... keys) {
+        return BreinMapUtil.getNestedValue(map, keys);
     }
 
-    public boolean hasNestedValue(final String... key) {
-        if (map == null) {
-            return false;
-        }
-
-        Map<String, Object> currentMap = map;
-
-        int i = 0;
-        for (; i < key.length; i++) {
-            final String k = key[i];
-
-            final Object value = currentMap.get(k);
-            if (value == null) {
-                break;
-            } else if (Map.class.isInstance(value)) {
-                //noinspection unchecked
-                currentMap = Map.class.cast(value);
-            } else if (i < key.length - 1) {
-                break;
-            }
-        }
-
-        return i == key.length;
+    public boolean hasNestedValue(final String... keys) {
+        return BreinMapUtil.hasNestedValue(map, keys);
     }
 
     public String getMessage() {
-
         if (has("message")) {
             return get("message");
         }

@@ -2,8 +2,11 @@ package com.brein.domain.results.temporaldataparts;
 
 import com.brein.domain.BreinResult;
 import com.brein.domain.results.BreinTemporalDataResult;
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Map;
 
 public class TestBreinWeatherResult {
 
@@ -28,7 +31,7 @@ public class TestBreinWeatherResult {
 
     @Test
     public void testFull() {
-        final String json = "{" +
+        final String strJson = "{" +
                 "  \"weather\": {" +
                 "    \"precipitation\": {" +
                 "      \"precipitationType\": \"none\"," +
@@ -45,7 +48,11 @@ public class TestBreinWeatherResult {
                 "    }" +
                 "  }}";
 
-        final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
+
+        final BreinWeatherResult res = new BreinTemporalDataResult(result).getWeather();
 
         Assert.assertEquals(40.0, res.getCloudCover(), 0.001);
         Assert.assertEquals(22.5, res.getTemperatureCelsius(), 0.001);
@@ -64,7 +71,7 @@ public class TestBreinWeatherResult {
 
     @Test
     public void testPartial() {
-        final String json = "{" +
+        final String strJson = "{" +
                 "  \"weather\": {" +
                 "    \"precipitation\": {" +
                 "      \"precipitationAmount\": 2.5" +
@@ -77,7 +84,11 @@ public class TestBreinWeatherResult {
                 "    }" +
                 "  }}";
 
-        final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
+
+        final BreinWeatherResult res = new BreinTemporalDataResult(result).getWeather();
 
         Assert.assertEquals(40.0, res.getCloudCover(), 0.001);
         Assert.assertNull(res.getTemperatureCelsius());
@@ -115,14 +126,18 @@ public class TestBreinWeatherResult {
                         typeString = null;
                         Assert.fail("Unknown precipitation type " + type);
                 }
-                final String json = "{" +
+                final String strJson = "{" +
                         "  \"weather\": {" +
                         "    \"precipitation\": {" +
                         "      \"precipitationType\": \"" + (allcaps ? typeString.toUpperCase() : typeString) + "\"" +
                         "    }" +
                         "  }}";
 
-                final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
+                @SuppressWarnings("unchecked")
+                final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+                final BreinResult result = new BreinResult(json);
+
+                final BreinWeatherResult res = new BreinTemporalDataResult(result).getWeather();
 
                 Assert.assertNull(res.getCloudCover());
                 Assert.assertNull(res.getTemperatureCelsius());
@@ -142,7 +157,7 @@ public class TestBreinWeatherResult {
 
     @Test
     public void testMissingPrecipitation() {
-        final String json = "{" +
+        final String strJson = "{" +
                 "  \"weather\": {" +
                 "    \"windStrength\": 1.5," +
                 "    \"lastMeasured\": 1490740500," +
@@ -155,7 +170,11 @@ public class TestBreinWeatherResult {
                 "    }" +
                 "  }}";
 
-        final BreinWeatherResult res = new BreinTemporalDataResult(new BreinResult(json)).getWeather();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
+
+        final BreinWeatherResult res = new BreinTemporalDataResult(result).getWeather();
 
         Assert.assertEquals(40.0, res.getCloudCover(), 0.001);
         Assert.assertEquals(22.5, res.getTemperatureCelsius(), 0.001);

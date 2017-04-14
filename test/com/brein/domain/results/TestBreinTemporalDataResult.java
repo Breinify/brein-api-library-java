@@ -5,6 +5,7 @@ import com.brein.domain.results.temporaldataparts.BreinHolidayResult;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidaySource;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidayType;
 import com.brein.domain.results.temporaldataparts.PrecipitationType;
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,18 +13,23 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TestBreinTemporalDataResult {
     @Test
     public void testWeather() {
         //just a stub json, further weather testing is done in `TestBreinWeatherResult`
-        final String json = "{" +
+        final String strJson = "{" +
                 "  \"weather\": {" +
                 "    \"precipitation\": {" +
                 "      \"precipitationType\": \"rain\"," +
                 "      \"precipitationAmount\": 1234" +
                 "    }" +
                 "  }}";
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
 
         Assert.assertFalse(new BreinTemporalDataResult(Collections.emptyMap()).hasWeather());
 
@@ -35,9 +41,13 @@ public class TestBreinTemporalDataResult {
 
     @Test
     public void testLocalTime() {
-        final String json = "{ \"time\": {\"localFormatIso8601\": \"2017-04-07T12:02:46-05:00\"}}";
+        final String strJson = "{ \"time\": {\"localFormatIso8601\": \"2017-04-07T12:02:46-05:00\"}}";
 
         Assert.assertFalse(new BreinTemporalDataResult(Collections.emptyMap()).hasLocalDateTime());
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
 
         final BreinTemporalDataResult withTime = new BreinTemporalDataResult(new BreinResult(json));
         Assert.assertTrue(withTime.hasLocalDateTime());
@@ -55,7 +65,11 @@ public class TestBreinTemporalDataResult {
 
     @Test
     public void testEpochTime() {
-        final String json = "{ \"time\": {\"epochFormatIso8601\": \"2017-04-07T17:02:46+00:00\"}}";
+        final String strJson = "{ \"time\": {\"epochFormatIso8601\": \"2017-04-07T17:02:46+00:00\"}}";
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
 
         Assert.assertFalse(new BreinTemporalDataResult(Collections.emptyMap()).hasEpochDateTime());
 
@@ -75,8 +89,12 @@ public class TestBreinTemporalDataResult {
 
     @Test
     public void testHoliday() {
-        final String json = "{ \"holidays\": [{\"types\": [\"HALLMARK\"], \"source\":\"UNITED_NATIONS\"," +
+        final String strJson = "{ \"holidays\": [{\"types\": [\"HALLMARK\"], \"source\":\"UNITED_NATIONS\"," +
                 " \"holiday\": \"aaa\"}]}";
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
 
         Assert.assertFalse(new BreinTemporalDataResult(Collections.emptyMap()).hasHolidays());
 

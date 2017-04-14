@@ -1,6 +1,5 @@
 package com.brein.engine;
 
-import com.brein.api.BreinActivity;
 import com.brein.api.BreinBase;
 import com.brein.api.BreinException;
 import com.brein.domain.BreinConfig;
@@ -10,11 +9,13 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.http.options.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Unirest Implementation
@@ -27,9 +28,9 @@ public class UniRestEngine implements IRestEngine {
      * some constants
      */
     public static final String MSG_URL_IS_NULL = "The url is null.";
-    public static final String MSG_REQUEST_HAS_FAILED = "The request has failed.";
-    public static final String MSG_REQUEST_HAS_BEEN_CANCELLED = "The request has been cancelled.";
-    public static final String MSG_REQUEST_WAS_SUCCESSFUL = "The request was successful.";
+    public static final String MSG_REQUEST_HAS_FAILED = "FAILED";
+    public static final String MSG_REQUEST_HAS_BEEN_CANCELLED = "CANCELLED";
+    public static final String MSG_REQUEST_WAS_SUCCESSFUL = "SUCCESS";
 
     /**
      * Logger instance
@@ -40,54 +41,59 @@ public class UniRestEngine implements IRestEngine {
      * configures the rest engine
      */
     @Override
-    public void configure(final BreinConfig breinConfig) {
-
-        final long connectionTimeout = breinConfig.getConnectionTimeout();
-        final long socketTimeout = breinConfig.getSocketTimeout();
+    public void configure(final BreinConfig config) {
+        final long connectionTimeout = config.getConnectionTimeout();
+        final long socketTimeout = config.getSocketTimeout();
 
         if (connectionTimeout != 0 && socketTimeout != 0) {
+            Options.refresh();
             Unirest.setTimeouts(connectionTimeout, socketTimeout);
         }
     }
 
-    /**
-     * Invokes the asynchronous post call
-     *
-     * @param breinActivity data to send
-     * @param errorCallback will be invoked in case of an error
-     */
     @Override
-    public void doRequest(final BreinActivity breinActivity,
-                          final Function<String, Void> errorCallback) throws BreinException {
+    public void invokeAsyncRequest(final BreinConfig config,
+                                   final BreinBase data,
+                                   final Consumer<BreinResult> callback) {
 
         // validate the input objects
-        validate(breinActivity);
+        validate(config, data);
 
         /*
          * invoke the request
          */
 
-        Unirest.post(getFullyQualifiedUrl(breinActivity))
+        Unirest.post(getFullyQualifiedUrl(config, data))
                 .header(HEADER_ACCESS, HEADER_APP_JSON)
-                .body(getRequestBody(breinActivity))
+                .body(getRequestBody(config, data))
                 .asJsonAsync(new Callback<JsonNode>() {
 
                     @Override
                     public void completed(final HttpResponse<JsonNode> response) {
+                        final String strResponse = response.getBody().toString();
+                        final int status = response.getStatus();
 
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug(MSG_REQUEST_WAS_SUCCESSFUL);
+                        final BreinResult result;
+                        if (status == 200) {
+                            final Map<String, Object> mapResponse = parseJson(strResponse);
+                            result = new BreinResult(mapResponse);
+                        } else {
+                            result = new BreinResult(strResponse, status);
+                        }
+
+                        if (callback != null) {
+                            callback.accept(result);
                         }
                     }
 
                     @Override
                     public void failed(final UnirestException e) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug(MSG_REQUEST_HAS_FAILED);
+                            LOG.debug(MSG_REQUEST_HAS_FAILED, e);
                         }
 
-                        if (errorCallback != null) {
-                            errorCallback.apply(MSG_REQUEST_HAS_FAILED);
+                        if (callback != null) {
+                            callback.accept(new BreinResult(e, 500));
                         }
                     }
 
@@ -97,8 +103,8 @@ public class UniRestEngine implements IRestEngine {
                             LOG.debug(MSG_REQUEST_HAS_BEEN_CANCELLED);
                         }
 
-                        if (errorCallback != null) {
-                            errorCallback.apply(MSG_REQUEST_HAS_BEEN_CANCELLED);
+                        if (callback != null) {
+                            callback.accept(new BreinResult(MSG_REQUEST_HAS_BEEN_CANCELLED, 400));
                         }
                     }
                 });
@@ -119,21 +125,21 @@ public class UniRestEngine implements IRestEngine {
     }
 
     @Override
-    public BreinResult invokeRequest(final BreinBase breinRequestObject) {
-        final HttpResponse<JsonNode> jsonResponse;
+    public BreinResult invokeRequest(final BreinConfig config, final BreinBase data) {
         try {
-            final String requestBody = getRequestBody(breinRequestObject);
-            jsonResponse = Unirest.post(getFullyQualifiedUrl(breinRequestObject))
+            final String requestBody = getRequestBody(config, data);
+            final HttpResponse<JsonNode> response = Unirest.post(getFullyQualifiedUrl(config, data))
                     .header(HEADER_ACCESS, HEADER_APP_JSON)
                     .body(requestBody)
                     .asJson();
 
-            if (jsonResponse.getStatus() == 200) {
-                return new BreinResult(jsonResponse.getBody().toString(), jsonResponse.getStatus());
+            if (response.getStatus() == 200) {
+                final String strResponse = response.getBody().toString();
+                final Map<String, Object> mapResponse = parseJson(strResponse);
+                return new BreinResult(mapResponse);
             } else {
-                throw new BreinException("invoke request exception. Status is: " + jsonResponse.getStatus());
+                throw new BreinException("invoke request exception. Status is: " + response.getStatus());
             }
-
         } catch (final UnirestException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("within invokeRequest - exception has occurred. " + e);

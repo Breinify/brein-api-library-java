@@ -2,8 +2,11 @@ package com.brein.domain.results.temporaldataparts;
 
 import com.brein.domain.BreinResult;
 import com.brein.domain.results.BreinTemporalDataResult;
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Map;
 
 public class TestBreinLocationResult {
     @Test
@@ -20,7 +23,7 @@ public class TestBreinLocationResult {
 
     @Test
     public void testFull() {
-        final String json = "{\"location\": {\n" +
+        final String strJson = "{\"location\": {\n" +
                 "    \"country\": \"US\",\n" +
                 "    \"city\": \"Houston\",\n" +
                 "    \"granularity\": \"city\",\n" +
@@ -29,7 +32,11 @@ public class TestBreinLocationResult {
                 "    \"lat\": 29.7632836\n" +
                 "  }}";
 
-        final BreinLocationResult res = new BreinTemporalDataResult(new BreinResult(json)).getLocation();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
+
+        final BreinLocationResult res = new BreinTemporalDataResult(result).getLocation();
 
         Assert.assertEquals("US", res.getCountry());
         Assert.assertEquals("TX", res.getState());

@@ -2,46 +2,59 @@ package com.brein.api;
 
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
-import com.brein.engine.BreinEngine;
-import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Base Class for activity and lookup operations.
  */
-public class BreinBase implements ISecretStrategy {
+public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy {
+    public final static String API_KEY_FIELD = "apiKey";
+    public final static String UNIX_TIMESTAMP_FIELD = "unixTimestamp";
+    public final static String SIGNATURE_FIELD = "signature";
+    public final static String SIGNATURE_TYPE_FIELD = "signatureType";
+
+    /**
+     * Builder for json creation
+     */
+    public static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+            .create();
+
+    /**
+     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
+     * API documentation.
+     */
+    public enum BaseField {
+        IP_ADDRESS("ipAddress"),
+        UNIX_TIMESTAMP("unixTimestamp");
+
+        final String name;
+
+        BaseField(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void set(final BreinBase base, final Object value) {
+            base.set(getName(), value);
+        }
+    }
 
     /**
      * contains the User that will be used for the request
      */
-    private BreinUser breinUser;
-
-    /**
-     * Configuration
-     */
-    private BreinConfig breinConfig;
-
-    /**
-     * contains the timestamp when the request will be generated
-     */
-    private long unixTimestamp = 0;
-
-    /**
-     * IpAddress
-     */
-    private String ipAddress;
-
-    /**
-     * contains the errorCallback
-     */
-    private Function<String, Void> errorCallback;
+    private BreinUser user;
 
     /**
      * contains a map for the base section
@@ -49,80 +62,48 @@ public class BreinBase implements ISecretStrategy {
     private Map<String, Object> baseMap;
 
     /**
-     * returns the map for the base section
-     *
-     * @return map
-     */
-    public Map<String, Object> getBase() {
-        return baseMap;
-    }
-
-    /**
-     * Builder for json creation
-     */
-    static final Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .serializeNulls()
-            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-            .create();
-
-    /**
-     * retrieves the configuration
-     *
-     * @return brein config
-     */
-    public BreinConfig getConfig() {
-        return breinConfig;
-    }
-
-    /**
-     * sets the brein config
-     *
-     * @param breinConfig object
-     * @return self
-     */
-    public BreinBase setConfig(final BreinConfig breinConfig) {
-        this.breinConfig = breinConfig;
-        return this;
-    }
-
-    /**
      * retrieves the breinuser
      *
      * @return breinuser
      */
-    public BreinUser getBreinUser() {
-        return breinUser;
+    public BreinUser getUser() {
+        if (this.user == null) {
+            this.user = new BreinUser();
+        }
+
+        return this.user;
     }
 
     /**
      * sets the brein user
      *
-     * @param breinUser user data
+     * @param user user data
+     *
      * @return self
      */
-    public BreinBase setBreinUser(final BreinUser breinUser) {
-        this.breinUser = breinUser;
-        return this;
+    public T setUser(final BreinUser user) {
+        this.user = user;
+        return getThis();
     }
 
-    /**
-     * returns the configured brein engine
-     *
-     * @return brein engine
-     */
-    public BreinEngine getBreinEngine() {
-        return null == breinConfig ? null : getConfig().getBreinEngine();
+    public T setUser(final String key, final Object value) {
+        this.getUser().set(key, value);
+        return getThis();
+    }
+
+    public T setAdditional(final String key, final Object value) {
+        this.getUser().setAdditional(key, value);
+        return getThis();
     }
 
     /**
      * retrieves the endpoint. this depends of the kind of BreinBase type.
      *
+     * @param config the current configuration
+     *
      * @return endpoint
      */
-    public String getEndPoint() {
-        return "";
-    }
+    public abstract String getEndPoint(final BreinConfig config);
 
     /**
      * retrieves the timestamp
@@ -130,35 +111,24 @@ public class BreinBase implements ISecretStrategy {
      * @return value from 1.1.1970
      */
     public long getUnixTimestamp() {
-        return unixTimestamp;
+        final Object unixTimestamp = getBaseField(BaseField.UNIX_TIMESTAMP);
+        if (unixTimestamp == null || !Long.class.isInstance(unixTimestamp) || unixTimestamp.equals(-1L)) {
+            return -1L;
+        } else {
+            return Long.class.cast(unixTimestamp);
+        }
     }
 
     /**
      * sets the timestamp
      *
      * @param unixTimestamp value from 1.1.1970
+     *
      * @return self
      */
-    public BreinBase setUnixTimestamp(final long unixTimestamp) {
-        this.unixTimestamp = unixTimestamp;
-        return this;
-    }
-
-    /**
-     * retrieves the sign flag
-     *
-     * @return true or false depending on configured secret
-     */
-    public boolean isSign() {
-        if (breinConfig == null) {
-            return false;
-        }
-
-        if (breinConfig.getSecret() == null) {
-            return false;
-        }
-
-        return breinConfig.getSecret().length() > 0;
+    public T setUnixTimestamp(final long unixTimestamp) {
+        BaseField.UNIX_TIMESTAMP.set(this, unixTimestamp);
+        return getThis();
     }
 
     /**
@@ -167,152 +137,110 @@ public class BreinBase implements ISecretStrategy {
      * @return content of ipAddress
      */
     public String getIpAddress() {
-        return ipAddress;
+        return getBaseField(BaseField.IP_ADDRESS);
     }
 
     /**
      * sets the ipaddress
      *
      * @param ipAddress contains the ipAddress
+     *
      * @return object itself
      */
-    public BreinBase setIpAddress(final String ipAddress) {
-        this.ipAddress = ipAddress;
-        return this;
+    public T setClientIpAddress(final String ipAddress) {
+        BaseField.IP_ADDRESS.set(this, ipAddress);
+        return getThis();
     }
 
     /**
-     * Returns the callback function
+     * return the GSON builder instance
      *
-     * @return callback function
-     */
-    public Function<String, Void> getErrorCallback() {
-        return errorCallback;
-    }
-
-    /**
-     * sets the error callback function
-     *
-     * @param errorCallback function to callback
-     * @return self
-     */
-    public BreinBase setErrorCallback(final Function<String, Void> errorCallback) {
-        this.errorCallback = errorCallback;
-        return this;
-    }
-
-    /**
-     * return the gson builder instance
-     *
-     * @return gson instance
+     * @return GSON instance
      */
     public Gson getGson() {
-        return gson;
+        return GSON;
     }
 
     /**
-     * sets an map for the base section
+     * Sets a value
      *
-     * @param baseMap map of String, Object
      * @return self
      */
-    public BreinBase setBase(final Map<String, Object> baseMap) {
-        this.baseMap = baseMap;
-        return this;
+    public T set(final String key, final Object value) {
+        if (BreinUser.USER_FIELD.equalsIgnoreCase(key)) {
+            throw new BreinException("The field '" + BreinUser.USER_FIELD + "' cannot be set, " +
+                    "use the setUser method to do so.");
+        } else if (this.baseMap == null) {
+            this.baseMap = new HashMap<>();
+        }
+
+        this.baseMap.put(key, value);
+        return getThis();
     }
 
     /**
      * prepares the request for the base section with standard fields
      * plus possible fields if configured
      *
-     * @param breinBase   contains the appropriate request object
      * @param requestData contains the created json structure
      */
-    public void prepareBaseRequestData(final BreinBase breinBase,
-                                       final Map<String, Object> requestData) {
+    public abstract void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData);
 
-        if (BreinUtil.containsValue(breinBase.getConfig())) {
-            if (BreinUtil.containsValue(breinBase.getConfig().getApiKey())) {
-                requestData.put("apiKey", breinBase.getConfig().getApiKey());
-            }
+    public String prepareRequestData(final BreinConfig config) {
+        final Map<String, Object> requestData = new HashMap<>();
+
+        requestData.put(API_KEY_FIELD, config.getApiKey());
+
+        // add the base values
+        if (this.baseMap != null) {
+            this.baseMap.forEach((key, value) -> {
+                if (BreinUtil.containsValue(value)) {
+                    requestData.put(key, value);
+                }
+            });
         }
 
-        final BreinUser user = breinBase.getBreinUser();
-        if (BreinUtil.containsValue(user.getIpAddress())) {
-            requestData.put("ipAddress", user.getIpAddress());
+        // we set the unixTimestamp (may be twice, but anyways)
+        long timestamp = getUnixTimestamp();
+        if (timestamp == -1L) {
+            timestamp = Instant.now().getEpochSecond();
+        }
+        requestData.put(UNIX_TIMESTAMP_FIELD, timestamp);
+
+        // check if we have user and add it
+        if (this.user != null) {
+            this.user.prepareRequestData(config, requestData);
         }
 
-        requestData.put("unixTimestamp", breinBase.getUnixTimestamp());
+        // add the sub-type specific values
+        prepareRequestData(config, requestData);
 
-        // if sign is active
-        if (breinBase.isSign()) {
-            requestData.put("signature", breinBase.createSignature());
-            requestData.put("signatureType", "HmacSHA256");
+        // check if we have to add a signature
+        if (config.isSign()) {
+            requestData.put(SIGNATURE_FIELD, createSignature(config, requestData));
+            requestData.put(SIGNATURE_TYPE_FIELD, "HmacSHA256");
         }
 
-        // check if there are further maps to add on base level
-        if (baseMap != null && baseMap.size() > 0) {
-            requestData.putAll(baseMap);
-        }
+        return getGson().toJson(requestData);
     }
 
-    /**
-     * Initializes all values
-     */
-    public void init() {
-        breinUser = null;
-        breinConfig = null;
-        unixTimestamp = 0;
+    @SuppressWarnings("unchecked")
+    protected T getThis() {
+        return (T) this;
     }
 
-    /**
-     * prepares the json request string
-     *
-     * @return empty
-     */
-    public String prepareJsonRequest() {
-
-        if (this.getUnixTimestamp() == 0) {
-            setUnixTimestamp(Instant.now().getEpochSecond());
+    protected <F> F getBaseField(final BaseField field) {
+        if (baseMap == null) {
+            return null;
         }
-        return "";
+
+        //noinspection unchecked
+        return (F) baseMap.get(field.getName());
     }
 
-    /**
-     * Clones from base class
-     *
-     * @param source to clone from
-     */
-    public void cloneBase(final BreinBase source) {
-
-        // set further data...
-        this.setIpAddress(source.getIpAddress());
-        this.setUnixTimestamp(source.getUnixTimestamp());
-
-        // callback
-        this.setErrorCallback(source.getErrorCallback());
-
-        // configuration
-        this.setConfig(source.getConfig());
-
-        // clone user
-        final BreinUser clonedUser = BreinUser.clone(source.getBreinUser());
-        this.setBreinUser(clonedUser);
-
-        // clone maps
-        // a copy of all maps
-        final Map<String, Object> baseMap = source.getBase();
-        final Map<String, Object> copyOfBaseMap = BreinMapUtil.copyMap(baseMap);
-        this.setBase(copyOfBaseMap);
-    }
-
-    /**
-     * used to create the signature depending of the request type
-     *
-     * @return signature
-     */
     @Override
-    public String createSignature() {
-        return null;
+    public String toString() {
+        final BreinConfig config = new BreinConfig(null);
+        return prepareRequestData(config);
     }
 }

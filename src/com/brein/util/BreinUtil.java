@@ -1,10 +1,16 @@
 package com.brein.util;
 
 import com.brein.api.BreinException;
+import com.brein.engine.IRestEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -16,21 +22,9 @@ import java.util.Random;
  * Utility class
  */
 public class BreinUtil {
-
+    private static final Logger LOG = LoggerFactory.getLogger(IRestEngine.class);
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    private static final Mac mac;
-
     private static final Random RANDOM = new Random();
-
-    static {
-
-        try {
-            mac = Mac.getInstance("HmacSHA256");
-        } catch (final NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Unable to find needed algorithm!", e);
-        }
-    }
 
     /**
      * Verifies if the object contains a value
@@ -39,20 +33,19 @@ public class BreinUtil {
      * - empty strings
      *
      * @param object to check
+     *
      * @return true if object contains data
      */
     public static boolean containsValue(final Object object) {
 
         if (object == null) {
             return false;
+        } else if (String.class.isInstance(object)) {
+            final String strObj = String.class.cast(object);
+            return !strObj.isEmpty();
+        } else {
+            return true;
         }
-
-        if (object.getClass() == String.class) {
-            final String strObj = (String) object;
-            return strObj.length() > 0;
-        }
-
-        return true;
     }
 
     /**
@@ -70,6 +63,7 @@ public class BreinUtil {
      * Helper methods generates a random string by len
      *
      * @param len of the requested string
+     *
      * @return random string
      */
     public static String randomString(final int len) {
@@ -84,6 +78,7 @@ public class BreinUtil {
      * Creates a secret by given len
      *
      * @param length of the secret
+     *
      * @return created secret
      */
     public static String generateSecret(final int length) {
@@ -100,27 +95,44 @@ public class BreinUtil {
      *
      * @param message the message to generate the signature for
      * @param secret  the secret retrieved from the api
+     *
      * @return the generated signature
      */
     public static String generateSignature(final String message, final String secret) {
-
         if (message == null) {
             throw new BreinException("Illegal value for message in method generateSignature");
-        }
-
-        if (secret == null) {
+        } else if (secret == null) {
             throw new BreinException("Illegal value for secret in method generateSignature");
         }
 
         try {
             final byte[] e = secret.getBytes(StandardCharsets.UTF_8.name());
             final SecretKeySpec secretKey = new SecretKeySpec(e, "HmacSHA256");
+
+            final Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(secretKey);
+
             final byte[] hmacData = mac.doFinal(message.getBytes(StandardCharsets.UTF_8.name()));
             return Base64.getEncoder().encodeToString(hmacData);
         } catch (InvalidKeyException | UnsupportedEncodingException var5) {
             throw new IllegalStateException("Unable to create signature!", var5);
+        } catch (final NoSuchAlgorithmException e1) {
+            throw new IllegalStateException("Unable to find needed algorithm!", e1);
+        }
+    }
+
+    public static boolean isValidUrl(final String fullyQualifiedUrl) {
+        try {
+            final URL url = new URL(fullyQualifiedUrl);
+            final URLConnection conn = url.openConnection();
+            conn.connect();
+        } catch (final IOException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("The url " + fullyQualifiedUrl + "' is invalid.", e);
+            }
+            return false;
         }
 
+        return true;
     }
 }

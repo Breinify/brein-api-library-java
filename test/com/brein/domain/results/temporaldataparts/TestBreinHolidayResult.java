@@ -4,17 +4,19 @@ import com.brein.domain.BreinResult;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidaySource;
 import com.brein.domain.results.temporaldataparts.BreinHolidayResult.HolidayType;
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class TestBreinHolidayResult {
 
     @Test
     public void testHolidays() {
-        final String json = "{" +
+        final String strJson = "{" +
                 " \"holidays\": [{" +
                 "  \"types\": [" +
                 "   \"NATIONAL_FEDERAL\"" +
@@ -31,7 +33,11 @@ public class TestBreinHolidayResult {
                 " }]" +
                 "}";
 
-        final List<BreinHolidayResult> results = new BreinTemporalDataResult(new BreinResult(json)).getHolidays();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> json = new Gson().fromJson(strJson, Map.class);
+        final BreinResult result = new BreinResult(json);
+
+        final List<BreinHolidayResult> results = new BreinTemporalDataResult(result).getHolidays();
         Assert.assertEquals(results.size(), 3);
 
         final BreinHolidayResult halloween = results.get(0);

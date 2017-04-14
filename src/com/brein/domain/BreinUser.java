@@ -1,9 +1,10 @@
 package com.brein.domain;
 
+import com.brein.api.BreinBase;
+import com.brein.api.BreinException;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,71 +12,36 @@ import java.util.Map;
  * A plain object specifying the user information the activity belongs to
  */
 public class BreinUser {
+    public final static String USER_FIELD = "user";
+    public final static String ADDITIONAL_FIELD = "additional";
 
     /**
-     * user email
+     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
+     * API documentation.
      */
-    private String email;
+    public enum UserField {
+        FIRST_NAME("firstName"),
+        LAST_NAME("lastName"),
+        DATE_OF_BIRTH("dateOfBirth"),
+        EMAIL("email"),
+        MD5_EMAIL("md5Email"),
+        SESSION_ID("sessionId"),
+        USER_ID("userId");
 
-    /**
-     * user first name
-     */
-    private String firstName;
+        final String name;
 
-    /**
-     * user last name
-     */
-    private String lastName;
+        UserField(final String name) {
+            this.name = name;
+        }
 
-    /**
-     * user date of birth
-     */
-    private String dateOfBirth;
+        public String getName() {
+            return name;
+        }
 
-    /**
-     * user imei number
-     */
-    private String imei;
-
-    /**
-     * user deviceId
-     */
-    private String deviceId;
-
-    /**
-     * user sessionId
-     */
-    private String sessionId;
-
-    /**
-     * contains the userAgent in additional part
-     */
-    private String userAgent;
-
-    /**
-     * contains the referrer in additional part
-     */
-    private String referrer;
-
-    /**
-     * contains the url in additional part
-     */
-    private String url;
-
-    /**
-     * contains the url in additional part
-     */
-    private String ipAddress;
-
-    /**
-     * contains the localDateTime value (for temporalData request)
-     */
-    private String localDateTime;
-
-    /**
-     * contains the timezone value (for temporalData request)
-     */
-    private String timezone;
+        public void set(final BreinUser user, final Object value) {
+            user.set(getName(), value);
+        }
+    }
 
     /**
      * contains further fields in the user additional section
@@ -88,36 +54,23 @@ public class BreinUser {
     private Map<String, Object> userMap;
 
     /**
-     * create a brein user with field email.
-     *
-     * @param email of the user
-     */
-    public BreinUser(final String email) {
-        setEmail(email);
-    }
-
-    /**
-     * empty ctor to create user without email property
-     */
-    public BreinUser() {
-    }
-
-    /**
      * get the email of the user
+     *
      * @return email
      */
     public String getEmail() {
-        return email;
+        return getUserField(UserField.EMAIL);
     }
 
     /**
      * sets the email of the user
      *
      * @param email to set (will not be checked)
+     *
      * @return this
      */
     public BreinUser setEmail(final String email) {
-        this.email = email;
+        UserField.EMAIL.set(this, email);
         return this;
     }
 
@@ -127,17 +80,18 @@ public class BreinUser {
      * @return first name
      */
     public String getFirstName() {
-        return firstName;
+        return getUserField(UserField.FIRST_NAME);
     }
 
     /**
      * set the first name of the user
      *
      * @param firstName name to set
+     *
      * @return this
      */
     public BreinUser setFirstName(final String firstName) {
-        this.firstName = firstName;
+        UserField.FIRST_NAME.set(this, firstName);
         return this;
     }
 
@@ -147,17 +101,18 @@ public class BreinUser {
      * @return last name
      */
     public String getLastName() {
-        return lastName;
+        return getUserField(UserField.LAST_NAME);
     }
 
     /**
      * set the last name of the user
      *
      * @param lastName last name
+     *
      * @return thi
      */
     public BreinUser setLastName(final String lastName) {
-        this.lastName = lastName;
+        UserField.LAST_NAME.set(this, lastName);
         return this;
     }
 
@@ -167,97 +122,18 @@ public class BreinUser {
      * @return sessionId
      */
     public String getSessionId() {
-        return sessionId;
+        return getUserField(UserField.SESSION_ID);
     }
 
     /**
      * sets the sessionId
      *
      * @param sessionId value of the sessionId
+     *
      * @return self
      */
     public BreinUser setSessionId(final String sessionId) {
-        this.sessionId = sessionId;
-        return this;
-    }
-
-    /**
-     * retrieves the additional userAgent value
-     *
-     * @return value
-     */
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    /**
-     * sets the additional user agent value
-     *
-     * @param userAgent value
-     * @return self
-     */
-    public BreinUser setUserAgent(final String userAgent) {
-        this.userAgent = userAgent;
-        return this;
-    }
-
-    /**
-     * retrieves the ipAddress (additional part)
-     *
-     * @return ipAddress
-     */
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    /**
-     * sets the ipAddress
-     *
-     * @param ipAddress value
-     * @return self
-     */
-    public BreinUser setIpAddress(final String ipAddress) {
-        this.ipAddress = ipAddress;
-        return this;
-    }
-
-    /**
-     * retrieves the additional referrer value
-     *
-     * @return value
-     */
-    public String getReferrer() {
-        return referrer;
-    }
-
-    /**
-     * sets the additional referrer value
-     *
-     * @param referrer value
-     * @return self
-     */
-    public BreinUser setReferrer(final String referrer) {
-        this.referrer = referrer;
-        return this;
-    }
-
-    /**
-     * retrieves the additional url
-     *
-     * @return value
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * sets the additional url
-     *
-     * @param url value
-     * @return self
-     */
-    public BreinUser setUrl(final String url) {
-        this.url = url;
+        UserField.SESSION_ID.set(this, sessionId);
         return this;
     }
 
@@ -267,7 +143,7 @@ public class BreinUser {
      * @return date of birth
      */
     public String getDateOfBirth() {
-        return dateOfBirth;
+        return getUserField(UserField.DATE_OF_BIRTH);
     }
 
     /**
@@ -278,20 +154,21 @@ public class BreinUser {
      * @param month (1..12)
      * @param day   (1..31)
      * @param year  (1900..2100)
+     *
      * @return self
      */
     public BreinUser setDateOfBirth(final int month, final int day, final int year) {
-
         if ((month >= 1 && month <= 12) &&
-            (day >= 1 && day <= 31)  &&
+                (day >= 1 && day <= 31) &&
                 (year >= 1900 && year <= 2100)) {
-                    this.dateOfBirth = Integer.toString(month)
-                            + "/"
-                            + Integer.toString(day)
-                            + "/"
-                            + Integer.toString(year);
-                }
-
+            setDateOfBirth(Integer.toString(month)
+                    + "/"
+                    + Integer.toString(day)
+                    + "/"
+                    + Integer.toString(year));
+        } else {
+            setDateOfBirth(null);
+        }
 
         return this;
     }
@@ -300,320 +177,85 @@ public class BreinUser {
      * Sets the value of dateOfBirth as String. This is only used internally.
      *
      * @param dateOfBirthString contains the date of birth string
+     *
      * @return self
      */
-    private BreinUser setDateOfBirthString(final String dateOfBirthString) {
-        this.dateOfBirth = dateOfBirthString;
+    public BreinUser setDateOfBirth(final String dateOfBirthString) {
+        UserField.DATE_OF_BIRTH.set(this, dateOfBirthString);
         return this;
     }
 
     /**
-     * resets the dateOfBirth to an empty value
-     */
-    public void resetDateOfBirth() {
-        this.dateOfBirth = "";
-    }
-
-    /**
-     * Retrieves imei (International Mobile Equipment Identity)
+     * Sets the users value and overrides any current value. Cannot used to override the {@code additional} field.
      *
-     * @return serial number as string
-     */
-    public String getImei() {
-        return imei;
-    }
-
-    /**
-     * Sets the imei number
+     * @param key   the name of the value to be set
+     * @param value the value to be set
      *
-     * @param imei number
      * @return self
      */
-    public BreinUser setImei(final String imei) {
-        this.imei = imei;
-        return this;
-    }
-
-    /**
-     * retrieves the device-id
-     *
-     * @return device id
-     */
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    /**
-     * sets the device id
-     *
-     * @param deviceId the id of the device
-     * @return self
-     */
-    public BreinUser setDeviceId(final String deviceId) {
-        this.deviceId = deviceId;
-        return this;
-    }
-
-    /**
-     * get's the localDateTime
-     *
-     * @return localDateTime (e.g. "Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)")
-     */
-    public String getLocalDateTime() {
-        return localDateTime;
-    }
-
-    /**
-     * set's the localDateTime
-     *
-     * @param localDateTime contains the localdate time
-     * @return self
-     */
-    public BreinUser setLocalDateTime(final String localDateTime) {
-        this.localDateTime = localDateTime;
-        return this;
-    }
-
-    /**
-     * gets the timezone
-     *
-     * @return timezone (e.g. "America/Los_Angeles")
-     */
-    public String getTimezone() {
-        return timezone;
-    }
-
-    /**
-     * set the timezone
-     *
-     * @param timezone timezone (e.g. "America/Los_Angeles"))
-     * @return self
-     */
-    public BreinUser setTimezone(final String timezone) {
-        this.timezone = timezone;
-        return this;
-    }
-
-    /**
-     * returns the user map
-     *
-     * @return the user map
-     */
-    public Map<String, Object> get() {
-        return userMap;
-    }
-
-    /**
-     * sets the user map
-     *
-     * @param userMap map
-     * @return self
-     */
-    public BreinUser set(final Map<String, Object> userMap) {
-        if (userMap == null) {
-            return this;
-        }
-        if (this.userMap == null) {
+    public BreinUser set(final String key, final Object value) {
+        if (ADDITIONAL_FIELD.equalsIgnoreCase(key)) {
+            throw new BreinException("The field '" + ADDITIONAL_FIELD + "' cannot be set, " +
+                    "use the setAdditional method to do so.");
+        } else if (this.userMap == null) {
             this.userMap = new HashMap<>();
         }
-        this.userMap.putAll(userMap);
+
+        this.userMap.put(key, value);
         return this;
     }
 
-    /**
-     * sets the user additional fields
-     *
-     * @param key     contains the key for the nested map
-     * @param userMap map of fields
-     * @return self
-     */
-    public BreinUser set(final String key, final Map<String, Object> userMap) {
-        if (userMap == null) {
-            return this;
+    public <T> T get(final String key) {
+        return get(key, false);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T get(final String key, final boolean additional) {
+        if (additional) {
+            return this.additionalMap == null ? null : (T) this.additionalMap.get(key);
+        } else {
+            return this.userMap == null ? null : (T) this.userMap.get(key);
         }
-        return set(Collections.singletonMap(key, userMap));
+    }
+
+    public <T> T getAdditional(final String key) {
+        return get(key, true);
     }
 
     /**
-     * returns the user additional map
+     * Sets an additional value.
      *
-     * @return map
-     */
-    public Map<String, Object> getAdditional() {
-        return additionalMap;
-    }
-
-    /**
-     * sets the user additional map
+     * @param key   the name of the additional value to be set
+     * @param value the value to be set
      *
-     * @param additional map
      * @return self
      */
-    public BreinUser setAdditional(final Map<String, Object> additional) {
-        if (additional == null) {
-            return this;
-        }
-
+    public BreinUser setAdditional(final String key, final Object value) {
         if (this.additionalMap == null) {
             this.additionalMap = new HashMap<>();
         }
-        this.additionalMap.putAll(additional);
+
+        this.additionalMap.put(key, value);
         return this;
     }
 
-    /**
-     * sets the user additional fields
-     *
-     * @param key        contains the key for the nested map
-     * @param additional map of fields
-     * @return self
-     */
-    public BreinUser setAdditional(final String key, final Map<String, Object> additional) {
-        if (additional == null) {
-            return this;
-        }
-        return setAdditional(Collections.singletonMap(key, additional));
-    }
+    public void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData) {
+        final Map<String, Object> userRequestData = new HashMap<>();
+        requestData.put(USER_FIELD, userRequestData);
 
-    /**
-     * Prepares the request on user level
-     *
-     * @param requestData contains the json request that is generated (top level)
-     * @param breinUser   contains the brein user data
-     */
-    public void prepareUserRequestData(final Map<String, Object> requestData,
-                                       final BreinUser breinUser) {
-
-        // user fields...
-        final Map<String, Object> userData = new HashMap<>();
-        prepareUserFields(breinUser, userData);
-
-        // check if there are further maps to add on user level
-        if (userMap != null && userMap.size() > 0) {
-            requestData.putAll(userMap);
+        // add the user-data, if there is any
+        if (this.userMap != null) {
+            this.userMap.forEach((key, value) -> {
+                if (BreinUtil.containsValue(value)) {
+                    userRequestData.put(key, value);
+                }
+            });
         }
 
-        // additional part
-        final Map<String, Object> additional = new HashMap<>();
-        prepareAdditionalFields(breinUser, additional);
-
-        // check if there are further maps to add on user additional level
-        if (additionalMap != null && additionalMap.size() > 0) {
-            additional.putAll(additionalMap);
+        // add the additional-data, if there is any
+        if (this.additionalMap != null) {
+            userRequestData.put(ADDITIONAL_FIELD, BreinMapUtil.copyMap(this.additionalMap));
         }
-
-        if (additional.size() > 0) {
-            userData.put("additional", additional);
-        }
-
-        // add the data
-        if (userData.size() > 0) {
-            requestData.put("user", userData);
-        }
-    }
-
-    /**
-     * Prepares the fields that are part of the user section
-     *
-     * @param breinUser  contains the brein user object
-     * @param jsonObject contains the json array
-     */
-    public void prepareUserFields(final BreinUser breinUser, final Map<String, Object> jsonObject) {
-
-        if (BreinUtil.containsValue(breinUser.getEmail())) {
-            jsonObject.put("email", breinUser.getEmail());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getFirstName())) {
-            jsonObject.put("firstName", breinUser.getFirstName());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getLastName())) {
-            jsonObject.put("lastName", breinUser.getLastName());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getDateOfBirth())) {
-            jsonObject.put("dateOfBirth", breinUser.getDateOfBirth());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getDeviceId())) {
-            jsonObject.put("deviceId", breinUser.getDeviceId());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getImei())) {
-            jsonObject.put("imei", breinUser.getImei());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getSessionId())) {
-            jsonObject.put("sessionId", breinUser.getSessionId());
-        }
-
-    }
-
-    /**
-     * Prepares the fields that are part of the user additional section
-     *
-     * @param breinUser  contains the brein user object
-     * @param jsonObject contains the json array
-     */
-    public void prepareAdditionalFields(final BreinUser breinUser, final Map<String, Object> jsonObject) {
-
-        if (BreinUtil.containsValue(breinUser.getUserAgent())) {
-            jsonObject.put("userAgent", breinUser.getUserAgent());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getReferrer())) {
-            jsonObject.put("referrer", breinUser.getReferrer());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getUrl())) {
-            jsonObject.put("url", breinUser.getUrl());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getLocalDateTime())) {
-            jsonObject.put("localDateTime", breinUser.getLocalDateTime());
-        }
-
-        if (BreinUtil.containsValue(breinUser.getTimezone())) {
-            jsonObject.put("timezone", breinUser.getTimezone());
-        }
-    }
-
-    /**
-     * Creates a clone of a given BreinUser object
-     *
-     * @param sourceUser contains the original brein user
-     * @return a copy of the original brein user
-     */
-    public static BreinUser clone(final BreinUser sourceUser) {
-
-        // then a new user with the new created brein user request
-        final BreinUser newUser = new BreinUser()
-                .setEmail(sourceUser.getEmail())
-                .setFirstName(sourceUser.getFirstName())
-                .setLastName(sourceUser.getLastName())
-                .setDateOfBirthString(sourceUser.getDateOfBirth())
-                .setImei(sourceUser.getImei())
-                .setDeviceId(sourceUser.getDeviceId())
-                .setUrl(sourceUser.getUrl())
-                .setSessionId(sourceUser.getSessionId())
-                .setImei(sourceUser.getImei())
-                .setUserAgent(sourceUser.getUserAgent())
-                .setReferrer(sourceUser.getReferrer())
-                .setIpAddress(sourceUser.getIpAddress())
-                .setLocalDateTime(sourceUser.getLocalDateTime())
-                .setTimezone(sourceUser.getTimezone());
-
-        // copy maps
-        final Map<String, Object> additionalMap = sourceUser.getAdditional();
-        final Map<String, Object> copyOfAdditionalMap = BreinMapUtil.copyMap(additionalMap);
-        newUser.setAdditional(copyOfAdditionalMap);
-
-        final Map<String, Object> userMap = sourceUser.get();
-        final Map<String, Object> copyOfUserMap = BreinMapUtil.copyMap(userMap);
-        newUser.set(copyOfUserMap);
-
-        return newUser;
     }
 
     /**
@@ -623,24 +265,15 @@ public class BreinUser {
      */
     @Override
     public String toString() {
+        final BreinConfig config = new BreinConfig(null);
+        final Map<String, Object> requestData = new HashMap<>();
 
-        return "BreinUser details: "
-                + "\n"
-                + " name: "
-                + (this.firstName == null ? "n/a" : this.firstName)
-                + " "
-                + (this.lastName == null ? "n/a" : this.lastName)
-                + " email: "
-                + (this.email == null ? "n/a" : this.email)
-                + " dateOfBirth: "
-                + (this.dateOfBirth == null ? "n/a" : this.dateOfBirth)
-                + "\n"
-                + " imei: "
-                + (this.imei == null ? "n/a" : this.imei)
-                + " deviceId: "
-                + (this.deviceId == null ? "n/a" : this.deviceId)
-                + "\n";
+        prepareRequestData(config, requestData);
+        return BreinBase.GSON.toJson(requestData);
     }
 
+    protected <T> T getUserField(final UserField field) {
+        return get(field.getName());
+    }
 }
 
