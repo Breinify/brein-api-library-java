@@ -99,7 +99,7 @@ Activities are sent to the API whenever something happens within the system, whi
 
 The engine is informed of an activity by executing `Breinify.activity(...)`. There are several overloaded versions of the `activity` method, making the usage as easy as possible. The following code-snippets illustrate the simplicity and show how the library can be utilized.
 
-**1. Sending Login**
+### Sending Login
 
 ```Java
 Breinify.activity(new M<String>()
@@ -107,7 +107,7 @@ Breinify.activity(new M<String>()
         .set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), "login");
 ```
 
-**2. Sending readArticle**
+### Sending readArticle
 
 Instead of sending an activity utilizing the `Breinify.activity(...)` method, it is also possible to create an instance of a `BreinActivity` and use the `execute(...)` method to send the activity asynchronous. This implementation is typically favored when multiple information are sent with the activity (e.g., tags or descriptions).
 
@@ -141,7 +141,7 @@ new BreinActivity()
 The `/temporalData` endpoint is used to transform your temporal data into temporal information, i.e., enrich your temporal data with information like 
 *current weather*, *upcoming holidays*, *regional and global events*, and *time-zones*, as well as geocoding and reverse geocoding.
 
-**1. Getting User Information**
+### Getting User Information
 
 Sometimes it is necessary to get some more information about the user of an application, e.g., to increase usability and enhance the user experience, 
 to handle time-dependent data correctly, to add geo-based services, or increase quality of service. The client's information can be retrieved easily 
@@ -161,7 +161,7 @@ example of the returned values can be found <a target="_blank" href="https://www
   <sup>Output of the Sample Application utilizing some commanly used features.</sup>
 </p>
 
-**2. Geocoding (resolve Free-Text to Locations)**
+### Geocoding (resolve Free-Text to Locations)
 
 Sometimes it is necessary to resolve a textual representation to a specific geo-location. The textual representation can be
 structured and even partly unstructured, e.g., the textual representation `the Big Apple` is considered to be unstructured,
@@ -187,7 +187,7 @@ final BreinTemporalDataResult result = new BreinTemporalData()
     .execute();
 ```
 
-**3. Reverse Geocoding (retrieve GeoJsons for, e.g., Cities, Neighborhoods, or Zip-Codes)**
+### Reverse Geocoding (retrieve GeoJsons for, e.g., Cities, Neighborhoods, or Zip-Codes)
 
 The library also offers the feature of reverse geocoding. Having a specific geo-location and resolving the coordinates
 to a specific city or neighborhood (i.e., names of neighborhood, city, state, country, and optionally GeoJson shapes). 
