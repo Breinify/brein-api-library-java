@@ -9,7 +9,7 @@ application provides some examples on how to request data from the API through t
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/sample-response-output.png" alt="Output of the Sample Application" width="500"><br/>
-  <sup>Output of the Sample Application utilizing some commanly used features.</sup>
+  <sup>Output of the Sample Application utilizing some commonly used features.</sup>
 </p>
 
 As illustrated, the sample application resolves the IP address `204.28.127.66` and looks-up some sample geo-coordinates, i.e., 
