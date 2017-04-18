@@ -200,6 +200,6 @@ to a specific city or neighborhood (i.e., names of neighborhood, city, state, co
 ### Further links
 To understand all the capabilities of Breinify's APIs, have a look at:
 
-* [Sample Application](documentation/sample-app.md),
-* [Change Log](documentation/changelog.md), or
+* the [sample application](documentation/sample-app.md),
+* the [change log](documentation/changelog.md), or
 * [Breinify's Website](https://www.breinify.com).
