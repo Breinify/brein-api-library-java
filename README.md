@@ -2,7 +2,7 @@
   <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify: Leading Temporal AI Engine" width="250">
 </p>
 
-# API-Library (JAVA) 
+# Breinify's API Library
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java) 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <sup>Features: **Temporal Data**, **(Reverse) Geocoding**, **Events**, **Weather**, **Holidays**, **Analytics**</sup>
