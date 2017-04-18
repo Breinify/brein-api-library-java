@@ -6,6 +6,8 @@ import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +19,8 @@ import java.util.TimeZone;
  * Provides the lookup functionality
  */
 public class BreinTemporalData extends BreinBase<BreinTemporalData> implements IExecutable<BreinTemporalDataResult> {
+    public static DateTimeFormatter JAVA_SCRIPT_FORMAT = DateTimeFormatter.ofPattern("E MMM dd yyyy HH:mm:ss \'GMT\'Z" +
+            " (z)");
 
     /*
      * The following fields are used within the additional
@@ -79,6 +83,22 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
 
     public BreinTemporalData setLocation(final String freeText) {
         setLocation(TEXT_FIELD, freeText);
+        return this;
+    }
+
+    /**
+     * Sets the current localDateTime based on the system's time.
+     *
+     * @return {@code this}
+     *
+     * @see ZonedDateTime#now()
+     */
+    public BreinTemporalData setLocalDateTime() {
+        return setLocalDateTime(ZonedDateTime.now());
+    }
+
+    public BreinTemporalData setLocalDateTime(final ZonedDateTime zonedDateTime) {
+        setAdditional(LOCAL_DATE_TIME_FIELD, zonedDateTime.format(JAVA_SCRIPT_FORMAT));
         return this;
     }
 

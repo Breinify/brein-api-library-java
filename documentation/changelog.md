@@ -1,13 +1,26 @@
+<p align="center">
+  <img src="https://www.breinify.com/img/Breinify_logo.png" alt="Breinify: Leading Temporal AI Engine" width="250">
+</p>
+
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
-# Version 2.1
+# Version 2.0.0
+
+The architecture of the library was re-factored. With these changes, the general usage of the library is the same as before.
+Nevertheless, slight changes may be necessary to adapt to the new structure.
+
+* `BreinTemporalDataResult` provides detailed access to the different returned data-points of the `\temporaldata` endpoint.
+* multiple `setters` where added to increase usability of the library
+* it is now possible to `shutdown` and `reuse` the library
+
+# Version 1.3.2
 
 ## Modifications
 
 ### Concurrency Support
-With each activity or temporalData request the associated request classes are cloned before the request call will be invoked. This will prevent concurrency issues in multithread situations.
 
+With each activity or temporalData request the associated request classes are cloned before the request call will be invoked. This will prevent concurrency issues in multithread situations.
 
 ### Flexible Maps 
 The method names have changed for the flexible Maps.
@@ -19,7 +32,7 @@ The method names have changed for the flexible Maps.
 
 
 
-# Version 2.0
+# Version 1.3.1
 
 ## Modifications
 
@@ -47,7 +60,7 @@ The flexible maps now belongs to their related classes. This means that:
 The constructors of class BreinConfig have changed.
 
 
-# Version 1.4.0
+# Version 1.3.0
 
 ## Modifications
 
@@ -72,7 +85,7 @@ invokeActivityCall(localBreinUser,
 ```
 
 
-# Version 1.3.0
+# Version 1.2.0
 
 ## Modifications
 

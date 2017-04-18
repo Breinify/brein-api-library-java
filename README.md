@@ -4,150 +4,202 @@
 
 # API-Library (JAVA) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.breinify/brein-api-library-java) 
-<sup>Features: **Analytics and Insights**, **React Intelligent**, Endpoint: **TemporalData**, Endpoint: **Activity**</sup>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<sup>Features: **Temporal Data**, **(Reverse) Geocoding**, **Events**, **Weather**, **Holidays**, **Analytics**</sup>
 
-### Step By Step Introduction
+This library utilizes [Breinify's API](https://www.breinify.com) to provide tasks like `geocoding`, `reverse geocoding`, `weather and events look up`, `holidays determination` through the API's endpoints, i.e., `/activity` and `/temporaldata`. Each endpoint provides different features, which are explained in the following paragraphs. In addition, this documentation gives detailed examples for each of the features available for the different endpoints.
 
-#### What is Breinify's DigitialDNA
+**Activity Endpoint**: The endpoint is used to understand the usage-patterns and the behavior of a user using, e.g., an application, a mobile app, or a web-browser. The endpoint offers analytics and insights through Breinify's dashboard.
 
-Breinify's DigitalDNA API puts dynamic behavior-based, people-driven data right at your fingertips. We believe that in many situations, a critical component of a great user experience is personalization. With all the data available on the web it should be easy to provide a unique experience to every visitor, and yet, sometimes you may find yourself wondering why it is so difficult.
+**TemporalData Endpoint**: The endpoint offers features to resolve temporal information like a timestamp, a location (latitude and longitude or free-text), or an IP-address, to temporal information (e.g., timezone, epoch, formatted dates, day-name),  holidays at the specified time and location, city, zip-code, neighborhood, country, or county of the location, events at the specified time and location (e.g., description, size, type), weather at the specified time and location (e.g., description, temperature).
 
-Thanks to **Breinify's DigitalDNA** you are now able to adapt your online presence to your visitors needs and **provide a unique experience**. Let's walk step-by-step through a simple example.
+## Getting Started
 
-### Quick start
+### Retrieving an API-Key
 
-#### Step 1: Download the Library
+First of all, you need a valid API-key, which you can get for free at [https://www.breinify.com](https://www.breinify.com). In the examples, we assume you have the following API key:
 
-Download the Library from [Maven Central Repository](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22brein-api-library-java%22)
+**938D-3120-64DD-413F-BB55-6573-90CE-473A**
+
+It is recommended to use signed messages when utilizing the Java library. A signed messages ensures, that the request is authorized. To activate signed message ensure that `Verification Signature` is enabled for your key (see [Breinify's API Docs](https://www.breinify.com/documentation) for further information).
+In this documentation we assume that the following secret is attached to the API key and used to sign a message.
+
+**utakxp7sm6weo5gvk7cytw==**
+
+
+### Including the Library
+
+The library is available through [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cbreinify) and can be easily added using:
 
 ```pom
 <dependency>
-    <groupId>com.breinify</groupId>
-    <artifactId>brein-api-library-java</artifactId>
-    <version>${currentVersion}</version>
+  <groupId>com.breinify</groupId>
+  <artifactId>brein-api-library-java</artifactId>
+  <version>${CURRENT_VERSION}</version>
 </dependency>
 ```
 
-#### Step 2: Integrate the library
+### Configuring the Library
 
-Integrate the Library into your Java project. 
-
-
-#### Step 3: Configure the library
-
-In order to use the library you need a valid API-key, which you can get for free at [https://www.breinify.com](https://www.breinify.com). In this example, we assume you have the following api-key:
-
-**772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6**
-
-```Java
-// this is the valid api-key
-final String apiKey = "772A-47D7-93A3-4EA9-9D73-85B9-479B-16C6";
-
-// create the configuration object
-final BreinConfig breinConfig = new BreinConfig(apiKey);
-
-// set the configuration for later usage
-Breinify.setConfig(breinConfig);
-```
-
-The Breinify class is now configured with a valid configuration object.
-
-
-#### Step 4: Start using the library
-
-##### Placing activity triggers
-
-The engine powering the DigitalDNA API provides two endpoints. The first endpoint is used to inform the engine about the activities performed by visitors of your site. The activities are used to understand the user's current interest and infer the intent. It becomes more and more accurate across different users and verticals as more activities are collected. It should be noted, that any personal information is not stored within the engine, thus each individual's privacy is well protected. The engine understands several different activities performed by a user, e.g., landing, login, search, item selection, or logout.
-
-The engine is informed of an activity by executing *Breinify.activity(...)*. 
-
-```Java
-// create a user you are interested in 
-final BreinUser breinUser = new BreinUser("user.anywhere@email.com")
-         .setFirstName("User")
-         .setLastName("Anyhere");
-               
-// invoke an activity request
-Breinify.activity(breinUser, 
-         BreinActivityType.LOGIN,
-         BreinCategoryType.HOME, 
-         "Login-Description");
-
-```
-
-That's it! The call will run asynchronously in the background.
-
-
-##### Placing look-up triggers
-
-Look-ups are used to retrieve dedicated information for a given user. 
+Whenever the library is used, it needs to be configured, i.e., the configuration defines which API key and which secret 
+(if signed messages are enabled, i.e., `Verification Signature` is checked) to use.
 
 ```java
-// define an array of subjects of interest
-final String[] dimensions = {"firstname",
-       "gender",
-       "age",
-       "agegroup",
-       "digitalfootprint",
-       "images"};
-
-// wrap this array into BreinDimension
-final BreinDimension breinDimension = new BreinDimension(dimensions);
-
-// invoke the lookup
-final BreinResult result = Breinify.lookup(breinUser, breinDimension);
-
-// retrieve the values of interest
-final Object dataFirstname = result.get("firstname");
-final Object dataGender = result.get("gender");
-final Object dataAge = result.get("age");
-final Object dataAgeGroup = result.get("agegroup");
-final Object dataDigitalFootprinting = result.get("digitalfootprint");
-final Object dataImages = result.get("images");
-
+Breinify.setConfig("938D-3120-64DD-413F-BB55-6573-90CE-473A", 
+                   "utakxp7sm6weo5gvk7cytw==");
 ```
 
-##### Placing temporalData triggers
+In addition to the API key and the secret, it is also possible to configure the engine used to request the API. By default,
+the library tries to auto-detect an available engine on the class-path. If no implementation is found, the library throws
+an exception. To manually specify a library, simple use the `setRestEngineType(BreinEngineType)` method. 
 
-Temporal Intelligence API provides temporal triggers and visualizes patterns
-enabling you to predict a visitor’s dynamic activities. Currently this will
-cover:
-* Current Weather
-* Upcoming Holidays
-* Time Zone
-* Regional Events
+```java
+final BreinConfig config = new BreinConfig("938D-3120-64DD-413F-BB55-6573-90CE-473A", "utakxp7sm6weo5gvk7cytw==")
+                 .setRestEngineType(BreinEngineType.UNIREST_ENGINE);
+Breinify.setConfig(config);
+```
 
-They can be requested like this:
+The library does not add any of the supported engines (i.e., `UniRest` or `Jersey`) to the class-path by default. 
+To add the preferred requesting-library one of the following dependencies has to be added.
+
+```pom
+<dependency>
+    <groupId>com.mashape.unirest</groupId>
+    <artifactId>unirest-java</artifactId>
+    <version>1.4.9</version>
+</dependency>
+```
+
+```pom
+<dependency>
+    <groupId>com.sun.jersey</groupId>
+    <artifactId>jersey-client</artifactId>
+    <version>1.19.1</version>
+</dependency>
+```
+
+### Clean-Up the Library
+
+Whenever the library is not used anymore, it is recommended to clean-up and release the resources held (e.g., `UniRest` 
+utilizes a connection manager, which holds several connections to increase performance). To do so, the `Breinify.shutdown()`
+method is used. A typical framework may look like that:
+
+```java
+// whenever the application utilizing the library is initialized
+Breinify.setConfig("938D-3120-64DD-413F-BB55-6573-90CE-473A", "utakxp7sm6weo5gvk7cytw==");
+
+// whenever the application utilizing the library is destroyed/released
+Breinify.shutdown();
+```
+
+## Activity: Selected Usage Examples
+
+As mentioned earlier, the library provides method to simple add analytics for the usage of, e.g., an application, an app, or a web-site. There are several libraries available to be used for different system (e.g., [iOS](https://github.com/Breinify/brein-api-library-ios), [Android](https://github.com/Breinify/brein-api-library-android), [Node.js](https://github.com/Breinify/brein-api-library-node), [JavaScript](https://github.com/Breinify/brein-api-library-javascript-browser), [ruby](https://github.com/Breinify/brein-api-library-ruby), [php](https://github.com/Breinify/brein-api-library-php), [python](https://github.com/Breinify/brein-api-library-python)).
+Activities are sent to the API whenever something happens within the system, which should be tracked. There are some common activities, which are *login*, *logout*, and *pageVisit*. Depending on the system other events may be tracked as well, e.g., *addToCart*, *checkOut*, or *readArticle*.
+
+The engine is informed of an activity by executing `Breinify.activity(...)`. There are several overloaded versions of the `activity` method, making the usage as easy as possible. The following code-snippets illustrate the simplicity and show how the library can be utilized.
+
+**1. Sending Login**
 
 ```Java
-// create a user you are interested in 
-final BreinUser breinUser = new BreinUser()
-         .setTimezone("America/Los_Angeles")
-         .setLocalDateTime("Sun 25 Dec 2016 18:15:48 GMT-0800 (PST)");
-               
-// invoke the temporal request 
-final BreinResult result = Breinify.temporalData(breinUser);
-final Object timeValues = result.get("time");
-final Object weatherValues = result.get("weather");
-final Object locationValues = result.get("location");
-final Object holidayValues = result.get("holiday");
-
+Breinify.activity(new M<String>()
+        .set("email", "user.login@gmail.com")
+        .set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), "login");
 ```
 
-#### Step 5: Teardown of the Library Services
+**2. Sending readArticle**
 
-Depending of the rest engine (e.g. UNIREST) some threads needs to be stopped. This will be done by invoking the following statement:
+Instead of sending an activity utilizing the `Breinify.activity(...)` method, it is also possible to create an instance of a `BreinActivity` and use the `execute(...)` method to send the activity asynchronous. This implementation is typically favored when multiple information are sent with the activity (e.g., tags or descriptions).
+
+```Java
+new BreinActivity()
+        .setUser("sessionId", "966542c6-2399-11e7-93ae-92361f002671")
+        .setActivityType("readArticle")
+        .setDescription("A Homebody President Sits Out His Honeymoon Period")
+        .setTag("group", "politics")
+        .setTag("date", "04/16/2017")
+        .setTag("subscription", true)
+        .execute();
+```
+
+**3. Send Activities for Funnel Analytics**
+
+For some use-cases, e.g., understanding your customers *favorite products*, *average time to checkout*, or *abandon rate*, it is necessary to keep track of your check-out process. The system supports different activities to provide funnel-analytics, i.e.,  *viewedProduct*, *addToCart*, *removeFromCart*, and *checkOut*. Each activity uses the same information to provide a funnel analysis (see the following example). 
+
+```Java
+new BreinActivity()
+        .setUser("sessionId", "966542c6-2399-11e7-93ae-92361f002671")
+        .setActivityType("addToCart")
+        .setTag("productPrices", new ArrayList<Double>(3.50, 3.70))                // can be multiple prices
+        .setTag("productIds", new ArrayList<String>("sock-AU-90", "sock-GR-92"))   // can be multiple ids
+        .setTag("productCategories", new ArrayList<String>("apparel", "apparel"))  // optional
+        .execute();
+```
+
+## TemporalData: Selected Usage Examples
+
+The `/temporalData` endpoint is used to transform your temporal data into temporal information, i.e., enrich your temporal data with information like 
+*current weather*, *upcoming holidays*, *regional and global events*, and *time-zones*, as well as geocoding and reverse geocoding.
+
+**1. Getting User Information**
+
+Sometimes it is necessary to get some more information about the user of an application, e.g., to increase usability and enhance the user experience, 
+to handle time-dependent data correctly, to add geo-based services, or increase quality of service. The client's information can be retrieved easily 
+by calling the `/temporaldata` endpoint utilizing the `Breinify.temporalData(...)` method or by executing a `BreinTemporalData` instance, i.e.,:
+
+```java
+final BreinTemporalDataResult result = new BreinTemporalData()
+    .setLocalDateTime()
+    .execute();
+```
+
+The returned result contains detailed information about the time, the location, the weather, holidays, and events at the time and the location. A detailed
+example of the returned values can be found <a target="_blank" href="https://www.breinify.com/documentation">here</a>.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/sample-user-information.png" alt="Sample output of the user information." width="500"><br/>
+  <sup>Output of the Sample Application utilizing some commanly used features.</sup>
+</p>
+
+**2. Geocoding (resolve Free-Text to Locations)**
+
+Sometimes it is necessary to resolve a textual representation to a specific geo-location. The textual representation can be
+structured and even partly unstructured, e.g., the textual representation `the Big Apple` is considered to be unstructured,
+whereby a structured location would be, e.g., `{ city: 'Seattle', state: 'Washington', country: 'USA' }`. It is also possible
+to pass in partial information and let the system try to resolve/complete the location, e.g., `{ city: 'New York', country: 'USA' }`.
 
 ```
-// terminates the engine and possible open threads
-Breinify.shutdown();
-``` 
+final BreinTemporalDataResult result = new BreinTemporalData()
+    .setLocation("The Big Apple")
+    .execute();
+```
 
-Please note that after having invoked this call no further Breinify.activity or Breinify.lookup calls are possible. So it should only be part of your termination sequence of your program. Without this statement your program might not terminate.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/sample-geocoding.png" alt="Sample results of textual location requests." width="400"><br/>
+  <sup>Sample responses of textual (unstructured) location requests.</sup>
+</p>
+
+To receive detailed temporal information from a structured location (e.g., current time, timezone, holidays, weather, or events), have a look at the following snippet: 
+
+```
+final BreinTemporalDataResult result = new BreinTemporalData()
+    .setLocation("Seattle", "Washington", "USA")
+    .execute();
+```
+
+**3. Reverse Geocoding (retrieve GeoJsons for, e.g., Cities, Neighborhoods, or Zip-Codes)**
+
+The library also offers the feature of reverse geocoding. Having a specific geo-location and resolving the coordinates
+to a specific city or neighborhood (i.e., names of neighborhood, city, state, country, and optionally GeoJson shapes). 
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/sample-reverse-geocoding.png" alt="Sample results of reverse geocoding requests." width="400"><br/>
+  <sup>Sample responses of reverse geocoding requests.</sup>
+</p>
 
 ### Further links
-To understand all the capabilities of Breinify's DigitalDNA API, take a look at:
+To understand all the capabilities of Breinify's APIs, have a look at:
 
-* [Additional code snippets](documentation/more-snippets.md),
+* [A Sample Application](documentation/sample-app.md),
 * [Change Log](documentation/changelog.md), or
 * [Breinify's Website](https://www.breinify.com).

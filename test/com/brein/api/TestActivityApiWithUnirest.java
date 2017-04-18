@@ -2,6 +2,7 @@ package com.brein.api;
 
 import com.brein.domain.BreinConfig;
 import com.brein.engine.BreinEngineType;
+import com.brein.util.M;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -151,5 +152,13 @@ public class TestActivityApiWithUnirest extends ApiTestBase {
                 cb.set(true);
             }), 2000);
         }
+    }
+
+    @Test
+    public void testUsageOfM() {
+        asyncTest(cb -> Breinify.activity(new M<String>().set("firstName", "Marco"), "login", res -> {
+            assertEquals(200, res.getStatus());
+            cb.set(true);
+        }), 2000);
     }
 }

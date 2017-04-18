@@ -4,6 +4,7 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.domain.results.BreinTemporalDataResult;
+import com.brein.util.M;
 
 import java.util.function.Consumer;
 
@@ -24,6 +25,41 @@ public class Breinify {
         return setConfig(new BreinConfig(apiKey, secret));
     }
 
+    public static void activity(final M<String> identifiers,
+                                final String activityType) {
+        activity(identifiers, activityType, null, null, null);
+    }
+
+    public static void activity(final M<String> identifiers,
+                                final String activityType,
+                                final Consumer<BreinResult> callback) {
+        activity(identifiers, activityType, null, null, callback);
+    }
+
+    public static void activity(final M<String> identifiers,
+                                final String activityType,
+                                final String description) {
+        activity(identifiers, activityType, null, description, null);
+    }
+
+    public static void activity(final M<String> identifiers,
+                                final String activityType,
+                                final String description,
+                                final Consumer<BreinResult> callback) {
+        activity(identifiers, activityType, null, description, callback);
+    }
+
+    public static void activity(final M<String> identifiers,
+                                final String activityType,
+                                final String category,
+                                final String description,
+                                final Consumer<BreinResult> callback) {
+        final BreinUser user = new BreinUser();
+        identifiers.forEach(user::set);
+
+        activity(user, activityType, category, description, null);
+    }
+
     public static void activity(final BreinUser user,
                                 final String activityType,
                                 final String category,
@@ -36,16 +72,15 @@ public class Breinify {
                                 final String category,
                                 final String description,
                                 final Consumer<BreinResult> callback) {
-
         if (user == null) {
             throw new BreinException(BreinException.USER_NOT_SET);
         }
 
-        final BreinActivity activity = new BreinActivity();
-        activity.setUser(user);
-        activity.setActivityType(activityType);
-        activity.setCategory(category);
-        activity.setDescription(description);
+        final BreinActivity activity = new BreinActivity()
+                .setUser(user)
+                .setActivityType(activityType)
+                .setCategory(category)
+                .setDescription(description);
 
         activity(activity, callback);
     }

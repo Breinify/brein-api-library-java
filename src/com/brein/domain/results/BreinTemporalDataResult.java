@@ -7,6 +7,8 @@ import com.brein.domain.results.temporaldataparts.BreinLocationResult;
 import com.brein.domain.results.temporaldataparts.BreinWeatherResult;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class BreinTemporalDataResult extends BreinResult {
     private static final String WEATHER_KEY = "weather";
     private static final String TIME_KEY = "time";
+    private static final String TIMEZONE_KEY = "timezone";
     private static final String LOCAL_TIME_KEY = "localFormatIso8601";
     private static final String EPOCH_TIME_KEY = "epochFormatIso8601";
     private static final String LOCATION_KEY = "location";
@@ -42,12 +45,24 @@ public class BreinTemporalDataResult extends BreinResult {
         return getNestedValue(TIME_KEY, LOCAL_TIME_KEY) != null;
     }
 
-    public LocalDateTime getLocalDateTime() {
+    public ZonedDateTime getZonedDateTime() {
         final String value = getNestedValue(TIME_KEY, LOCAL_TIME_KEY);
         if (value == null) {
             return null;
         } else {
-            return LocalDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+            final ZonedDateTime zonedDateTime = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
+            final String timezone = getNestedValue(TIME_KEY, TIMEZONE_KEY);
+            if (timezone == null || timezone.isEmpty()) {
+                return zonedDateTime;
+            } else {
+                try {
+                    final ZoneId zoneId = ZoneId.of(timezone);
+                    return zonedDateTime.withZoneSameInstant(zoneId);
+                } catch (final Exception e) {
+                    return zonedDateTime;
+                }
+            }
         }
     }
 

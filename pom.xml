@@ -37,7 +37,6 @@
             <optional>true</optional>
         </dependency>
 
-
         <!-- UNIREST -->
         <dependency>
             <groupId>com.mashape.unirest</groupId>
@@ -46,19 +45,19 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- JSON Support -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gsonVersion}</version>
-        </dependency>
-
         <!-- Jersey -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>${jerseyClientVersion}</version>
             <optional>true</optional>
+        </dependency>
+
+        <!-- JSON Support -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gsonVersion}</version>
         </dependency>
 
         <!-- Testing -->

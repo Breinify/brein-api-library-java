@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class TestBreinTemporalDataResult {
 
         final BreinTemporalDataResult withTime = new BreinTemporalDataResult(new BreinResult(json));
         Assert.assertTrue(withTime.hasLocalDateTime());
-        final LocalDateTime time = withTime.getLocalDateTime();
+        final ZonedDateTime time = withTime.getZonedDateTime();
 
         Assert.assertEquals(2017, time.getYear());
         Assert.assertEquals(4, time.getMonthValue());

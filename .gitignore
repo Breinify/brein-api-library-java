@@ -15,6 +15,7 @@ tmp/**/*
 # Configurations     #
 ######################
 src/config/dev-*.properties
+api.properties
 
 # OS generated files #
 ######################
