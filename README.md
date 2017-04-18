@@ -176,7 +176,7 @@ final BreinTemporalDataResult result = new BreinTemporalData()
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/sample-geocoding.png" alt="Sample results of textual location requests." width="400"><br/>
-  <sup>Sample responses of textual (unstructured) location requests.</sup>
+  <sup>Formatted output of textual (unstructured) location requests.</sup>
 </p>
 
 To receive detailed temporal information from a structured location (e.g., current time, timezone, holidays, weather, or events), have a look at the following snippet: 
@@ -194,7 +194,7 @@ to a specific city or neighborhood (i.e., names of neighborhood, city, state, co
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Breinify/brein-api-library-java/master/documentation/img/sample-reverse-geocoding.png" alt="Sample results of reverse geocoding requests." width="400"><br/>
-  <sup>Sample responses of reverse geocoding requests.</sup>
+  <sup>Formatted output utilizing the result of reverse geocoding requests.</sup>
 </p>
 
 ### Further links
