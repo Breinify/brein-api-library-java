@@ -6,21 +6,19 @@ will be released when the application shutdowns or the library is not used anymo
 </blockquote>
  
 <blockquote class="lang-specific java--native">
-<p><b>Note:</b> If working in a multi-threaded environment, it is not recommended to change the configuration, 
-otherwise it is impossible to foresee, which configuration will be used in the different threads.</p>
+<p><b>Note:</b> If working in a multi-threaded environment, it is not recommended to change the configuration within 
+the different threads, otherwise it is impossible to foresee, which configuration will be used.</p>
 </blockquote>
 
 >
 ```java--native
 Breinify.setConfig("938D-3120-64DD-413F-BB55-6573-90CE-473A", 
                    "utakxp7sm6weo5gvk7cytw==");
-<br>
 /*
  * After the configuration is set, you can use the library 
  * (multi-threading is supported). After the library is not used
  * anymore, it is recommended to release the used resources.
  */
-<br>
 Breinify.shutdown();
 ```
 
