@@ -78,7 +78,7 @@ To add the preferred requesting-library one of the following dependencies has to
 </dependency>
 ```
 
-### Clean-Up the Library
+### Clean-Up after Usage
 
 Whenever the library is not used anymore, it is recommended to clean-up and release the resources held (e.g., `UniRest` 
 utilizes a connection manager, which holds several connections to increase performance). To do so, the `Breinify.shutdown()`
