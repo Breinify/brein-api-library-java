@@ -16,7 +16,7 @@ version you would like to use.</p>
 <blockquote class="lang-specific java--native">
 <p>The library utilizes a query engine, to send requests to the API endpoint. Currently, two query engines are 
 available: <code class="prettyprint">UniRest</code> (<b>recommended</b>) or
-<code class="prettyprint">Jersey</code> (). None of the engines is added as dependecy by default, thus it is necessary
+<code class="prettyprint">Jersey</code>. By default, none of the engines is added as dependecy, thus it is necessary
 to pick and add one of the two and add its dependency as well.</p>
 </blockquote>
 
