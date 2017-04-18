@@ -122,7 +122,7 @@ new BreinActivity()
         .execute();
 ```
 
-**3. Send Activities for Funnel Analytics**
+### Send Activities for Funnel Analytics
 
 For some use-cases, e.g., understanding your customers *favorite products*, *average time to checkout*, or *abandon rate*, it is necessary to keep track of your check-out process. The system supports different activities to provide funnel-analytics, i.e.,  *viewedProduct*, *addToCart*, *removeFromCart*, and *checkOut*. Each activity uses the same information to provide a funnel analysis (see the following example). 
 
