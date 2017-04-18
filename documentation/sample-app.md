@@ -4,7 +4,7 @@
 
 # Sample Application
 
-The library contains an executable sample application [Sample.java](../../src/com/brein/sample/Sample.java). This sample
+The library contains an executable sample application [Sample.java](../src/com/brein/sample/Sample.java). This sample
 application provides some examples on how to request data from the API through the library.
 
 <p align="center">
