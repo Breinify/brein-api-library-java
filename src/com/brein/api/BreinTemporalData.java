@@ -19,8 +19,8 @@ import java.util.TimeZone;
  * Provides the lookup functionality
  */
 public class BreinTemporalData extends BreinBase<BreinTemporalData> implements IExecutable<BreinTemporalDataResult> {
-    public static DateTimeFormatter JAVA_SCRIPT_FORMAT = DateTimeFormatter.ofPattern("E MMM dd yyyy HH:mm:ss \'GMT\'Z" +
-            " (z)");
+    public static DateTimeFormatter JAVA_SCRIPT_FORMAT =
+            DateTimeFormatter.ofPattern("E MMM dd yyyy HH:mm:ss \'GMT\'Z (z)");
 
     /*
      * The following fields are used within the additional
@@ -57,12 +57,12 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
     }
 
     public BreinTemporalData setTimezone(final String timezone) {
-        getUser().setAdditional(TIMEZONE_FIELD, timezone);
+        setAdditional(TIMEZONE_FIELD, timezone);
         return this;
     }
 
     public BreinTemporalData setLookUpIpAddress(final String ipAddress) {
-        getUser().setAdditional(IP_ADDRESS_FIELD, ipAddress);
+        setAdditional(IP_ADDRESS_FIELD, ipAddress);
         return this;
     }
 
