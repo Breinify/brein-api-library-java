@@ -3,7 +3,6 @@ package com.brein.engine;
 import com.brein.api.ApiTestBase;
 import com.brein.api.BreinActivity;
 import com.brein.api.Breinify;
-import com.brein.domain.BreinActivityType;
 import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinUser;
 import org.junit.Test;
