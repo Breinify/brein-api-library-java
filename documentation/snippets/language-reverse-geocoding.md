@@ -1,7 +1,7 @@
 >
 ```java--native
 final BreinTemporalDataResult result;
-restul = Breinify.temporalData(37.7609295, 
+result = Breinify.temporalData(37.7609295, 
                                -122.4194155,
                                "STATE", "CITY");
 ```
