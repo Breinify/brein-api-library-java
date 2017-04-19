@@ -18,7 +18,6 @@ public class BreinException extends RuntimeException {
     public static final String ENGINE_NOT_INITIALIZED = "Rest engine not initialized. " +
             "You have to configure BreinConfig with a valid engine.";
 
-    // Exception methods
     public BreinException(final Throwable e) {
         super(e);
     }
