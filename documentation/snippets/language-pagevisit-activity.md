@@ -18,6 +18,11 @@ returned value. The returned value can be read by utilizing a callback function,
 
 >
 ```java--native
+/*
+ * In this example the `execute(...)` method is used with a callback, 
+ * it is also possible ot use the Breinify.activity() method and
+ * provide a callback.
+ */
 new BreinActivity()
     .setUser("sessionId", "966542c6-2399-11e7-93ae-92361f002671")
     .setActivityType("pageVisit")
