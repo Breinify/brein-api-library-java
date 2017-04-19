@@ -18,10 +18,11 @@ returned value. The returned value can be read by utilizing a callback function,
 
 >
 ```java--native
-Breinify.activity(new M<String>()
-        .set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), 
-        "pageVisit", (result) -> {
-            // do something with the result, e.g., check the status
-            // result.getStatus() == 200
-        });
+new BreinActivity()
+    .setUser("sessionId", "966542c6-2399-11e7-93ae-92361f002671")
+    .setActivityType("pageVisit")
+    .execute((result) -> {
+        // do something with the result, e.g., check the status
+        // result.getStatus() == 200
+    }));
 ```
