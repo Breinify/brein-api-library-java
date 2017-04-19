@@ -93,6 +93,12 @@ public class Breinify {
         getBrein().activity(activity, callback);
     }
 
+    public static BreinTemporalDataResult temporalData() {
+        final BreinTemporalData data = new BreinTemporalData().setLocalDateTime();
+
+        return getBrein().temporalData(data);
+    }
+
     public static BreinTemporalDataResult temporalData(final String ipAddress) {
         final BreinTemporalData data = new BreinTemporalData().setLookUpIpAddress(ipAddress);
 
