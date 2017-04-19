@@ -19,28 +19,28 @@ import java.util.TimeZone;
  * Provides the lookup functionality
  */
 public class BreinTemporalData extends BreinBase<BreinTemporalData> implements IExecutable<BreinTemporalDataResult> {
-    public static DateTimeFormatter JAVA_SCRIPT_FORMAT =
+    public static final DateTimeFormatter JAVA_SCRIPT_FORMAT =
             DateTimeFormatter.ofPattern("E MMM dd yyyy HH:mm:ss \'GMT\'Z (z)");
 
     /*
      * The following fields are used within the additional
      */
-    public final static String LOCATION_FIELD = "location";
-    public final static String LOCAL_DATE_TIME_FIELD = "localDateTime";
-    public final static String TIMEZONE_FIELD = "timezone";
-    public final static String IP_ADDRESS_FIELD = "ipAddress";
+    public static final String LOCATION_FIELD = "location";
+    public static final String LOCAL_DATE_TIME_FIELD = "localDateTime";
+    public static final String TIMEZONE_FIELD = "timezone";
+    public static final String IP_ADDRESS_FIELD = "ipAddress";
 
     /*
      * The following fields are used within the location
      */
-    public final static String LONGITUDE_FIELD = "longitude";
-    public final static String LATITUDE_FIELD = "latitude";
-    public final static String SHAPE_TYPES_FIELD = "shapeTypes";
-    public final static String TEXT_FIELD = "text";
+    public static final String LONGITUDE_FIELD = "longitude";
+    public static final String LATITUDE_FIELD = "latitude";
+    public static final String SHAPE_TYPES_FIELD = "shapeTypes";
+    public static final String TEXT_FIELD = "text";
 
-    public final static String CITY_TEXT_FIELD = "text";
-    public final static String STATE_TEXT_FIELD = "text";
-    public final static String COUNTRY_TEXT_FIELD = "text";
+    public static final String CITY_TEXT_FIELD = "text";
+    public static final String STATE_TEXT_FIELD = "text";
+    public static final String COUNTRY_TEXT_FIELD = "text";
 
     @Override
     public String getEndPoint(final BreinConfig config) {
