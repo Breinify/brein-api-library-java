@@ -7,7 +7,8 @@ that the activity happened, but the returned information is ignored. Thus, the i
 >
 ```java--native
 Breinify.activity(new M<String>()
-        .set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), "pageVisit");
+        .set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), 
+        "pageVisit");
 ```
 
 <blockquote class="lang-specific java--native">
@@ -17,7 +18,8 @@ returned value. The returned value can be read by utilizing a callback function,
 
 >
 ```java--native
-Breinify.activity(new M<String>().set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), 
+Breinify.activity(new M<String>()
+        .set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), 
         "pageVisit", (result) -> {
             // do something with the result, e.g., check the status
             // result.getStatus() == 200

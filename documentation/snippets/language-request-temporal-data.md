@@ -8,9 +8,8 @@ which are completely interchangable.</p>
 </blockquote>
 
 <blockquote class="lang-specific java--native">
-<h3>Request Client Specific Information</h3>
 <p>If a simple request is fired, the endpoint uses the client's information (attached to the request, e.g., 
-<code class="prettyprint">ipAddress</code>) to determine the different temporal information.</p>
+the <code class="prettyprint">ipAddress</code>) to determine the different temporal information.</p>
 </blockquote>
 
 >
@@ -21,8 +20,7 @@ final BreinTemporalDataResult result = new BreinTemporalData()
 ```
 
 <blockquote class="lang-specific java--native">
-<h3>Providing a User Instance</h3>
-<p>Another possibility is to provide a user object manually. This is typically done, if
+<p>Another possibility is to provide specific data. This is typically done, if
 some specific temporal data should be resolved, e.g., a location based on a free text, 
 a pair of coordinates (latitude/longitude), or a specific ip-address. Have a look at the
 <a href="#example-use-cases">further use cases</a> to see other examples.</p>
