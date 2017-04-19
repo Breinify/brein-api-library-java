@@ -102,14 +102,14 @@ The engine is informed of an activity by executing `Breinify.activity(...)`. The
 ### Sending Login
 
 ```Java
-Breinify.activity(new M<String>()
+Breinify.activity(new BreinUser()
         .set("email", "user.login@gmail.com")
         .set("sessionId", "966542c6-2399-11e7-93ae-92361f002671"), "login");
 ```
 
 ### Sending readArticle
 
-Instead of sending an activity utilizing the `Breinify.activity(...)` method, it is also possible to create an instance of a `BreinActivity` and use the `execute(...)` method to send the activity asynchronous. This implementation is typically favored when multiple information are sent with the activity (e.g., tags or descriptions).
+Instead of sending an activity utilizing the `Breinify.activity(...)` method, it is also possible to create an instance of a `BreinActivity` and use the `execute(...)` method to send the activity. This implementation is typically favored when multiple information are sent with the activity (e.g., tags or descriptions).
 
 ```Java
 new BreinActivity()

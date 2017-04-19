@@ -61,6 +61,11 @@ public class Breinify {
     }
 
     public static void activity(final BreinUser user,
+                                final String activityType) {
+        activity(user, activityType, null, null, null);
+    }
+
+    public static void activity(final BreinUser user,
                                 final String activityType,
                                 final String category,
                                 final String description) {
