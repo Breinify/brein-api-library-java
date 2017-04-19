@@ -150,7 +150,7 @@ public class Breinify {
         final BreinUser user = new BreinUser();
         identifiers.forEach(user::set);
 
-        activity(user, activityType, category, description, null);
+        activity(user, activityType, category, description, callback);
     }
 
     /**

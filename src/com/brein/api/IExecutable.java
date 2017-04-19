@@ -2,6 +2,7 @@ package com.brein.api;
 
 import com.brein.domain.BreinResult;
 
+@FunctionalInterface
 public interface IExecutable<R extends BreinResult> {
 
     /**

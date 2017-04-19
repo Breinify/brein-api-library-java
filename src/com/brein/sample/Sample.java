@@ -20,6 +20,13 @@ import java.util.Random;
 
 public class Sample {
 
+    private Sample() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
+    }
+
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BOLD = "\u001B[1m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -143,7 +150,8 @@ public class Sample {
     }
 
     public static void main(final String[] args) throws IOException {
-        final String apiKey, secret;
+        final String apiKey;
+        final String secret;
 
         final File propertiesFile = new File("./api.properties");
         if (propertiesFile.exists()) {

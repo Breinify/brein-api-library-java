@@ -4,6 +4,7 @@ import com.brein.domain.BreinResult;
 
 import java.util.function.Consumer;
 
+@FunctionalInterface
 public interface IAsyncExecutable<R extends BreinResult> {
 
     /**
