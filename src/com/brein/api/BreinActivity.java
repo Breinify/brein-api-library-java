@@ -16,36 +16,10 @@ import java.util.function.Consumer;
 public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExecutable<BreinResult> {
     public static final String ACTIVITY_FIELD = "activity";
     public static final String TAGS_FIELD = "activity";
-
-    /**
-     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
-     * API documentation.
-     */
-    public enum ActivityField {
-        TYPE("type"),
-        DESCRIPTION("description"),
-        CATEGORY("category");
-
-        final String name;
-
-        ActivityField(final String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void set(final BreinActivity activity, final Object value) {
-            activity.set(getName(), value);
-        }
-    }
-
     /**
      * contains the tagsMap map
      */
     private Map<String, Object> tagsMap;
-
     /**
      * contains the fields that are part of the activity map
      */
@@ -126,6 +100,19 @@ public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExe
     }
 
     @Override
+    public BreinActivity set(final String key, final Object value) {
+        if (TAGS_FIELD.equalsIgnoreCase(key)) {
+            throw new BreinException("The field '" + TAGS_FIELD + "' cannot be set, " +
+                    "use the setTag method to do so.");
+        } else if (this.activityMap == null) {
+            this.activityMap = new HashMap<>();
+        }
+
+        this.activityMap.put(key, value);
+        return this;
+    }
+
+    @Override
     public void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData) {
         final Map<String, Object> activityRequestData = new HashMap<>();
         requestData.put(ACTIVITY_FIELD, activityRequestData);
@@ -165,18 +152,6 @@ public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExe
         return BreinUtil.generateSignature(message, config.getSecret());
     }
 
-    public BreinActivity set(final String key, final Object value) {
-        if (TAGS_FIELD.equalsIgnoreCase(key)) {
-            throw new BreinException("The field '" + TAGS_FIELD + "' cannot be set, " +
-                    "use the setTag method to do so.");
-        } else if (this.activityMap == null) {
-            this.activityMap = new HashMap<>();
-        }
-
-        this.activityMap.put(key, value);
-        return this;
-    }
-
     public BreinActivity setTag(final String key, final Object value) {
         if (this.tagsMap == null) {
             this.tagsMap = new HashMap<>();
@@ -198,6 +173,30 @@ public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExe
 
     protected <T> T getActivityField(final ActivityField field) {
         return get(field.getName());
+    }
+
+    /**
+     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
+     * API documentation.
+     */
+    public enum ActivityField {
+        TYPE("type"),
+        DESCRIPTION("description"),
+        CATEGORY("category");
+
+        final String name;
+
+        ActivityField(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void set(final BreinActivity activity, final Object value) {
+            activity.set(getName(), value);
+        }
     }
 }
 

@@ -32,6 +32,7 @@ public class BreinDimension {
      * sets dimension array
      *
      * @param dimensionFields data of dimensions
+     *
      * @return self
      */
     public BreinDimension setDimensionFields(final String... dimensionFields) {

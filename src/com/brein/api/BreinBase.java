@@ -26,35 +26,10 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     public static final Gson GSON = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
             .create();
-
-    /**
-     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
-     * API documentation.
-     */
-    public enum BaseField {
-        IP_ADDRESS("ipAddress"),
-        UNIX_TIMESTAMP("unixTimestamp");
-
-        final String name;
-
-        BaseField(final String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void set(final BreinBase base, final Object value) {
-            base.set(getName(), value);
-        }
-    }
-
     /**
      * Contains user information for the request
      */
     private BreinUser user;
-
     /**
      * The base data for the request
      */
@@ -291,5 +266,28 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     public String toString() {
         final BreinConfig config = new BreinConfig(null);
         return prepareRequestData(config);
+    }
+
+    /**
+     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
+     * API documentation.
+     */
+    public enum BaseField {
+        IP_ADDRESS("ipAddress"),
+        UNIX_TIMESTAMP("unixTimestamp");
+
+        final String name;
+
+        BaseField(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void set(final BreinBase base, final Object value) {
+            base.set(getName(), value);
+        }
     }
 }

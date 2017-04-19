@@ -11,12 +11,11 @@ import java.util.Map;
  */
 public class BreinResult {
 
-    private int status;
-
     /**
      * contains the collected data as map
      */
     private final Map<String, Object> map;
+    private int status;
 
     public BreinResult(final String errorMsg, final int status) {
         this.map = Collections.singletonMap("errorMsg", errorMsg);

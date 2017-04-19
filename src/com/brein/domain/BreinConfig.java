@@ -12,50 +12,41 @@ import org.slf4j.LoggerFactory;
 public class BreinConfig {
 
     /**
-     * Logger instance
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
-
-    /**
      * default endpoint for activity
      */
     public static final String DEFAULT_ACTIVITY_ENDPOINT = "/activity";
-
     /**
      * default endpoint for lookup
      */
     public static final String DEFAULT_LOOKUP_ENDPOINT = "/lookup";
-
     /**
      * default endpoint for temporalData
      */
     public static final String DEFAULT_TEMPORALDATA_ENDPOINT = "/temporaldata";
-
     /**
      * default endpoint for recommendation
      */
     public static final String DEFAULT_RECOMMENDATION_ENDPOINT = "/recommendation";
-
     /**
      * default connection timeout
      */
     public static final long DEFAULT_CONNECTION_TIMEOUT = 1000;
-
     /**
      * default socket timeout
      */
     public static final long DEFAULT_SOCKET_TIMEOUT = 6000;
-
     /**
      * default Breinify base url
      */
     public static final String DEFAULT_BASE_URL = "https://api.breinify.com";
-
     /**
      * default {@code BreinEngineType}
      */
     public static final BreinEngineType DEFAULT_ENGINE_TYPE = BreinEngineType.AUTO_DETECT;
-
+    /**
+     * Logger instance
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
     /**
      * BASE URL
      */

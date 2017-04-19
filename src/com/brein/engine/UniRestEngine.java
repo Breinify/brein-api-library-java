@@ -61,6 +61,20 @@ public class UniRestEngine implements IRestEngine {
         }
     }
 
+    /**
+     * used to stop the UNIREST threads
+     */
+    @Override
+    public void terminate() {
+        try {
+            Unirest.shutdown();
+        } catch (final IOException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.error("Exception within UNIREST shutdown has occurred. ", e);
+            }
+        }
+    }
+
     @Override
     public void invokeAsyncRequest(final BreinConfig config,
                                    final BreinBase data,
@@ -117,20 +131,6 @@ public class UniRestEngine implements IRestEngine {
                         }
                     }
                 });
-    }
-
-    /**
-     * used to stop the UNIREST threads
-     */
-    @Override
-    public void terminate() {
-        try {
-            Unirest.shutdown();
-        } catch (final IOException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.error("Exception within UNIREST shutdown has occurred. ", e);
-            }
-        }
     }
 
     @Override

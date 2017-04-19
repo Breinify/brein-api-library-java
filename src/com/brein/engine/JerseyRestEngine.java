@@ -28,6 +28,19 @@ public class JerseyRestEngine implements IRestEngine {
     private final Client client = Client.create();
     private ExecutorService threadPool;
 
+    /**
+     * configuration of the rest  client
+     */
+    @Override
+    public void configure(final BreinConfig config) {
+        if (threadPool != null) {
+            closeExecutor(1, 4);
+        }
+
+        // TODO: add the value to the configuration
+        threadPool = Executors.newFixedThreadPool(5);
+    }
+
     @Override
     public void terminate() {
         closeExecutor(5, 10);
@@ -76,19 +89,6 @@ public class JerseyRestEngine implements IRestEngine {
         }
 
         return null;
-    }
-
-    /**
-     * configuration of the rest  client
-     */
-    @Override
-    public void configure(final BreinConfig config) {
-        if (threadPool != null) {
-            closeExecutor(1, 4);
-        }
-
-        // TODO: add the value to the configuration
-        threadPool = Executors.newFixedThreadPool(5);
     }
 
     public void closeExecutor(final int firstWaitInSeconds,

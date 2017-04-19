@@ -5,7 +5,6 @@ package com.brein.api;
  */
 public class BreinInvalidConfigurationException extends RuntimeException {
 
-    // Exception methods...
     public BreinInvalidConfigurationException(final Throwable e) {
         super(e);
     }
@@ -17,6 +16,5 @@ public class BreinInvalidConfigurationException extends RuntimeException {
     public BreinInvalidConfigurationException(final String msg, final Exception cause) {
         super(msg, cause);
     }
-
 
 }

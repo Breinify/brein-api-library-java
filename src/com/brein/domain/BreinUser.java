@@ -14,40 +14,10 @@ import java.util.Map;
 public class BreinUser {
     public static final String USER_FIELD = "user";
     public static final String ADDITIONAL_FIELD = "additional";
-
-    /**
-     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
-     * API documentation.
-     */
-    public enum UserField {
-        FIRST_NAME("firstName"),
-        LAST_NAME("lastName"),
-        DATE_OF_BIRTH("dateOfBirth"),
-        EMAIL("email"),
-        MD5_EMAIL("md5Email"),
-        SESSION_ID("sessionId"),
-        USER_ID("userId");
-
-        final String name;
-
-        UserField(final String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void set(final BreinUser user, final Object value) {
-            user.set(getName(), value);
-        }
-    }
-
     /**
      * contains further fields in the user additional section
      */
     private Map<String, Object> additionalMap;
-
     /**
      * contains further fields in the user section
      */
@@ -147,6 +117,18 @@ public class BreinUser {
     }
 
     /**
+     * Sets the value of dateOfBirth as String. This is only used internally.
+     *
+     * @param dateOfBirthString contains the date of birth string
+     *
+     * @return self
+     */
+    public BreinUser setDateOfBirth(final String dateOfBirthString) {
+        UserField.DATE_OF_BIRTH.set(this, dateOfBirthString);
+        return this;
+    }
+
+    /**
      * Set's the date of birth
      * There is no check if the month - day combination is valid, only
      * the range for day, month and year will be checked
@@ -170,18 +152,6 @@ public class BreinUser {
             setDateOfBirth(null);
         }
 
-        return this;
-    }
-
-    /**
-     * Sets the value of dateOfBirth as String. This is only used internally.
-     *
-     * @param dateOfBirthString contains the date of birth string
-     *
-     * @return self
-     */
-    public BreinUser setDateOfBirth(final String dateOfBirthString) {
-        UserField.DATE_OF_BIRTH.set(this, dateOfBirthString);
         return this;
     }
 
@@ -274,6 +244,34 @@ public class BreinUser {
 
     protected <T> T getUserField(final UserField field) {
         return get(field.getName());
+    }
+
+    /**
+     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
+     * API documentation.
+     */
+    public enum UserField {
+        FIRST_NAME("firstName"),
+        LAST_NAME("lastName"),
+        DATE_OF_BIRTH("dateOfBirth"),
+        EMAIL("email"),
+        MD5_EMAIL("md5Email"),
+        SESSION_ID("sessionId"),
+        USER_ID("userId");
+
+        final String name;
+
+        UserField(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void set(final BreinUser user, final Object value) {
+            user.set(getName(), value);
+        }
     }
 }
 

@@ -134,7 +134,6 @@ public class TestActivityApiWithUnirest extends ApiTestBase {
         }), 2000);
     }
 
-
     /**
      * Invoke a test call with 200 logins
      */

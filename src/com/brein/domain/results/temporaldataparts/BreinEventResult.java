@@ -6,29 +6,16 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class BreinEventResult {
-    public enum EventCategory {
-        CONCERT,
-        COMEDY,
-        OTHERSHOW,
-        POLITICAL,
-        SPORTS,
-        EDUCATIONAL,
-        FITNESS,
-        UNKNOWN
-    }
-
     private static final String NAME_KEY = "displayName";
     private static final String START_KEY = "startTime";
     private static final String END_KEY = "endTime";
     private static final String CATEGORY_KEY = "category";
     private static final String SIZE_KEY = "sizeEstimated";
-
     private final String name;
     private final Long start;
     private final Long end;
     private final EventCategory category;
     private final Integer size;
-
     public BreinEventResult(final Map<String, Object> result) {
 
         name = JsonHelpers.getOr(result, NAME_KEY, null);
@@ -66,6 +53,17 @@ public class BreinEventResult {
 
     public Integer getSize() {
         return size;
+    }
+
+    public enum EventCategory {
+        CONCERT,
+        COMEDY,
+        OTHERSHOW,
+        POLITICAL,
+        SPORTS,
+        EDUCATIONAL,
+        FITNESS,
+        UNKNOWN
     }
 
 }

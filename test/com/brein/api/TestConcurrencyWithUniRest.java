@@ -25,6 +25,40 @@ import static org.junit.Assert.assertTrue;
 @SuppressWarnings("Duplicates")
 public class TestConcurrencyWithUniRest extends ApiTestBase {
 
+    public static void threadTesting(final int nrOfThreadsPerSupplier, final Command... commands) {
+        final int nrOfThreads = nrOfThreadsPerSupplier * commands.length;
+        final ExecutorService executor = Executors.newFixedThreadPool(nrOfThreads);
+
+        final List<Future<Void>> futures = new ArrayList<>(nrOfThreads);
+        for (final Command command : commands) {
+            for (int i = 0; i < nrOfThreadsPerSupplier; i++) {
+                futures.add(executor.submit(command::get));
+            }
+        }
+
+        for (final Future<Void> future : futures) {
+            try {
+                future.get();
+            } catch (final ExecutionException e) {
+                handle(e.getCause());
+            } catch (final InterruptedException e) {
+                assertTrue(e.getMessage(), false);
+            }
+        }
+
+        executor.shutdown();
+    }
+
+    public static void handle(final Throwable t) {
+        if (t instanceof AssertionError) {
+            throw (AssertionError) t;
+        } else if (t instanceof RuntimeException) {
+            throw (RuntimeException) t;
+        } else {
+            throw new RuntimeException(t);
+        }
+    }
+
     @Before
     public void setUp() {
         Breinify.setConfig(new BreinConfig(VALID_API_KEY)
@@ -123,39 +157,5 @@ public class TestConcurrencyWithUniRest extends ApiTestBase {
         }
 
         void execute() throws Exception;
-    }
-
-    public static void threadTesting(final int nrOfThreadsPerSupplier, final Command... commands) {
-        final int nrOfThreads = nrOfThreadsPerSupplier * commands.length;
-        final ExecutorService executor = Executors.newFixedThreadPool(nrOfThreads);
-
-        final List<Future<Void>> futures = new ArrayList<>(nrOfThreads);
-        for (final Command command : commands) {
-            for (int i = 0; i < nrOfThreadsPerSupplier; i++) {
-                futures.add(executor.submit(command::get));
-            }
-        }
-
-        for (final Future<Void> future : futures) {
-            try {
-                future.get();
-            } catch (final ExecutionException e) {
-                handle(e.getCause());
-            } catch (final InterruptedException e) {
-                assertTrue(e.getMessage(), false);
-            }
-        }
-
-        executor.shutdown();
-    }
-
-    public static void handle(final Throwable t) {
-        if (t instanceof AssertionError) {
-            throw (AssertionError) t;
-        } else if (t instanceof RuntimeException) {
-            throw (RuntimeException) t;
-        } else {
-            throw new RuntimeException(t);
-        }
     }
 }

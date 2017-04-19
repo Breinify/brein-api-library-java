@@ -12,11 +12,11 @@ import java.util.function.Consumer;
  */
 public class DummyRestEngine implements IRestEngine {
 
+    /**
+     * configuration of the rest  client
+     */
     @Override
-    public void invokeAsyncRequest(final BreinConfig config,
-                                   final BreinBase data,
-                                   final Consumer<BreinResult> callback) {
-        callback.accept(invokeRequest(config, data));
+    public void configure(final BreinConfig breinConfig) {
     }
 
     /**
@@ -27,19 +27,19 @@ public class DummyRestEngine implements IRestEngine {
     }
 
     @Override
+    public void invokeAsyncRequest(final BreinConfig config,
+                                   final BreinBase data,
+                                   final Consumer<BreinResult> callback) {
+        callback.accept(invokeRequest(config, data));
+    }
+
+    @Override
     public BreinResult invokeRequest(final BreinConfig config,
                                      final BreinBase data) {
         validate(config, data);
         getFullyQualifiedUrl(config, data);
 
         return new BreinResult(Collections.emptyMap());
-    }
-
-    /**
-     * configuration of the rest  client
-     */
-    @Override
-    public void configure(final BreinConfig breinConfig) {
     }
 
 }

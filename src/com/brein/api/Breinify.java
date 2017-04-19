@@ -12,6 +12,13 @@ public class Breinify {
     private static BreinConfig lastConfig = null;
     private static Brein lastBrein = null;
 
+    private Breinify() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
+    }
+
     /**
      * Specifies the overall configuration used by the library. The configuration must be set prior to any call to the
      * API.

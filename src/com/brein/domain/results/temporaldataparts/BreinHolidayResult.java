@@ -6,33 +6,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BreinHolidayResult {
-    public enum HolidaySource {
-        GOVERNMENT,
-        UNITED_NATIONS,
-        PUBLIC_INFORMATION,
-        UNKNOWN
-    }
-
-    public enum HolidayType {
-        NATIONAL_FEDERAL,
-        STATE_FEDERAL,
-        LEGAL,
-        CIVIC,
-        SPECIAL_DAY,
-        EDUCATIONAL,
-        HALLMARK,
-        CULTURAL,
-        RELIGIOUS
-    }
-
     private static final String HOLIDAY_TYPE_KEY = "types";
     private static final String HOLIDAY_SOURCE_KEY = "source";
     private static final String HOLIDAY_NAME_KEY = "holiday";
-
     private final List<HolidayType> types;
     private final HolidaySource source;
     private final String name;
-
     public BreinHolidayResult(final Map<String, Object> result) {
 
         if (result == null || result.isEmpty()) {
@@ -77,5 +56,24 @@ public class BreinHolidayResult {
 
     public String getName() {
         return name;
+    }
+
+    public enum HolidaySource {
+        GOVERNMENT,
+        UNITED_NATIONS,
+        PUBLIC_INFORMATION,
+        UNKNOWN
+    }
+
+    public enum HolidayType {
+        NATIONAL_FEDERAL,
+        STATE_FEDERAL,
+        LEGAL,
+        CIVIC,
+        SPECIAL_DAY,
+        EDUCATIONAL,
+        HALLMARK,
+        CULTURAL,
+        RELIGIOUS
     }
 }

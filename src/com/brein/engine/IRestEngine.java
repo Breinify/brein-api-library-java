@@ -22,29 +22,6 @@ public interface IRestEngine {
     String HEADER_ACCESS = "accept";
     String HEADER_APP_JSON = "application/json";
 
-    /**
-     * configures the rest engine
-     *
-     * @param breinConfig configuration object
-     */
-    void configure(final BreinConfig breinConfig);
-
-    /**
-     * terminates the rest engine
-     */
-    void terminate();
-
-    /**
-     * checks if the url is valid. If not an exception will be thrown
-     *
-     * @param fullyQualifiedUrl url with endpoint
-     */
-    default void validateUrl(final String fullyQualifiedUrl) throws BreinException {
-        if (!BreinUtil.isValidUrl(fullyQualifiedUrl)) {
-            throw new BreinException("URL: " + fullyQualifiedUrl + " is not valid!");
-        }
-    }
-
     static BreinEngineType autoDetect() {
         final BreinEngineType autoDetectedEngine = Stream.of(BreinEngineType.values())
                 .filter(BreinEngineType::isSupported)
@@ -91,6 +68,29 @@ public interface IRestEngine {
 
             default:
                 throw new BreinException("Please specify a concret engine (auto-detection not supported)!");
+        }
+    }
+
+    /**
+     * configures the rest engine
+     *
+     * @param breinConfig configuration object
+     */
+    void configure(final BreinConfig breinConfig);
+
+    /**
+     * terminates the rest engine
+     */
+    void terminate();
+
+    /**
+     * checks if the url is valid. If not an exception will be thrown
+     *
+     * @param fullyQualifiedUrl url with endpoint
+     */
+    default void validateUrl(final String fullyQualifiedUrl) throws BreinException {
+        if (!BreinUtil.isValidUrl(fullyQualifiedUrl)) {
+            throw new BreinException("URL: " + fullyQualifiedUrl + " is not valid!");
         }
     }
 

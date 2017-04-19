@@ -105,7 +105,7 @@ public class Sample {
 
         text += "Today is " + b(weekDay) + ", which is a ";
         text += (weekDay.toLowerCase().startsWith("s") ? "week-end" : "week-day") + ". ";
-        if (holidays.size() == 0) {
+        if (holidays.isEmpty()) {
             text += "There aren't any holidays/special day(s) today, ";
             text += "but if there would be they would be shown ";
         } else {
@@ -116,7 +116,7 @@ public class Sample {
         text += "and the timezone is " + b(zonedDateTime.getZone()) + ". ";
 
         text += "There are " + b(events.size()) + " different events in " + b(location.getCity()) + " today ";
-        if (events.size() == 0) {
+        if (events.isEmpty()) {
             text += "(which would be available, if there are any). ";
         } else {
             final int rnd = new Random().nextInt(events.size());
