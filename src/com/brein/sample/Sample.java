@@ -19,14 +19,6 @@ import java.util.Properties;
 import java.util.Random;
 
 public class Sample {
-
-    private Sample() {
-        /*
-         * Utility classes, which are a collection of static members,
-         * are not meant to be instantiated.
-         */
-    }
-
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BOLD = "\u001B[1m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -45,6 +37,13 @@ public class Sample {
     public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+
+    private Sample() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
+    }
 
     public static void resolveIpAddress(final String ipAddress) {
         final BreinTemporalDataResult result = new BreinTemporalData()
