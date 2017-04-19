@@ -110,6 +110,10 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
     }
 
     public BreinTemporalData addShapeTypes(final String... shapeTypes) {
+        if (shapeTypes == null || shapeTypes.length == 0) {
+            return this;
+        }
+
         List<String> list = getLocation(SHAPE_TYPES_FIELD);
         if (list == null) {
             list = new ArrayList<>();

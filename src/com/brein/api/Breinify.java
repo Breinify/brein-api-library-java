@@ -105,10 +105,13 @@ public class Breinify {
         return getBrein().temporalData(data);
     }
 
-    public static BreinTemporalDataResult temporalData(final double latitude, final double longitude) {
+    public static BreinTemporalDataResult temporalData(final double latitude,
+                                                       final double longitude,
+                                                       final String... shapeTypes) {
         final BreinTemporalData data = new BreinTemporalData()
                 .setLongitude(longitude)
-                .setLatitude(latitude);
+                .setLatitude(latitude)
+                .addShapeTypes(shapeTypes);
 
         return getBrein().temporalData(data);
     }
