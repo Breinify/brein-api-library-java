@@ -52,42 +52,183 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
         // nothing additionally to be added
     }
 
+    /**
+     * Sets the timezone within the request, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  'timezone': timezone
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param timezone the value to be set
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setTimezone(final TimeZone timezone) {
         return setTimezone(timezone == null ? null : timezone.getID());
     }
 
+    /**
+     * Sets the timezone within the request, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  'timezone': timezone
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param timezone the value to be set
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setTimezone(final String timezone) {
         setAdditional(TIMEZONE_FIELD, timezone);
         return this;
     }
 
+    /**
+     * Sets the ipAddress used to look-up the temporal information, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  'ipAddress': ipAddress
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param ipAddress the value to be set
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setLookUpIpAddress(final String ipAddress) {
         setAdditional(IP_ADDRESS_FIELD, ipAddress);
         return this;
     }
 
+    /**
+     * Sets the longitude used to look-up the temporal information, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  location: {
+     *                      'longitude': longitude
+     *                  }
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param longitude the longitude to be used
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setLongitude(final double longitude) {
         setLocation(LONGITUDE_FIELD, longitude);
         return this;
     }
 
+    /**
+     * Sets the latitude used to look-up the temporal information, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  location: {
+     *                      'latitude': latitude
+     *                  }
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param latitude the latitude to be used
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setLatitude(final double latitude) {
         setLocation(LATITUDE_FIELD, latitude);
         return this;
     }
 
+    /**
+     * Sets the shape-types to be returned with the response of the request, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  location: {
+     *                      'shapeTypes': [...]
+     *                  }
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param shapeTypes the shapeTypes to be set, if empty the shapeTypes will be removed
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setShapeTypes(final String... shapeTypes) {
-        setLocation(SHAPE_TYPES_FIELD, new ArrayList<>(Arrays.asList(shapeTypes)));
+        if (shapeTypes == null || shapeTypes.length == 0) {
+            setLocation(SHAPE_TYPES_FIELD, null);
+        } else {
+            setLocation(SHAPE_TYPES_FIELD, new ArrayList<>(Arrays.asList(shapeTypes)));
+        }
         return this;
     }
 
+    /**
+     * Sets the location data using free text, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  location: {
+     *                      'text': freeText
+     *                  }
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param freeText the text describing the location
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setLocation(final String freeText) {
         setLocation(TEXT_FIELD, freeText);
         return this;
     }
 
     /**
-     * Sets the current localDateTime based on the system's time.
+     * Sets the localDateTime based on the system's time, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  'localDateTime': now
+     *              }
+     *         }
+     *     }
+     * </pre>
      *
      * @return {@code this}
      *
@@ -97,11 +238,49 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
         return setLocalDateTime(ZonedDateTime.now());
     }
 
+    /**
+     * Sets the localDateTime, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  'localDateTime': zonedDateTime
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setLocalDateTime(final ZonedDateTime zonedDateTime) {
         setAdditional(LOCAL_DATE_TIME_FIELD, zonedDateTime.format(JAVA_SCRIPT_FORMAT));
         return this;
     }
 
+    /**
+     * Sets the location data using structured data (city, state, country), i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  location: {
+     *                      'city': city,
+     *                      'state': state,
+     *                      'country': country
+     *                  }
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param city    the city to look up
+     * @param state   the state to look up (can be {@code null})
+     * @param country the country to look up (can be {@code null})
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData setLocation(final String city, final String state, final String country) {
         setLocation(CITY_TEXT_FIELD, city);
         setLocation(STATE_TEXT_FIELD, state);
@@ -109,6 +288,26 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
         return this;
     }
 
+    /**
+     * Adds the specified {@code shapeTypes} to the currently defined shape-types to be returned with the response of
+     * the request, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  location: {
+     *                      'shapeTypes': [...]
+     *                  }
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param shapeTypes the shapeTypes to be added
+     *
+     * @return {@code this}
+     */
     public BreinTemporalData addShapeTypes(final String... shapeTypes) {
         if (shapeTypes == null || shapeTypes.length == 0) {
             return this;
@@ -124,6 +323,14 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
         return this;
     }
 
+    /**
+     * Gets the current value specified within the location of the request.
+     *
+     * @param key the value to retrieve (e.g., {@code "shapeTypes"}, {@code "city"}, or {@code "latitude"})
+     * @param <T> the expected type of the returned value
+     *
+     * @return the associated value to the specified key
+     */
     @SuppressWarnings("unchecked")
     public <T> T getLocation(final String key) {
         final Map<String, Object> location = getUser().getAdditional(LOCATION_FIELD);

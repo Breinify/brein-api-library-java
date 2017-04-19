@@ -21,10 +21,9 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     public final static String SIGNATURE_TYPE_FIELD = "signatureType";
 
     /**
-     * Builder for json creation
+     * Builder for JSON creation
      */
     public static final Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
             .create();
 
@@ -52,19 +51,20 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     }
 
     /**
-     * contains the User that will be used for the request
+     * Contains user information for the request
      */
     private BreinUser user;
 
     /**
-     * contains a map for the base section
+     * The base data for the request
      */
     private Map<String, Object> baseMap;
 
     /**
-     * retrieves the breinuser
+     * Retrieves the current {@code BreinUser} for the request. This method never returns {@code null}, instead it
+     * creates an empty {@code BreinUser} instance if none is available so far.
      *
-     * @return breinuser
+     * @return the current {@code BreinUser} for the request
      */
     public BreinUser getUser() {
         if (this.user == null) {
@@ -75,40 +75,85 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     }
 
     /**
-     * sets the brein user
+     * Sets the {@code BreinUser} instance for the request. It is recommended to get the user (using {@code getUser()})
+     * and manipulate the retrieved instance directly or to use the {@code setUser(key, value)} method to set user
+     * specific data.
      *
-     * @param user user data
+     * @param user the {@code BreinUser} to set
      *
-     * @return self
+     * @return {@code this}
+     *
+     * @see BreinUser
      */
     public T setUser(final BreinUser user) {
         this.user = user;
         return getThis();
     }
 
+    /**
+     * Sets a specific data point for the user data of the request, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *             'key': 'value'
+     *         }
+     *     }
+     * </pre>
+     * <p>
+     * Typically, that would be, e.g., {@code email},
+     * {@code sessionId}, and/or {@code userId}
+     *
+     * @param key   the value to be set (e.g., {@code "email"} or {@code "sessionId"})
+     * @param value the value to be set for the specified key
+     *
+     * @return {@code this}
+     */
     public T setUser(final String key, final Object value) {
         this.getUser().set(key, value);
         return getThis();
     }
 
+    /**
+     * Sets a specific data point for the additional part of the request, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  'key': 'value'
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @param key   the value to be set (e.g., {@code "localDateTime"}, {@code "userAgent"}, {@code "referrer"} or
+     *              {@code "timezone"})
+     * @param value the value to be set for the specified key
+     *
+     * @return {@code this}
+     */
     public T setAdditional(final String key, final Object value) {
         this.getUser().setAdditional(key, value);
         return getThis();
     }
 
     /**
-     * retrieves the endpoint. this depends of the kind of BreinBase type.
+     * Gets the endpoint to be used to send the request to
      *
      * @param config the current configuration
      *
-     * @return endpoint
+     * @return the endpoint to be used to send the request to
+     *
+     * @see BreinConfig
      */
     public abstract String getEndPoint(final BreinConfig config);
 
     /**
-     * retrieves the timestamp
+     * Retrieves the currently set {@code unixTimestamp}. If now should be used as timestamp, the method returns {@code
+     * -1L}.
      *
-     * @return value from 1.1.1970
+     * @return unix timestamp
      */
     public long getUnixTimestamp() {
         final Object unixTimestamp = getBaseField(BaseField.UNIX_TIMESTAMP);
@@ -120,11 +165,11 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     }
 
     /**
-     * sets the timestamp
+     * Sets the timestamp.
      *
-     * @param unixTimestamp value from 1.1.1970
+     * @param unixTimestamp unix timestamp to be used
      *
-     * @return self
+     * @return {@code this}
      */
     public T setUnixTimestamp(final long unixTimestamp) {
         BaseField.UNIX_TIMESTAMP.set(this, unixTimestamp);
@@ -132,20 +177,11 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     }
 
     /**
-     * gets the ipAddress
-     *
-     * @return content of ipAddress
-     */
-    public String getIpAddress() {
-        return getBaseField(BaseField.IP_ADDRESS);
-    }
-
-    /**
      * sets the ipaddress
      *
      * @param ipAddress contains the ipAddress
      *
-     * @return object itself
+     * @return {@code this}
      */
     public T setClientIpAddress(final String ipAddress) {
         BaseField.IP_ADDRESS.set(this, ipAddress);
@@ -153,7 +189,7 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     }
 
     /**
-     * return the GSON builder instance
+     * Gets the GSON builder instance used to build the requests body
      *
      * @return GSON instance
      */
@@ -162,9 +198,15 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     }
 
     /**
-     * Sets a value
+     * Sets a base value. The method cannot be used to set the user base-value, instead setUser has to be used.
+     * <p>
+     * <pre>
+     *     {
+     *          'key': 'value'
+     *     }
+     * </pre>
      *
-     * @return self
+     * @return {@code this}
      */
     public T set(final String key, final Object value) {
         if (BreinUser.USER_FIELD.equalsIgnoreCase(key)) {
@@ -179,13 +221,20 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     }
 
     /**
-     * prepares the request for the base section with standard fields
-     * plus possible fields if configured
+     * This method adds the request specific information to the {@code requestData}. It is called by {@link
+     * #prepareRequestData(BreinConfig)} after the request data of the base information is added.
      *
-     * @param requestData contains the created json structure
+     * @param requestData the request data to be sent to the endpoint
      */
     public abstract void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData);
 
+    /**
+     * Method to generate the body part of the request.
+     *
+     * @param config the configuration used to create the request body
+     *
+     * @return the created request body (JSON)
+     */
     public String prepareRequestData(final BreinConfig config) {
         final Map<String, Object> requestData = new HashMap<>();
 
