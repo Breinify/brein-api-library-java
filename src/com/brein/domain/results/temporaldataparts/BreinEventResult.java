@@ -1,6 +1,6 @@
 package com.brein.domain.results.temporaldataparts;
 
-import com.brein.util.JsonHelpers;
+import com.brein.util.JsonHelper;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -18,14 +18,14 @@ public class BreinEventResult {
     private final Integer size;
     public BreinEventResult(final Map<String, Object> result) {
 
-        name = JsonHelpers.getOr(result, NAME_KEY, null);
-        start = JsonHelpers.getOrLong(result, START_KEY);
-        end = JsonHelpers.getOrLong(result, END_KEY);
-        final Long innerSize = JsonHelpers.getOrLong(result, SIZE_KEY);
+        name = JsonHelper.getOr(result, NAME_KEY, null);
+        start = JsonHelper.getOrLong(result, START_KEY);
+        end = JsonHelper.getOrLong(result, END_KEY);
+        final Long innerSize = JsonHelper.getOrLong(result, SIZE_KEY);
 
         size = innerSize == null || innerSize == -1 ? null : Math.toIntExact(innerSize);
 
-        final String categoryName = JsonHelpers.getOr(result, CATEGORY_KEY, "unknown")
+        final String categoryName = JsonHelper.getOr(result, CATEGORY_KEY, "unknown")
                 .replaceAll("eventCategory", "")
                 .toUpperCase();
 

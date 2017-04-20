@@ -7,6 +7,7 @@ import java.util.Map;
 /**
  * Base class for the secret strategy
  */
+@FunctionalInterface
 public interface ISecretStrategy {
 
     /**

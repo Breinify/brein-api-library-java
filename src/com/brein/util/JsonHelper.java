@@ -2,7 +2,14 @@ package com.brein.util;
 
 import java.util.Map;
 
-public class JsonHelpers {
+public class JsonHelper {
+
+    private JsonHelper() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
+    }
 
     /**
      * Tries to grab an element from a json

@@ -1,6 +1,6 @@
 package com.brein.domain.results.temporaldataparts;
 
-import com.brein.util.JsonHelpers;
+import com.brein.util.JsonHelper;
 
 import java.util.Map;
 
@@ -28,28 +28,28 @@ public class BreinWeatherResult {
     private final Double lon;
 
     public BreinWeatherResult(final Map<String, Object> result) {
-        description = JsonHelpers.getOr(result, DESCRIPTION_KEY, null);
-        temperature = JsonHelpers.getOr(result, TEMPERATURE_KEY, null);
-        windStrength = JsonHelpers.getOr(result, WIND_STRENGTH_KEY, null);
-        lastMeasured = JsonHelpers.getOrLong(result, LAST_MEASURED_KEY);
-        cloudCover = JsonHelpers.getOr(result, CLOUD_COVER_KEY, null);
+        description = JsonHelper.getOr(result, DESCRIPTION_KEY, null);
+        temperature = JsonHelper.getOr(result, TEMPERATURE_KEY, null);
+        windStrength = JsonHelper.getOr(result, WIND_STRENGTH_KEY, null);
+        lastMeasured = JsonHelper.getOrLong(result, LAST_MEASURED_KEY);
+        cloudCover = JsonHelper.getOr(result, CLOUD_COVER_KEY, null);
 
         //noinspection unchecked
-        final Map<String, Object> measuredJson = JsonHelpers.getOr(result, MEASURED_LOCATION_KEY, null);
+        final Map<String, Object> measuredJson = JsonHelper.getOr(result, MEASURED_LOCATION_KEY, null);
         if (measuredJson == null) {
             lat = null;
             lon = null;
         } else {
-            lat = JsonHelpers.getOr(measuredJson, LATITUDE_KEY, null);
-            lon = JsonHelpers.getOr(measuredJson, LONGITUDE_KEY, null);
+            lat = JsonHelper.getOr(measuredJson, LATITUDE_KEY, null);
+            lon = JsonHelper.getOr(measuredJson, LONGITUDE_KEY, null);
         }
 
-        final Map<String, Object> precipitation = JsonHelpers.getOr(result, PRECIPITATION_KEY, null);
-        if (precipitation == null) {
+        final Map<String, Object> preciValue = JsonHelper.getOr(result, PRECIPITATION_KEY, null);
+        if (preciValue == null) {
             this.precipitation = PrecipitationType.UNKNOWN;
             precipitationAmount = null;
         } else {
-            final String type = JsonHelpers.getOr(precipitation, PRECIPITATION_TYPE_KEY, null);
+            final String type = JsonHelper.getOr(preciValue, PRECIPITATION_TYPE_KEY, null);
             if (type == null) {
                 this.precipitation = PrecipitationType.UNKNOWN;
             } else {
@@ -68,7 +68,7 @@ public class BreinWeatherResult {
                 }
             }
 
-            precipitationAmount = JsonHelpers.getOr(precipitation, PRECIPITATION_AMOUNT_KEY, null);
+            precipitationAmount = JsonHelper.getOr(preciValue, PRECIPITATION_AMOUNT_KEY, null);
         }
     }
 

@@ -18,13 +18,17 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Random;
 
-/**
- * Utility class
- */
 public class BreinUtil {
     private static final Logger LOG = LoggerFactory.getLogger(IRestEngine.class);
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final Random RANDOM = new Random();
+
+    private BreinUtil() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
+    }
 
     /**
      * Verifies if the object contains a value

@@ -17,4 +17,10 @@ public class BreinCategoryType {
     public static final String SERVICES = "services";
     public static final String OTHER = "other";
 
+    private BreinCategoryType() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
+    }
 }

@@ -5,8 +5,6 @@ package com.brein.domain;
  * selectProduct, or other.
  */
 public class BreinActivityType {
-
-    //  pre-defined activity types
     public static final String SEARCH = "search";
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";
@@ -16,5 +14,12 @@ public class BreinActivityType {
     public static final String CHECKOUT = "checkOut";
     public static final String PAGEVISIT = "pageVisit";
     public static final String OTHER = "other";
+
+    private BreinActivityType() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
+    }
 }
 
