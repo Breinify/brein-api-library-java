@@ -91,10 +91,12 @@ public class BreinMapUtil {
             final String k = keys[i];
 
             value = currentMap.get(k);
-            if (value == null || i < keys.length - 1) {
+            if (value == null) {
                 break;
             } else if (Map.class.isInstance(value)) {
                 currentMap = Map.class.cast(value);
+            } else if (i < keys.length - 1) {
+                break;
             }
         }
 
@@ -105,6 +107,7 @@ public class BreinMapUtil {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static boolean hasNestedValue(final Map<String, Object> map, final String... keys) {
         if (map == null) {
             return false;
@@ -117,11 +120,12 @@ public class BreinMapUtil {
             final String k = keys[i];
 
             final Object value = currentMap.get(k);
-            if (value == null || i < keys.length - 1) {
+            if (value == null) {
                 break;
             } else if (Map.class.isInstance(value)) {
-                //noinspection unchecked
                 currentMap = Map.class.cast(value);
+            } else if (i < keys.length - 1) {
+                break;
             }
         }
 
