@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * could be the jersey rest engine implementation
  */
 public class JerseyRestEngine implements IRestEngine {
-    private final Logger LOG = LoggerFactory.getLogger(JerseyRestEngine.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JerseyRestEngine.class);
 
     private final Client client = Client.create();
     private ExecutorService threadPool;
@@ -46,6 +46,7 @@ public class JerseyRestEngine implements IRestEngine {
         closeExecutor(5, 10);
     }
 
+    @Override
     public void invokeAsyncRequest(final BreinConfig config,
                                    final BreinBase data,
                                    final Consumer<BreinResult> callback) {
@@ -110,7 +111,7 @@ public class JerseyRestEngine implements IRestEngine {
             // ignore
         } finally {
             final List<Runnable> notExecuted = threadPool.shutdownNow();
-            if (notExecuted.size() > 0) {
+            if (!notExecuted.isEmpty()) {
                 LOG.warn("Not handling " + notExecuted.size() + " tasks, have to shut down now.");
             }
 

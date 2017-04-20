@@ -13,7 +13,11 @@ import java.util.Map;
  */
 public class BreinMapUtil {
 
-    public BreinMapUtil() {
+    private BreinMapUtil() {
+        /*
+         * Utility classes, which are a collection of static members,
+         * are not meant to be instantiated.
+         */
     }
 
     /**
@@ -87,12 +91,10 @@ public class BreinMapUtil {
             final String k = keys[i];
 
             value = currentMap.get(k);
-            if (value == null) {
+            if (value == null || i < keys.length - 1) {
                 break;
             } else if (Map.class.isInstance(value)) {
                 currentMap = Map.class.cast(value);
-            } else if (i < keys.length - 1) {
-                break;
             }
         }
 
@@ -115,13 +117,11 @@ public class BreinMapUtil {
             final String k = keys[i];
 
             final Object value = currentMap.get(k);
-            if (value == null) {
+            if (value == null || i < keys.length - 1) {
                 break;
             } else if (Map.class.isInstance(value)) {
                 //noinspection unchecked
                 currentMap = Map.class.cast(value);
-            } else if (i < keys.length - 1) {
-                break;
             }
         }
 
