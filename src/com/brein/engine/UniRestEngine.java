@@ -5,9 +5,7 @@ import com.brein.api.BreinException;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.http.options.Options;
 import com.mashape.unirest.request.body.RequestBodyEntity;
@@ -25,18 +23,8 @@ import java.util.function.Consumer;
  * UNIREST (see: http://unirest.io/java.html)
  */
 public class UniRestEngine implements IRestEngine {
-
-    /**
-     * some constants
-     */
     public static final String MSG_URL_IS_NULL = "The url is null.";
-    public static final String MSG_REQUEST_HAS_FAILED = "FAILED";
-    public static final String MSG_REQUEST_HAS_BEEN_CANCELLED = "CANCELLED";
-    public static final String MSG_REQUEST_WAS_SUCCESSFUL = "SUCCESS";
 
-    /**
-     * Logger instance
-     */
     private static final Logger LOG = LoggerFactory.getLogger(UniRestEngine.class);
 
     /**
@@ -89,48 +77,7 @@ public class UniRestEngine implements IRestEngine {
         Unirest.post(getFullyQualifiedUrl(config, data))
                 .header(HEADER_ACCESS, HEADER_APP_JSON)
                 .body(getRequestBody(config, data))
-                .asJsonAsync(new Callback<JsonNode>() {
-
-                    @Override
-                    public void completed(final HttpResponse<JsonNode> response) {
-                        final String strResponse = response.getBody().toString();
-                        final int status = response.getStatus();
-
-                        final BreinResult result;
-                        if (status == 200) {
-                            final Map<String, Object> mapResponse = parseJson(strResponse);
-                            result = new BreinResult(mapResponse);
-                        } else {
-                            result = new BreinResult(strResponse, status);
-                        }
-
-                        if (callback != null) {
-                            callback.accept(result);
-                        }
-                    }
-
-                    @Override
-                    public void failed(final UnirestException e) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug(MSG_REQUEST_HAS_FAILED, e);
-                        }
-
-                        if (callback != null) {
-                            callback.accept(new BreinResult(e, 500));
-                        }
-                    }
-
-                    @Override
-                    public void cancelled() {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug(MSG_REQUEST_HAS_BEEN_CANCELLED);
-                        }
-
-                        if (callback != null) {
-                            callback.accept(new BreinResult(MSG_REQUEST_HAS_BEEN_CANCELLED, 400));
-                        }
-                    }
-                });
+                .asJsonAsync(new UniRestCallback(this, callback));
     }
 
     @Override
