@@ -12,18 +12,14 @@ import java.util.function.Consumer;
  */
 public class DummyRestEngine implements IRestEngine {
 
-    /**
-     * configuration of the rest  client
-     */
     @Override
     public void configure(final BreinConfig breinConfig) {
+        // the dummy engine does not need any configuration
     }
 
-    /**
-     * stops possible functionality (e.g. threads)
-     */
     @Override
     public void terminate() {
+        // there is nothing to be cleaned
     }
 
     @Override
