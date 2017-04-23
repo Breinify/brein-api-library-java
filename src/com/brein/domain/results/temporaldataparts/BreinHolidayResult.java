@@ -9,9 +9,11 @@ public class BreinHolidayResult {
     private static final String HOLIDAY_TYPE_KEY = "types";
     private static final String HOLIDAY_SOURCE_KEY = "source";
     private static final String HOLIDAY_NAME_KEY = "holiday";
+
     private final List<HolidayType> types;
     private final HolidaySource source;
     private final String name;
+
     public BreinHolidayResult(final Map<String, Object> result) {
 
         if (result == null || result.isEmpty()) {
