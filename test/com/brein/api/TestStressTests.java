@@ -4,6 +4,7 @@ import com.brein.domain.BreinCategoryType;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
+import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.engine.BreinEngineType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -58,6 +60,44 @@ public class TestStressTests extends ApiTestBase {
 
         LOG.info("Duration was: " + this.elapsedTime + " seconds for " + this.counter + " requests.");
         Assert.assertTrue(this.counter > 2000);
+    }
+
+    /**
+     * Test of temporaldata
+     */
+    @Test
+    public void testStressTemporalData() {
+        final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY)
+                .setRestEngineType(BreinEngineType.JERSEY_ENGINE);
+        Breinify.setConfig(breinConfig);
+
+        final long startTime = System.currentTimeMillis();
+
+        final AtomicInteger counter = new AtomicInteger(0);
+        TestConcurrencyWithUniRest.threadTesting(10, () -> {
+            for (int loop = 0; loop < 10000; loop++) {
+
+                final BreinTemporalDataResult result = new BreinTemporalData()
+                        .setLocalDateTime()
+                        .setLatitude(38.92)
+                        .setLongitude(-77.022)
+                        .execute();
+                Assert.assertEquals(200, result.getStatus());
+
+                this.elapsedTime = (System.currentTimeMillis() - startTime) / 1000;
+                final int count = counter.getAndIncrement();
+                if (count % 1000 == 0) {
+                    LOG.info("So far made " + count + " calls");
+                }
+
+                if (this.elapsedTime >= 10) {
+                    break;
+                }
+            }
+        });
+
+        LOG.info("Duration was: " + this.elapsedTime + " seconds for " + counter.get() + " requests.");
+        Assert.assertTrue(counter.get() > 2000);
     }
 
     @Test
