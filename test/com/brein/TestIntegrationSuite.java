@@ -8,6 +8,7 @@ import com.brein.api.TestConcurrencyWithSecret;
 import com.brein.api.TestConcurrencyWithUniRest;
 import com.brein.api.TestLookupApi;
 import com.brein.api.TestStressTests;
+import com.brein.api.TestTemporalIntegration;
 import com.brein.engine.TestEngine;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -22,7 +23,8 @@ import org.junit.runners.Suite;
         TestStressTests.class,
         TestConcurrencyWithUniRest.class,
         TestConcurrencyWithJersey.class,
-        TestConcurrencyWithSecret.class
+        TestConcurrencyWithSecret.class,
+        TestTemporalIntegration.class
 })
 public class TestIntegrationSuite {
 }
