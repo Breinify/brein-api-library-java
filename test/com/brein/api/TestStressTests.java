@@ -11,8 +11,16 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -66,29 +74,49 @@ public class TestStressTests extends ApiTestBase {
      * Test of temporaldata
      */
     @Test
-    public void testStressTemporalData() {
+    public void testStressTemporalData() throws IOException {
         final BreinConfig breinConfig = new BreinConfig(VALID_API_KEY)
                 .setRestEngineType(BreinEngineType.JERSEY_ENGINE);
         Breinify.setConfig(breinConfig);
 
-        final long startTime = System.currentTimeMillis();
+        /*
+         * Load in a list of coordinates we can use when sending requests
+         */
+        final InputStream inputstream = TestStressTests.class.getResourceAsStream("tiger_coords.csv");
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(inputstream));
 
+        final List<String> lines = new ArrayList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            lines.add(line);
+        }
+        reader.close();
+
+        final List<List<Double>> coords = lines.stream()
+                .map(l -> {
+                    final String[] parts = l.split("\t");
+                    return Arrays.asList(Double.valueOf(parts[0]), Double.valueOf(parts[1]));
+                })
+                .collect(Collectors.toList());
+
+        /*
+         * Now start up a few threads and send the requests
+         */
+        final long startTime = System.currentTimeMillis();
         final AtomicInteger counter = new AtomicInteger(0);
         TestConcurrencyWithUniRest.threadTesting(10, () -> {
             for (int loop = 0; loop < 10000; loop++) {
 
+                final List<Double> coord = coords.get((int) (Math.random() * coords.size()));
                 final BreinTemporalDataResult result = new BreinTemporalData()
                         .setLocalDateTime()
-                        .setLatitude(38.92)
-                        .setLongitude(-77.022)
+                        .setLatitude(coord.get(0))
+                        .setLongitude(coord.get(1))
                         .execute();
                 Assert.assertEquals(200, result.getStatus());
 
                 this.elapsedTime = (System.currentTimeMillis() - startTime) / 1000;
                 final int count = counter.getAndIncrement();
-                if (count % 1000 == 0) {
-                    LOG.info("So far made " + count + " calls");
-                }
 
                 if (this.elapsedTime >= 10) {
                     break;
@@ -97,7 +125,7 @@ public class TestStressTests extends ApiTestBase {
         });
 
         LOG.info("Duration was: " + this.elapsedTime + " seconds for " + counter.get() + " requests.");
-        Assert.assertTrue(counter.get() > 2000);
+        Assert.assertTrue(counter.get() > 300);
     }
 
     @Test
