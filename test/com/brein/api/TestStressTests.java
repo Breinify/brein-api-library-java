@@ -125,7 +125,7 @@ public class TestStressTests extends ApiTestBase {
         });
 
         LOG.info("Duration was: " + this.elapsedTime + " seconds for " + counter.get() + " requests.");
-        Assert.assertTrue(counter.get() > 300);
+        Assert.assertTrue(counter.get() > 250);
     }
 
     @Test
