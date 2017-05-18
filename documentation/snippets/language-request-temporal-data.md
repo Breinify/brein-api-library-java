@@ -1,5 +1,5 @@
 <blockquote class="lang-specific java--native">
-<p>The JavaScript library offers several overloaded versions
+<p>The Java library offers several overloaded versions
 of the <code class="prettyprint">Breinify.temporalData(...)</code> method.
 In addition, it offers the possibility to fire the request directly
 from the created request instance by calling <code class="prettyprint">execute()</code>.
