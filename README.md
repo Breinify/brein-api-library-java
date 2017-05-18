@@ -80,7 +80,7 @@ To add the preferred requesting-library one of the following dependencies has to
 
 ### Clean-Up after Usage
 
-Whenever the library is not used anymore, it is recommended to clean-up and release the resources held (e.g., `UniRest` 
+Whenever the library is not used anymore, it is **necessary** to clean-up and release the resources held (e.g., `UniRest` 
 utilizes a connection manager, which holds several connections to increase performance). To do so, the `Breinify.shutdown()`
 method is used. A typical framework may look like that:
 
@@ -128,12 +128,21 @@ For some use-cases, e.g., understanding your customers *favorite products*, *ave
 
 ```Java
 new BreinActivity()
-        .setUser("sessionId", "966542c6-2399-11e7-93ae-92361f002671")
-        .setActivityType("addToCart")
-        .setTag("productPrices", new ArrayList<Double>(3.50, 3.70))                // can be multiple prices
-        .setTag("productIds", new ArrayList<String>("sock-AU-90", "sock-GR-92"))   // can be multiple ids
-        .setTag("productCategories", new ArrayList<String>("apparel", "apparel"))  // optional
-        .execute();
+                .setUser("sessionId", "966542c6-2399-11e7-93ae-92361f002671")
+                .setActivityType("addToMarcoCart")
+                .setTag("productPrices", new ArrayList<Double>() {{          // can be multiple prices
+                    add(3.50);
+                    add(3.70);
+                }})
+                .setTag("productIds", new ArrayList<String>() {{             // can be multiple ids
+                    add("sock-AU-90");
+                    add("sock-GR-92");
+                }})
+                .setTag("productCategories", new ArrayList<String>() {{      // optional
+                    add("apparel");
+                    add("apparel");
+                }})  // optional
+                .execute();
 ```
 
 ## TemporalData: Selected Usage Examples
