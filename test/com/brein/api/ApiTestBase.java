@@ -34,11 +34,6 @@ public class ApiTestBase {
     protected final String activityType = BreinActivityType.LOGIN;
 
     /**
-     * indicator if the loops should be done forever :-)
-     */
-    protected boolean loopIndicator = true;
-
-    /**
      * Init part
      */
     @BeforeClass
