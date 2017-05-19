@@ -14,8 +14,9 @@ import java.util.function.Consumer;
  * that a valid API-key is configured prior to using this function.
  */
 public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExecutable<BreinResult> {
+
     public static final String ACTIVITY_FIELD = "activity";
-    public static final String TAGS_FIELD = "activity";
+    public static final String TAGS_FIELD = "tags";
     /**
      * contains the tagsMap map
      */
