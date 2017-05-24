@@ -129,7 +129,7 @@ For some use-cases, e.g., understanding your customers *favorite products*, *ave
 ```Java
 new BreinActivity()
                 .setUser("sessionId", "966542c6-2399-11e7-93ae-92361f002671")
-                .setActivityType("addToMarcoCart")
+                .setActivityType("addToCart")
                 .setTag("productPrices", new ArrayList<Double>() {{          // can be multiple prices
                     add(3.50);
                     add(3.70);
@@ -141,7 +141,7 @@ new BreinActivity()
                 .setTag("productCategories", new ArrayList<String>() {{      // optional
                     add("apparel");
                     add("apparel");
-                }})  // optional
+                }})
                 .execute();
 ```
 
