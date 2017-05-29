@@ -2,6 +2,7 @@ package com.brein.api;
 
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinUser;
+import com.brein.domain.BreinUser.UserField;
 import com.brein.util.BreinUtil;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -86,6 +87,32 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
      */
     public T setUser(final String key, final Object value) {
         this.getUser().set(key, value);
+        return getThis();
+    }
+
+    /**
+     * Sets a specific data point for the user data of the request, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *             'key': 'value'
+     *         }
+     *     }
+     * </pre>
+     * <p>
+     * Typically, that would be, e.g., {@code email},
+     * {@code sessionId}, and/or {@code userId}
+     *
+     * @param key   the value to be set (e.g., {@code UserField.EMAIL})
+     * @param value the value to be set for the specified key
+     *
+     * @return {@code this}
+     *
+     * @see UserField
+     */
+    public T setUser(final UserField key, final Object value) {
+        this.getUser().set(key.getName(), value);
         return getThis();
     }
 
