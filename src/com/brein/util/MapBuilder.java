@@ -4,27 +4,31 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class M<T> {
+/**
+ * Helper class for building Maps of type <String,T>
+ * @param <T>
+ */
+public class MapBuilder<T> {
     protected final Map<String, T> map = new HashMap<>();
 
-    public static <T> M<T> fromMap(final Map<String, T> map) {
-        final M<T> result = new M<>();
+    public static <T> MapBuilder<T> fromMap(final Map<String, T> map) {
+        final MapBuilder<T> result = new MapBuilder<>();
         return result.set(map);
     }
 
-    public M<T> set(final String key, final T value) {
+    public MapBuilder<T> set(final String key, final T value) {
         map.put(key, value);
 
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public M<T> set(final Map map) {
+    public MapBuilder<T> set(final Map map) {
         map.forEach((key, value) -> set(String.valueOf(key), (T) value));
         return this;
     }
 
-    public M<T> set(final M map) {
+    public MapBuilder<T> set(final MapBuilder map) {
         return set(map.map);
     }
 

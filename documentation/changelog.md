@@ -5,6 +5,10 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 2.0.3
+* renamed `M` class to `MapBuilder`
+* additional documentation
+
 # Version 2.0.0
 
 The architecture of the library was re-factored. With these changes, the general usage of the library is the same as before.

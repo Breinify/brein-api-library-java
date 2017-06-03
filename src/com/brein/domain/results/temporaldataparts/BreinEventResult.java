@@ -39,10 +39,16 @@ public class BreinEventResult {
         return name;
     }
 
+    /**
+     * @return The unix timestamp of when the event starts
+     */
     public Long getStart() {
         return start;
     }
 
+    /**
+     * @return The unix timestamp of when the event is estimated to end
+     */
     public Long getEnd() {
         return end;
     }
@@ -51,6 +57,9 @@ public class BreinEventResult {
         return category;
     }
 
+    /**
+     * @return An estimated size for the event on a scale of 0-4, or null if we couldn't resolve a size
+     */
     public Integer getSize() {
         return size;
     }

@@ -2,7 +2,7 @@ package com.brein.api;
 
 import com.brein.domain.BreinConfig;
 import com.brein.engine.BreinEngineType;
-import com.brein.util.M;
+import com.brein.util.MapBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -155,7 +155,7 @@ public class TestActivityApiWithUnirest extends ApiTestBase {
 
     @Test
     public void testUsageOfM() {
-        asyncTest(cb -> Breinify.activity(new M<String>().set("firstName", "Marco"), "login", res -> {
+        asyncTest(cb -> Breinify.activity(new MapBuilder<String>().set("firstName", "Marco"), "login", res -> {
             assertEquals(200, res.getStatus());
             cb.set(true);
         }), 2000);

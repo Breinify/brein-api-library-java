@@ -69,6 +69,9 @@ public class BreinLocationResult {
         return city;
     }
 
+    /**
+     * @return The estimated accuracy of the resolved location
+     */
     public String getGranularity() {
         return granularity;
     }
@@ -87,5 +90,9 @@ public class BreinLocationResult {
 
     public Map<String, Object> getGeoJson(final String type) {
         return this.geojsons.get(type);
+    }
+
+    public String toString() {
+        return getCity() + ", " + getState() + " " + getCountry();
     }
 }

@@ -93,7 +93,9 @@ public class Sample {
                 .setLocalDateTime()
                 .execute();
 
-        final ZonedDateTime zonedDateTime = result.getZonedDateTime();
+        System.out.println(result);
+
+        final ZonedDateTime zonedDateTime = result.getLocalDateTime();
         final List<BreinEventResult> events = result.getEvents();
         final List<BreinHolidayResult> holidays = result.getHolidays();
         final BreinWeatherResult weather = result.getWeather();
@@ -171,7 +173,7 @@ public class Sample {
         System.out.println("");
 
         // initialize the system
-        Breinify.setConfig(apiKey.trim(), secret.trim().isEmpty() ? null : secret.trim());
+        Breinify.setConfig(apiKey.trim(), secret == null ? null : (secret.trim().isEmpty() ? null : secret.trim()));
 
         // resolve ipAddress, as example
         resolveIpAddress("204.28.127.66");

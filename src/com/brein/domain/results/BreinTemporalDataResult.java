@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * The parsed data returned from a Temporal Data request.
+ */
 public class BreinTemporalDataResult extends BreinResult {
     private static final String WEATHER_KEY = "weather";
     private static final String TIME_KEY = "time";
@@ -25,10 +28,20 @@ public class BreinTemporalDataResult extends BreinResult {
     private static final String HOLIDAY_LIST_KEY = "holidays";
     private static final String EVENT_LIST_KEY = "events";
 
+    /**
+     * Build the result based on the returned json
+     *
+     * @param json the result from the query, parsed into a Map
+     */
     public BreinTemporalDataResult(final Map<String, Object> json) {
         super(json == null ? Collections.emptyMap() : json);
     }
 
+    /**
+     * Build the result based on the result
+     *
+     * @param result the result from a request to the api
+     */
     public BreinTemporalDataResult(final BreinResult result) {
         this(result.getMap());
     }
@@ -37,6 +50,9 @@ public class BreinTemporalDataResult extends BreinResult {
         return getValue(WEATHER_KEY) != null;
     }
 
+    /**
+     * @return The weather for the time and location requested.
+     */
     public BreinWeatherResult getWeather() {
         return new BreinWeatherResult(getValue(WEATHER_KEY));
     }
@@ -45,7 +61,10 @@ public class BreinTemporalDataResult extends BreinResult {
         return getNestedValue(TIME_KEY, LOCAL_TIME_KEY) != null;
     }
 
-    public ZonedDateTime getZonedDateTime() {
+    /**
+     * @return The time localized to the resolved location
+     */
+    public ZonedDateTime getLocalDateTime() {
         final String value = getNestedValue(TIME_KEY, LOCAL_TIME_KEY);
         if (value == null) {
             return null;
@@ -70,6 +89,9 @@ public class BreinTemporalDataResult extends BreinResult {
         return getNestedValue(TIME_KEY, EPOCH_TIME_KEY) != null;
     }
 
+    /**
+     * @return The time in UTC
+     */
     public LocalDateTime getEpochDateTime() {
         final String value = getNestedValue(TIME_KEY, EPOCH_TIME_KEY);
         if (value == null) {
@@ -83,6 +105,9 @@ public class BreinTemporalDataResult extends BreinResult {
         return getValue(LOCATION_KEY) != null;
     }
 
+    /**
+     * @return The resolved location for the supplied request
+     */
     public BreinLocationResult getLocation() {
         return new BreinLocationResult(getValue(LOCATION_KEY));
     }
@@ -91,6 +116,9 @@ public class BreinTemporalDataResult extends BreinResult {
         return getValue(HOLIDAY_LIST_KEY) != null;
     }
 
+    /**
+     * @return Holidays happening at the resolved time
+     */
     public List<BreinHolidayResult> getHolidays() {
         final List<Map<String, Object>> value = getValue(HOLIDAY_LIST_KEY);
         if (value == null) {
@@ -106,6 +134,9 @@ public class BreinTemporalDataResult extends BreinResult {
         return getValue(EVENT_LIST_KEY) != null;
     }
 
+    /**
+     * @return Events happening at the resolved location around the specified time
+     */
     public List<BreinEventResult> getEvents() {
         final List<Map<String, Object>> value = getValue(EVENT_LIST_KEY);
         if (value == null) {
@@ -119,7 +150,10 @@ public class BreinTemporalDataResult extends BreinResult {
 
     @Override
     public String toString() {
-        return "Temporal results with " + (hasWeather() ? getWeather() : "no weather info");
+        return "Temporal results with " + (hasWeather() ? getWeather() : "no weather info") + ", " + (hasHolidays() ?
+                (getHolidays().size() == 1 ? "one holiday" : getHolidays().size() + " holidays") : "no holidays")
+                + ", " + (hasEvents() && getEvents().size() > 0 ? "nearby events" : "no events")
+                + " at " + getLocalDateTime() + " in " + getLocation();
     }
 
 }

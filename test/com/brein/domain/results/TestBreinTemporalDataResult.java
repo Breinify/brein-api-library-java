@@ -53,7 +53,7 @@ public class TestBreinTemporalDataResult {
 
         final BreinTemporalDataResult withTime = new BreinTemporalDataResult(new BreinResult(json));
         Assert.assertTrue(withTime.hasLocalDateTime());
-        final ZonedDateTime time = withTime.getZonedDateTime();
+        final ZonedDateTime time = withTime.getLocalDateTime();
 
         Assert.assertEquals(2017, time.getYear());
         Assert.assertEquals(4, time.getMonthValue());

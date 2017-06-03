@@ -48,14 +48,23 @@ public class BreinHolidayResult {
         }
     }
 
+    /**
+     * @return A list of descriptions for the holiday
+     */
     public List<HolidayType> getTypes() {
         return types;
     }
 
+    /**
+     * @return Where this holiday comes from
+     */
     public HolidaySource getSource() {
         return source;
     }
 
+    /**
+     * @return A human readable name of the holiday
+     */
     public String getName() {
         return name;
     }

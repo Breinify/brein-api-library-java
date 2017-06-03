@@ -4,7 +4,7 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.domain.results.BreinTemporalDataResult;
-import com.brein.util.M;
+import com.brein.util.MapBuilder;
 
 import java.util.function.Consumer;
 
@@ -68,13 +68,13 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code M}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      *
-     * @see M
+     * @see MapBuilder
      */
-    public static void activity(final M<String> identifiers,
+    public static void activity(final MapBuilder<String> identifiers,
                                 final String activityType) {
         activity(identifiers, activityType, null, null, null);
     }
@@ -82,16 +82,16 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code M}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param callback     callback to get informed whenever the activity was sent, the callback retrieves the {@code
      *                     BreinResult}
      *
      * @see BreinResult
-     * @see M
+     * @see MapBuilder
      */
-    public static void activity(final M<String> identifiers,
+    public static void activity(final MapBuilder<String> identifiers,
                                 final String activityType,
                                 final Consumer<BreinResult> callback) {
         activity(identifiers, activityType, null, null, callback);
@@ -100,14 +100,14 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code M}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param description  a textual description of the activity
      *
-     * @see M
+     * @see MapBuilder
      */
-    public static void activity(final M<String> identifiers,
+    public static void activity(final MapBuilder<String> identifiers,
                                 final String activityType,
                                 final String description) {
         activity(identifiers, activityType, null, description, null);
@@ -116,7 +116,7 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code M}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param description  a textual description of the activity
@@ -124,9 +124,9 @@ public class Breinify {
      *                     BreinResult}, can be {@code null}
      *
      * @see BreinResult
-     * @see M
+     * @see MapBuilder
      */
-    public static void activity(final M<String> identifiers,
+    public static void activity(final MapBuilder<String> identifiers,
                                 final String activityType,
                                 final String description,
                                 final Consumer<BreinResult> callback) {
@@ -136,7 +136,7 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code M}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param category     a category of the activity, e.g., apparel, food, or other, if {@code null} the configured
@@ -147,9 +147,9 @@ public class Breinify {
      *
      * @see BreinResult
      * @see BreinConfig#setDefaultCategory(String)
-     * @see M
+     * @see MapBuilder
      */
-    public static void activity(final M<String> identifiers,
+    public static void activity(final MapBuilder<String> identifiers,
                                 final String activityType,
                                 final String category,
                                 final String description,
@@ -331,7 +331,6 @@ public class Breinify {
         if (lastBrein == null) {
             lastBrein = new Brein().setConfig(lastConfig);
         }
-
         return lastBrein;
     }
 

@@ -72,6 +72,9 @@ public class BreinWeatherResult {
         }
     }
 
+    /**
+     * @return A human readable description of the weather
+     */
     public String getDescription() {
         return description;
     }
@@ -98,26 +101,44 @@ public class BreinWeatherResult {
         return celsius + 273.15;
     }
 
+    /**
+     * @return The type of precipitation, or 'NONE' if there isn't any
+     */
     public PrecipitationType getPrecipitation() {
         return precipitation;
     }
 
+    /**
+     * @return How many centimeters of precipitation there have been in the last hour
+     */
     public Double getPrecipitationAmount() {
         return precipitationAmount;
     }
 
+    /**
+     * @return The wind speed, in kilometers/hour
+     */
     public Double getWindStrength() {
         return windStrength;
     }
 
+    /**
+     * @return When this weather data was collected
+     */
     public Long getLastMeasured() {
         return lastMeasured;
     }
 
+    /**
+     * @return The percentage of the sky covered in clouds
+     */
     public Double getCloudCover() {
         return cloudCover;
     }
 
+    /**
+     * @return The approximate location of the weather station the data was collected at
+     */
     public GeoCoordinates getMeasuredAt() {
         if (lat == null && lon == null) {
             return null;
