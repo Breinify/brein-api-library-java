@@ -17,10 +17,12 @@ public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExe
 
     public static final String ACTIVITY_FIELD = "activity";
     public static final String TAGS_FIELD = "tags";
+
     /**
      * contains the tagsMap map
      */
     private Map<String, Object> tagsMap;
+
     /**
      * contains the fields that are part of the activity map
      */

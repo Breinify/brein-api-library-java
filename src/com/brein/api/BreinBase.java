@@ -16,6 +16,7 @@ import java.util.Map;
  * Base Class for activity and lookup operations.
  */
 public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy {
+
     public static final String API_KEY_FIELD = "apiKey";
     public static final String UNIX_TIMESTAMP_FIELD = "unixTimestamp";
     public static final String SIGNATURE_FIELD = "signature";

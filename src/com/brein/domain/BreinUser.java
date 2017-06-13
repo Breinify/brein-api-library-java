@@ -12,12 +12,15 @@ import java.util.Map;
  * A plain object specifying the user information the activity belongs to
  */
 public class BreinUser {
+
     public static final String USER_FIELD = "user";
     public static final String ADDITIONAL_FIELD = "additional";
+
     /**
      * contains further fields in the user additional section
      */
     private Map<String, Object> additionalMap;
+
     /**
      * contains further fields in the user section
      */

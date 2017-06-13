@@ -22,7 +22,7 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
     public static final DateTimeFormatter JAVA_SCRIPT_FORMAT =
             DateTimeFormatter.ofPattern("E MMM dd yyyy HH:mm:ss \'GMT\'Z (z)");
 
-    /*
+    /**
      * The following fields are used within the additional
      */
     public static final String LOCATION_FIELD = "location";
@@ -30,7 +30,7 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
     public static final String TIMEZONE_FIELD = "timezone";
     public static final String IP_ADDRESS_FIELD = "ipAddress";
 
-    /*
+    /**
      * The following fields are used within the location
      */
     public static final String LONGITUDE_FIELD = "longitude";

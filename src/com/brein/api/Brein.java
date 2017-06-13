@@ -22,7 +22,6 @@ public class Brein {
         }
 
         this.config = breinConfig;
-
         return this;
     }
 

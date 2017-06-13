@@ -9,6 +9,7 @@ import com.brein.util.MapBuilder;
 import java.util.function.Consumer;
 
 public class Breinify {
+
     private static BreinConfig lastConfig = null;
     private static Brein lastBrein = null;
 
