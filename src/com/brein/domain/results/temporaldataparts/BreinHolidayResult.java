@@ -49,7 +49,7 @@ public class BreinHolidayResult {
     }
 
     /**
-     * @return A list of descriptions for the holiday
+     * @return A list of descriptions for the holiday. See
      */
     public List<HolidayType> getTypes() {
         return types;
@@ -69,6 +69,13 @@ public class BreinHolidayResult {
         return name;
     }
 
+    /**
+     * @return if the holiday is generally considered a major holiday
+     */
+    public boolean isMajor(){
+        return getTypes().contains(HolidayType.MAJOR);
+    }
+
     public enum HolidaySource {
         GOVERNMENT,
         UNITED_NATIONS,
@@ -79,12 +86,15 @@ public class BreinHolidayResult {
     public enum HolidayType {
         NATIONAL_FEDERAL,
         STATE_FEDERAL,
-        LEGAL,
+        UN_SPECIAL_DAY,
         CIVIC,
-        SPECIAL_DAY,
+        CIVIL_RIGHTS,
+        CULTURAL,
         EDUCATIONAL,
         HALLMARK,
-        CULTURAL,
-        RELIGIOUS
+        HISTORIC,
+        MAJOR,
+        RELIGIOUS,
+        SPECIAL_DAY
     }
 }

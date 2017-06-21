@@ -17,14 +17,23 @@ public class TestBreinHolidayResult {
     @Test
     public void testHolidays() {
         final String strJson = "{" +
-                " \"holidays\": [{" +
+                " \"holidays\": [" +
+                "{\n" +
+                "      \"types\": [\n" +
+                "        \"UN_SPECIAL_DAY\"\n" +
+                "      ],\n" +
+                "      \"source\": \"United Nations\",\n" +
+                "      \"holiday\": \"World Cities Day\"\n" +
+                "    },{" +
                 "  \"types\": [" +
-                "   \"NATIONAL_FEDERAL\"" +
+                "   \"MAJOR\"," +
+                "   \"HALLMARK\"" +
                 "  ]," +
                 "  \"source\": \"Government\"," +
                 "  \"holiday\": \"Halloween\"" +
                 " }, {}, {" +
                 "  \"types\": [" +
+                "   \"MAJOR\"," +
                 "   \"RELIGIOUS\"," +
                 "   \"HALLMARK\"" +
                 "  ]," +
@@ -38,24 +47,36 @@ public class TestBreinHolidayResult {
         final BreinResult result = new BreinResult(json);
 
         final List<BreinHolidayResult> results = new BreinTemporalDataResult(result).getHolidays();
-        Assert.assertEquals(results.size(), 3);
+        Assert.assertEquals(results.size(), 4);
 
-        final BreinHolidayResult halloween = results.get(0);
+        final BreinHolidayResult small = results.get(0);
+        Assert.assertEquals("World Cities Day", small.getName());
+        Assert.assertEquals(HolidaySource.UNITED_NATIONS, small.getSource());
+        Assert.assertEquals(1, small.getTypes().size());
+        Assert.assertEquals(HolidayType.UN_SPECIAL_DAY, small.getTypes().get(0));
+        Assert.assertFalse(small.isMajor());
+
+        final BreinHolidayResult halloween = results.get(1);
         Assert.assertEquals("Halloween", halloween.getName());
         Assert.assertEquals(HolidaySource.GOVERNMENT, halloween.getSource());
-        Assert.assertEquals(1, halloween.getTypes().size());
-        Assert.assertEquals(HolidayType.NATIONAL_FEDERAL, halloween.getTypes().get(0));
+        Assert.assertEquals(2, halloween.getTypes().size());
+        Assert.assertEquals(HolidayType.MAJOR, halloween.getTypes().get(0));
+        Assert.assertEquals(HolidayType.HALLMARK, halloween.getTypes().get(1));
+        Assert.assertTrue(halloween.isMajor());
 
-        final BreinHolidayResult empty = results.get(1);
+        final BreinHolidayResult empty = results.get(2);
         Assert.assertNull(empty.getName());
         Assert.assertEquals(HolidaySource.UNKNOWN, empty.getSource());
         Assert.assertEquals(0, empty.getTypes().size());
+        Assert.assertFalse(empty.isMajor());
 
-        final BreinHolidayResult multiType = results.get(2);
-        Assert.assertEquals("Christmas", multiType.getName());
-        Assert.assertEquals(HolidaySource.PUBLIC_INFORMATION, multiType.getSource());
-        Assert.assertEquals(2, multiType.getTypes().size());
-        Assert.assertTrue(new HashSet<>(multiType.getTypes()).contains(HolidayType.RELIGIOUS));
-        Assert.assertTrue(new HashSet<>(multiType.getTypes()).contains(HolidayType.HALLMARK));
+        final BreinHolidayResult christmas = results.get(3);
+        Assert.assertEquals("Christmas", christmas.getName());
+        Assert.assertEquals(HolidaySource.PUBLIC_INFORMATION, christmas.getSource());
+        Assert.assertEquals(3, christmas.getTypes().size());
+        Assert.assertTrue(new HashSet<>(christmas.getTypes()).contains(HolidayType.MAJOR));
+        Assert.assertTrue(new HashSet<>(christmas.getTypes()).contains(HolidayType.RELIGIOUS));
+        Assert.assertTrue(new HashSet<>(christmas.getTypes()).contains(HolidayType.HALLMARK));
+        Assert.assertTrue(christmas.isMajor());
     }
 }
