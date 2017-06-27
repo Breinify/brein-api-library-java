@@ -1,7 +1,7 @@
 package com.brein.domain.results.temporaldataparts;
 
 import com.brein.domain.results.BreinTemporalDataResult;
-import com.brein.domain.results.temporaldataparts.BreinEventResult.EventCategory;
+import com.brein.domain.results.temporaldataparts.BreinEventResult.EventSize;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,47 +14,55 @@ public class TestBreinEventResult {
     public void testEvents() {
         final String strJson = "{\n" +
                 " \"events\": [{\n" +
-                "   \"displayName\": \"Full Event\",\n" +
-                "   \"startTime\": 123,\n" +
-                "   \"location\": {\n" +
-                "    \"country\": \"US\",\n" +
-                "    \"zipCode\": \"94109\",\n" +
-                "    \"city\": \"San Francisco\",\n" +
-                "    \"granularity\": \"city\",\n" +
-                "    \"state\": \"CA\"\n" +
-                "   },\n" +
-                "   \"endTime\": 1234,\n" +
-                "   \"sizeEstimated\": 3,\n" +
-                "   \"category\": \"eventCategoryConcert\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "   \"displayName\": \"Bad category\",\n" +
-                "   \"startTime\": 123,\n" +
-                "   \"location\": {\n" +
-                "    \"country\": \"US\",\n" +
-                "    \"zipCode\": \"94109\",\n" +
-                "    \"city\": \"San Francisco\",\n" +
-                "    \"granularity\": \"city\",\n" +
-                "    \"state\": \"CA\"\n" +
-                "   },\n" +
-                "   \"endTime\": 1234,\n" +
-                "   \"sizeEstimated\": 3,\n" +
-                "   \"category\": \"badCategory\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "   \"displayName\": \"Partial Event\",\n" +
-                "   \"startTime\": 234,\n" +
-                "   \"location\": {\n" +
-                "    \"country\": \"US\",\n" +
-                "    \"city\": \"San Francisco\",\n" +
-                "    \"granularity\": \"city\",\n" +
-                "    \"state\": \"CA\"\n" +
-                "   },\n" +
-                "   \"endTime\": 2345,\n" +
-                "   \"sizeEstimated\": -1\n" +
-                "  },\n" +
-                "  {}\n" +
-                " ]\n" +
+                "      \"displayName\": \"Full Event\",\n" +
+                "      \"timezone\": \"America/Los_Angeles\",\n" +
+                "      \"genderSplit\": 0.47965145111083984,\n" +
+                "      \"ages\": [\n" +
+                "        \"young-adults\",\n" +
+                "        \"middle-age\"\n" +
+                "      ],\n" +
+                "      \"location\": {\n" +
+                "        \"country\": \"US\",\n" +
+                "        \"zipCode\": \"94102\",\n" +
+                "        \"address\": \"401 Mason Street\",\n" +
+                "        \"city\": \"San Francisco\",\n" +
+                "        \"granularity\": \"exact\",\n" +
+                "        \"lon\": -122.410141,\n" +
+                "        \"state\": \"CA\",\n" +
+                "        \"lat\": 37.787295\n" +
+                "      },\n" +
+                "      \"startTime\": 123,\n" +
+                "      \"endTime\": 1234,\n" +
+                "      \"categories\": [\n" +
+                "        \"Concerts\"\n" +
+                "      ],\n" +
+                "      \"sizeEstimated\": \"major\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"displayName\": \"Sleeptalkers\",\n" +
+                "      \"timezone\": \"America/Los_Angeles\",\n" +
+                "      \"genderSplit\": 0.37785571813583374,\n" +
+                "      \"ages\": [\n" +
+                "        \"young-adults\",\n" +
+                "        \"middle-age\"\n" +
+                "      ],\n" +
+                "      \"location\": {\n" +
+                "        \"country\": \"US\",\n" +
+                "        \"zipCode\": \"94107\",\n" +
+                "        \"address\": \"1233 17th St\",\n" +
+                "        \"city\": \"San Francisco\",\n" +
+                "        \"granularity\": \"exact\",\n" +
+                "        \"lon\": -122.3963595,\n" +
+                "        \"state\": \"CA\",\n" +
+                "        \"lat\": 37.7650548\n" +
+                "      },\n" +
+                "      \"startTime\": 12345,\n" +
+                "      \"endTime\": 12346,\n" +
+                "      \"categories\": [\n" +
+                "        \"Concerts\", \"Other\"\n" +
+                "      ],\n" +
+                "      \"sizeEstimated\": \"minor\"\n" +
+                "    },{}]\n" +
                 "}";
 
         @SuppressWarnings("unchecked")
@@ -62,38 +70,29 @@ public class TestBreinEventResult {
         final BreinTemporalDataResult result = new BreinTemporalDataResult(json);
 
         final List<BreinEventResult> results = result.getEvents();
-        Assert.assertEquals(results.size(), 4);
+        Assert.assertEquals(results.size(), 3);
 
         final BreinEventResult full = results.get(0);
 
         Assert.assertEquals("Full Event", full.getName());
         Assert.assertEquals(123L, full.getStart(), 0.001);
         Assert.assertEquals(1234L, full.getEnd(), 0.001);
-        Assert.assertEquals(3L, full.getSize(), 0.001);
-        Assert.assertEquals(EventCategory.CONCERT, full.getCategory());
+        Assert.assertEquals(EventSize.MAJOR, full.getSize());
+        Assert.assertEquals("Concerts", full.getCategories().get(0));
 
         final BreinEventResult badCategory = results.get(1);
 
-        Assert.assertEquals("Bad category", badCategory.getName());
-        Assert.assertEquals(123, badCategory.getStart(), 0.001);
-        Assert.assertEquals(1234, badCategory.getEnd(), 0.001);
-        Assert.assertEquals(3, badCategory.getSize(), 0.001);
-        Assert.assertEquals(EventCategory.UNKNOWN, badCategory.getCategory());
+        Assert.assertEquals("Sleeptalkers", badCategory.getName());
+        Assert.assertEquals(12345, badCategory.getStart(), 0.001);
+        Assert.assertEquals(12346, badCategory.getEnd(), 0.001);
+        Assert.assertEquals(EventSize.MINOR, badCategory.getSize());
+        Assert.assertArrayEquals(new String[]{"Concerts", "Other"}, badCategory.getCategories().toArray());
 
-        final BreinEventResult partial = results.get(2);
-
-        Assert.assertEquals("Partial Event", partial.getName());
-        Assert.assertEquals(234, partial.getStart(), 0.001);
-        Assert.assertEquals(2345, partial.getEnd(), 0.001);
-        Assert.assertNull(partial.getSize());
-        Assert.assertEquals(EventCategory.UNKNOWN, partial.getCategory());
-
-        final BreinEventResult nullCategory = results.get(3);
+        final BreinEventResult nullCategory = results.get(2);
 
         Assert.assertNull(nullCategory.getName());
         Assert.assertNull(nullCategory.getStart());
         Assert.assertNull(nullCategory.getEnd());
-        Assert.assertNull(nullCategory.getSize());
-        Assert.assertEquals(EventCategory.UNKNOWN, nullCategory.getCategory());
+        Assert.assertEquals(EventSize.UNKNOWN, nullCategory.getSize());
     }
 }

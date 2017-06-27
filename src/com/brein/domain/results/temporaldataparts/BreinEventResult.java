@@ -3,36 +3,36 @@ package com.brein.domain.results.temporaldataparts;
 import com.brein.util.JsonHelper;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class BreinEventResult {
     private static final String NAME_KEY = "displayName";
     private static final String START_KEY = "startTime";
     private static final String END_KEY = "endTime";
-    private static final String CATEGORY_KEY = "category";
+    private static final String CATEGORY_KEY = "categories";
     private static final String SIZE_KEY = "sizeEstimated";
     private final String name;
     private final Long start;
     private final Long end;
-    private final EventCategory category;
-    private final Integer size;
+    private final List<String> categories;
+    private final EventSize size;
     public BreinEventResult(final Map<String, Object> result) {
 
         name = JsonHelper.getOr(result, NAME_KEY, null);
         start = JsonHelper.getOrLong(result, START_KEY);
         end = JsonHelper.getOrLong(result, END_KEY);
-        final Long innerSize = JsonHelper.getOrLong(result, SIZE_KEY);
 
-        size = innerSize == null || innerSize == -1 ? null : Math.toIntExact(innerSize);
-
-        final String categoryName = JsonHelper.getOr(result, CATEGORY_KEY, "unknown")
-                .replaceAll("eventCategory", "")
+        final String sizeName = JsonHelper.getOr(result, SIZE_KEY, "unknown")
                 .toUpperCase();
 
-        category = Arrays.asList(EventCategory.values()).stream()
-                .filter(e -> e.toString().equalsIgnoreCase(categoryName))
+        categories = JsonHelper.getOr(result, CATEGORY_KEY, Collections.emptyList());
+
+        size = Arrays.asList(EventSize.values()).stream()
+                .filter(e -> e.toString().equalsIgnoreCase(sizeName))
                 .findAny()
-                .orElse(EventCategory.UNKNOWN);
+                .orElse(EventSize.UNKNOWN);
     }
 
     public String getName() {
@@ -53,25 +53,23 @@ public class BreinEventResult {
         return end;
     }
 
-    public EventCategory getCategory() {
-        return category;
+    public List<String> getCategories() {
+        return categories;
     }
 
     /**
      * @return An estimated size for the event on a scale of 0-4, or null if we couldn't resolve a size
      */
-    public Integer getSize() {
+    public EventSize getSize() {
         return size;
     }
 
-    public enum EventCategory {
-        CONCERT,
-        COMEDY,
-        OTHERSHOW,
-        POLITICAL,
-        SPORTS,
-        EDUCATIONAL,
-        FITNESS,
+    public enum EventSize{
+        MINOR,
+        LOCAL,
+        MAJOR,
+        NATIONAL,
+        INTERNATIONAL,
         UNKNOWN
     }
 
