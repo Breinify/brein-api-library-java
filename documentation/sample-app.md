@@ -30,6 +30,6 @@ final BreinTemporalDataResult result = new BreinTemporalData()
     .execute();
 
 // access the geoJson instances for the CITY and the NEIGHBORHOOD
-System.out.println(r.getLocation().getGeoJson("CITY"));
-System.out.println(r.getLocation().getGeoJson("NEIGHBORHOOD"));
+System.out.println(result.getLocation().getGeoJson("CITY"));
+System.out.println(result.getLocation().getGeoJson("NEIGHBORHOOD"));
  ```
