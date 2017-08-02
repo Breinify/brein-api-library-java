@@ -152,7 +152,7 @@ public class BreinTemporalDataResult extends BreinResult {
     public String toString() {
         return "Temporal results with " + (hasWeather() ? getWeather() : "no weather info") + ", " + (hasHolidays() ?
                 (getHolidays().size() == 1 ? "one holiday" : getHolidays().size() + " holidays") : "no holidays")
-                + ", " + (hasEvents() && getEvents().size() > 0 ? "nearby events" : "no events")
+                + ", " + (hasEvents() && !getEvents().isEmpty() ? "nearby events" : "no events")
                 + " at " + getLocalDateTime() + " in " + getLocation();
     }
 
