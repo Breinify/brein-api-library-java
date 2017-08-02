@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Map;
 
 public class BreinLocationResult {
+
     private static final String COUNTRY_KEY = "country";
     private static final String STATE_KEY = "state";
     private static final String CITY_KEY = "city";
