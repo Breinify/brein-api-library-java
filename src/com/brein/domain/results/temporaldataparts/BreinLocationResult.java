@@ -92,6 +92,7 @@ public class BreinLocationResult {
         return this.geojsons.get(type);
     }
 
+    @Override
     public String toString() {
         return getCity() + ", " + getState() + " " + getCountry();
     }
