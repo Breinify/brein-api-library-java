@@ -119,6 +119,12 @@ public class TestBreinWeatherResult {
                     case SNOW:
                         typeString = "snow";
                         break;
+                    case HAIL:
+                        typeString = "hail";
+                        break;
+                    case SLEET:
+                        typeString = "sleet";
+                        break;
                     case UNKNOWN:
                         typeString = "unknown";
                         break;
