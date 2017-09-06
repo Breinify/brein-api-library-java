@@ -60,6 +60,12 @@ public class BreinWeatherResult {
                     case "snow":
                         this.precipitation = PrecipitationType.SNOW;
                         break;
+                    case "hail":
+                        this.precipitation = PrecipitationType.HAIL;
+                        break;
+                    case "sleet":
+                        this.precipitation = PrecipitationType.SLEET;
+                        break;
                     case "none":
                         this.precipitation = PrecipitationType.NONE;
                         break;
