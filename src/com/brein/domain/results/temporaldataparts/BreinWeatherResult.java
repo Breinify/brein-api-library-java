@@ -16,6 +16,8 @@ public class BreinWeatherResult {
     private static final String MEASURED_LOCATION_KEY = "measuredAt";
     private static final String LATITUDE_KEY = "lat";
     private static final String LONGITUDE_KEY = "lon";
+    private static final String PRESSURE_KEY = "pressure";
+    private static final String HUMIDITY_KEY = "humidity";
 
     private final String description;
     private final Double temperature;
@@ -26,6 +28,8 @@ public class BreinWeatherResult {
     private final Double cloudCover;
     private final Double lat;
     private final Double lon;
+    private final Double pressure;
+    private final Double humidity;
 
     public BreinWeatherResult(final Map<String, Object> result) {
         description = JsonHelper.getOr(result, DESCRIPTION_KEY, null);
@@ -33,6 +37,8 @@ public class BreinWeatherResult {
         windStrength = JsonHelper.getOr(result, WIND_STRENGTH_KEY, null);
         lastMeasured = JsonHelper.getOrLong(result, LAST_MEASURED_KEY);
         cloudCover = JsonHelper.getOr(result, CLOUD_COVER_KEY, null);
+        pressure = JsonHelper.getOr(result, PRESSURE_KEY, null);
+        humidity = JsonHelper.getOr(result, HUMIDITY_KEY, null);
 
         //noinspection unchecked
         final Map<String, Object> measuredJson = JsonHelper.getOr(result, MEASURED_LOCATION_KEY, null);
@@ -140,6 +146,20 @@ public class BreinWeatherResult {
      */
     public Double getCloudCover() {
         return cloudCover;
+    }
+
+    /**
+     * @return the pressure
+     */
+    public Double getPressure() {
+        return pressure;
+    }
+
+    /**
+     * @return The humidity as percentage (0.0 - 100.0)
+     */
+    public Double getHumidity() {
+        return humidity;
     }
 
     /**
