@@ -259,6 +259,26 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
     }
 
     /**
+     * Sets the localDateTime for a Stringified date, which will be parsed server side, i.e.:
+     * <p>
+     * <pre>
+     *     {
+     *         user: {
+     *              additional: {
+     *                  'localDateTime': zonedDateTime
+     *              }
+     *         }
+     *     }
+     * </pre>
+     *
+     * @return {@code this}
+     */
+    public BreinTemporalData setLocalDateTime(final String timeString) {
+        setAdditional(LOCAL_DATE_TIME_FIELD, timeString);
+        return this;
+    }
+
+    /**
      * Sets the location data using structured data (city, state, country), i.e.:
      * <p>
      * <pre>
