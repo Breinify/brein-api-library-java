@@ -17,6 +17,16 @@ public class TestTemporalIntegration {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestTemporalIntegration.class);
 
     @Test
+    public void testSacramentoWeather(){
+        Breinify.setConfig(new BreinConfig(VALID_API_KEY)
+                .setRestEngineType(BreinEngineType.JERSEY_ENGINE));
+
+        final BreinTemporalDataResult res = new BreinTemporalData().setLocation("sacramento ca").execute();
+
+        System.out.println(res.getWeather().getDescription());
+    }
+
+    @Test
     @Ignore
     public void testNetworkChangeBug() {
         //ignore this, the test doesn't fail as expected yet...
