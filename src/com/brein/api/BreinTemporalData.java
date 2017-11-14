@@ -38,9 +38,9 @@ public class BreinTemporalData extends BreinBase<BreinTemporalData> implements I
     public static final String SHAPE_TYPES_FIELD = "shapeTypes";
     public static final String TEXT_FIELD = "text";
 
-    public static final String CITY_TEXT_FIELD = "text";
-    public static final String STATE_TEXT_FIELD = "text";
-    public static final String COUNTRY_TEXT_FIELD = "text";
+    public static final String CITY_TEXT_FIELD = "city";
+    public static final String STATE_TEXT_FIELD = "state";
+    public static final String COUNTRY_TEXT_FIELD = "country";
 
     @Override
     public String getEndPoint(final BreinConfig config) {
