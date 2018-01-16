@@ -5,6 +5,9 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 2.0.4
+* Added `toString()` functions for each of the temporal data results.
+
 # Version 2.0.3
 * renamed `M` class to `MapBuilder`
 * additional documentation

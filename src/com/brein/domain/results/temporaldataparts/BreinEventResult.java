@@ -18,6 +18,7 @@ public class BreinEventResult {
     private final Long end;
     private final List<String> categories;
     private final EventSize size;
+
     public BreinEventResult(final Map<String, Object> result) {
 
         name = JsonHelper.getOr(result, NAME_KEY, null);
@@ -64,7 +65,12 @@ public class BreinEventResult {
         return size;
     }
 
-    public enum EventSize{
+    @Override
+    public String toString() {
+        return getName() + " from " + getStart() + " to " + getEnd();
+    }
+
+    public enum EventSize {
         MINOR,
         LOCAL,
         MAJOR,
