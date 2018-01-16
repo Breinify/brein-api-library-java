@@ -72,8 +72,13 @@ public class BreinHolidayResult {
     /**
      * @return if the holiday is generally considered a major holiday
      */
-    public boolean isMajor(){
+    public boolean isMajor() {
         return getTypes().contains(HolidayType.MAJOR);
+    }
+
+    @Override
+    public String toString() {
+        return getName() + " " + getTypes();
     }
 
     public enum HolidaySource {
