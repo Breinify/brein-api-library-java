@@ -1,14 +1,38 @@
 package com.brein.api;
 
 import com.brein.domain.BreinConfig;
-import com.brein.domain.BreinResult;
+import com.brein.domain.results.BreinRecommendationResult;
 import com.brein.util.BreinMapUtil;
 import com.brein.util.BreinUtil;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class BreinRecommendation extends BreinBase<BreinRecommendation> implements IExecutable<BreinResult> {
+public class BreinRecommendation extends BreinBase<BreinRecommendation> implements
+        IExecutable<BreinRecommendationResult> {
+
+    /**
+     * Recommends a user items that are similar to what they previously interacted with
+     */
+    public static final String SUB_RECOMMENDER_SIMILAR_ITEMS = "itemSearch";
+    /**
+     * Recommends items based on the currently popular items
+     */
+    public static final String SUB_RECOMMENDER_POPULAR_ITEMS = "topN";
+    /**
+     * Recommends items that similar users have bought
+     */
+    public static final String SUB_RECOMMENDER_USERS_LIKE_YOU = "usersLikeYou";
+    /**
+     * Recommends previously purchased items
+     */
+    public static final String SUB_RECOMMENDER_RECENTLY_PURCHASED = "purchaseHistory";
+    /**
+     * Recommends items that have historically trended during similar times
+     */
+    public static final String SUB_RECOMMENDER_TEMPORAL = "temporal";
 
     /**
      * contains the number of recommendations - default is 3
@@ -19,6 +43,11 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
      * contains the category for the recommendation
      */
     private String category;
+
+    /**
+     * an optional list of subrecommenders to run
+     */
+    private List<String> subRecommenders = null;
 
     /**
      * get the number of recommendations
@@ -62,6 +91,20 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
         return this;
     }
 
+    public BreinRecommendation setSubRecommenders(final List<String> subRecommenders) {
+        this.subRecommenders = subRecommenders;
+        return this;
+    }
+
+    public BreinRecommendation setSubRecommenders(final String... subRecomenders) {
+        setSubRecommenders(Arrays.asList(subRecomenders));
+        return this;
+    }
+
+    public List<String> getSubRecommenders() {
+        return subRecommenders;
+    }
+
     @Override
     public String getEndPoint(final BreinConfig config) {
         return config.getRecommendationEndpoint();
@@ -78,8 +121,13 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
             recommendationData.put("recommendationCategory", getCategory());
         }
 
+        if (BreinUtil.containsValue(getSubRecommenders())) {
+            recommendationData.put("recommendationSubRecommenders", getSubRecommenders());
+        }
+
         // mandatory field
         recommendationData.put("numRecommendations", getNumberOfRecommendations());
+
         requestData.put("recommendation", recommendationData);
     }
 
@@ -97,7 +145,7 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     }
 
     @Override
-    public BreinResult execute() {
+    public BreinRecommendationResult execute() {
         return Breinify.recommendation(this);
     }
 }

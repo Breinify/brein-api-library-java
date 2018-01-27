@@ -2,6 +2,7 @@ package com.brein.api;
 
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
+import com.brein.domain.results.BreinRecommendationResult;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.engine.BreinEngine;
 
@@ -69,10 +70,11 @@ public class Brein {
      *
      * @param data contains the brein recommendation object
      *
-     * @return BreinResult object
+     * @return the recommended items
      */
-    public BreinResult recommendation(final BreinRecommendation data) {
-        return getEngine().invoke(this.config, data);
+    public BreinRecommendationResult recommendation(final BreinRecommendation data) {
+        final BreinResult result = getEngine().invoke(this.config, data);
+        return new BreinRecommendationResult(result.getMap());
     }
 
     /**

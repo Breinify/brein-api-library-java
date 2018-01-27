@@ -1,6 +1,7 @@
 package com.brein;
 
 import com.brein.domain.TestDomain;
+import com.brein.domain.results.TestBreinRecommendationResult;
 import com.brein.domain.results.TestBreinTemporalDataResult;
 import com.brein.domain.results.temporaldataparts.TestBreinEventResult;
 import com.brein.domain.results.temporaldataparts.TestBreinHolidayResult;
@@ -23,7 +24,8 @@ import org.junit.runners.Suite;
         TestBreinWeatherResult.class,
         TestBreinLocationResult.class,
         TestBreinHolidayResult.class,
-        TestBreinEventResult.class
+        TestBreinEventResult.class,
+        TestBreinRecommendationResult.class
 })
 public class TestSuite {
 }

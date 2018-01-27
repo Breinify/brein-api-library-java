@@ -3,6 +3,7 @@ package com.brein.api;
 import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
+import com.brein.domain.results.BreinRecommendationResult;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.util.MapBuilder;
 
@@ -335,7 +336,7 @@ public class Breinify {
         return lastBrein;
     }
 
-    public static BreinResult recommendation(final BreinRecommendation data) {
+    public static BreinRecommendationResult recommendation(final BreinRecommendation data) {
         return getBrein().recommendation(data);
     }
 
