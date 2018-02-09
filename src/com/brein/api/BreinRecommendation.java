@@ -165,8 +165,9 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
      *
      * @param disableCaching the caching state
      */
-    public void setDisableCaching(final boolean disableCaching) {
+    public BreinRecommendation setDisableCaching(final boolean disableCaching) {
         this.disableCaching = disableCaching;
+        return this;
     }
 
     /**
@@ -179,8 +180,9 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     /**
      * @param recStartTime When recommendations should start
      */
-    public void setRecStartTime(final long recStartTime) {
+    public BreinRecommendation setRecStartTime(final long recStartTime) {
         this.recStartTime = recStartTime;
+        return this;
     }
 
     /**
@@ -193,8 +195,9 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     /**
      * @param recEndTime When recommendations should end
      */
-    public void setRecEndTime(final long recEndTime) {
+    public BreinRecommendation setRecEndTime(final long recEndTime) {
         this.recEndTime = recEndTime;
+        return this;
     }
 
     /**
@@ -207,8 +210,9 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     /**
      * @param itemToItemRecs the item(s) that an item to item recommendation should be done for
      */
-    public void setItemToItemRecs(final List<String> itemToItemRecs) {
+    public BreinRecommendation setItemToItemRecs(final List<String> itemToItemRecs) {
         this.itemToItemRecs = itemToItemRecs;
+        return this;
     }
 
     @Override
