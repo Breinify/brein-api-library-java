@@ -42,12 +42,37 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     /**
      * contains the category for the recommendation
      */
-    private String category;
+    private List<String> categories;
+
+    /**
+     * contains the category for the recommendation
+     */
+    private List<String> categoriesBlacklist;
 
     /**
      * an optional list of subrecommenders to run
      */
     private List<String> subRecommenders = null;
+
+    /**
+     * Should result caching be disabled
+     */
+    private boolean disableCaching = false;
+
+    /**
+     * An optional start time for recommendations
+     */
+    private long recStartTime = -1;
+
+    /**
+     * An optional end time for recommendations
+     */
+    private long recEndTime = -1;
+
+    /**
+     * A list of items to get a recommendation for
+     */
+    private List<String> itemToItemRecs;
 
     /**
      * get the number of recommendations
@@ -75,8 +100,8 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
      *
      * @return category
      */
-    public String getCategory() {
-        return category;
+    public List<String> getCategories() {
+        return categories;
     }
 
     /**
@@ -86,8 +111,29 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
      *
      * @return self
      */
-    public BreinRecommendation setCategory(final String category) {
-        this.category = category;
+    public BreinRecommendation setCategories(final String... category) {
+        this.categories = Arrays.asList(category);
+        return this;
+    }
+
+    /**
+     * gets categories that should not be returned
+     *
+     * @return the blacklisted categories
+     */
+    public List<String> getCategoriesBlacklist() {
+        return categoriesBlacklist;
+    }
+
+    /**
+     * set the categories that should not be returned
+     *
+     * @param category the blacklisted categories
+     *
+     * @return self
+     */
+    public BreinRecommendation setCategoriesBlacklist(final String... category) {
+        this.categoriesBlacklist = Arrays.asList(category);
         return this;
     }
 
@@ -105,6 +151,66 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
         return subRecommenders;
     }
 
+    /**
+     * Should this request disable caching?
+     *
+     * @return if caching should be disabled
+     */
+    public boolean isDisableCaching() {
+        return disableCaching;
+    }
+
+    /**
+     * Set if we want to disable caching
+     *
+     * @param disableCaching the caching state
+     */
+    public void setDisableCaching(final boolean disableCaching) {
+        this.disableCaching = disableCaching;
+    }
+
+    /**
+     * @return When recommendations should start
+     */
+    public long getRecStartTime() {
+        return recStartTime;
+    }
+
+    /**
+     * @param recStartTime When recommendations should start
+     */
+    public void setRecStartTime(final long recStartTime) {
+        this.recStartTime = recStartTime;
+    }
+
+    /**
+     * @return When recommendations should end
+     */
+    public long getRecEndTime() {
+        return recEndTime;
+    }
+
+    /**
+     * @param recEndTime When recommendations should end
+     */
+    public void setRecEndTime(final long recEndTime) {
+        this.recEndTime = recEndTime;
+    }
+
+    /**
+     * @return Items for an item(s) to items recommendation
+     */
+    public List<String> getItemToItemRecs() {
+        return itemToItemRecs;
+    }
+
+    /**
+     * @param itemToItemRecs the item(s) that an item to item recommendation should be done for
+     */
+    public void setItemToItemRecs(final List<String> itemToItemRecs) {
+        this.itemToItemRecs = itemToItemRecs;
+    }
+
     @Override
     public String getEndPoint(final BreinConfig config) {
         return config.getRecommendationEndpoint();
@@ -116,13 +222,33 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
         // recommendation data
         final Map<String, Object> recommendationData = new HashMap<>();
 
-        // check optional field(s)
-        if (BreinUtil.containsValue(getCategory())) {
-            recommendationData.put("recommendationCategory", getCategory());
+        // check optional field
+        if (BreinUtil.containsValue(getCategories())) {
+            recommendationData.put("recommendationCategories", getCategories());
+        }
+
+        if (BreinUtil.containsValue(getCategories())) {
+            recommendationData.put("recommendationCategoriesBlacklist", getCategoriesBlacklist());
         }
 
         if (BreinUtil.containsValue(getSubRecommenders())) {
             recommendationData.put("recommendationSubRecommenders", getSubRecommenders());
+        }
+
+        if (getRecStartTime() >= 0) {
+            recommendationData.put("recommendationAtTime", getRecStartTime());
+        }
+
+        if (getRecEndTime() >= 0) {
+            recommendationData.put("recommendationUntilTime", getRecEndTime());
+        }
+
+        if (isDisableCaching()) {
+            recommendationData.put("recommendationDisableCache", true);
+        }
+
+        if (getItemToItemRecs() != null && !getItemToItemRecs().isEmpty()) {
+            recommendationData.put("recommendationForItems", getItemToItemRecs());
         }
 
         // mandatory field
