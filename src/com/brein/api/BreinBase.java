@@ -19,6 +19,7 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
 
     public static final String API_KEY_FIELD = "apiKey";
     public static final String UNIX_TIMESTAMP_FIELD = "unixTimestamp";
+    public static final String IP_ADDRESS = "ipAddress";
     public static final String SIGNATURE_FIELD = "signature";
     public static final String SIGNATURE_TYPE_FIELD = "signatureType";
 
@@ -36,6 +37,16 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
      * The base data for the request
      */
     private Map<String, Object> baseMap;
+
+    /**
+     * The time of the event
+     */
+    private long unixTimestamp = -1;
+
+    /**
+     * The IP address where this was sent from
+     */
+    private String ipAddress;
 
     /**
      * Retrieves the current {@code BreinUser} for the request. This method never returns {@code null}, instead it
@@ -159,11 +170,10 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
      * @return unix timestamp
      */
     public long getUnixTimestamp() {
-        final Object unixTimestamp = getBaseField(BaseField.UNIX_TIMESTAMP);
-        if (unixTimestamp == null || !Long.class.isInstance(unixTimestamp) || unixTimestamp.equals(-1L)) {
+        if (unixTimestamp == -1) {
             return -1L;
         } else {
-            return Long.class.cast(unixTimestamp);
+            return unixTimestamp;
         }
     }
 
@@ -175,7 +185,7 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
      * @return {@code this}
      */
     public T setUnixTimestamp(final long unixTimestamp) {
-        BaseField.UNIX_TIMESTAMP.set(this, unixTimestamp);
+        this.unixTimestamp = unixTimestamp;
         return getThis();
     }
 
@@ -187,8 +197,12 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
      * @return {@code this}
      */
     public T setClientIpAddress(final String ipAddress) {
-        BaseField.IP_ADDRESS.set(this, ipAddress);
+        this.ipAddress = ipAddress;
         return getThis();
+    }
+
+    public String getClientIpAddress(){
+        return ipAddress;
     }
 
     /**
@@ -259,6 +273,9 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
         }
         requestData.put(UNIX_TIMESTAMP_FIELD, timestamp);
 
+        requestData.put(IP_ADDRESS, getClientIpAddress());
+
+
         // check if we have user and add it
         if (this.user != null) {
             this.user.prepareRequestData(config, requestData);
@@ -281,41 +298,9 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
         return (T) this;
     }
 
-    protected <F> F getBaseField(final BaseField field) {
-        if (baseMap == null) {
-            return null;
-        }
-
-        //noinspection unchecked
-        return (F) baseMap.get(field.getName());
-    }
-
     @Override
     public String toString() {
         final BreinConfig config = new BreinConfig(null);
         return prepareRequestData(config);
-    }
-
-    /**
-     * This list may not be complete it just contains some values. For a complete list it is recommended to look at the
-     * API documentation.
-     */
-    public enum BaseField {
-        IP_ADDRESS("ipAddress"),
-        UNIX_TIMESTAMP("unixTimestamp");
-
-        final String name;
-
-        BaseField(final String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void set(final BreinBase base, final Object value) {
-            base.set(getName(), value);
-        }
     }
 }
