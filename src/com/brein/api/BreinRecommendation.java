@@ -234,16 +234,18 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
         return subInhibitors;
     }
 
-    public void setSubInhibitors(final List<String> subInhibitors) {
+    public BreinRecommendation setSubInhibitors(final List<String> subInhibitors) {
         this.subInhibitors = subInhibitors;
+        return this;
     }
 
     public List<String> getBlockers() {
         return blockers;
     }
 
-    public void setBlockers(final List<String> blockers) {
+    public BreinRecommendation setBlockers(final List<String> blockers) {
         this.blockers = blockers;
+        return this;
     }
 
     @Override
@@ -270,11 +272,11 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
             recommendationData.put("recommendationSubRecommenders", getSubRecommenders());
         }
 
-        if(BreinUtil.containsValue(getSubInhibitors())){
+        if (BreinUtil.containsValue(getSubInhibitors())) {
             recommendationData.put("recommendationSubInhibitors", getSubInhibitors());
         }
 
-        if(BreinUtil.containsValue(getBlockers())){
+        if (BreinUtil.containsValue(getBlockers())) {
             recommendationData.put("recommendationSubBlockers", getBlockers());
         }
 
