@@ -14,13 +14,17 @@ public class TestBreinActivity {
         final String expectedMessage = String.format("%s%d%d", "activityType", 11111, 1);
         final String expectedSignature = BreinUtil.generateSignature(expectedMessage, "secret");
 
-        final String json = new BreinActivity()
+        final BreinActivity activity =  new BreinActivity()
                 .setUnixTimestamp(11111)
-                .setActivityType("activityType")
-                .prepareRequestData(new BreinConfig("apikey", "secret"));
+                .setActivityType("activityType");
+
+        final String json = activity.prepareRequestData(new BreinConfig("apikey", "secret"));
 
         //noinspection unchecked
         final Map<String, Object> jsonParsed = new Gson().fromJson(json, Map.class);
+
+        Assert.assertEquals(11111, activity.setUnixTimestamp(11111).getUnixTimestamp());
+        Assert.assertEquals(11111, activity.getUnixTimestamp());
 
         Assert.assertEquals(11111.0, (Double) jsonParsed.get("unixTimestamp"), 0.0001);
         Assert.assertEquals("apikey", jsonParsed.get("apiKey"));
