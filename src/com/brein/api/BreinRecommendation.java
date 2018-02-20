@@ -55,6 +55,16 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     private List<String> subRecommenders = null;
 
     /**
+     * an optional list of subrecommenders to use to inhibit recs
+     */
+    private List<String> subInhibitors = null;
+
+    /**
+     * an optional list of blockers to use to block recs
+     */
+    private List<String> blockers = null;
+
+    /**
      * Should result caching be disabled
      */
     private boolean disableCaching = false;
@@ -216,6 +226,27 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     }
 
     @Override
+    public BreinRecommendationResult execute() {
+        return Breinify.recommendation(this);
+    }
+
+    public List<String> getSubInhibitors() {
+        return subInhibitors;
+    }
+
+    public void setSubInhibitors(final List<String> subInhibitors) {
+        this.subInhibitors = subInhibitors;
+    }
+
+    public List<String> getBlockers() {
+        return blockers;
+    }
+
+    public void setBlockers(final List<String> blockers) {
+        this.blockers = blockers;
+    }
+
+    @Override
     public String getEndPoint(final BreinConfig config) {
         return config.getRecommendationEndpoint();
     }
@@ -237,6 +268,14 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
 
         if (BreinUtil.containsValue(getSubRecommenders())) {
             recommendationData.put("recommendationSubRecommenders", getSubRecommenders());
+        }
+
+        if(BreinUtil.containsValue(getSubInhibitors())){
+            recommendationData.put("recommendationSubInhibitors", getSubInhibitors());
+        }
+
+        if(BreinUtil.containsValue(getBlockers())){
+            recommendationData.put("recommendationSubBlockers", getBlockers());
         }
 
         if (getRecStartTime() >= 0) {
@@ -272,10 +311,5 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
 
         final String message = String.format("%d", unixTimestamp);
         return BreinUtil.generateSignature(message, config.getSecret());
-    }
-
-    @Override
-    public BreinRecommendationResult execute() {
-        return Breinify.recommendation(this);
     }
 }
