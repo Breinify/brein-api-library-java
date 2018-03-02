@@ -5,6 +5,10 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 2.1.1
+* Rename "STATE_FEDERAL" holidays to "STATE" holidays
+* Rename "NATIONAL_FEDERAL" holidays to "NATIONAL" holidays
+
 # Version 2.1.0
 * Updated recommendation code
 
