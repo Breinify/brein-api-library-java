@@ -89,8 +89,8 @@ public class BreinHolidayResult {
     }
 
     public enum HolidayType {
-        NATIONAL_FEDERAL,
-        STATE_FEDERAL,
+        FEDERAL,
+        STATE,
         UN_SPECIAL_DAY,
         CIVIC,
         CIVIL_RIGHTS,
