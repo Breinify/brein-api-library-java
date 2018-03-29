@@ -100,6 +100,11 @@ public class BreinHolidayResult {
         HISTORIC,
         MAJOR,
         RELIGIOUS,
-        SPECIAL_DAY
+        SPECIAL_DAY,
+        /**
+         * If a holiday is observed on a different day from when it actually is. For example, some federal holidays (i.e.
+         * 4th of July) are always observed on a week day even if the 4th is on a weekend.
+         */
+        OFFSET_HOLIDAY
     }
 }
