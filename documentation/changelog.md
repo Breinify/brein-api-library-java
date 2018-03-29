@@ -83,7 +83,7 @@ The constructors of class BreinConfig have changed.
 
 ###Flexible Key-Value maps
 It is now possible to add additional maps on each level (base, user, additional)
-to the requst.
+to the request.
 
 ```java
 final Map<String, Object> dataUserMap = new HashMap<>();
