@@ -11,10 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Test classes for the domain objects
@@ -134,49 +131,8 @@ public class TestDomain {
      */
     @Test
     public void testBreinUserWithNoMethods() {
-
         final BreinUser breinUser = new BreinUser();
         assertFalse(breinUser.toString().isEmpty());
-    }
-
-    /**
-     * Test of breinActivityType options
-     */
-    @Test
-    public void testBreinActivityTypeSetToPredefinedString() {
-
-        final String breinActivityType = BreinActivityType.CHECKOUT;
-        assertTrue(breinActivityType.equals(BreinActivityType.CHECKOUT));
-    }
-
-    /**
-     * Test of breinActivityType options
-     */
-    @Test
-    public void testBreinActivityTypeSetToAnyString() {
-
-        final String breinActivityType = "whatYouWant";
-        assertTrue(breinActivityType.equals("whatYouWant"));
-    }
-
-    /**
-     * Test of breinCategory options to predefined string
-     */
-    @Test
-    public void testBreinCategoryTypeSetToPredefinedString() {
-
-        final String breinCategoryType = BreinCategoryType.APPAREL;
-        assertTrue(breinCategoryType.equals(BreinCategoryType.APPAREL));
-    }
-
-    /**
-     * Test of breinCategory options to flexible string
-     */
-    @Test
-    public void testBreinCategoryTypeSetToFlexibleString() {
-
-        final String breinCategoryType = "flexibleString";
-        assertTrue(breinCategoryType.equals("flexibleString"));
     }
 
     @Test
