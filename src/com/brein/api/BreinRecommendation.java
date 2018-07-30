@@ -87,7 +87,7 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     /**
      * Used to keep track of different locations for requests of recommendations
      */
-    private String recommendationRequestSource;
+    private String recommendationQueryName;
 
     /**
      * get the number of recommendations
@@ -230,12 +230,12 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
         return this;
     }
 
-    public String getRecommendationRequestSource() {
-        return recommendationRequestSource;
+    public String getRecommendationQueryName() {
+        return recommendationQueryName;
     }
 
-    public BreinRecommendation setRecommendationRequestSource(final String recommendationRequestSource) {
-        this.recommendationRequestSource = recommendationRequestSource;
+    public BreinRecommendation setRecommendationQueryName(final String recommendationQueryName) {
+        this.recommendationQueryName = recommendationQueryName;
         return this;
     }
 
@@ -310,8 +310,8 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
             recommendationData.put("recommendationForItems", getItemToItemRecs());
         }
 
-        if (getRecommendationRequestSource() != null) {
-            recommendationData.put("recommendationRequestSource", getRecommendationRequestSource());
+        if (getRecommendationQueryName() != null) {
+            recommendationData.put("recommendationQueryName", getRecommendationQueryName());
         }
 
         // mandatory field
