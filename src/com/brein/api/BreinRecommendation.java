@@ -90,6 +90,11 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
     private String recommendationQueryName;
 
     /**
+     * Minimum number of items in stock for a returned recommendation
+     */
+    private Double minQuantity = null;
+
+    /**
      * get the number of recommendations
      *
      * @return number
@@ -164,6 +169,15 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
 
     public List<String> getSubRecommenders() {
         return subRecommenders;
+    }
+
+    public BreinRecommendation setMinQuantity(final Double minQuantity){
+        this.minQuantity = minQuantity;
+        return this;
+    }
+
+    public Double getMinQuantity(){
+        return minQuantity;
     }
 
     /**
@@ -312,6 +326,10 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
 
         if (getRecommendationQueryName() != null) {
             recommendationData.put("recommendationQueryName", getRecommendationQueryName());
+        }
+
+        if (getMinQuantity() != null) {
+            recommendationData.put("recommendationMinQuantity", getMinQuantity());
         }
 
         // mandatory field
