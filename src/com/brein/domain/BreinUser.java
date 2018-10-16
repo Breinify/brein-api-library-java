@@ -257,6 +257,7 @@ public class BreinUser {
         FIRST_NAME("firstName"),
         LAST_NAME("lastName"),
         DATE_OF_BIRTH("dateOfBirth"),
+        PHONE("phone"),
         EMAIL("email"),
         MD5_EMAIL("md5Email"),
         SESSION_ID("sessionId"),
