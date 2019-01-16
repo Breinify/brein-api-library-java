@@ -64,6 +64,7 @@ public class UniRestEngine implements IRestEngine {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void invokeAsyncRequest(final BreinConfig config,
                                    final BreinBase data,
                                    final Consumer<BreinResult> callback) {
@@ -71,28 +72,26 @@ public class UniRestEngine implements IRestEngine {
         // validate the input objects
         validate(config, data);
 
-        @SuppressWarnings("unchecked")
-        final Map<String, String> headers = data.getHeaders();
-
         /*
          * invoke the request
          */
         Unirest.post(getFullyQualifiedUrl(config, data))
-                .headers(headers)
+                .headers(config.getHeaders())
+                .headers(data.getHeaders())
                 .header(HEADER_ACCESS, HEADER_APP_JSON)
                 .body(getRequestBody(config, data))
                 .asJsonAsync(new UniRestCallback(this, callback));
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public BreinResult invokeRequest(final BreinConfig config, final BreinBase data) {
         try {
 
-            @SuppressWarnings("unchecked")
-            final Map<String, String> headers = data.getHeaders();
             final String requestBody = getRequestBody(config, data);
             final RequestBodyEntity entity = Unirest.post(getFullyQualifiedUrl(config, data))
-                    .headers(headers)
+                    .headers(config.getHeaders())
+                    .headers(data.getHeaders())
                     .header(HEADER_ACCESS, HEADER_APP_JSON)
                     .body(requestBody);
 

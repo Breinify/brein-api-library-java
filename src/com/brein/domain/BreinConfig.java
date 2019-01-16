@@ -6,6 +6,11 @@ import com.brein.util.BreinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Provides the configuration of the library for the properties supplied.
  */
@@ -112,6 +117,11 @@ public class BreinConfig {
     private String secret;
 
     /**
+     * The additional headers to be sent with the request
+     */
+    private final AtomicReference<Map<String, String>> headers = new AtomicReference<>();
+
+    /**
      * @param apiKey contains the Breinify api key
      */
     public BreinConfig(final String apiKey) {
@@ -142,6 +152,7 @@ public class BreinConfig {
      * if the URL is valid.
      *
      * @param baseUrl contains the url
+     *
      * @return the config object itself
      */
     public BreinConfig setBaseUrl(final String baseUrl) {
@@ -266,5 +277,26 @@ public class BreinConfig {
 
     public boolean isSign() {
         return getSecret() != null && !getSecret().isEmpty();
+    }
+
+    public BreinConfig setHeader(final String key, final String value) {
+        return setHeaders(Collections.singletonMap(key, value));
+    }
+
+    public BreinConfig setHeaders(final Map<String, String> headers) {
+        if (this.headers.get() == null) {
+            this.headers.compareAndSet(null, new HashMap<>());
+        }
+
+        this.headers.get().putAll(headers);
+        return this;
+    }
+
+    public Map<String, String> getHeaders() {
+        if (this.headers.get() == null) {
+            return Collections.emptyMap();
+        } else {
+            return this.headers.get();
+        }
     }
 }

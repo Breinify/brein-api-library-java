@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +66,7 @@ public class JerseyRestEngine implements IRestEngine {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public BreinResult invokeRequest(final BreinConfig config, final BreinBase data) {
         validate(config, data);
 
@@ -73,10 +75,8 @@ public class JerseyRestEngine implements IRestEngine {
 
         try {
             Builder builder = webResource.type("application/json");
-
-            @SuppressWarnings("unchecked")
-            final Map<String, String> headers = data.getHeaders();
-            headers.forEach(builder::header);
+            builder = setHeaders(builder, config.getHeaders());
+            builder = setHeaders(builder, data.getHeaders());
 
             final ClientResponse response = builder.post(ClientResponse.class, getRequestBody(config, data));
 
@@ -96,6 +96,18 @@ public class JerseyRestEngine implements IRestEngine {
         }
 
         return null;
+    }
+
+    protected Builder setHeaders(final Builder builder,
+                                 final Map<String, String> headers) {
+
+        Builder result = builder;
+
+        for (final Entry<String, String> entry : headers.entrySet()) {
+            result = builder.header(entry.getKey(), entry.getValue());
+        }
+
+        return result;
     }
 
     public void closeExecutor(final int firstWaitInSeconds,
