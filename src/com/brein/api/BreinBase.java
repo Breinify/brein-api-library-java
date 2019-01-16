@@ -31,20 +31,21 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
     public static final Gson GSON = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
             .create();
-    /**
-     * Contains user information for the request
-     */
-    private BreinUser user;
 
     /**
      * The base data for the request
      */
-    private AtomicReference<Map<String, Object>> baseMap;
+    private final AtomicReference<Map<String, Object>> baseMap = new AtomicReference<>();
 
     /**
      * The additional headers to be sent with the request
      */
-    private AtomicReference<Map<String, String>> headers;
+    private final AtomicReference<Map<String, String>> headers = new AtomicReference<>();
+
+    /**
+     * Contains user information for the request
+     */
+    private BreinUser user;
 
     /**
      * The time of the event
