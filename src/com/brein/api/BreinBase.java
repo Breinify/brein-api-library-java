@@ -9,8 +9,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base Class for activity and lookup operations.
@@ -33,10 +35,16 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
      * Contains user information for the request
      */
     private BreinUser user;
+
     /**
      * The base data for the request
      */
-    private Map<String, Object> baseMap;
+    private AtomicReference<Map<String, Object>> baseMap;
+
+    /**
+     * The additional headers to be sent with the request
+     */
+    private AtomicReference<Map<String, String>> headers;
 
     /**
      * The time of the event
@@ -201,7 +209,7 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
         return getThis();
     }
 
-    public String getClientIpAddress(){
+    public String getClientIpAddress() {
         return ipAddress;
     }
 
@@ -229,12 +237,33 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
         if (BreinUser.USER_FIELD.equalsIgnoreCase(key)) {
             throw new BreinException("The field '" + BreinUser.USER_FIELD + "' cannot be set, " +
                     "use the setUser method to do so.");
-        } else if (this.baseMap == null) {
-            this.baseMap = new HashMap<>();
+        } else if (this.baseMap.get() == null) {
+            this.baseMap.compareAndSet(null, new HashMap<>());
         }
 
-        this.baseMap.put(key, value);
+        this.baseMap.get().put(key, value);
         return getThis();
+    }
+
+    public T setHeader(final String key, final String value) {
+        return setHeaders(Collections.singletonMap(key, value));
+    }
+
+    public T setHeaders(final Map<String, String> headers) {
+        if (this.headers.get() == null) {
+            this.headers.compareAndSet(null, new HashMap<>());
+        }
+
+        this.headers.get().putAll(headers);
+        return getThis();
+    }
+
+    public Map<String, String> getHeaders() {
+        if (this.headers.get() == null) {
+            return Collections.emptyMap();
+        } else {
+            return this.headers.get();
+        }
     }
 
     /**
@@ -258,8 +287,8 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
         requestData.put(API_KEY_FIELD, config.getApiKey());
 
         // add the base values
-        if (this.baseMap != null) {
-            this.baseMap.forEach((key, value) -> {
+        if (this.baseMap.get() != null) {
+            this.baseMap.get().forEach((key, value) -> {
                 if (BreinUtil.containsValue(value)) {
                     requestData.put(key, value);
                 }
@@ -274,7 +303,6 @@ public abstract class BreinBase<T extends BreinBase> implements ISecretStrategy 
         requestData.put(UNIX_TIMESTAMP_FIELD, timestamp);
 
         requestData.put(IP_ADDRESS, getClientIpAddress());
-
 
         // check if we have user and add it
         if (this.user != null) {

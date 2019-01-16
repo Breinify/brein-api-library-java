@@ -9,6 +9,7 @@ import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,8 +72,13 @@ public class JerseyRestEngine implements IRestEngine {
         final WebResource webResource = client.resource(url);
 
         try {
-            final ClientResponse response = webResource.type("application/json")
-                    .post(ClientResponse.class, getRequestBody(config, data));
+            Builder builder = webResource.type("application/json");
+
+            @SuppressWarnings("unchecked")
+            final Map<String, String> headers = data.getHeaders();
+            headers.forEach(builder::header);
+
+            final ClientResponse response = builder.post(ClientResponse.class, getRequestBody(config, data));
 
             if (response.getStatus() == 200) {
                 final String strResponse = response.getEntity(String.class);
