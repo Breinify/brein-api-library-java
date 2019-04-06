@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class TestBreinRecommendationResult {
     @Test
-    public void testSimpleResult(){
+    public void testSimpleResult() {
         final String jsonRaw = "{" +
                 "  \"result\": [{" +
                 "    \"weight\": 0.94," +
@@ -38,6 +38,10 @@ public class TestBreinRecommendationResult {
         Assert.assertEquals(0.933, res.getRecommendedItems().get(1).getResultWeight(), 0.00001);
         Assert.assertEquals("22222", res.getRecommendedItems().get(1).getResultId());
         Assert.assertEquals("item two", res.getRecommendedItems().get(1).getAdditionalData("productName"));
+        Assert.assertEquals("item two", res.getRecommendedItems().get(1)
+                .getAdditionalData("productName", String.class, "no name"));
+        Assert.assertEquals("no other field", res.getRecommendedItems().get(1)
+                .getAdditionalData("other field", String.class, "no other field"));
         Assert.assertNull(res.getRecommendedItems().get(1).getAdditionalData("bad key"));
     }
 

@@ -35,6 +35,17 @@ public class RecommendedItem {
         return data.get(key);
     }
 
+    public <T> T getAdditionalData(final String key, final Class<T> clazz, final T def) {
+        final Object value = getAdditionalData().get(key);
+        if (value == null) {
+            return def;
+        } else if (clazz.isAssignableFrom(value.getClass())) {
+            return clazz.cast(value);
+        } else {
+            return def;
+        }
+    }
+
     @Override
     public String toString() {
         return getResultId() + " (" + getResultWeight() + ") " + getAdditionalData();
