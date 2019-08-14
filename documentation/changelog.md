@@ -5,6 +5,9 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 2.1.3
+* Additional constructor for `RecommendedItem`
+
 # Version 2.1.2
 * Support for `OFFSET_HOLIDAY`
 
