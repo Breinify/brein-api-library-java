@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BreinRecommendation extends BreinBase<BreinRecommendation> implements
-        IExecutable<BreinRecommendationResult> {
+public class BreinRecommendation extends BreinBase<BreinRecommendation>
+        implements IExecutable<BreinRecommendationResult> {
 
     /**
      * Recommends a user items that are similar to what they previously interacted with
@@ -33,6 +33,10 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
      * Recommends items that have historically trended during similar times
      */
     public static final String SUB_RECOMMENDER_TEMPORAL = "temporal";
+    /**
+     * Recommends items that have are ordered through some config-defined manner
+     */
+    public static final String SUB_RECOMMENDER_CUSTOM_SORT = "customSort";
 
     /**
      * contains the number of recommendations - default is 3
@@ -93,6 +97,11 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
      * Minimum number of items in stock for a returned recommendation
      */
     private Double minQuantity = null;
+
+    /**
+     * Additional parameters to be passed into the sub recommenders
+     */
+    private Map<String, Object> recommendationAdditionalParameters;
 
     /**
      * get the number of recommendations
@@ -171,12 +180,12 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
         return subRecommenders;
     }
 
-    public BreinRecommendation setMinQuantity(final Double minQuantity){
+    public BreinRecommendation setMinQuantity(final Double minQuantity) {
         this.minQuantity = minQuantity;
         return this;
     }
 
-    public Double getMinQuantity(){
+    public Double getMinQuantity() {
         return minQuantity;
     }
 
@@ -276,6 +285,16 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
         return this;
     }
 
+    public Map<String, Object> getRecommendationAdditionalParameters() {
+        return recommendationAdditionalParameters;
+    }
+
+    public BreinRecommendation setRecommendationAdditionalParameters(final Map<String, Object>
+                                                                             recommendationAdditionalParameters) {
+        this.recommendationAdditionalParameters = recommendationAdditionalParameters;
+        return this;
+    }
+
     @Override
     public String getEndPoint(final BreinConfig config) {
         return config.getRecommendationEndpoint();
@@ -306,6 +325,10 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation> implemen
 
         if (BreinUtil.containsValue(getBlockers())) {
             recommendationData.put("recommendationSubBlockers", getBlockers());
+        }
+
+        if (BreinUtil.containsValue(getRecommendationAdditionalParameters())) {
+            recommendationData.put("recommendationAdditionalParameters", getRecommendationAdditionalParameters());
         }
 
         if (getRecStartTime() >= 0) {
