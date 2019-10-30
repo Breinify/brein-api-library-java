@@ -13,6 +13,22 @@ import java.util.Map;
 public class BreinRecommendation extends BreinBase<BreinRecommendation>
         implements IExecutable<BreinRecommendationResult> {
 
+    public static final int DEF_NUM_RESULTS = 3;
+
+    public static final String ATTR_REC_CATEGORIES = "recommendationCategories";
+    public static final String ATTR_REC_CATEGORIES_BLACKLISTED = "recommendationCategoriesBlacklist";
+    public static final String ATTR_REC_SUB_RECOMMENDERS = "recommendationSubRecommenders";
+    public static final String ATTR_REC_SUB_INHIBITORS = "recommendationSubInhibitors";
+    public static final String ATTR_REC_SUB_BLOCKERS = "recommendationSubBlockers";
+    public static final String ATTR_REC_AT_TIME = "recommendationAtTime";
+    public static final String ATTR_REC_UNTIL_TIME = "recommendationUntilTime";
+    public static final String ATTR_REC_DISABLE_CACHE = "recommendationDisableCache";
+    public static final String ATTR_REC_FOR_ITEMS = "recommendationForItems";
+    public static final String ATTR_REC_QUERY_NAME = "recommendationQueryName";
+    public static final String ATTR_REC_MIN_QUANTITY = "recommendationMinQuantity";
+    public static final String ATTR_REC_NUM_RESULTS = "numRecommendations";
+    public static final String ATTR_REC_ADDITIONAL_PARAMETERS = "recommendationAdditionalParameters";
+
     /**
      * Recommends a user items that are similar to what they previously interacted with
      */
@@ -41,17 +57,17 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation>
     /**
      * contains the number of recommendations - default is 3
      */
-    private int numberOfRecommendations = 3;
+    private int numberOfRecommendations = -1;
 
     /**
      * contains the category for the recommendation
      */
-    private List<String> categories;
+    private List<String> categories = null;
 
     /**
      * contains the category for the recommendation
      */
-    private List<String> categoriesBlacklist;
+    private List<String> categoriesBlacklist = null;
 
     /**
      * an optional list of subrecommenders to run
@@ -86,12 +102,12 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation>
     /**
      * A list of items to get a recommendation for
      */
-    private List<String> itemToItemRecs;
+    private List<String> itemToItemRecs = null;
 
     /**
      * Used to keep track of different locations for requests of recommendations
      */
-    private String recommendationQueryName;
+    private String recommendationQueryName = null;
 
     /**
      * Minimum number of items in stock for a returned recommendation
@@ -101,7 +117,29 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation>
     /**
      * Additional parameters to be passed into the sub recommenders
      */
-    private Map<String, Object> recommendationAdditionalParameters;
+    private Map<String, Object> recommendationAdditionalParameters = null;
+
+    /**
+     * A base map for the recommendation-request (more specific values will override these parameters)
+     */
+    private Map<String, Object> recommendationRequest = null;
+
+    public Map<String, Object> getRecommendationRequest() {
+        return recommendationRequest;
+    }
+
+    public BreinRecommendation setRecommendationRequest(final Map<String, Object> recommendationRequest) {
+        this.recommendationRequest = recommendationRequest;
+        return this;
+    }
+
+    public BreinRecommendation addRecommendationRequest(final String name, final Object value) {
+        if (this.recommendationRequest == null) {
+            this.recommendationRequest = new HashMap<>();
+        }
+        this.recommendationRequest.put(name, value);
+        return this;
+    }
 
     /**
      * get the number of recommendations
@@ -286,12 +324,11 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation>
     }
 
     public Map<String, Object> getRecommendationAdditionalParameters() {
-        return recommendationAdditionalParameters;
+        return this.recommendationAdditionalParameters;
     }
 
-    public BreinRecommendation setRecommendationAdditionalParameters(final Map<String, Object>
-                                                                             recommendationAdditionalParameters) {
-        this.recommendationAdditionalParameters = recommendationAdditionalParameters;
+    public BreinRecommendation setRecommendationAdditionalParameters(final Map<String, Object> params) {
+        this.recommendationAdditionalParameters = params;
         return this;
     }
 
@@ -304,61 +341,74 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation>
     public void prepareRequestData(final BreinConfig config, final Map<String, Object> requestData) {
 
         // recommendation data
-        final Map<String, Object> recommendationData = new HashMap<>();
+        final Map<String, Object> recommendation = new HashMap<>();
+        if (this.recommendationRequest != null) {
+            recommendation.putAll(this.recommendationRequest);
+        }
 
         // check optional field
         if (BreinUtil.containsValue(getCategories())) {
-            recommendationData.put("recommendationCategories", getCategories());
+            recommendation.put(ATTR_REC_CATEGORIES, getCategories());
         }
 
         if (BreinUtil.containsValue(getCategories())) {
-            recommendationData.put("recommendationCategoriesBlacklist", getCategoriesBlacklist());
+            recommendation.put(ATTR_REC_CATEGORIES_BLACKLISTED, getCategoriesBlacklist());
         }
 
         if (BreinUtil.containsValue(getSubRecommenders())) {
-            recommendationData.put("recommendationSubRecommenders", getSubRecommenders());
+            recommendation.put(ATTR_REC_SUB_RECOMMENDERS, getSubRecommenders());
         }
 
         if (BreinUtil.containsValue(getSubInhibitors())) {
-            recommendationData.put("recommendationSubInhibitors", getSubInhibitors());
+            recommendation.put(ATTR_REC_SUB_INHIBITORS, getSubInhibitors());
         }
 
         if (BreinUtil.containsValue(getBlockers())) {
-            recommendationData.put("recommendationSubBlockers", getBlockers());
-        }
-
-        if (BreinUtil.containsValue(getRecommendationAdditionalParameters())) {
-            recommendationData.put("recommendationAdditionalParameters", getRecommendationAdditionalParameters());
+            recommendation.put(ATTR_REC_SUB_BLOCKERS, getBlockers());
         }
 
         if (getRecStartTime() >= 0) {
-            recommendationData.put("recommendationAtTime", getRecStartTime());
+            recommendation.put(ATTR_REC_AT_TIME, getRecStartTime());
         }
 
         if (getRecEndTime() >= 0) {
-            recommendationData.put("recommendationUntilTime", getRecEndTime());
+            recommendation.put(ATTR_REC_UNTIL_TIME, getRecEndTime());
         }
 
         if (isDisableCaching()) {
-            recommendationData.put("recommendationDisableCache", true);
+            recommendation.put(ATTR_REC_DISABLE_CACHE, true);
         }
 
         if (getItemToItemRecs() != null && !getItemToItemRecs().isEmpty()) {
-            recommendationData.put("recommendationForItems", getItemToItemRecs());
+            recommendation.put(ATTR_REC_FOR_ITEMS, getItemToItemRecs());
         }
 
         if (getRecommendationQueryName() != null) {
-            recommendationData.put("recommendationQueryName", getRecommendationQueryName());
+            recommendation.put(ATTR_REC_QUERY_NAME, getRecommendationQueryName());
         }
 
         if (getMinQuantity() != null) {
-            recommendationData.put("recommendationMinQuantity", getMinQuantity());
+            recommendation.put(ATTR_REC_MIN_QUANTITY, getMinQuantity());
         }
 
         // mandatory field
-        recommendationData.put("numRecommendations", getNumberOfRecommendations());
+        if (getNumberOfRecommendations() > -1) {
+            recommendation.put(ATTR_REC_NUM_RESULTS, getNumberOfRecommendations());
+        } else if (!recommendation.containsKey(ATTR_REC_NUM_RESULTS)) {
+            recommendation.put(ATTR_REC_NUM_RESULTS, DEF_NUM_RESULTS);
+        }
 
-        requestData.put("recommendation", recommendationData);
+        final Object objAdditional = recommendation.get(ATTR_REC_ADDITIONAL_PARAMETERS);
+        final Map<String, Object> additional = Map.class.isInstance(objAdditional) ?
+                Map.class.cast(objAdditional) : new HashMap<>();
+
+        // next handle the additional
+        if (BreinUtil.containsValue(getRecommendationAdditionalParameters())) {
+            additional.putAll(getRecommendationAdditionalParameters());
+        }
+        recommendation.put(ATTR_REC_ADDITIONAL_PARAMETERS, getRecommendationAdditionalParameters());
+
+        requestData.put("recommendation", recommendation);
     }
 
     /**
