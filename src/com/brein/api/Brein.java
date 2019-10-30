@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 public class Brein {
     private BreinConfig config;
-    private BreinEngine engine;
 
     /**
      * Sets the configuration
@@ -18,10 +17,6 @@ public class Brein {
      * @param breinConfig config object
      */
     public Brein setConfig(final BreinConfig breinConfig) {
-        if (this.engine != null) {
-            shutdown();
-        }
-
         this.config = breinConfig;
         return this;
     }
@@ -33,7 +28,7 @@ public class Brein {
      * This request is asynchronous.
      */
     public void activity(final BreinActivity data, final Consumer<BreinResult> callback) {
-        getEngine().invokeAsync(this.config, data, callback);
+        BreinEngine.instance().invokeAsync(this.config, data, callback);
     }
 
     /**
@@ -46,7 +41,7 @@ public class Brein {
      * @return response from request wrapped in an object called BreinResponse
      */
     public BreinResult lookup(final BreinLookup data) {
-        return getEngine().invoke(this.config, data);
+        return BreinEngine.instance().invoke(this.config, data);
     }
 
     /**
@@ -58,7 +53,7 @@ public class Brein {
      * @return result from the Breinify engine
      */
     public BreinTemporalDataResult temporalData(final BreinTemporalData data) {
-        final BreinResult result = getEngine().invoke(this.config, data);
+        final BreinResult result = BreinEngine.instance().invoke(this.config, data);
         return new BreinTemporalDataResult(result.getMap());
     }
 
@@ -73,7 +68,7 @@ public class Brein {
      * @return the recommended items
      */
     public BreinRecommendationResult recommendation(final BreinRecommendation data) {
-        final BreinResult result = getEngine().invoke(this.config, data);
+        final BreinResult result = BreinEngine.instance().invoke(this.config, data);
         return new BreinRecommendationResult(result.getMap());
     }
 
@@ -81,17 +76,6 @@ public class Brein {
      * Shutdown Breinify services
      */
     public void shutdown() {
-        if (this.engine != null) {
-            this.engine.terminate();
-            this.engine = null;
-        }
-    }
-
-    public BreinEngine getEngine() {
-        if (this.engine == null) {
-            this.engine = new BreinEngine();
-        }
-
-        return engine;
+        BreinEngine.instance().terminate();
     }
 }

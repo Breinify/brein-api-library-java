@@ -18,6 +18,21 @@ public class BreinEngine {
     private static final Map<BreinEngineType, IRestEngine> ENGINES = new ConcurrentHashMap<>();
     private static final Lock ENGINES_LOCK = new ReentrantLock();
 
+    private static class SingletonHolder {
+        static final BreinEngine INSTANCE = new BreinEngine();
+    }
+
+    /**
+     * The {@code BreinEngine} class is a singleton, which can actually be accessed by this method. Creating a new
+     * instance of a {@code BreinEngine} does not actually make any differences, since all attributes are constants,
+     * i.e., {@code static} and {@code final}.
+     *
+     * @return the singleton instance of the {@code BreinEngine}
+     */
+    public static BreinEngine instance() {
+        return SingletonHolder.INSTANCE;
+    }
+
     public BreinResult invoke(final BreinConfig config, final BreinBase data) {
         return getEngine(config).invokeRequest(config, data);
     }
