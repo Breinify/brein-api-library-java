@@ -406,7 +406,7 @@ public class BreinRecommendation extends BreinBase<BreinRecommendation>
         if (BreinUtil.containsValue(getRecommendationAdditionalParameters())) {
             additional.putAll(getRecommendationAdditionalParameters());
         }
-        recommendation.put(ATTR_REC_ADDITIONAL_PARAMETERS, getRecommendationAdditionalParameters());
+        recommendation.put(ATTR_REC_ADDITIONAL_PARAMETERS, additional);
 
         requestData.put("recommendation", recommendation);
     }
