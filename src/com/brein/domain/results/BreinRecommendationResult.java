@@ -14,6 +14,7 @@ public class BreinRecommendationResult extends BreinResult {
 
     public BreinRecommendationResult(final Map<String, Object> json) {
         super(json);
+
         items = new ArrayList<>();
         //noinspection unchecked
         for (final Map<String, Object> inner :

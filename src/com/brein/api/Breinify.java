@@ -4,6 +4,7 @@ import com.brein.domain.BreinConfig;
 import com.brein.domain.BreinResult;
 import com.brein.domain.BreinUser;
 import com.brein.domain.results.BreinRecommendationResult;
+import com.brein.domain.results.BreinRecommendationResults;
 import com.brein.domain.results.BreinTemporalDataResult;
 import com.brein.util.MapBuilder;
 
@@ -70,7 +71,8 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email,
+     *                     sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      *
@@ -84,7 +86,8 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email,
+     *                     sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param callback     callback to get informed whenever the activity was sent, the callback retrieves the {@code
@@ -102,7 +105,8 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email,
+     *                     sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param description  a textual description of the activity
@@ -118,7 +122,8 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email,
+     *                     sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param description  a textual description of the activity
@@ -138,7 +143,8 @@ public class Breinify {
     /**
      * Method to send an activity asynchronous.
      *
-     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email, sessionId,
+     * @param identifiers  the identifiers of the user as chainable map (i.e., {@code MapBuilder}), e.g., email,
+     *                     sessionId,
      *                     userId
      * @param activityType the type of the activity, e.g., login, pageView, addToCart, readArticle
      * @param category     a category of the activity, e.g., apparel, food, or other, if {@code null} the configured
@@ -338,6 +344,10 @@ public class Breinify {
 
     public static BreinRecommendationResult recommendation(final BreinRecommendation data) {
         return getBrein().recommendation(data);
+    }
+
+    public static BreinRecommendationResults recommendation(final BreinRecommendations data) {
+        return getBrein().recommendations(data);
     }
 
     public static BreinResult lookUp(final BreinLookup data) {

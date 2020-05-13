@@ -7,26 +7,44 @@ import org.junit.Test;
 import java.util.Map;
 
 public class TestBreinRecommendationResult {
+    final String jsonRaw = "{" +
+            "  \"result\": [{" +
+            "    \"weight\": 0.94," +
+            "    \"additionalData\": {" +
+            "      \"productName\": \"item one\"" +
+            "    }," +
+            "    \"dataIdExternal\": \"11111\"" +
+            "  }, {" +
+            "    \"weight\": 0.933," +
+            "    \"additionalData\": {" +
+            "      \"productName\": \"item two\"" +
+            "    }," +
+            "    \"dataIdExternal\": \"22222\"" +
+            "  }]" +
+            "}";
+
     @Test
     public void testSimpleResult() {
-        final String jsonRaw = "{" +
-                "  \"result\": [{" +
-                "    \"weight\": 0.94," +
-                "    \"additionalData\": {" +
-                "      \"productName\": \"item one\"" +
-                "    }," +
-                "    \"dataIdExternal\": \"11111\"" +
-                "  }, {" +
-                "    \"weight\": 0.933," +
-                "    \"additionalData\": {" +
-                "      \"productName\": \"item two\"" +
-                "    }," +
-                "    \"dataIdExternal\": \"22222\"" +
-                "  }]" +
-                "}";
 
         //noinspection unchecked
         final BreinRecommendationResult res = new BreinRecommendationResult(new Gson().fromJson(jsonRaw, Map.class));
+
+        testResult(res);
+    }
+
+    @Test
+    public void testMultiResult() {
+
+        //multi result is just a basic result in a list
+        //noinspection unchecked
+        final BreinRecommendationResults res =
+                new BreinRecommendationResults(new Gson().fromJson("{\"results\":["+jsonRaw +"]}", Map.class));
+
+        Assert.assertEquals(1, res.getNumberQueries());
+        testResult(res.getMultiResponse(0));
+    }
+
+    public void testResult(final BreinRecommendationResult res) {
 
         Assert.assertEquals(2, res.getRecommendedItems().size());
 

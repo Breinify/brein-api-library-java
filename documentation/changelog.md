@@ -5,6 +5,9 @@
 # Change log Breinify Java Api
 This document contains a chronologically ordered list of changes for the Java Api library.
 
+# Version 2.1.5
+* Add support for firing multiple recommendations at one time
+
 # Version 2.1.4
 * Added singleton method to `BreinEngine` to reflect the singleton structure of the class.
 
