@@ -15,7 +15,7 @@
         <unirestVersion>1.4.9</unirestVersion>
         <gsonVersion>2.7</gsonVersion>
         <jerseyClientVersion>1.19.1</jerseyClientVersion>
-        <junitVersion>4.12</junitVersion>
+        <junitVersion>4.13.1</junitVersion>
     </properties>
 
     <dependencies>
