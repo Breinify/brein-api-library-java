@@ -48,7 +48,7 @@ public class TestActivityApiWithUnirest extends ApiTestBase {
         this.user.setFirstName("Marco");
         this.user.setLastName("Recchioni");
 
-        asyncTest(cb -> Breinify.activity(user, "testWithoutCategoryTypeSet", null, description, res -> {
+        asyncTest(cb -> Breinify.activity(this.user, "testWithoutCategoryTypeSet", null, description, res -> {
             assertEquals(200, res.getStatus());
             cb.set(true);
         }), 2000);
