@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 
 public class TestStressTests extends ApiTestBase {
-    private final Logger LOG = LoggerFactory.getLogger(TestStressTests.class);
+    private final static Logger LOG = LoggerFactory.getLogger(TestStressTests.class);
 
     private int counter;
     private long elapsedTime;
