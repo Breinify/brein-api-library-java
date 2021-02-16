@@ -6,7 +6,8 @@ import java.util.Map;
 
 public class BreinWeatherResult {
     private static final String DESCRIPTION_KEY = "description";
-    private static final String TEMPERATURE_KEY = "temperatureC";
+    private static final String TEMPERATURE_KEY = "temperature";
+    private static final String TEMPERATURE_CELSIUS_KEY = "temperatureC";
     private static final String TEMPERATURE_FAHRENHEIT_KEY = "temperatureF";
     private static final String PRECIPITATION_KEY = "precipitation";
     private static final String PRECIPITATION_TYPE_KEY = PRECIPITATION_KEY + "Type";
@@ -22,6 +23,7 @@ public class BreinWeatherResult {
 
     private final String description;
     private final Double temperature;
+    private final Double temperatureC;
     private final Double temperatureF;
     private final PrecipitationType precipitation;
     private final Double precipitationAmount;
@@ -36,6 +38,7 @@ public class BreinWeatherResult {
     public BreinWeatherResult(final Map<String, Object> result) {
         this.description = JsonHelper.getOr(result, DESCRIPTION_KEY, null);
         this.temperature = JsonHelper.getOr(result, TEMPERATURE_KEY, null);
+        this.temperatureC = JsonHelper.getOr(result, TEMPERATURE_CELSIUS_KEY, null);
         this.temperatureF = JsonHelper.getOr(result, TEMPERATURE_FAHRENHEIT_KEY, null);
         this.windStrength = JsonHelper.getOr(result, WIND_STRENGTH_KEY, null);
         this.lastMeasured = JsonHelper.getOrLong(result, LAST_MEASURED_KEY);
@@ -95,7 +98,7 @@ public class BreinWeatherResult {
     }
 
     public Double getTemperatureCelsius() {
-        return this.temperature;
+        return this.temperatureC == null ? this.temperature : this.temperatureC;
     }
 
     public Double getTemperatureFahrenheit() {
