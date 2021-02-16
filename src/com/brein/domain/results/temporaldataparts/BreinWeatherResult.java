@@ -6,7 +6,8 @@ import java.util.Map;
 
 public class BreinWeatherResult {
     private static final String DESCRIPTION_KEY = "description";
-    private static final String TEMPERATURE_KEY = "temperature";
+    private static final String TEMPERATURE_KEY = "temperatureC";
+    private static final String TEMPERATURE_FAHRENHEIT_KEY = "temperatureF";
     private static final String PRECIPITATION_KEY = "precipitation";
     private static final String PRECIPITATION_TYPE_KEY = PRECIPITATION_KEY + "Type";
     private static final String PRECIPITATION_AMOUNT_KEY = PRECIPITATION_KEY + "Amount";
@@ -21,6 +22,7 @@ public class BreinWeatherResult {
 
     private final String description;
     private final Double temperature;
+    private final Double temperatureF;
     private final PrecipitationType precipitation;
     private final Double precipitationAmount;
     private final Double windStrength;
@@ -32,28 +34,29 @@ public class BreinWeatherResult {
     private final Double humidity;
 
     public BreinWeatherResult(final Map<String, Object> result) {
-        description = JsonHelper.getOr(result, DESCRIPTION_KEY, null);
-        temperature = JsonHelper.getOr(result, TEMPERATURE_KEY, null);
-        windStrength = JsonHelper.getOr(result, WIND_STRENGTH_KEY, null);
-        lastMeasured = JsonHelper.getOrLong(result, LAST_MEASURED_KEY);
-        cloudCover = JsonHelper.getOr(result, CLOUD_COVER_KEY, null);
-        pressure = JsonHelper.getOr(result, PRESSURE_KEY, null);
-        humidity = JsonHelper.getOr(result, HUMIDITY_KEY, null);
+        this.description = JsonHelper.getOr(result, DESCRIPTION_KEY, null);
+        this.temperature = JsonHelper.getOr(result, TEMPERATURE_KEY, null);
+        this.temperatureF = JsonHelper.getOr(result, TEMPERATURE_FAHRENHEIT_KEY, null);
+        this.windStrength = JsonHelper.getOr(result, WIND_STRENGTH_KEY, null);
+        this.lastMeasured = JsonHelper.getOrLong(result, LAST_MEASURED_KEY);
+        this.cloudCover = JsonHelper.getOr(result, CLOUD_COVER_KEY, null);
+        this.pressure = JsonHelper.getOr(result, PRESSURE_KEY, null);
+        this.humidity = JsonHelper.getOr(result, HUMIDITY_KEY, null);
 
         //noinspection unchecked
         final Map<String, Object> measuredJson = JsonHelper.getOr(result, MEASURED_LOCATION_KEY, null);
         if (measuredJson == null) {
-            lat = null;
-            lon = null;
+            this.lat = null;
+            this.lon = null;
         } else {
-            lat = JsonHelper.getOr(measuredJson, LATITUDE_KEY, null);
-            lon = JsonHelper.getOr(measuredJson, LONGITUDE_KEY, null);
+            this.lat = JsonHelper.getOr(measuredJson, LATITUDE_KEY, null);
+            this.lon = JsonHelper.getOr(measuredJson, LONGITUDE_KEY, null);
         }
 
         final Map<String, Object> preciValue = JsonHelper.getOr(result, PRECIPITATION_KEY, null);
         if (preciValue == null) {
             this.precipitation = PrecipitationType.UNKNOWN;
-            precipitationAmount = null;
+            this.precipitationAmount = null;
         } else {
             final String type = JsonHelper.getOr(preciValue, PRECIPITATION_TYPE_KEY, null);
             if (type == null) {
@@ -80,7 +83,7 @@ public class BreinWeatherResult {
                 }
             }
 
-            precipitationAmount = JsonHelper.getOr(preciValue, PRECIPITATION_AMOUNT_KEY, null);
+            this.precipitationAmount = JsonHelper.getOr(preciValue, PRECIPITATION_AMOUNT_KEY, null);
         }
     }
 
@@ -88,14 +91,18 @@ public class BreinWeatherResult {
      * @return A human readable description of the weather
      */
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Double getTemperatureCelsius() {
-        return temperature;
+        return this.temperature;
     }
 
     public Double getTemperatureFahrenheit() {
+        if (this.temperatureF != null) {
+            return this.temperatureF;
+        }
+
         final Double celsius = getTemperatureCelsius();
         if (celsius == null) {
             return null;
@@ -117,59 +124,59 @@ public class BreinWeatherResult {
      * @return The type of precipitation, or 'NONE' if there isn't any
      */
     public PrecipitationType getPrecipitation() {
-        return precipitation;
+        return this.precipitation;
     }
 
     /**
      * @return How many centimeters of precipitation there have been in the last hour
      */
     public Double getPrecipitationAmount() {
-        return precipitationAmount;
+        return this.precipitationAmount;
     }
 
     /**
      * @return The wind speed, in kilometers/hour
      */
     public Double getWindStrength() {
-        return windStrength;
+        return this.windStrength;
     }
 
     /**
      * @return When this weather data was collected
      */
     public Long getLastMeasured() {
-        return lastMeasured;
+        return this.lastMeasured;
     }
 
     /**
      * @return The percentage of the sky covered in clouds
      */
     public Double getCloudCover() {
-        return cloudCover;
+        return this.cloudCover;
     }
 
     /**
      * @return the pressure
      */
     public Double getPressure() {
-        return pressure;
+        return this.pressure;
     }
 
     /**
      * @return The humidity as percentage (0.0 - 100.0)
      */
     public Double getHumidity() {
-        return humidity;
+        return this.humidity;
     }
 
     /**
      * @return The approximate location of the weather station the data was collected at
      */
     public GeoCoordinates getMeasuredAt() {
-        if (lat == null && lon == null) {
+        if (this.lat == null && this.lon == null) {
             return null;
         } else {
-            return new GeoCoordinates(lat, lon);
+            return new GeoCoordinates(this.lat, this.lon);
         }
     }
 
