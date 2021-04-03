@@ -102,6 +102,10 @@ public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExe
         return config.getActivityEndpoint();
     }
 
+    public BreinActivity setBase(final String key, final Object value) {
+        return super.set(key, value);
+    }
+
     @Override
     public BreinActivity set(final String key, final Object value) {
         if (TAGS_FIELD.equalsIgnoreCase(key)) {
@@ -194,7 +198,7 @@ public class BreinActivity extends BreinBase<BreinActivity> implements IAsyncExe
         }
 
         public String getName() {
-            return name;
+            return this.name;
         }
 
         public void set(final BreinActivity activity, final Object value) {
