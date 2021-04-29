@@ -144,7 +144,7 @@ public class BreinConfig {
      * @return base url
      */
     public String getBaseUrl() {
-        return baseUrl;
+        return this.baseUrl;
     }
 
     /**
@@ -180,7 +180,7 @@ public class BreinConfig {
     }
 
     public BreinEngineType getRestEngineType() {
-        return restEngineType;
+        return this.restEngineType;
     }
 
     public BreinConfig setRestEngineType(final BreinEngineType restEngineType) {
@@ -189,7 +189,7 @@ public class BreinConfig {
     }
 
     public String getApiKey() {
-        return apiKey;
+        return this.apiKey;
     }
 
     public BreinConfig setApiKey(final String apiKey) {
@@ -201,11 +201,11 @@ public class BreinConfig {
     }
 
     public String getUrl() {
-        return baseUrl;
+        return this.baseUrl;
     }
 
     public long getConnectionTimeout() {
-        return connectionTimeout;
+        return this.connectionTimeout;
     }
 
     public BreinConfig setConnectionTimeout(final long connectionTimeout) {
@@ -214,7 +214,7 @@ public class BreinConfig {
     }
 
     public long getSocketTimeout() {
-        return socketTimeout;
+        return this.socketTimeout;
     }
 
     public BreinConfig setSocketTimeout(final long socketTimeout) {
@@ -223,7 +223,7 @@ public class BreinConfig {
     }
 
     public String getActivityEndpoint() {
-        return activityEndpoint;
+        return this.activityEndpoint;
     }
 
     public BreinConfig setActivityEndpoint(final String activityEndpoint) {
@@ -232,7 +232,7 @@ public class BreinConfig {
     }
 
     public String getLookupEndpoint() {
-        return lookupEndpoint;
+        return this.lookupEndpoint;
     }
 
     public BreinConfig setLookupEndpoint(final String lookupEndpoint) {
@@ -241,7 +241,7 @@ public class BreinConfig {
     }
 
     public String getTemporalDataEndpoint() {
-        return temporalDataEndpoint;
+        return this.temporalDataEndpoint;
     }
 
     public void setTemporalDataEndpoint(final String temporalDataEndpoint) {
@@ -249,7 +249,7 @@ public class BreinConfig {
     }
 
     public String getRecommendationEndpoint() {
-        return recommendationEndpoint;
+        return this.recommendationEndpoint;
     }
 
     public BreinConfig setRecommendationEndpoint(final String recommendationEndpoint) {
@@ -258,7 +258,7 @@ public class BreinConfig {
     }
 
     public String getSecret() {
-        return secret;
+        return this.secret;
     }
 
     public BreinConfig setSecret(final String secret) {
@@ -267,7 +267,7 @@ public class BreinConfig {
     }
 
     public String getDefaultCategory() {
-        return defaultCategory;
+        return this.defaultCategory;
     }
 
     public BreinConfig setDefaultCategory(final String defaultCategory) {
