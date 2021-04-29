@@ -57,6 +57,11 @@ public class BreinConfig {
     public static final BreinEngineType DEFAULT_ENGINE_TYPE = BreinEngineType.AUTO_DETECT;
 
     /**
+     * default rest call threads
+     */
+    public static final int DEFAULT_REST_CALL_THREADS = 5;
+
+    /**
      * Logger instance
      */
     private static final Logger LOG = LoggerFactory.getLogger(BreinConfig.class);
@@ -115,6 +120,11 @@ public class BreinConfig {
      * contains the secret that will be used for the signature
      */
     private String secret;
+
+    /**
+     * contains the number of rest call threads
+     */
+    private int restCallThreads = DEFAULT_REST_CALL_THREADS;
 
     /**
      * The additional headers to be sent with the request
@@ -220,6 +230,14 @@ public class BreinConfig {
     public BreinConfig setSocketTimeout(final long socketTimeout) {
         this.socketTimeout = socketTimeout;
         return this;
+    }
+
+    public int getRestCallThreads() {
+        return this.restCallThreads;
+    }
+
+    public void setRestCallThreads(final int restCallThreads) {
+        this.restCallThreads = restCallThreads;
     }
 
     public String getActivityEndpoint() {
