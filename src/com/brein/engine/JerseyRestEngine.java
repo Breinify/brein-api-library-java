@@ -35,12 +35,11 @@ public class JerseyRestEngine implements IRestEngine {
      */
     @Override
     public void configure(final BreinConfig config) {
-        if (threadPool != null) {
+        if (this.threadPool != null) {
             closeExecutor(1, 4);
         }
 
-        // TODO: add the value to the configuration
-        threadPool = Executors.newFixedThreadPool(5);
+        this.threadPool = Executors.newFixedThreadPool(config.getRestCallThreads());
     }
 
     @Override
@@ -52,7 +51,7 @@ public class JerseyRestEngine implements IRestEngine {
     public void invokeAsyncRequest(final BreinConfig config,
                                    final BreinBase data,
                                    final Consumer<BreinResult> callback) {
-        threadPool.submit(() -> {
+        this.threadPool.submit(() -> {
             BreinResult result;
 
             try {
@@ -71,7 +70,7 @@ public class JerseyRestEngine implements IRestEngine {
         validate(config, data);
 
         final String url = getFullyQualifiedUrl(config, data);
-        final WebResource webResource = client.resource(url);
+        final WebResource webResource = this.client.resource(url);
 
         try {
             Builder builder = webResource.type("application/json");
@@ -102,7 +101,6 @@ public class JerseyRestEngine implements IRestEngine {
                                  final Map<String, String> headers) {
 
         Builder result = builder;
-
         for (final Entry<String, String> entry : headers.entrySet()) {
             result = builder.header(entry.getKey(), entry.getValue());
         }
@@ -123,24 +121,24 @@ public class JerseyRestEngine implements IRestEngine {
              * is blocking with take(). Nevertheless, we try it and afterwards
              * force it.
              */
-            threadPool.shutdown();
-            threadPool.awaitTermination(firstWaitInSeconds, TimeUnit.SECONDS);
+            this.threadPool.shutdown();
+            this.threadPool.awaitTermination(firstWaitInSeconds, TimeUnit.SECONDS);
         } catch (final InterruptedException e) {
             // ignore
         } finally {
-            final List<Runnable> notExecuted = threadPool.shutdownNow();
+            final List<Runnable> notExecuted = this.threadPool.shutdownNow();
             if (!notExecuted.isEmpty()) {
                 LOG.warn("Not handling " + notExecuted.size() + " tasks, have to shut down now.");
             }
 
             // wait again, we wait a long time here, because a process may be still running
             try {
-                threadPool.awaitTermination(secondWaitInSeconds, TimeUnit.SECONDS);
+                this.threadPool.awaitTermination(secondWaitInSeconds, TimeUnit.SECONDS);
             } catch (final InterruptedException e) {
                 // don't do anything
             }
 
-            if (threadPool.isTerminated()) {
+            if (this.threadPool.isTerminated()) {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("The executor-service is shut-down.");
                 }
@@ -149,6 +147,6 @@ public class JerseyRestEngine implements IRestEngine {
             }
         }
 
-        threadPool = null;
+        this.threadPool = null;
     }
 }
