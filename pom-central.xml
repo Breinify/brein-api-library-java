@@ -5,7 +5,7 @@
 
     <groupId>com.breinify</groupId>
     <artifactId>brein-api-library-java</artifactId>
-    <version>2.1.5</version>
+    <version>2.2.0</version>
 
     <name>brein-api-library-java</name>
     <description>Brein API Library Java</description>
@@ -43,7 +43,7 @@
     <url>https://www.breinify.com</url>
 
     <properties>
-        <slf4jVersion>1.7.21</slf4jVersion>
+        <slf4jVersion>1.7.36</slf4jVersion>
         <unirestVersion>1.4.9</unirestVersion>
         <gsonVersion>2.9.0</gsonVersion>
         <jerseyClientVersion>1.19.1</jerseyClientVersion>

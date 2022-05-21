@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <slf4jVersion>1.7.21</slf4jVersion>
+        <slf4jVersion>1.7.36</slf4jVersion>
         <unirestVersion>1.4.9</unirestVersion>
         <gsonVersion>2.9.0</gsonVersion>
         <jerseyClientVersion>1.19.1</jerseyClientVersion>
